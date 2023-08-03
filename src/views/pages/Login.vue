@@ -14,7 +14,6 @@
                       <CIcon icon="cil-user" />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Username"
                       autocomplete="username"
                     />
                   </CInputGroup>

@@ -350,6 +350,11 @@ const routes = [
         name: 'Register',
         component: () => import('@/views/pages/Register'),
       },
+      {
+        path: '/login1',
+        name: 'Login1',
+        component: () => import('@/views/pages/Login1'),
+      },
     ],
   },
   {
@@ -375,6 +380,7 @@ const routes = [
       },
     ],
   },
+
 ]
 
 const router = createRouter({
