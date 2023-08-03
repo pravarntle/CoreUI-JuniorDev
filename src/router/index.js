@@ -318,6 +318,33 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'support-ticket',
+        name: 'ST',
+        redirect: '/support-ticket/',
+        component: {
+          render() {
+            return h(resolveComponent('router-view'))
+          },
+        },
+        children: [
+          {
+            path: '',
+            name: 'ST - Index',
+            component: () => import('@/views/support-ticket/'),
+          },
+          {
+            path: 'user/list',
+            name: 'ST - List User',
+            component: () => import('@/views/support-ticket/users/'),
+          },
+          {
+            path: 'user/create',
+            name: 'ST - Create User',
+            component: () => import('@/views/support-ticket/users/CreateUser.vue'),
+          },
+        ],
+      },
     ],
   },
   {
@@ -350,11 +377,11 @@ const routes = [
         name: 'Register',
         component: () => import('@/views/pages/Register'),
       },
-      {
-        path: '/login1',
-        name: 'Login1',
-        component: () => import('@/views/pages/Login1'),
-      },
+      // {
+      //   path: '/login1',
+      //   name: 'Login1',
+      //   component: () => import('@/views/pages/Login1'),
+      // },
     ],
   },
   {

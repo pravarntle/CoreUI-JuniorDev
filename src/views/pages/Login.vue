@@ -1,69 +1,118 @@
 <template>
-  <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
-    <CContainer>
-      <CRow class="justify-content-center">
-        <CCol :md="8">
-          <CCardGroup>
-            <CCard class="p-4">
-              <CCardBody>
-                <CForm>
-                  <h1>Login</h1>
-                  <p class="text-medium-emphasis">Sign In to your account</p>
-                  <CInputGroup class="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon="cil-user" />
-                    </CInputGroupText>
-                    <CFormInput
-                      autocomplete="username"
-                    />
-                  </CInputGroup>
-                  <CInputGroup class="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon="cil-lock-locked" />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Password"
-                      autocomplete="current-password"
-                    />
-                  </CInputGroup>
-                  <CRow>
-                    <CCol :xs="6">
-                      <CButton color="primary" class="px-4"> Login </CButton>
-                    </CCol>
-                    <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0">
-                        Forgot password?
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CForm>
-              </CCardBody>
-            </CCard>
-            <CCard class="text-white bg-primary py-5" style="width: 44%">
-              <CCardBody class="text-center">
-                <div>
-                  <h2>Sign up</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                  <CButton color="light" variant="outline" class="mt-3">
-                    Register Now!
-                  </CButton>
-                </div>
-              </CCardBody>
-            </CCard>
-          </CCardGroup>
-        </CCol>
-      </CRow>
-    </CContainer>
-  </div>
+    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <CContainer>
+        <CCardGroup>
+          <CCard>
+          <CCardBody>
+          <CRow>
+              <CCol>
+                <CImage
+                  :src="login"
+                  fluid
+                  block
+                  class="c-image"
+                />
+              </CCol>
+              <CCol>
+                  <!-- <CForm 
+                    novalidate 
+                    :validated="validatedCustom01" 
+                    @submit="handleSubmitCustom01"
+                  > -->
+                  <CForm>
+                    <h1 class="mt-5">LOGIN</h1>
+                    <CFormLabel>Username</CFormLabel>
+                    <CInputGroup class="mb-3">
+                      <CFormInput 
+                        v-model="form.username"
+                        feedbackInvalid="ห้ามเว้นว่าง"
+                        :invalid="validate.username"
+                      />
+                      <!-- <CFormInput
+                        feedbackValid="Looks good!"
+                        id="validationCustom01"
+                        autocomplete="username"
+                        size="lg"
+                        required
+                      /> -->
+                    </CInputGroup>
+                    <CFormLabel>Password</CFormLabel>
+                    <CInputGroup class="mb-4">
+                      <CFormInput
+                        type="password"
+                        size="lg"
+                        autocomplete="current-password"
+                      />
+                    </CInputGroup>
+                    <CFormCheck class="remember" id="flexCheckDefault" label="Remember me"/>
+                    <CRow>
+                      <CCol :xs="6">
+                        <CButton color="dark" class="px-4" @click="vaildateBeforeSave"> Login </CButton>
+                      </CCol>
+                    </CRow>
+                  </CForm>
+              </CCol>
+          </CRow>
+        </CCardBody>
+        </CCard>
+        </CCardGroup>
+      </CContainer>
+    </div>
+
+
 </template>
 
+
+<style>
+.c-image {
+    border-radius: 15px 15px 15px 15px;
+  }
+</style>
+
 <script>
+import login  from '@/assets/images/login.jpg'
+import { CFormInput } from '@coreui/vue-pro';
 export default {
-  name: 'Login',
+    name: 'Login1',
+    data() {
+      return {
+        login: login,
+        validatedCustom01: null,
+        form: {
+          username: '',
+        },
+        validate: {
+          username: null,
+        }
+      };
+    },
+    methods: {
+      vaildateBeforeSave() {
+        let error
+        if (this.form.username === '') {
+          error = true
+          this.validate.username = true
+        }
+        if (error) {
+        //   const modalText = "กรุณากรอกข้อมูลให้ครบถ้วน";
+        //   this.setModalStatus("error", true, modalText);
+        } else {
+          this.onLoginClick()
+        }
+      },
+      onLoginClick() {
+        console.log('OK')
+      },
+        // handleSubmitCustom01(event) {
+        //     console.log(event);
+        //     const form = event.currentTarget;
+        //     if (form.checkValidity() === false) {
+        //         event.preventDefault();
+        //         event.stopPropagation();
+        //     }
+        //     this.validatedCustom01 = true;
+        // },
+    },
+    components: { CFormInput }
 }
 </script>
