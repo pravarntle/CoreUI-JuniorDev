@@ -8,6 +8,7 @@
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
       <CHeaderNav class="d-none d-md-flex me-auto">
+        
       </CHeaderNav>
       <CHeaderNav class="ms-auto me-4">
 
@@ -75,7 +76,7 @@
         />
       </CHeaderToggler>
     </CContainer>
-    
+
 
   </CHeader>
 </template>
