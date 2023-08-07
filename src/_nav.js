@@ -1,4 +1,15 @@
 export default [
+
+  {
+    component: 'CNavItem',
+    icon:'cil-cursor',
+    name: 'NewTicket',
+    to: '/support-ticket/ticket/create',
+  },
+  {
+    component: 'CNavTitle',
+    name: 'Support Ticket',
+  },
   {
     component: 'CNavItem',
     name: 'Dashboard',
@@ -10,41 +21,12 @@ export default [
     },
   },
   {
-    component: 'CNavTitle',
-    name: 'Theme',
-  },
-  {
     component: 'CNavItem',
-    name: 'Colors',
-    to: '/theme/colors',
-    icon: 'cil-drop',
+    icon:'cilBookmark',
+    name: 'Bookmark',
+    to: '/support-ticket/user/create',
   },
-  {
-    component: 'CNavItem',
-    name: 'Typography',
-    to: '/theme/typography',
-    icon: 'cil-pencil',
-  },
-  {
-    component: 'CNavTitle',
-    name: 'Support Ticket',
-  },
-  {
-    component: 'CNavGroup',
-    name: 'Manage User',
-    to: '/base',
-    icon: 'cil-puzzle',
-    items: [
-      {
-        component: 'CNavItem',
-        name: 'List of Users',
-        to: '/support-ticket/user/list',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Create User',
-        to: '/support-ticket/user/create',
-      },
+
       // {
       //   component: 'CNavItem',
       //   name: 'Breadcrumbs',
@@ -110,8 +92,8 @@ export default [
       //   name: 'Tooltips',
       //   to: '/base/tooltips',
       // },
-    ],
-  },
+
+
   // {
   //   component: 'CNavGroup',
   //   name: 'Buttons',

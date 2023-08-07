@@ -8,9 +8,12 @@
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
       <CHeaderNav class="d-none d-md-flex me-auto">
+        <CNavItem>
+          <CNavLink href="/dashboard"> Dashboard </CNavLink>
+        </CNavItem>
+
       </CHeaderNav>
       <CHeaderNav class="ms-auto me-4">
-
         <CButtonGroup aria-label="Theme switch">
           <CFormCheck
             id="btn-light-theme"
@@ -46,23 +49,12 @@
           >
             <template #label><CIcon icon="cil-moon" /></template>
           </CFormCheck>
-
         </CButtonGroup>
-
-        <CFormCheck
-
-            type="radio"
-            :button="{ color: 'dark' }"
-          >
-            <template #label><CIcon icon="cilBell" /></template>
-          </CFormCheck>
-          <CFormCheck
-
-            type="radio"
-            :button="{ color: 'dark' }"
-          >
-            <template #label><CIcon icon="cilBell" /></template>
-          </CFormCheck>
+      </CHeaderNav>
+      <CHeaderNav class="me-4">
+        <AppHeaderDropdownNotif />
+        <AppHeaderDropdownTasks />
+        <AppHeaderDropdownMssgs />
       </CHeaderNav>
       <CHeaderNav class="ms-3 me-4">
         <AppHeaderDropdownAccnt />
@@ -75,8 +67,10 @@
         />
       </CHeaderToggler>
     </CContainer>
-    
-
+    <CHeaderDivider />
+    <CContainer fluid>
+      <AppBreadcrumb />
+    </CContainer>
   </CHeader>
 </template>
 

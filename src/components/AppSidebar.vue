@@ -1,5 +1,6 @@
 <template>
-  <CSidebar
+  
+    <CSidebar
     position="fixed"
     :unfoldable="sidebarUnfoldable"
     :visible="sidebarVisible"
@@ -34,7 +35,14 @@
       @click="$store.commit('toggleUnfoldable')"
     />
   </CSidebar>
+
+
 </template>
+<style>
+ .all{
+  border-radius: 10;
+ }
+</style>
 
 <script>
 import { computed } from 'vue'

@@ -343,6 +343,11 @@ const routes = [
             name: 'ST - Create User',
             component: () => import('@/views/support-ticket/users/CreateUser.vue'),
           },
+          {
+            path: 'ticket/create',
+            name: 'ST - Create Ticket',
+            component: () => import('@/views/support-ticket/tickets/create_ticket.vue'),
+          },
         ],
       },
     ],
@@ -368,7 +373,7 @@ const routes = [
         component: () => import('@/views/pages/Page500'),
       },
       {
-        path: 'login',
+        path: '/login',
         name: 'Login',
         component: () => import('@/views/pages/Login'),
       },

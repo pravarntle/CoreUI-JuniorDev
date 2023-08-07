@@ -16,7 +16,7 @@
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Gender</CFormLabel>
           <div class="col-lg-7 col-md-12">
-            <CFormSelect 
+            <CFormSelect
               :options="genderOptions"
               @change="checkGendor"
             />
@@ -40,7 +40,7 @@
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Description</CFormLabel>
           <div class="col-lg-7 col-md-12">
-            <CFormTextarea 
+            <CFormTextarea
               rows="4"
             />
           </div>
@@ -52,7 +52,7 @@
       <CElementCover :opacity="0.5" v-if="pageLoading" />
     </CCard>
 
-    
+
   </div>
 </template>
 

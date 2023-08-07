@@ -14,16 +14,16 @@
                 />
               </CCol>
               <CCol>
-                  <!-- <CForm 
-                    novalidate 
-                    :validated="validatedCustom01" 
+                  <!-- <CForm
+                    novalidate
+                    :validated="validatedCustom01"
                     @submit="handleSubmitCustom01"
                   > -->
                   <CForm>
                     <h1 class="mt-5">LOGIN</h1>
                     <CFormLabel>Username</CFormLabel>
                     <CInputGroup class="mb-3">
-                      <CFormInput 
+                      <CFormInput
                         v-model="form.username"
                         feedbackInvalid="ห้ามเว้นว่าง"
                         :invalid="validate.username"
