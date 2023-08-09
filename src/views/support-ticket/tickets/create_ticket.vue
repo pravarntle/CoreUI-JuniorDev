@@ -58,9 +58,9 @@
 
 
       </CCardBody>
-      <CCardFooter c>
-        <CButton color="secondary" @click="vaildateBeforeSave" >Cancle</CButton>
-        <CButton color="success" @click="vaildateBeforeSave" >Submit</CButton>
+      <CCardFooter class="footer">
+        <CButton  color="secondary" @click="vaildateBeforeSave" >Cancle</CButton>
+        <CButton class="btn-sec" color="success" @click="vaildateBeforeSave"  >Submit</CButton>
       </CCardFooter>
       <CElementCover :opacity="0.5" v-if="pageLoading" />
     </CCard>
@@ -68,6 +68,15 @@
 
   </div>
 </template>
+<style>
+.footer {
+  display: flex;
+  justify-content: end;
+}
+.btn-sec{
+  margin: 5px;
+}
+</style>
 
 <script>
 export default {

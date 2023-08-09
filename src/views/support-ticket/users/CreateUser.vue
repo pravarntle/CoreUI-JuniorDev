@@ -27,6 +27,7 @@
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Gender 2</CFormLabel>
           <div class="col-lg-7 col-md-12">
             <CFormCheck
+            
               v-for="(r, index) in genderOptions"
               type="radio"
               class="pt-2"

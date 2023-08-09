@@ -27,6 +27,8 @@
                         v-model="form.username"
                         feedbackInvalid="ห้ามเว้นว่าง"
                         :invalid="validate.username"
+                        size="lg"
+                        id="username"
                       />
                       <!-- <CFormInput
                         feedbackValid="Looks good!"
@@ -40,11 +42,24 @@
                     <CInputGroup class="mb-4">
                       <CFormInput
                         type="password"
-                        size="lg"
+                        id="password"
+                        v-model="form.password"
+                        feedbackInvalid="ห้ามเว้นว่าง"
+                        :invalid="validate.password"
                         autocomplete="current-password"
+                        size="lg"
                       />
+                      <CInputGroupText>
+                        <CFormCheck
+                        type="radio"
+                        autocomplete="off"
+                        @click="showPassword"
+                        >
+                        <template #label><CIcon :icon="cilToggleOff" /></template>
+                        </CFormCheck>
+                      </CInputGroupText>
                     </CInputGroup>
-                    <CFormCheck class="remember" id="flexCheckDefault" label="Remember me"/>
+                    <CFormCheck class="remember" id="rememberMe" label="Remember me"/>
                     <CRow>
                       <CCol :xs="6">
                         <CButton color="dark" class="px-4" @click="vaildateBeforeSave"> Login </CButton>
@@ -70,19 +85,25 @@
 </style>
 
 <script>
+import { CIcon } from '@coreui/icons-vue';
+import { cilToggleOff,cilToggleOn } from '@coreui/icons';
 import login  from '@/assets/images/login.jpg'
 import { CFormInput } from '@coreui/vue-pro';
 export default {
     name: 'Login1',
     data() {
       return {
+        cilToggleOff,
+        cilToggleOn,
         login: login,
         validatedCustom01: null,
         form: {
           username: '',
+          password: '',
         },
         validate: {
           username: null,
+          password: null,
         }
       };
     },
@@ -92,6 +113,10 @@ export default {
         if (this.form.username === '') {
           error = true
           this.validate.username = true
+        }
+        if (this.form.password === '') {
+          error = true
+          this.validate.password = true
         }
         if (error) {
         //   const modalText = "กรุณากรอกข้อมูลให้ครบถ้วน";
@@ -103,6 +128,14 @@ export default {
       onLoginClick() {
         console.log('OK')
       },
+      showPassword(){
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      },
         // handleSubmitCustom01(event) {
         //     console.log(event);
         //     const form = event.currentTarget;
@@ -113,6 +146,9 @@ export default {
         //     this.validatedCustom01 = true;
         // },
     },
-    components: { CFormInput }
+    components: {
+      CFormInput,
+      CIcon
+    }
 }
 </script>
