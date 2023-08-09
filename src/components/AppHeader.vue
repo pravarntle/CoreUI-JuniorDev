@@ -8,7 +8,7 @@
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
       <CHeaderNav class="d-none d-md-flex me-auto">
-        
+
       </CHeaderNav>
       <CHeaderNav class="ms-auto me-4">
 
@@ -16,9 +16,9 @@
           <CFormCheck
             id="btn-light-theme"
             type="radio"
-            :button="{ color: 'primary' }"
             name="theme-switch"
             autocomplete="off"
+            :button="{ color: 'primary' }"
             :checked="$store.state.theme === 'default'"
             @change="
               (event) =>
