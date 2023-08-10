@@ -285,6 +285,11 @@ const routes = [
         component: () => import('@/views/smart-table/SmartTable.vue'),
       },
       {
+        path: '/smart',
+        name: 'Smart Table',
+        component: () => import('@/views/smart-table/SmartTableBasixExample.vue'),
+      },
+      {
         path: '/calendar',
         name: 'Calendar',
         component: () => import('@/views/plugins/Calendar.vue'),
