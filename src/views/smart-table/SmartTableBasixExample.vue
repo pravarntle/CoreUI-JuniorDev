@@ -8,7 +8,7 @@
         </CCardHeader>
         <CRow class="mb-3">
           <CCol>
-            <CCard class="p-2 mb-2">
+            <CCard class="p-2 mb-2" id="border">
               <CCardbody>
                 <b id="all">All Tickets</b>
                 <CRow>
@@ -28,8 +28,8 @@
             </CCard>
           </CCol>
           <CCol>
-            <CCard class="p-2 mb-2">
-              <CCardbody>
+            <CCard class="p-2 mb-2" id="border">
+              <CCardbody >
                 <b id="open">Open Tickets</b>
                 <CRow>
                   <CCol>
@@ -48,8 +48,8 @@
             </CCard>
           </CCol>
           <CCol>
-            <CCard class="p-2 mb-2">
-              <CCardbody>
+            <CCard class="p-2 mb-2" id="border">
+              <CCardbody >
                 <b  id="closed">Closed Tickets</b>
                 <CRow>
                   <CCol>
@@ -149,7 +149,11 @@
     color: #000;
   }
   .LG{
+  
     width: 50%;
+  }
+  #border{
+    border-radius: 6%;
   }
 </style>
 
