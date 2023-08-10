@@ -27,7 +27,7 @@
           </div>
         </CRow>
         <CRow class="mb-2">
-          <div class="col-lg-1"></div>
+          <div class="col-lg-1 "></div>
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Priority</CFormLabel>
           <div class="col-lg-7 col-md-12">
             <CFormSelect
@@ -88,7 +88,7 @@ export default {
       form: {
           ticket: '',
         },
-        validate: {
+        validate: {                                                                                          
           ticket: null,
         }
     }

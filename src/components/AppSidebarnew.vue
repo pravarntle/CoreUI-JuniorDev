@@ -38,6 +38,11 @@
 
 
 </template>
+<style>
+ .all{
+  border-radius: 10;
+ }
+</style>
 
 <script>
 import { computed } from 'vue'
