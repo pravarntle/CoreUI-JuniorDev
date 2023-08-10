@@ -13,11 +13,22 @@
     "
   >
     <CSidebarBrand>
-      <CImage
-        :src="logo"
-        fluid
-        block
-      />
+      <CRow>
+        <CCol>
+          <CImage
+            :src="logo"
+            fluid
+            
+          /> 
+        </CCol>
+        <CCol>
+          <h3>Support Trouble
+            Ticket System</h3>
+        </CCol>
+        
+        
+      </CRow>
+      
       <!-- <CIcon
         custom-class-name="sidebar-brand-full"
         :icon="logoNegative"

@@ -13,11 +13,13 @@
     "
   >
     <CSidebarBrand>
-      <CImage
-        :src="logo"
-        fluid
-        block
-      />
+     
+          <CImage
+            :src="logo"
+            fluid
+            
+          /> 
+      
       <!-- <CIcon
         custom-class-name="sidebar-brand-full"
         :icon="logoNegative"
@@ -43,7 +45,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
-import logo  from '@/assets/images/logo.jpg'
+import logo  from '@/assets/images/logo.png'
 import { logoNegative } from '@/assets/brand/logo-negative'
 import { sygnet } from '@/assets/brand/sygnet'
 export default {
