@@ -1,7 +1,20 @@
 <template>
   <CDropdown variant="nav-item">
     <CDropdownToggle placement="bottom-end" class="py-0" :caret="false">
-      <CAvatar :src="avatar" size="md" />
+      <CCard>
+          <CCardbody>
+            <CRow>
+              <CCol>
+                <CAvatar :src="avatar" size="xl" />
+              </CCol>
+              <CCol>
+              <h2>Hisupakit</h2> 
+              </CCol>
+            </CRow>
+        </CCardbody>
+      </CCard>
+      
+      
     </CDropdownToggle>
     <CDropdownMenu class="pt-0">
       <CDropdownHeader

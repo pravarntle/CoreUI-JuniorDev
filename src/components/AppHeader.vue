@@ -1,6 +1,6 @@
 <template>
   <CHeader position="sticky" class="mb-4">
-    <CContainer fluid>
+    <CContainer>
       <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
@@ -11,52 +11,6 @@
 
       </CHeaderNav>
       <CHeaderNav class="ms-auto me-4">
-
-        <CButtonGroup aria-label="Theme switch">
-          <CFormCheck
-            id="btn-light-theme"
-            type="radio"
-            name="theme-switch"
-            autocomplete="off"
-            :button="{ color: 'primary' }"
-            :checked="$store.state.theme === 'default'"
-            @change="
-              (event) =>
-                $store.commit({
-                  type: 'toggleTheme',
-                  value: 'default',
-                })
-            "
-          >
-            <template #label><CIcon icon="cil-sun" /></template>
-          </CFormCheck>
-          <CFormCheck
-            id="btn-dark-theme"
-            type="radio"
-            :button="{ color: 'primary' }"
-            name="theme-switch"
-            autocomplete="off"
-            :checked="$store.state.theme === 'dark'"
-            @change="
-              (event) =>
-                $store.commit({
-                  type: 'toggleTheme',
-                  value: 'dark',
-                })
-            "
-          >
-            <template #label><CIcon icon="cil-moon" /></template>
-          </CFormCheck>
-
-        </CButtonGroup>
-
-        <CFormCheck
-
-            type="radio"
-            :button="{ color: 'dark' }"
-          >
-            <template #label><CIcon icon="cilBell" /></template>
-          </CFormCheck>
           <CFormCheck
 
             type="radio"
@@ -65,16 +19,13 @@
             <template #label><CIcon icon="cilBell" /></template>
           </CFormCheck>
       </CHeaderNav>
-      <CHeaderNav class="ms-3 me-4">
-        <AppHeaderDropdownAccnt />
+      <CHeaderNav class="ms-1 me-5">
+        
+      <AppHeaderDropdownAccnt />
+
+          
       </CHeaderNav>
-      <CHeaderToggler class="px-md-0 me-md-3">
-        <CIcon
-          icon="cil-applications-settings"
-          size="lg"
-          @click="$store.commit('toggleAside')"
-        />
-      </CHeaderToggler>
+      
     </CContainer>
 
 

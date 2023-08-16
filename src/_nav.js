@@ -13,7 +13,7 @@ export default [
   {
     component: 'CNavItem',
     name: 'Dashboard',
-    to: '/dashboard',
+    to: '/smart',
     icon: 'cil-speedometer',
     badge: {
       color: 'info',
@@ -24,7 +24,7 @@ export default [
     component: 'CNavItem',
     icon:'cilBookmark',
     name: 'Bookmark',
-    to: '/support-ticket/user/create',
+    to: '/support-ticket/ticket/book',
   },
 
       // {
