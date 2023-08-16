@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: DefaultLayout,
-    redirect: '/dashboard',
+    redirect: '/smart',
     children: [
       {
         path: '/dashboard',
@@ -352,6 +352,11 @@ const routes = [
             path: 'ticket/create',
             name: 'ST - Create Ticket',
             component: () => import('@/views/support-ticket/tickets/create_ticket.vue'),
+          },
+          {
+            path: 'ticket/book',
+            name: 'ST - bookmark Ticket',
+            component: () => import('@/views/smart-table/book_mark.vue'),
           },
         ],
       },
