@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: DefaultLayout,
-    redirect: '/smart',
+    redirect: '/login',
     children: [
       {
         path: '/dashboard',
