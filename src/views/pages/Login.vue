@@ -121,12 +121,14 @@ export default {
         if (error) {
         //   const modalText = "กรุณากรอกข้อมูลให้ครบถ้วน";
         //   this.setModalStatus("error", true, modalText);
-        } else {
+        } else if(this.form.username === 'supakit' && this.form.password === '00000000') {
           this.onLoginClick()
+        }else{
+          alert("Invalid username or password")
         }
       },
       onLoginClick() {
-        console.log('OK')
+        this.$router.push('/smart');
       },
       showPassword(){
         var x = document.getElementById("password");
@@ -145,7 +147,8 @@ export default {
         //     }
         //     this.validatedCustom01 = true;
         // },
-    },
+      },
+      
     components: {
       CFormInput,
       CIcon
