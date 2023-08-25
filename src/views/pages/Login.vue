@@ -14,11 +14,6 @@
                 />
               </CCol>
               <CCol>
-                  <!-- <CForm
-                    novalidate
-                    :validated="validatedCustom01"
-                    @submit="handleSubmitCustom01"
-                  > -->
                   <CForm>
                     <h1 class="mt-5">LOGIN</h1>
                     <CFormLabel>Username</CFormLabel>
@@ -30,13 +25,6 @@
                         size="lg"
                         id="username"
                       />
-                      <!-- <CFormInput
-                        feedbackValid="Looks good!"
-                        id="validationCustom01"
-                        autocomplete="username"
-                        size="lg"
-                        required
-                      /> -->
                     </CInputGroup>
                     <CFormLabel>Password</CFormLabel>
                     <CInputGroup class="mb-4">
@@ -73,17 +61,12 @@
         </CCardGroup>
       </CContainer>
     </div>
-
-
 </template>
-
-
 <style>
 .c-image {
     border-radius: 15px 15px 15px 15px;
   }
 </style>
-
 <script>
 import { CIcon } from '@coreui/icons-vue';
 import { cilToggleOff,cilToggleOn } from '@coreui/icons';
@@ -147,8 +130,7 @@ export default {
         //     }
         //     this.validatedCustom01 = true;
         // },
-      },
-      
+    },
     components: {
       CFormInput,
       CIcon
