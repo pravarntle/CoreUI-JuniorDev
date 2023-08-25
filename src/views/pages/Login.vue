@@ -107,7 +107,7 @@ export default {
         } else if(this.form.username === 'supakit' && this.form.password === '00000000') {
           this.onLoginClick()
         }else{
-          alert("Invalid username or password")
+          alert("เข้าสู่ระบบไม่สำเร็จ")
         }
       },
       onLoginClick() {
