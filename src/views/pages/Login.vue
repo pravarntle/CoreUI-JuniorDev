@@ -102,8 +102,6 @@ export default {
           this.validate.password = true
         }
         if (error) {
-        //   const modalText = "กรุณากรอกข้อมูลให้ครบถ้วน";
-        //   this.setModalStatus("error", true, modalText);
         } else if(this.form.username === 'supakit' && this.form.password === '00000000') {
           this.onLoginClick()
         }else{
@@ -121,15 +119,6 @@ export default {
           x.type = "password";
         }
       },
-        // handleSubmitCustom01(event) {
-        //     console.log(event);
-        //     const form = event.currentTarget;
-        //     if (form.checkValidity() === false) {
-        //         event.preventDefault();
-        //         event.stopPropagation();
-        //     }
-        //     this.validatedCustom01 = true;
-        // },
     },
     components: {
       CFormInput,

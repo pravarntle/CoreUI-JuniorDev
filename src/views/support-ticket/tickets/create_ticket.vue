@@ -36,7 +36,6 @@
             />
           </div>
         </CRow>
-
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Description</CFormLabel>
@@ -46,7 +45,6 @@
             />
           </div>
         </CRow>
-
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-3 col-md-12 col-form-label">Upload A File</CFormLabel>
@@ -54,9 +52,6 @@
             <CFormInput type="file" size="lg" id="formFileLg"  />
           </div>
         </CRow>
-
-
-
       </CCardBody>
       <CCardFooter class="footer">
         <CButton  color="secondary" @click="vaildateBeforeSave" >Cancle</CButton>
@@ -64,8 +59,6 @@
       </CCardFooter>
       <CElementCover :opacity="0.5" v-if="pageLoading" />
     </CCard>
-
-
   </div>
 </template>
 <style>
