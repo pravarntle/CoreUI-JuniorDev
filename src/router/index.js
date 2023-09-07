@@ -358,6 +358,11 @@ const routes = [
             name: 'ST - bookmark Ticket',
             component: () => import('@/views/smart-table/book_mark.vue'),
           },
+          {
+            path: 'ticket/comment',
+            name: 'ST - bookmark Ticket',
+            component: () => import('@/views/support-ticket/tickets/comment.vue'),
+          },
         ],
       },
     ],
