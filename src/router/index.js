@@ -282,7 +282,7 @@ const routes = [
       {
         path: '/smart-table',
         name: 'Smart Table',
-        component: () => import('@/views/smart-table/SmartTable.vue'),
+        component: () => import('@/views/smart-table/book_mark'),
       },
       {
         path: '/smart',
@@ -356,11 +356,12 @@ const routes = [
           {
             path: 'ticket/book',
             name: 'ST - bookmark Ticket',
-            component: () => import('@/views/smart-table/book_mark.vue'),
+            component: () => import('@/views/smart-table/book_mark'),
           },
           {
             path: 'ticket/comment',
             name: 'ST - bookmark Ticket',
+            name: 'ST - comment Ticket',
             component: () => import('@/views/support-ticket/tickets/comment.vue'),
           },
         ],
