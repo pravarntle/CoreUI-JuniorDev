@@ -3,17 +3,22 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const SchemaData = new schema({
-    acc_status_accept: {
+    cmt_messasge: {
         type: String,
         required: true,
     },
-    acc_time: {
+    cmt_date: {
         type: String,
         required: true,
     },
-    acc_act: {
+    cmt_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
+        required: true
+    },
+    cmt_tkt: {
+        type: schema.Types.ObjectId,
+        ref: "stts_tickets",
         required: true
     },
 }, {
@@ -23,5 +28,5 @@ const SchemaData = new schema({
     },
 });
 
-const stts_accept_tickets = mongoose.model("stts_accept_tickets", SchemaData, "stts_accept_tickets");
-module.exports = stts_accept_tickets;
+const stts_comments = mongoose.model("stts_comments", SchemaData, "stts_comments");
+module.exports = stts_comments;
