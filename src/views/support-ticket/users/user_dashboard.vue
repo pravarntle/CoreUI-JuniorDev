@@ -177,13 +177,13 @@ export default {
             //   _style: { width: '20%' },
             // },
             { key: '#',_style: { width: '1%' }},
-            { key: 'TICKET ID',_style:{ width:'20%' }},
-            { key: 'TITLE', _style: { width: '20%' } },
-            { key: 'START DATE', _style: { width: '20%' } },
-            { key: 'LAST UPDATE', _style: { width: '20%' } },
-            { key: 'STATUS', _style: { width: '20%' } },
-            { key: 'TYPE', _style: { width: '20%' } },
-            { key: 'BOOKMARK', _style: { width: '1%' } },
+            { key: 'TICKET ID',_style:{ width:'15%' }},
+            { key: 'TITLE', _style: { width: '10%' } },
+            { key: 'START DATE', _style: { width: '15%' } },
+            { key: 'LAST UPDATE', _style: { width: '15%' } },
+            { key: 'STATUS', _style: { width: '10%' } },
+            { key: 'TYPE', _style: { width: '10%' } },
+            { key: 'BOOKMARK', _style: { width: '10%' } },
             {
                 key: 'show_details',
                 label: '',
@@ -233,10 +233,30 @@ export default {
           user.data.forEach(element => {
             this.userOptions.push({value:element._id,label:element.act_username})
             
-          });
+          });   
+      },
+      async  fetchDataAndCount() {
+        try {
+          // เรียก API ด้วย Axios
+          const response = await axios.get('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']});
 
-          
+          // นับจำนวนข้อมูลที่ได้รับ
+          const data = response.data;
+          const count = data.length; // หรือตามโครงสร้างข้อมูลที่ได้รับ
+
+          // ทำอย่างไรกับค่า count ที่ได้ต่อไปนั้น
+          console.log('จำนวนข้อมูลที่ได้รับ: ' + count);
+
+          // ทำงานกับข้อมูลที่ได้รับตามต้องการ
+          // เช่น แสดงข้อมูลในหน้าเว็บ หรือประมวลผลข้อมูลเพิ่มเติม
+        } catch (error) {
+          console.error('เกิดข้อผิดพลาดในการเรียก API:', error);
         }
+      } 
+      
+
+
+
     }
 
 }
