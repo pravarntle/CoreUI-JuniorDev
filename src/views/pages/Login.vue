@@ -109,7 +109,7 @@ export default {
         }
       },
       onLoginClick() {
-        this.$router.push('/smart');
+        this.$router.push('/support-ticket/user/dashboard');
       },
       showPassword(){
         var x = document.getElementById("password");

@@ -13,7 +13,7 @@ export default [
   {
     component: 'CNavItem',
     name: 'Dashboard',
-    to: '/smart',
+    to: '/support-ticket/user/dashboard',
     icon: 'cil-speedometer',
     badge: {
       color: 'info',

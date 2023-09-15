@@ -61,7 +61,7 @@
       <CSmartTable
         :active-page="3"
         cleaner
-        column-filter
+        
         column-sorter
         :columns="columns"
         clickable-rows
