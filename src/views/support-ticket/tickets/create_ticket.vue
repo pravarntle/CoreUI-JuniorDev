@@ -213,6 +213,12 @@ export default {
 
             try {
               await axios.post('http://localhost:3000/mongoose/insert/stts_tickets',{data:this.form} )
+              .then((result) => {
+                alert('save'),
+                this.$router.push('/support-ticket/user/dashboard')
+              }).catch((err) => {
+                console.log(error)
+              });
             }catch(error){
               console.log(error)
             }
