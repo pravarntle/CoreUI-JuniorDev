@@ -280,16 +280,6 @@ const routes = [
         component: () => import('@/views/widgets/Widgets.vue'),
       },
       {
-        path: '/smart-table',
-        name: 'Smart Table',
-        component: () => import('@/views/smart-table/book_mark'),
-      },
-      {
-        path: '/smart',
-        name: 'Smart Table',
-        component: () => import('@/views/smart-table/SmartTableBasixExample.vue'),
-      },
-      {
         path: '/calendar',
         name: 'Calendar',
         component: () => import('@/views/plugins/Calendar.vue'),
@@ -349,6 +339,11 @@ const routes = [
             component: () => import('@/views/support-ticket/users/CreateUser.vue'),
           },
           {
+            path: 'user/dashboard',
+            name: 'ST - Dashboard User',
+            component: () => import('@/views/support-ticket/users/user_dashboard.vue'),
+          },
+          {
             path: 'ticket/create',
             name: 'ST - Create Ticket',
             component: () => import('@/views/support-ticket/tickets/create_ticket.vue'),
@@ -356,7 +351,7 @@ const routes = [
           {
             path: 'ticket/book',
             name: 'ST - bookmark Ticket',
-            component: () => import('@/views/smart-table/book_mark'),
+            component: () => import('@/views/support-ticket/users/book_mark.vue'),
           },
           {
             path: 'ticket/comment',

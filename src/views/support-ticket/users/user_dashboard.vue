@@ -78,7 +78,7 @@
       <CSmartTable
         :active-page="3"
         cleaner
-        column-filter
+        
         column-sorter
         :columns="columns"
         clickable-rows
@@ -176,13 +176,13 @@ export default {
             //   key:'TicketID',
             //   _style: { width: '20%' },
             // },
-            {
-                key: 'name',
-                _style: { width: '40%' },
-            },
-            'registered',
-            { key: 'role', _style: { width: '20%' } },
-            { key: 'status', _style: { width: '20%' } },
+            { key: '#',_style: { width: '10%' }},
+            { key: 'TICKET ID',_style:{ width:'20%' }},
+            { key: 'TITLE', _style: { width: '20%' } },
+            { key: 'START DATE', _style: { width: '20%' } },
+            { key: 'STATUS', _style: { width: '20%' } },
+            { key: 'TYPE', _style: { width: '20%' } },
+            { key: 'BOOKMARK', _style: { width: '10%' } },
             {
                 key: 'show_details',
                 label: '',
@@ -191,6 +191,7 @@ export default {
                 sorter: false,
             },
         ];
+
         const items = ref(data);
         const getBadge = (status) => {
             switch (status) {
