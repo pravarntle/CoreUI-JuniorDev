@@ -176,13 +176,14 @@ export default {
             //   key:'TicketID',
             //   _style: { width: '20%' },
             // },
-            { key: '#',_style: { width: '10%' }},
+            { key: '#',_style: { width: '1%' }},
             { key: 'TICKET ID',_style:{ width:'20%' }},
             { key: 'TITLE', _style: { width: '20%' } },
             { key: 'START DATE', _style: { width: '20%' } },
+            { key: 'LAST UPDATE', _style: { width: '20%' } },
             { key: 'STATUS', _style: { width: '20%' } },
             { key: 'TYPE', _style: { width: '20%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } },
+            { key: 'BOOKMARK', _style: { width: '1%' } },
             {
                 key: 'show_details',
                 label: '',
@@ -224,6 +225,19 @@ export default {
             toggleDetails,
         };
     },
-    components: { CRow, CCol }
+    components: { CRow, CCol },
+    methods:{
+      async getTicket(){
+          const ticket= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
+          console.log(ticket)
+          user.data.forEach(element => {
+            this.userOptions.push({value:element._id,label:element.act_username})
+            
+          });
+
+          
+        }
+    }
+
 }
 </script>
