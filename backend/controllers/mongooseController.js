@@ -107,6 +107,7 @@ module.exports = {
         try {
             const model = models[req.params.model];
 
+            console.log(req.body.data)
             if (!model) {
                 throw model;
             }
@@ -122,10 +123,11 @@ module.exports = {
                     data = await data.populate(item)
                 }
             }
+            
 
             res.send(data);
         } catch (error) {
-            console.log("Error At mongoose-save: ", error);
+            // console.log("Error At mongoose-save: ", error);
             next(error);
         }
     },

@@ -55,7 +55,7 @@ const SchemaData = new schema({
     tkt_acc: {
         type: schema.Types.ObjectId,
         ref: "stts_accept_tickets",
-        required: true
+        required: false
     },
 }, {
     timestamps: {

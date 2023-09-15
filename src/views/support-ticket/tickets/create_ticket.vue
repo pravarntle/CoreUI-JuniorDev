@@ -48,6 +48,17 @@
             </div>
           </CRow>
           <CRow class="mb-2">
+            <div class="col-lg-1 "></div>
+            <CFormLabel class="col-lg-3 col-md-12 col-form-label">user</CFormLabel>
+            <div class="col-lg-7 col-md-12">
+              <CFormSelect
+              v-model="form.tkt_act"
+              :options="userOptions"
+              required
+              />
+            </div>
+          </CRow>
+          <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-3 col-md-12 col-form-label">Description</CFormLabel>
             <div class="col-lg-7 col-md-12">
@@ -96,13 +107,11 @@
 
 <script>
 import { CForm } from '@coreui/vue-pro'
+import axios from 'axios';
 
 export default {
     data() {
         return {
-            genderOptions: [],
-            pageLoading: false,
-            validatedCustom01: null,
             form: {
                 tkt_number: '',
                 tkt_description: '',
@@ -115,8 +124,11 @@ export default {
                 tkt_types: '',
                 tkt_book: '',
                 tkt_act: '',
-                tkt_acc: '',
             },
+            userOptions:[],
+            genderOptions: [],
+            pageLoading: false,
+            validatedCustom01: null,
             validate: {
                 ticket: null,
             }
@@ -137,8 +149,21 @@ export default {
                 { label: 'Service Request', value: 'Service' },
                 { label: 'ไม่ระบุ', value: 'none', disabled: true }
             ];
+            this.getUser() 
     },
+
     methods: {
+        async getUser(){
+          const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
+          const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
+          console.log(users)
+          user.data.forEach(element => {
+            this.userOptions.push({value:element._id,label:element.act_username})
+            
+          });
+
+          
+        },
         vaildateBeforeSave() {
             let error;
             if (this.form.tkt_title === '') {
@@ -170,21 +195,27 @@ export default {
         checkpiority(events) {
             console.log(events.target.value);
         },
-        onSave() {
+        async onSave() {
             const date = new Date;
             this.pageLoading = true;
             setTimeout(function () {
                 this.pageLoading = false;
             }.bind(this), 3000);
-            const ticket_account = `64f9d0822eeb85d0fb62f022`;
+            // const ticket_account = `64f9d0822eeb85d0fb62f022`;
             const ticket_status = `Pending`;
-            const ticket_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`;
-            const ticket_number = `TKT-${date.getDate()}${date.getMonth()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getMilliseconds()}`;
+            const ticket_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
+            const ticket_number = `TKT-${date.getDate()}${date.getMonth()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}${date.getMilliseconds()}`;
             this.form.tkt_time = ticket_date;
             this.form.tkt_number = ticket_number;
-            this.form.tkt_act = ticket_account;
+            // this.form.tkt_act = ticket_account;
             this.form.tkt_status = ticket_status;
             console.log(this.form);
+
+            try {
+              await axios.post('http://localhost:3000/mongoose/insert/stts_tickets',{data:this.form} )
+            }catch(error){
+              console.log(error)
+            }
         }
     },
     components: { CForm }
