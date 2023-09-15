@@ -1,10 +1,9 @@
 <template>
-
   <div class="box">
     <CRow>
       <Ccrad>
         <CCardHeader>
-        <h2>Dashboard</h2>
+          <h2>Dashboard</h2>
         </CCardHeader>
         <CRow class="mb-3">
           <CCol>
@@ -16,12 +15,7 @@
                     <p class="ps-5 ms-3" id="font">3</p>
                   </CCol>
                   <CCol class="mt-5">
-                    <CImage
-                      class="LG"
-                      :src="LGblue"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGblue" fluid block />
                   </CCol>
                 </CRow>
               </CCardbody>
@@ -29,19 +23,14 @@
           </CCol>
           <CCol>
             <CCard class="p-2 mb-2" id="border">
-              <CCardbody >
+              <CCardbody>
                 <b id="open">Open Tickets</b>
                 <CRow>
                   <CCol>
-                    <p class="ps-5 ms-3 " id="font">0</p>
+                    <p class="ps-5 ms-3" id="font">0</p>
                   </CCol>
                   <CCol class="mt-5">
-                    <CImage
-                      class="LG"
-                      :src="LGgreen"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGgreen" fluid block />
                   </CCol>
                 </CRow>
               </CCardbody>
@@ -49,25 +38,19 @@
           </CCol>
           <CCol>
             <CCard class="p-2 mb-2" id="border">
-              <CCardbody >
-                <b  id="closed">Closed Tickets</b>
+              <CCardbody>
+                <b id="closed">Closed Tickets</b>
                 <CRow>
                   <CCol>
                     <p class="ps-5 ms-3" id="font">0</p>
                   </CCol>
                   <CCol class="mt-4">
-                    <CImage
-                      class="LG"
-                      :src="LGred"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGred" fluid block />
                   </CCol>
-                </CRow>  
+                </CRow>
               </CCardbody>
             </CCard>
           </CCol>
-          
         </CRow>
       </Ccrad>
     </CRow>
@@ -127,34 +110,32 @@
       </CSmartTable>
     </CCard>
   </div>
-
 </template>
 <style>
-  #all{
-    font-size: 24px;
-    color: #1A72B8;
-  }
-  #open{
-    font-size: 24px;
-    color: #147A2A;
-  }
-  #closed{
-    font-size: 24px;
-    color: #B22424;
-  }
-  #font{
-    font-weight: 700;
-    align-items: center;
-    font-size: 100px;
-    color: #000;
-  }
-  .LG{
-  
-    width: 50%;
-  }
-  #border{
-    border-radius: 6%;
-  }
+#all {
+  font-size: 24px;
+  color: #1a72b8;
+}
+#open {
+  font-size: 24px;
+  color: #147a2a;
+}
+#closed {
+  font-size: 24px;
+  color: #b22424;
+}
+#font {
+  font-weight: 700;
+  align-items: center;
+  font-size: 100px;
+  color: #000;
+}
+.LG {
+  width: 50%;
+}
+#border {
+  border-radius: 6%;
+}
 </style>
 
 <script>
@@ -165,64 +146,64 @@ import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
 export default {
-    name: 'SmartTableBasixExample',
-    setup() {
-        const columns = [
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            {
-                key: 'name',
-                _style: { width: '40%' },
-            },
-            'registered',
-            { key: 'role', _style: { width: '20%' } },
-            { key: 'status', _style: { width: '20%' } },
-            {
-                key: 'show_details',
-                label: '',
-                _style: { width: '1%' },
-                filter: false,
-                sorter: false,
-            },
-        ];
-        const items = ref(data);
-        const getBadge = (status) => {
-            switch (status) {
-                case 'Active':
-                    return 'success';
-                case 'Inactive':
-                    return 'secondary';
-                case 'Pending':
-                    return 'warning';
-                case 'Banned':
-                    return 'danger';
-                default:
-                    'primary';
-            }
-        };
+  name: 'SmartTableBasixExample',
+  setup() {
+    const columns = [
+      // {
+      //   key:'TicketID',
+      //   _style: { width: '20%' },
+      // },
+      // {
+      //   key:'TicketID',
+      //   _style: { width: '20%' },
+      // },
+      {
+        key: 'name',
+        _style: { width: '40%' },
+      },
+      'registered',
+      { key: 'role', _style: { width: '20%' } },
+      { key: 'status', _style: { width: '20%' } },
+      {
+        key: 'show_details',
+        label: '',
+        _style: { width: '1%' },
+        filter: false,
+        sorter: false,
+      },
+    ]
+    const items = ref(data)
+    const getBadge = (status) => {
+      switch (status) {
+        case 'Active':
+          return 'success'
+        case 'Inactive':
+          return 'secondary'
+        case 'Pending':
+          return 'warning'
+        case 'Banned':
+          return 'danger'
+        default:
+          'primary'
+      }
+    }
 
-        const toggleDetails = (item) => {
-            items.value[item.id] = {
-                ...item,
-                _toggled: !item._toggled,
-            };
-        };
-        return {
-            LGblue,
-            LGgreen,
-            LGred,
-            columns,
-            items,
-            getBadge,
-            toggleDetails,
-        };
-    },
-    components: { CRow, CCol }
+    const toggleDetails = (item) => {
+      items.value[item.id] = {
+        ...item,
+        _toggled: !item._toggled,
+      }
+    }
+    return {
+      LGblue,
+      LGgreen,
+      LGred,
+      columns,
+      items,
+      getBadge,
+      toggleDetails,
+    }
+  },
+  components: { CRow, CCol },
 }
 </script>

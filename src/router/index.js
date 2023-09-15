@@ -360,9 +360,8 @@ const routes = [
           },
           {
             path: 'ticket/comment',
-            name: 'ST - bookmark Ticket',
             name: 'ST - comment Ticket',
-            component: () => import('@/views/support-ticket/tickets/comment.vue'),
+            component: () => import('@/views/support-ticket/tickets/comment'),
           },
         ],
       },
