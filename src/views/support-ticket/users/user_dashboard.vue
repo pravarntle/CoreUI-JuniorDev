@@ -76,26 +76,31 @@
         <h2>My Tickets</h2>
       </CCardHeader>
       <CSmartTable
-        :active-page="3"
-        cleaner
-        
-        column-sorter
-        :columns="columns"
-        clickable-rows
+        :active-page="1"
         footer
         header
+        cleaner
+        :items="items"
+        :columns="columns"
+        columnFilter
+        column-sorter
+        clickable-rows
+        table-filter
         :items-per-page="5"
         items-per-page-select
-        :items="items"
+        
         pagination
-        table-filter
+        columnSorter
+        :sorterValue="{ column: 'status', state: 'asc' }"
         :table-props="{
           striped: true,
           hover: true,
         }"
       >
+      
         <template #status="{ item }">
           <td>
+            
             <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
           </td>
         </template>
@@ -165,7 +170,27 @@ import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
 export default {
-    name: 'SmartTableBasixExample',
+  name: 'SmartTableBasixExample',
+    data(){
+      return {
+            form: {
+                tkt_number: '',
+                tkt_description: '',
+                tkt_picture: '',
+                tkt_title: '',
+                tkt_time: '',
+                tkt_last_update: '',
+                tkt_status: '',
+                tkt_priorities: '',
+                tkt_types: '',
+                tkt_book: '',
+                tkt_act: '',
+            },
+            
+        };
+      this.getUser
+
+    },
     setup() {
         const columns = [
             // {
@@ -176,24 +201,37 @@ export default {
             //   key:'TicketID',
             //   _style: { width: '20%' },
             // },
-            { key: '#',_style: { width: '1%' }},
-            { key: 'TICKET ID',_style:{ width:'15%' }},
-            { key: 'TITLE', _style: { width: '10%' } },
-            { key: 'START DATE', _style: { width: '15%' } },
-            { key: 'LAST UPDATE', _style: { width: '15%' } },
-            { key: 'STATUS', _style: { width: '10%' } },
-            { key: 'TYPE', _style: { width: '10%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } },
+            // { key: '#',_style: { width: '1%' }},
+            // { key: 'TICKET ID',_style:{ width:'15%' }},
+            // { key: 'TITLE', _style: { width: '10%' } },
+            // { key: 'START DATE', _style: { width: '15%' } },
+            // { key: 'LAST UPDATE', _style: { width: '15%' } },
+            // { key: 'STATUS', _style: { width: '10%' } },
+            // { key: 'TYPE', _style: { width: '10%' } },
+            // { key: 'BOOKMARK', _style: { width: '10%' } },
+            // {
+            //     key: 'show_details',
+            //     label: '',
+            //     _style: { width: '1%' },
+            //     filter: false,
+            //     sorter: false,
+            // },
             {
-                key: 'show_details',
-                label: '',
-                _style: { width: '1%' },
-                filter: false,
-                sorter: false,
-            },
+        key: 'name',
+        _style: { width: '40%' },
+      },
+      'registered',
+      { key: 'role', _style: { width: '20%' } },
+      { key: 'status', _style: { width: '20%' } },
+      {
+        key: 'show_details',
+        label: '',
+        _style: { width: '1%' },
+        filter: false,
+        sorter: false,
+      },
         ];
 
-        const items = ref(data);
         const getBadge = (status) => {
             switch (status) {
                 case 'Active':
@@ -208,7 +246,7 @@ export default {
                     'primary';
             }
         };
-
+        const items = ref(data);
         const toggleDetails = (item) => {
             items.value[item.id] = {
                 ...item,
@@ -225,37 +263,23 @@ export default {
             toggleDetails,
         };
     },
+    
     components: { CRow, CCol },
     methods:{
-      async getTicket(){
-          const ticket= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
-          console.log(ticket)
+
+      
+      
+      async getUser(){
+          const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
+          const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
+          console.log(users)
           user.data.forEach(element => {
             this.userOptions.push({value:element._id,label:element.act_username})
             
-          });   
-      },
-      async  fetchDataAndCount() {
-        try {
-          // เรียก API ด้วย Axios
-          const response = await axios.get('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']});
-
-          // นับจำนวนข้อมูลที่ได้รับ
-          const data = response.data;
-          const count = data.length; // หรือตามโครงสร้างข้อมูลที่ได้รับ
-
-          // ทำอย่างไรกับค่า count ที่ได้ต่อไปนั้น
-          console.log('จำนวนข้อมูลที่ได้รับ: ' + count);
-
-          // ทำงานกับข้อมูลที่ได้รับตามต้องการ
-          // เช่น แสดงข้อมูลในหน้าเว็บ หรือประมวลผลข้อมูลเพิ่มเติม
-        } catch (error) {
-          console.error('เกิดข้อผิดพลาดในการเรียก API:', error);
+          }); 
         }
-      } 
-      
-
-
+        
+        
 
     }
 
