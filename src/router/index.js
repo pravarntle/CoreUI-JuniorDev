@@ -358,6 +358,11 @@ const routes = [
             name: 'ST - comment Ticket',
             component: () => import('@/views/support-ticket/tickets/comment.vue'),
           },
+          {
+            path: 'admin/priority_list',
+            name: 'ST - comment Ticket',
+            component: () => import('@/views/support-ticket/admin/priority_list.vue'),
+          },
         ],
       },
     ],
