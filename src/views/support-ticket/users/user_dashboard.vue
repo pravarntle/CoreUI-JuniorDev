@@ -59,26 +59,31 @@
         <h2>My Tickets</h2>
       </CCardHeader>
       <CSmartTable
-        :active-page="3"
-        cleaner
-        
-        column-sorter
-        :columns="columns"
-        clickable-rows
+        :active-page="1"
         footer
         header
+        cleaner
+        :items="items"
+        :columns="columns"
+        columnFilter
+        column-sorter
+        clickable-rows
+        table-filter
         :items-per-page="5"
         items-per-page-select
-        :items="items"
+
         pagination
-        table-filter
+        columnSorter
+        :sorterValue="{ column: 'status', state: 'asc' }"
         :table-props="{
           striped: true,
           hover: true,
         }"
       >
+
         <template #status="{ item }">
           <td>
+
             <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
           </td>
         </template>
@@ -147,17 +152,52 @@ import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
 export default {
   name: 'SmartTableBasixExample',
-  setup() {
-    const columns = [
-      // {
-      //   key:'TicketID',
-      //   _style: { width: '20%' },
-      // },
-      // {
-      //   key:'TicketID',
-      //   _style: { width: '20%' },
-      // },
-      {
+    data(){
+      return {
+            form: {
+                tkt_number: '',
+                tkt_description: '',
+                tkt_picture: '',
+                tkt_title: '',
+                tkt_time: '',
+                tkt_last_update: '',
+                tkt_status: '',
+                tkt_priorities: '',
+                tkt_types: '',
+                tkt_book: '',
+                tkt_act: '',
+            },
+
+        };
+      this.getUser
+
+    },
+    setup() {
+        const columns = [
+            // {
+            //   key:'TicketID',
+            //   _style: { width: '20%' },
+            // },
+            // {
+            //   key:'TicketID',
+            //   _style: { width: '20%' },
+            // },
+            // { key: '#',_style: { width: '1%' }},
+            // { key: 'TICKET ID',_style:{ width:'15%' }},
+            // { key: 'TITLE', _style: { width: '10%' } },
+            // { key: 'START DATE', _style: { width: '15%' } },
+            // { key: 'LAST UPDATE', _style: { width: '15%' } },
+            // { key: 'STATUS', _style: { width: '10%' } },
+            // { key: 'TYPE', _style: { width: '10%' } },
+            // { key: 'BOOKMARK', _style: { width: '10%' } },
+            // {
+            //     key: 'show_details',
+            //     label: '',
+            //     _style: { width: '1%' },
+            //     filter: false,
+            //     sorter: false,
+            // },
+            {
         key: 'name',
         _style: { width: '40%' },
       },
@@ -171,39 +211,57 @@ export default {
         filter: false,
         sorter: false,
       },
-    ]
-    const items = ref(data)
-    const getBadge = (status) => {
-      switch (status) {
-        case 'Active':
-          return 'success'
-        case 'Inactive':
-          return 'secondary'
-        case 'Pending':
-          return 'warning'
-        case 'Banned':
-          return 'danger'
-        default:
-          'primary'
-      }
-    }
+        ];
 
-    const toggleDetails = (item) => {
-      items.value[item.id] = {
-        ...item,
-        _toggled: !item._toggled,
-      }
+        const getBadge = (status) => {
+            switch (status) {
+                case 'Active':
+                    return 'success';
+                case 'Inactive':
+                    return 'secondary';
+                case 'Pending':
+                    return 'warning';
+                case 'Banned':
+                    return 'danger';
+                default:
+                    'primary';
+            }
+        };
+        const items = ref(data);
+        const toggleDetails = (item) => {
+            items.value[item.id] = {
+                ...item,
+                _toggled: !item._toggled,
+            };
+        };
+        return {
+            LGblue,
+            LGgreen,
+            LGred,
+            columns,
+            items,
+            getBadge,
+            toggleDetails,
+        };
+    },
+
+    components: { CRow, CCol },
+    methods:{
+
+
+
+      async getUser(){
+          const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
+          const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
+          console.log(users)
+          user.data.forEach(element => {
+            this.userOptions.push({value:element._id,label:element.act_username})
+
+          });
+        }
+
+
+
     }
-    return {
-      LGblue,
-      LGgreen,
-      LGred,
-      columns,
-      items,
-      getBadge,
-      toggleDetails,
-    }
-  },
-  components: { CRow, CCol },
-}
+  }
 </script>
