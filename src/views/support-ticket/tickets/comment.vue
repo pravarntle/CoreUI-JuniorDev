@@ -11,18 +11,17 @@
 
   <CCard class="p-2">
     <CCardbody>
-<CRow>
-      <div>
-        <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
-        <!-- Icon สำหรับย้อนกลับ -->
+      <CRow>
+        <div>
+          <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
+          <!-- Icon สำหรับย้อนกลับ -->
 
-        <CCol class="text-start">
-          <div class="avatar">
-            <CAvatar class="Arrow_Left" :src="Arrow_Left" />
-          </div>
-        </CCol>
-        
-      </div>
+          <CCol class="text-start">
+            <div class="avatar">
+              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
+            </div>
+          </CCol>
+        </div>
       </CRow>
       <hr />
       <CRow class="g-0">
