@@ -175,67 +175,46 @@ export default {
   name: 'SmartTableBasixExample',
     data(){
       return {
-            form: {
-                tkt_number: '',
-                tkt_description: '',
-                tkt_picture: '',
-                tkt_title: '',
-                tkt_time: '',
-                tkt_last_update: '',
-                tkt_status: '',
-                tkt_priorities: '',
-                tkt_types: '',
-                tkt_book: '',
-                tkt_act: '',
-            },
+            data_array:[],
+            
+            tkt_number: '',
+            tkt_description: '',
+            tkt_picture: '',
+            tkt_title: '',
+            tkt_time: '',
+            tkt_last_update: '',
+            tkt_status: '',
+            tkt_priorities: '',
+            tkt_types: '',
+            tkt_book: '',
+            tkt_act: '',
             count_all:'',
             count_open:'',
             count_closed:'',
             
             
         };
-      this.getUser
 
     },
     setup() {
         const columns = [
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            // { key: '#',_style: { width: '1%' }},
-            // { key: 'TICKET ID',_style:{ width:'15%' }},
-            // { key: 'TITLE', _style: { width: '10%' } },
-            // { key: 'START DATE', _style: { width: '15%' } },
-            // { key: 'LAST UPDATE', _style: { width: '15%' } },
-            // { key: 'STATUS', _style: { width: '10%' } },
-            // { key: 'TYPE', _style: { width: '10%' } },
-            // { key: 'BOOKMARK', _style: { width: '10%' } },
-            // {
-            //     key: 'show_details',
-            //     label: '',
-            //     _style: { width: '1%' },
-            //     filter: false,
-            //     sorter: false,
-            // },
+            { key: '#',_style: { width: '5%' }},
+            { key: 'TicketID',_style: { width: '10%' }},            
+            { key: 'TITLE', _style: { width: '10%' } },
+            { key: 'START DATE', _style: { width: '11%' } },
+            { key: 'LAST UPDATE', _style: { width: '15%' } },
+            { key: 'STATUS', _style: { width: '10%' } },
+            { key: 'TYPE', _style: { width: '10%' } },
+            { key: 'BOOKMARK', _style: { width: '10%' } },
             {
-        key: 'name',
-        _style: { width: '40%' },
-      },
-      'registered',
-      { key: 'role', _style: { width: '20%' } },
-      { key: 'status', _style: { width: '20%' } },
-      {
-        key: 'show_details',
-        label: '',
-        _style: { width: '1%' },
-        filter: false,
-        sorter: false,
-      },
+                key: 'show_details',
+                label: '',
+                _style: { width: '1%' },
+                filter: false,
+                sorter: false,
+            },
+            
+     
         ];
 
         const getBadge = (status) => {
@@ -252,12 +231,9 @@ export default {
                     'primary';
             }
         };
-        const items = ref(data);
+        const items = ref([]);
         const toggleDetails = (item) => {
-            items.value[item.id] = {
-                ...item,
-                _toggled: !item._toggled,
-            };
+          item._toggled = !item._toggled;
         };
         return {
             LGblue,
@@ -272,16 +248,20 @@ export default {
     
     components: { CRow, CCol },
     methods:{
+      async getTicket(){
+        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
+        
+        .then(response => {
+          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
+          this.dataArray = response.data;
+        })
+        .catch(error => {
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+        });
 
-      async getUser(){
-          const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts',)
-          const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
-          console.log(users)
-          user.data.forEach(element => {
-            this.userOptions.push({value:element._id,label:element.act_username})
-            
-          }); 
       },
+
+      
       async getCountall (){
         const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
         // console.log(allTicket)
@@ -289,7 +269,6 @@ export default {
         var countOpen =0;
         var countClosed =0;
         allTicket.data.forEach(element => {
-            console.log(element)
             countAll++;
             if(element.tkt_status=='Open'){
               countOpen++;
@@ -309,6 +288,7 @@ export default {
     mounted(){
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getCountall();
+      this.getTicket();
     }
 
 
