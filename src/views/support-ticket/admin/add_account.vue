@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <CCard>
@@ -15,8 +13,6 @@
               <div class="image-container">
                 <img src="../../../assets/images/preProfile01.svg" alt="preProfile" />
               </div>
-
-
             </CCol>
             <CCol xs="3">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
@@ -143,7 +139,7 @@
               <div class="pass">
                 <CFormInput
                   type="password"
-                  id="password"
+                  id="password1"
                   v-model="form.password"
                   feedbackInvalid="Please input password."
                   :invalid="validate.password"
@@ -170,7 +166,7 @@
               <div class="pass">
                 <CFormInput
                   type="password"
-                  id="Confirmpassword"
+                  id="password2"
                   v-model="form.Confirmpassword"
                   feedbackInvalid="Please confirm password."
                   :invalid="validate.Confirmpassword"
@@ -193,11 +189,9 @@
             </div>
             (a-z) contains 2 letters and (0-9) Contains 4 numbers
           <div>
-            <input
-              type="checkbox"
-              id="showPasswordAll"
-              @click="showPasswordAll"
-            />Show Password
+            <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
+
+
           </div>
           </CRow>
 
@@ -262,6 +256,7 @@
           <!-- <CButton color="primary" type="submit">Submit form</CButton> -->
           <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
           <CButton class="btn-sec" color="success" variant="outline" type="submit">Submit</CButton>
+          <!-- <CButton class="btn-sec" color="success" variant="outline" @click="vaildateBeforeSave">Submit</CButton> -->
           </div>
 
 
@@ -381,28 +376,28 @@ export default {
         this.onSave();
       }
     },
-     onLoginClick() {
-      this.$router.push('/smart');
-    },
     showPasswordAll() {
-      var x = document.getElementById("password");
-      var xConfirm = document.getElementById("passwordConfirm");
-      if (x.type === "password") {
-        x.type = "text";
-        xConfirm.type = "text";
+      var p1 = document.getElementById('password1');
+      var p2 = document.getElementById('password2');
+      if (p1.type === "password1") {
+        p1.type = "text";
+        p2.type = "text";
       } else {
-        x.type = "password";
-        xConfirm.type = "password";
+        p1.type = "password1";
+        p2.type = "password2";
       }
     },
     showPassword() {
-      var x = document.getElementById("password");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
-    },
+            var p1 = document.getElementById('password1');
+            var p2 = document.getElementById('password2');
+            if (p1.type === 'password1') {
+                p1.type = 'text';
+                p2.type = 'text';
+            } else {
+                p1.type = 'password1';
+                p2.type = 'password2';
+            }
+        },
     showConfirmPassword() {
       var xConfirm = document.getElementById("passwordConfirm");
        var eye = document.getElementById("eye");
