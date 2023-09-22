@@ -249,15 +249,27 @@ export default {
     components: { CRow, CCol },
     methods:{
       async getTicket(){
-        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-        
-        .then(response => {
-          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
-          this.dataArray = response.data;
-        })
-        .catch(error => {
-          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-        });
+        try {
+    const response = await axios.get('http://localhost:3000/mongoose/get/stts_tickets/');
+    // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          this.items = response.data.map((element, index) => ({
+            
+            '#': index + 1, // หมายเลขแถว
+            TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
+            TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
+            // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+            // ตามลำดับของ columns ในตัวแปร columns
+            // เพิ่มเติมตามความต้องการ
+            'START DATE': element.CREATED_AT,
+            'LAST UPDATE': element.UPDATED_AT,
+            STATUS: element.tkt_status,
+            TYPE: element.tkt_types,
+            BOOKMARK: element.tkt_book,
+            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+          }));
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
 
       },
 
