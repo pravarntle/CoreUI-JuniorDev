@@ -41,6 +41,7 @@
         </CCol>
       </CRow>
       <hr />
+
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
       <div class="clearfix text-end" style="margin-right: 4%">
         <CButton
@@ -52,9 +53,11 @@
               visibleB = !visibleB
             }
           "
+
         >
-          <b>Short </b>
+          <b>Short</b>
         </CButton>
+
         <CRow>
           <CCol xs="12">
             <CCollapse :visible="visibleA">
@@ -131,7 +134,48 @@
       </div>
       <br />
     </CCardBody>
+
+    <CButton
+      class="btn btn-outline-info"
+      style="font-size: 10%"
+      id="b1"
+      @change="javascript3">Short
+    </CButton>
   </CCard>
+
+
+  <div class="accordion accordion-flush" id="accordionFlushExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse" data-coreui-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="flush-collapseOne" class="accordion-collapse collapse" data-coreui-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse" data-coreui-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-coreui-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse" data-coreui-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+    <div id="flush-collapseThree" class="accordion-collapse collapse" data-coreui-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -182,6 +226,14 @@ export default {
     return {
       visibleA: false,
       visibleB: false,
+    }
+  },
+  javascript3() {
+    if (document.getElementById('b1').innerHTML == "Short") {
+      fdsf
+        document.getElementById('b1').innerHTML = "Hide"
+    } else {
+        document.getElementById('b1').innerHTML = "Short"
     }
   },
 }
@@ -241,5 +293,10 @@ img.commit {
 .card {
   border-radius: 15px;
   border-color: white;
+}
+.collapse {
+  &:not(.show) {
+    display: none;
+  }
 }
 </style>

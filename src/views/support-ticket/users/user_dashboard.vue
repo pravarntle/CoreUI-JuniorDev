@@ -12,7 +12,7 @@
                 <b id="all">All Tickets</b>
                 <CRow>
                   <CCol>
-                    <p class="ps-5 ms-3" id="font">3</p>
+                    <p class="ps-5 ms-3" id="font">{{ count_all }}</p>
                   </CCol>
                   <CCol class="mt-5">
                     <CImage class="LG" :src="LGblue" fluid block />
@@ -27,7 +27,7 @@
                 <b id="open">Open Tickets</b>
                 <CRow>
                   <CCol>
-                    <p class="ps-5 ms-3" id="font">0</p>
+                    <p class="ps-5 ms-3 " id="font">{{ count_open }}</p>
                   </CCol>
                   <CCol class="mt-5">
                     <CImage class="LG" :src="LGgreen" fluid block />
@@ -42,7 +42,7 @@
                 <b id="closed">Closed Tickets</b>
                 <CRow>
                   <CCol>
-                    <p class="ps-5 ms-3" id="font">0</p>
+                    <p class="ps-5 ms-3" id="font">{{ count_closed }}</p>
                   </CCol>
                   <CCol class="mt-4">
                     <CImage class="LG" :src="LGred" fluid block />
@@ -150,7 +150,9 @@ import { CCol, CRow } from '@coreui/vue-pro'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
+import axios from 'axios';
 export default {
+
   name: 'SmartTableBasixExample',
     data(){
       return {
@@ -167,6 +169,10 @@ export default {
                 tkt_book: '',
                 tkt_act: '',
             },
+            count_all:'',
+            count_open:'',
+            count_closed:'',
+
 
         };
       this.getUser
@@ -250,18 +256,47 @@ export default {
 
 
 
-      async getUser(){
-          const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
-          const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
-          console.log(users)
-          user.data.forEach(element => {
-            this.userOptions.push({value:element._id,label:element.act_username})
+      async getTicket(){
+        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
+
+        .then(response => {
+          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
+          this.dataArray = response.data;
+        })
+        .catch(error => {
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+        });
+
+      },
+
+
+      async getCountall (){
+        const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
+        // console.log(allTicket)
+        var countAll =0;
+        var countOpen =0;
+        var countClosed =0;
+        allTicket.data.forEach(element => {
+            countAll++;
+            if(element.tkt_status=='Open'){
+              countOpen++;
+            }else if(element.tkt_status=='Closed'){
+              countClosed++;
+            }
 
           });
-        }
+
+          this.count_all=countAll;
+          this.count_open=countOpen;
+          this.count_closed=countClosed;
+      }
 
 
-
+    },
+    mounted(){
+      //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
+      this.getCountall();
+      this.getTicket();
     }
   }
 </script>
