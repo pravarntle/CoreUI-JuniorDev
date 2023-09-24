@@ -7,20 +7,20 @@
       <CCardBody>
         <CForm novalidate :validated="form.validatedCustom01" @submit.prevent="handleSubmitCustom01">
 
-          <CRow class="justify-content-center">
-            <CCol xs="3">
-
-              <div class="image-container">
-                <img src="../../../assets/images/preProfile01.svg" alt="preProfile" />
+          <CRow class="mb-2" >
+            <CCol class="image-container" xs="3">
+              <div  v-if="imageUrl">
+              <img :src="imageUrl"/>
               </div>
             </CCol>
             <CCol xs="3">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
               <CFormInput type="file" @change="handleImageUpload" id="upload_file" hidden />
-              <CButton class="btn-Picture" type="delete" variant="outline">Delete Picture</CButton>
+              <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
             </CCol>
           </CRow>
-          <CRow class="mb-2">
+
+          <CRow class="mb-2" >
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Personal Info</CFormLabel>
           </CRow>
@@ -91,15 +91,14 @@
               <div class="col-md-7">
                 <div class="form-group">
                   <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="Role"
-                    name="Role"
-                    feedbackInvalid="Please input your role."
+                  <CFormSelect
                     v-model="form.Role"
+                    :options="roleOptions"
+                    feedbackInvalid="Please select role."
                     :invalid="validate.Role"
                     required
-                    />
+                    @change="checkRole"
+                  />
                 </div>
               </div>
             </div>
@@ -109,9 +108,6 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Login Info</CFormLabel>
           </CRow>
-
-          <!-- Input for airi -->
-
           <CRow class="mb-3">
             <div class="row">
               <div class="col-md-7">
@@ -138,6 +134,7 @@
               >
               <div class="pass">
                 <CFormInput
+                text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                   type="password"
                   id="password1"
                   v-model="form.password"
@@ -185,18 +182,11 @@
               </div>
                 </div>
               </div>
-              <br />
             </div>
-            (a-z) contains 2 letters and (0-9) Contains 4 numbers
-          <div>
+            <div>
             <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
-
-
           </div>
           </CRow>
-
-          <!-- Input for airi -->
-
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Contact Info</CFormLabel>
@@ -253,22 +243,12 @@
             </div>
           </CRow>
           <div class="col-6 mx-auto">
-          <!-- <CButton color="primary" type="submit">Submit form</CButton> -->
-          <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
-          <CButton class="btn-sec" color="success" variant="outline" type="submit">Submit</CButton>
-          <!-- <CButton class="btn-sec" color="success" variant="outline" @click="vaildateBeforeSave">Submit</CButton> -->
+          <CButton class="btn-sec" color="secondary" variant="outline" @click="validateBeforeSave">Cancel</CButton>
+          <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave">Submit</CButton>
           </div>
-
-
 
         </CForm>
       </CCardBody>
-      <!-- <CCardFooter class="footer">
-        <div class="col-6 mx-auto">
-          <CButton class="btn-sec" color="secondary" variant="outline" @click="vaildateBeforeSave">Cancle</CButton>
-          <CButton class="btn-sec" color="success" variant="outline" @click="vaildateBeforeSave">Submit</CButton>
-        </div>
-      </CCardFooter> -->
     </CCard>
   </div>
 
@@ -291,33 +271,40 @@ export default {
         email: '',
         confirmEmail: '',
         phone: '',
-        employeeID:'',
-        password:'',
-        Confirmpassword:''
+        employeeID: '',
+        password: '',
+        Confirmpassword: ''
       },
       validate: {
-        info: null
-      }
+        info:null,
+      },
+      imageUrl:"../../../assets/images/preProfile01.svg",
+      imageFile: null,
+       pageLoading: false,
     }
   },
+  created() {
+        this.roleOptions  = [
+            { label: 'Select Role', value: '' },
+            { label: 'Employee', value: 'Employee' },
+            { label: 'IT Support', value: 'IT Support' },
+            { label: 'Admin', value: 'Admin' },
+            { label: 'Manager', value: 'Manager'}
+        ];
+    },
   methods: {
     handleImageUpload(event) {
-      const imageContainer = document.querySelector('.image-container');
-      const imageElement = document.createElement('img');
-      imageElement.src = URL.createObjectURL(event.target.files[0]);
-      imageElement.classList.add('image-preview');
-      imageContainer.innerHTML = ''; // Clear any previous images
-      imageContainer.appendChild(imageElement);
+      const file = event.target.files[0];
+      if (file) {
+        this.imageUrl = URL.createObjectURL(file);
+        this.imageFile = file;
+      }
     },
-    // handleSubmitCustom01(event) {
-    //   console.log("โง่จัด")
-    //   const form = event.currentTarget
-    //   if (form.checkValidity() === false) {
-    //     event.preventDefault()
-    //     event.stopPropagation()
-    //   }
-    //   this.validatedCustom01 = true
-    // },
+    deleteImage() {
+      this.imageUrl = "../../../assets/images/preProfile01.svg";
+      this.imageFile = "../../../assets/images/preProfile01.svg";
+      // You can also send an API request to delete the image on the server here.
+    },
     handleSubmitCustom01(event) {
       if (!event.currentTarget.checkValidity()) {
         event.preventDefault();
@@ -376,6 +363,7 @@ export default {
         this.onSave();
       }
     },
+
     showPasswordAll() {
       var p1 = document.getElementById('password1');
       var p2 = document.getElementById('password2');
@@ -390,12 +378,12 @@ export default {
     showPassword() {
             var p1 = document.getElementById('password1');
             var p2 = document.getElementById('password2');
-            if (p1.type === 'password1') {
+            if (p1.type === 'password') {
                 p1.type = 'text';
                 p2.type = 'text';
             } else {
-                p1.type = 'password1';
-                p2.type = 'password2';
+                p1.type = 'password';
+                p2.type = 'password';
             }
         },
     showConfirmPassword() {
@@ -408,6 +396,9 @@ export default {
         xConfirm.type = "password";
         eye.innerText = pic_visibility;
       }
+    },
+    checkRole(events) {
+            console.log(events.target.value);
     },
 
   }
