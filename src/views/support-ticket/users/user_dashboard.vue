@@ -80,6 +80,7 @@
         footer
         header
         cleaner
+        
         :items="items"
         :columns="columns"
         columnFilter
@@ -98,43 +99,25 @@
         }"
       >
       
-        <template #status="{ item }">
-          <td>
-            
-            <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
-          </td>
-        </template>
-        <template #book="{ item }">
-          <td>
+      <template #status="{ item }">
+        <td>
+          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+        </td>
+      </template>
+
+        <template #BOOKMARK="{ item, index }" >
+          <td class="text-center">
             <CButton
-              color="primary"
               variant="outline"
               square
-              size="sm"
-              @click="toggleBookmark(item)"
-            >
-              <i
-                class="fa"
-                :class="{'fa-bookmark': item.isBookmarked, 'fa-bookmark-o': !item.isBookmarked}"
-                style="font-size: 18px;"
-              ></i>
-            </CButton>
-          </td>
-        </template>
-        <!-- <template #show_details="{ item, index }">
-          <td class="py-2">
-            <CButton
-              color="primary"
-              variant="outline"
-              square
-              size="sm"
+              size="xl"
               @click="toggleDetails(item, index)"
             >
-              {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
+            {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
             </CButton>
           </td>
         </template>
-        <template #details="{ item }">
+        <!-- <template #details="{ item }">
           <CCollapse :visible="Boolean(item._toggled)">
             <CCardBody>
               <h4>
@@ -152,6 +135,9 @@
 
 </template>
 <style>
+  .text-right-header {
+    text-align: right;
+  }
   #all{
     font-size: 24px;
     color: #1A72B8;
@@ -181,12 +167,12 @@
 
 <script>
 import { ref } from 'vue'
-import data from './_data'
 import { CCol, CRow } from '@coreui/vue-pro'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
 import axios from 'axios';
+import { CBadge } from '@coreui/vue-pro'
 export default {
 
   name: 'SmartTableBasixExample',
@@ -222,41 +208,31 @@ export default {
             { key: 'LAST UPDATE', _style: { width: '15%' } },
             { key: 'STATUS', _style: { width: '10%' } },
             { key: 'TYPE', _style: { width: '10%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } },
-            {
-                key: 'show_details',
-                label: '',
-                _style: { width: '1%' },
-                filter: false,
-                sorter: false,
-            },
+            { key: 'BOOKMARK', _style: { width: '10%' } }
+          
             
      
         ];
-        const toggleBookmark = (item) => {
-          item.isBookmarked = !item.isBookmarked;
-        };
-
         const getBadge = (tkt_status) => {
-            switch (tkt_status) {
-                case 'Pending':
-                    return 'success';
-                case 'Open':
-                    return 'secondary';
-                case 'Closed':
-                    return 'warning';
-                case 'Banned':
-                    return 'danger';
-                default:
-                    'primary';
-            }
+          switch (tkt_status) {
+            case 'Pending':
+              return 'success';
+            case 'Open':
+              return 'secondary';
+            case 'Closed':
+              return 'warning';
+            case 'Banned':
+              return 'danger';
+            default:
+              return 'primary'; // Return a default color if none of the cases match.
+          }
         };
         const items = ref([]);
         const toggleDetails = (item) => {
           item._toggled = !item._toggled;
         };
+        
         return {
-            toggleBookmark,
             LGblue,
             LGgreen,
             LGred,
@@ -283,7 +259,7 @@ export default {
             // เพิ่มเติมตามความต้องการ
             'START DATE': element.CREATED_AT,
             'LAST UPDATE': element.UPDATED_AT,
-            STATUS: element.tkt_status,
+            STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
             _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
@@ -294,7 +270,7 @@ export default {
 
       },
 
-      
+      //บอกจำนวนของ ticket ทั้งหมด
       async getCountall (){
         const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
         // console.log(allTicket)
