@@ -104,7 +104,24 @@
             <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
           </td>
         </template>
-        <template #show_details="{ item, index }">
+        <template #book="{ item }">
+          <td>
+            <CButton
+              color="primary"
+              variant="outline"
+              square
+              size="sm"
+              @click="toggleBookmark(item)"
+            >
+              <i
+                class="fa"
+                :class="{'fa-bookmark': item.isBookmarked, 'fa-bookmark-o': !item.isBookmarked}"
+                style="font-size: 18px;"
+              ></i>
+            </CButton>
+          </td>
+        </template>
+        <!-- <template #show_details="{ item, index }">
           <td class="py-2">
             <CButton
               color="primary"
@@ -128,7 +145,7 @@
               <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
             </CCardBody>
           </CCollapse>
-        </template>
+        </template> -->
       </CSmartTable>
     </CCard>
   </div>
@@ -216,14 +233,17 @@ export default {
             
      
         ];
+        const toggleBookmark = (item) => {
+          item.isBookmarked = !item.isBookmarked;
+        };
 
-        const getBadge = (status) => {
-            switch (status) {
-                case 'Active':
-                    return 'success';
-                case 'Inactive':
-                    return 'secondary';
+        const getBadge = (tkt_status) => {
+            switch (tkt_status) {
                 case 'Pending':
+                    return 'success';
+                case 'Open':
+                    return 'secondary';
+                case 'Closed':
                     return 'warning';
                 case 'Banned':
                     return 'danger';
@@ -236,6 +256,7 @@ export default {
           item._toggled = !item._toggled;
         };
         return {
+            toggleBookmark,
             LGblue,
             LGgreen,
             LGred,
