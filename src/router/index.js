@@ -363,6 +363,56 @@ const routes = [
             name: 'ST - comment Ticket',
             component: () => import('@/views/support-ticket/admin/priority_list.vue'),
           },
+          {
+            path: 'admin/add_account',
+            name: 'ST - add_account',
+            component: () => import('@/views/support-ticket/admin/add_account.vue'),
+          },
+          {
+            path: 'admin/admin_dashboard',
+            name: 'ST - admin_dashboard',
+            component: () => import('@/views/support-ticket/admin/admin_dashboard.vue'),
+          },
+          {
+            path: 'admin/edit_account',
+            name: 'ST - edit_account',
+            component: () => import('@/views/support-ticket/admin/edit_account.vue'),
+          },
+          {
+            path: 'admin/delete_account',
+            name: 'ST - delete_account',
+            component: () => import('@/views/support-ticket/admin/delete_account.vue'),
+          },
+          {
+            path: 'admin/edit_priority',
+            name: 'ST - edit_priority',
+            component: () => import('@/views/support-ticket/admin/edit_priority.vue'),
+          },
+          {
+            path: 'admin/create_priority',
+            name: 'ST - create_priority',
+            component: () => import('@/views/support-ticket/admin/create_priority.vue'),
+          },
+          {
+            path: 'it/it_book_mark',
+            name: 'ST - it_book_mark',
+            component: () => import('@/views/support-ticket/it/it_book_mark.vue'),
+          },
+          {
+            path: 'it/it_dashboard',
+            name: 'ST - it_dashboard',
+            component: () => import('@/views/support-ticket/it/it_dashboard.vue'),
+          },
+          {
+            path: 'manager/manager_dashboard',
+            name: 'ST - manager_dashboard',
+            component: () => import('@/views/support-ticket/manager/manager_dashboard.vue'),
+          },
+          {
+            path: 'it/it_my_task',
+            name: 'ST - it_my_task',
+            component: () => import('@/views/support-ticket/it/it_my_task.vue'),
+          },
         ],
       },
     ],
