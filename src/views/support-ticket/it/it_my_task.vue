@@ -35,57 +35,6 @@
           </div>
         </CRow>
 
-        <!-- <CCol xs="auto">
-            <CNav variant="tabs">
-              <CNavItem>
-                <CNavLink active> All </CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink>Pending</CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink>Open </CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink> Closed </CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink> Closed Bug </CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink> Cancel </CNavLink>
-              </CNavItem>
-            </CNav>
-          </CCol> -->
-
-        <!-- <CRow>
-          <CCol>
-            <div Class="container pt-5">
-              <div class="align-items-center">
-                <div class="col-md-6">
-                  <form class="form-inline">
-                    <div class="input-group">
-                      <input
-                        type="text"
-                        class="form-control rounded-start-pill"
-                        placeholder="Search"
-                      />
-                      <div class="input-group-append">
-                        <button
-                          class="btn btn-primary rounded-start-0 rounded-end-circle"
-                          type="submit"
-                        >
-                          <CIcon :icon="icon.cilMagnifyingGlass" size="xl" />
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </CCol>
-        </CRow> -->
-
         <CSmartTable
           clickableRows
           :tableProps="{

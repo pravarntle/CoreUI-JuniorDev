@@ -5,7 +5,12 @@
         <CRow style="margin-bottom: 22px">
           <CCol xs="auto">
             <div Class="clearfix">
-              <CImage  Class="images_Ticket" :src="images_Bookmark" width="36" height="36" />
+              <CImage
+                Class="images_Ticket"
+                :src="images_Bookmark"
+                width="36"
+                height="36"
+              />
             </div>
           </CCol>
           <CCol xs="auto">
@@ -14,23 +19,14 @@
             </div>
           </CCol>
           <div Class="line">
+            <!-- ภาพกราฟิกแบบ vector 2 มิติ -->
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="219"
-              height="3"
-              viewBox="0 0 219 3"
-              fill="none"
+              xmlns="http://www.w3.org/2000/svg" \\ ระบุ XML namespace ของ SVG ซึ่งบ่งชี้ถึงว่าเราใช้รูปแบบ SVG.
+              width="219" \\กำหนดความกว้างของ ให้เป็น 219 หน่วย.
+              height="3" \\กำหนดความสูงของให้เป็น 3หน่วย.
+              viewBox="0 0 219 3" \\กำหนดขอบเขตของแสดงผล ความกว้าง 219หน่วย และความสูง3หน่วย.
+              fill="none" \\ไม่มีการเติมสีหรือรูปแบบสีใดๆ เข้าไปใน element นั้น ๆ
             >
-              <rect
-                y="0.259277"
-                width="215.682"
-                height="2.2588"
-                fill="#EA5252"
-              />
-              <path
-                d="M69.4795 0.259277H219V2.51807H69.4795V0.259277Z"
-                fill="#030303"
-              />
             </svg>
           </div>
         </CRow>
@@ -119,6 +115,29 @@ export default {
       icon,
     }
   },
+  methods: {
+    getBadge(status) {
+      switch (status) {
+        case 'Active':
+          return 'success'
+        case 'Inactive':
+          return 'secondary'
+        case 'Pending':
+          return 'warning'
+        case 'Banned':
+          return 'danger'
+        default:
+          'primary'
+      }
+    },
+    toggleDetails(item) {
+      if (this.details.includes(item._id)) {
+        this.details = this.details.filter((_item) => _item !== item._id)
+        return
+      }
+      this.details.push(item._id)
+    },
+  },
 }
 </script>
 
@@ -138,9 +157,7 @@ export default {
   height: 39.672px;
   padding-left: 0%;
   flex-shrink: 0;
-
 }
-
 
 .text-end {
   padding-left: 0px;
@@ -150,9 +167,7 @@ export default {
   margin-left: 0px;
 }
 
-
-.line{
+.line {
   margin-top: auto;
 }
-
 </style>
