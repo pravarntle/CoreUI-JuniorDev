@@ -63,7 +63,7 @@
             <CFormLabel class="col-lg-3 col-md-12 col-form-label">Description</CFormLabel>
             <div class="col-lg-7 col-md-12">
               <CFormTextarea
-              v-model="form.tkt_description"
+                v-model="form.tkt_description"
                 feedbackInvalid="ห้ามเว้นว่าง"
                 :invalid="validate.tkt_description"
                 required
@@ -88,7 +88,8 @@
 
       </CCardBody>
       <CCardFooter class="footer">
-        <CButton  color="secondary" @click="vaildateBeforeSave" >Cancle</CButton>
+        <CButton  color="secondary" @click="vaildateBeforeSave,createToast"  >Cancle</CButton>
+        
         <CButton class="btn-sec" color="success" @click="vaildateBeforeSave"  >Submit</CButton>
       </CCardFooter>
       <CElementCover :opacity="0.5" v-if="pageLoading" />
@@ -131,9 +132,11 @@ export default {
             validatedCustom01: null,
             validate: {
                 ticket: null,
-            }
+            },
+            toasts: []
         };
     },
+    //สร้างข้อมูลของ Options ต่างๆใน selectfrom
     created() {
         this.piorityOptions = [
             { label: 'Select Priority', value: '' },
@@ -153,6 +156,7 @@ export default {
     },
 
     methods: {
+      //เรียกใช้ฟังกืชั่น get จาก server ดึงข้อมูลจาก model stts_account
         async getUser(){
           const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
           const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
@@ -164,6 +168,7 @@ export default {
 
           
         },
+      //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
         vaildateBeforeSave() {
             let error;
             if (this.form.tkt_title === '') {
@@ -187,14 +192,18 @@ export default {
             }
             else {
                 this.onSave();
+                
             }
         },
+        //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
         checktype(events) {
             console.log(events.target.value);
         },
+        //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
         checkpiority(events) {
             console.log(events.target.value);
         },
+        //กดบันทึกแล้วเซฟข้อมูลลงดาต้า
         async onSave() {
             const date = new Date;
             this.pageLoading = true;
@@ -213,10 +222,23 @@ export default {
 
             try {
               await axios.post('http://localhost:3000/mongoose/insert/stts_tickets',{data:this.form} )
+              .then((result) => {
+                
+                this.$router.push('/support-ticket/user/dashboard')
+              }).catch((err) => {
+                console.log(error)
+              });
             }catch(error){
               console.log(error)
             }
-        }
+
+        },
+        createToast() {
+          this.toasts.push({
+            title: 'Create Ticket',
+            content: 'สร้างสำเร็จ'
+          })
+        },
     },
     components: { CForm }
 }
