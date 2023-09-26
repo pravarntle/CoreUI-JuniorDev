@@ -47,6 +47,7 @@
         <CButton
           class="btn btn-outline-info"
           style="font-size: 10%"
+          id="b1"
           @click="
             () => {
               visibleA = !visibleA
@@ -138,7 +139,7 @@
       class="btn btn-outline-info"
       style="font-size: 10%"
       id="b1"
-    @change="javascript3()" >Short
+    @click="javascript3()" >Short
     </CButton>
   <!-- <CButton
     variant="outline"
@@ -210,6 +211,14 @@ export default {
       }
     },
 
+    // ยังทำ Function ไม่ได้นะครับ
+    async switch() {
+      () => {
+              visibleA = !visibleA
+              visibleB = !visibleB
+            }
+    }
+
   },
 }
 </script>
@@ -269,9 +278,6 @@ img.commit {
   border-radius: 15px;
   border-color: white;
 }
-.collapse {
-  &:not(.show) {
-    display: none;
-  }
-}
+
+
 </style>
