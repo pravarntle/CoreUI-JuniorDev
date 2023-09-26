@@ -485,6 +485,3 @@ export default {
 }
 
 </style>
-
-
-
