@@ -403,6 +403,11 @@ const routes = [
             name: 'ST - manager_dashboard',
             component: () => import('@/views/support-ticket/manager/manager_dashboard.vue'),
           },
+          {
+            path: 'it/it_my_task',
+            name: 'ST - it_my_task',
+            component: () => import('@/views/support-ticket/it/it_my_task.vue'),
+          },
         ],
       },
     ],
