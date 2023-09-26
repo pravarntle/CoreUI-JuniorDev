@@ -15,8 +15,8 @@
                     </div>
                     <div class="col">
                         <div class="avatar">
-                            <img class="commit" type="submit" :src="commit">
-                            <!-- <CButton type="submit"><img class="commit" type="submit" :src="commit"></CButton> -->
+                            <!-- <img class="commit" type="submit" :src="commit"> -->
+                            <CButton type="submit"><img class="commit" type="submit" :src="commit"></CButton>
                         </div>
                     </div>
                 </div>
