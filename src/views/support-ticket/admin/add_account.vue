@@ -1,3 +1,4 @@
+// Create By: Sirinya Sondilok 15-09-2566 Add Acount
 <template>
   <div>
     <CCard>
@@ -24,6 +25,7 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Personal Info</CFormLabel>
           </CRow>
+
           <CRow class="mb-3">
             <div class="row">
               <div class="col-md-3">
@@ -87,6 +89,7 @@
               </div>
               <br>
             </div>
+
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
@@ -108,12 +111,13 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Login Info</CFormLabel>
           </CRow>
+
           <CRow class="mb-3">
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
                   <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label">Employee ID</CFormLabel>
-             <CFormInput
+                  <CFormInput
                     type="text"
                     id="employeeID"
                     name="employeeID"
@@ -129,68 +133,71 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="inputPassword1" class="pamt1"
-                >Password</CFormLabel
-              >
+                  <CFormLabel
+                    for="inputPassword1"
+                    class="pamt1"
+                    >Password
+                  </CFormLabel>
               <div class="pass">
-                <CFormInput
-                text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
-                  type="password"
-                  id="password1"
-                  v-model="form.password"
-                  feedbackInvalid="Please input password."
-                  :invalid="validate.password"
-                  autocomplete="current-password"
-                  placeholder="•••••••"
-                  required
-                />
-                <div class="eyeicon">
+                  <CFormInput
+                  text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
+                    type="password"
+                    id="password1"
+                    v-model=form.password
+                    feedbackInvalid="Please input password."
+                    :invalid="validate.password"
+                    autocomplete="current-password"
+                    placeholder="•••••••"
+                    required
+                  />
+                <!-- <div class="eyeicon">
                   <CImage
                     type="checkbox"
                     @click="showPassword"
                     :src="pic_visibility"
                   />
-                </div>
+                </div> -->
               </div>
                 </div>
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
-                  <CFormLabel for="Password" class="pamt1"
-                >Confirm Password</CFormLabel
-              >
-              <div class="pass">
-                <CFormInput
-                  type="password"
-                  id="password2"
-                  v-model="form.Confirmpassword"
-                  feedbackInvalid="Please confirm password."
-                  :invalid="validate.Confirmpassword"
-                  autocomplete="current-password"
-                  placeholder="•••••••"
-                  required
-                />
-                <div class="eyeicon">
-                  <CImage
-                    type="checkbox"
-                    @click="showConfirmPassword"
-                    id="eye"
-                    :src="pic_visibility_off"
-                  />
+                  <div class="form-group">
+                      <CFormLabel for="Password" class="pamt1"
+                    >Confirm Password</CFormLabel>
+                    <div class="pass">
+                      <CFormInput
+                        type="password"
+                        id="password2"
+                        v-model=form.Confirmpassword
+                        feedbackInvalid="Please confirm password."
+                        :invalid="validate.Confirmpassword"
+                        autocomplete="current-password"
+                        placeholder="•••••••"
+                        required
+                      />
+                        <!-- <div class="eyeicon">
+                          <CImage
+                            type="checkbox"
+                            @click="showConfirmPassword"
+                            id="eye"
+                            :src="pic_visibility_off"
+                          />
+                        </div> -->
+                    </div>
+                  </div>
                 </div>
-              </div>
-                </div>
-              </div>
             </div>
             <div>
-            <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
-          </div>
+              <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
+            </div>
           </CRow>
+
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label">Contact Info</CFormLabel>
           </CRow>
+
           <CRow class="mb-3">
             <div class="row">
               <div class="col-md-3">
@@ -242,9 +249,10 @@
               <br>
             </div>
           </CRow>
+
           <div class="col-6 mx-auto">
-          <CButton class="btn-sec" color="secondary" variant="outline" @click="validateBeforeSave">Cancel</CButton>
-          <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave">Submit</CButton>
+            <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
+            <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave" >Submit</CButton>
           </div>
 
         </CForm>
@@ -254,9 +262,7 @@
 
 </template>
 <script>
-import { CFormLabel} from '@coreui/vue-pro';
-
-
+import { CFormLabel } from '@coreui/vue-pro';
 
 export default {
   components: { CFormLabel},
@@ -276,11 +282,23 @@ export default {
         Confirmpassword: ''
       },
       validate: {
-        info:null,
+        FnameTH: null,
+        LnameTH: null,
+        FnameEng: null,
+        LnameEng: null,
+        Role: null,
+        email: null,
+        confirmEmail: null,
+        phone: null,
+        employeeID: null,
+        password: null,
+        Confirmpassword: null,
+        info: null,
       },
       imageUrl:"../../../assets/images/preProfile01.svg",
       imageFile: null,
-       pageLoading: false,
+      pageLoading: false,
+       validatedCustom01: false,
     }
   },
   created() {
@@ -291,8 +309,10 @@ export default {
             { label: 'Admin', value: 'Admin' },
             { label: 'Manager', value: 'Manager'}
         ];
-    },
+  },
+
   methods: {
+    // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     handleImageUpload(event) {
       const file = event.target.files[0];
       if (file) {
@@ -312,7 +332,7 @@ export default {
       this.form.validatedCustom01 = true;
     },
     validateBeforeSave() {
-      let error;
+      let error = false;
       if (this.form.FnameTH === '') {
         error = true;
         this.validate.FnameTH = true;
@@ -363,18 +383,17 @@ export default {
         this.onSave();
       }
     },
-
-    showPasswordAll() {
-      var p1 = document.getElementById('password1');
-      var p2 = document.getElementById('password2');
-      if (p1.type === "password1") {
-        p1.type = "text";
-        p2.type = "text";
-      } else {
-        p1.type = "password1";
-        p2.type = "password2";
-      }
-    },
+    // showPasswordAll() {
+    //   var p1 = document.getElementById('password1');
+    //   var p2 = document.getElementById('password2');
+    //   if (p1.type === "password1") {
+    //     p1.type = "text";
+    //     p2.type = "text";
+    //   } else {
+    //     p1.type = "password1";
+    //     p2.type = "password2";
+    //   }
+    // },
     showPassword() {
             var p1 = document.getElementById('password1');
             var p2 = document.getElementById('password2');
@@ -386,20 +405,20 @@ export default {
                 p2.type = 'password';
             }
         },
-    showConfirmPassword() {
-      var xConfirm = document.getElementById("passwordConfirm");
-       var eye = document.getElementById("eye");
-      if (xConfirm.type === "password") {
-        xConfirm.type = "text";
-         eye.innerText = ("pic_visibility_off");
-      } else {
-        xConfirm.type = "password";
-        eye.innerText = pic_visibility;
-      }
-    },
-    checkRole(events) {
-            console.log(events.target.value);
-    },
+    // showConfirmPassword() {
+    //   var xConfirm = document.getElementById("passwordConfirm");
+    //    var eye = document.getElementById("eye");
+    //   if (xConfirm.type === "password") {
+    //     xConfirm.type = "text";
+    //      eye.innerText = ("pic_visibility_off");
+    //   } else {
+    //     xConfirm.type = "password";
+    //     eye.innerText = pic_visibility;
+    //   }
+    // },
+    // checkRole(events) {
+    //         console.log(events.target.value);
+    // },
 
   }
 }
@@ -528,5 +547,6 @@ export default {
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
 }</style>
+
 
 
