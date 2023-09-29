@@ -8,6 +8,7 @@
         </CCardHeader>
         <CRow class="mb-3">
           <CCol>
+            <CButton color="primary" @click="getData">PUSH ME</CButton>
             <CCard class="p-2 mb-2" id="border">
               <CCardbody>
                 <b id="all">All Tickets</b>
@@ -231,6 +232,20 @@ export default {
         const toggleDetails = (item) => {
           item._toggled = !item._toggled;
         };
+
+        async function getData() {
+          const user = JSON.parse(localStorage.getItem("USER_DATA"))
+          try {
+            const response = await axios({
+              method: 'GET',
+              url: 'http://localhost:3000/mongoose/get/check-token',
+              headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
+        }
         
         return {
             LGblue,
@@ -240,6 +255,8 @@ export default {
             items,
             getBadge,
             toggleDetails,
+
+            getData,
         };
     },
     
