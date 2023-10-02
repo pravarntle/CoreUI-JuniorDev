@@ -28,7 +28,25 @@
             hover: true,
           }"
         >
-          <template #status="{ item }">
+        <template #status="{ item }">
+        <td>
+          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+        </td>
+      </template>
+
+        <template #BOOKMARK="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleDetails(item, index)"
+            >
+            {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
+            </CButton>
+          </td>
+        </template>
+          <!-- <template #status="{ item }">
             <td>
               <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
             </td>
@@ -57,7 +75,7 @@
                 <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
               </CCardBody>
             </CCollapse>
-          </template>
+          </template> -->
         </CSmartTable>
       </CCard>
     </div>
@@ -92,6 +110,7 @@
   import { ref } from 'vue'
   import data from './_data'
   import { CCol, CRow } from '@coreui/vue-pro'
+  import axios from 'axios';
   export default {
       name: 'SmartTableBasixExample',
       setup() {
@@ -104,20 +123,13 @@
               //   key:'TicketID',
               //   _style: { width: '20%' },
               // },
-              {
-                  key: 'name',
-                  _style: { width: '40%' },
-              },
-              'registered',
-              { key: 'role', _style: { width: '20%' } },
-              { key: 'status', _style: { width: '20%' } },
-              {
-                  key: 'show_details',
-                  label: '',
-                  _style: { width: '1%' },
-                  filter: false,
-                  sorter: false,
-              },
+            { key: '#',_style: { width: '5%' }},
+            { key: 'TicketID',_style: { width: '10%' }},            
+            { key: 'TITLE', _style: { width: '10%' } },
+            { key: 'START DATE', _style: { width: '11%' } },
+            { key: 'STATUS', _style: { width: '10%' } },
+            { key: 'TYPE', _style: { width: '10%' } },
+            { key: 'BOOKMARK', _style: { width: '10%' } }
           ];
           const items = ref(data);
           const getBadge = (status) => {
@@ -148,7 +160,48 @@
               toggleDetails,
           };
       },
-      components: { CRow, CCol }
+      components: { CRow, CCol },
+      methods:{
+      async getTicket(){
+        try {
+          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+              tkt_book:"true",
+
+            },
+          });
+          console.log(response.data);
+          console.log(userId)
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          this.items = response.data.map((element, index) => ({
+            '#': index + 1, // หมายเลขแถว
+            TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
+            TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
+            // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+            // ตามลำดับของ columns ในตัวแปร columns
+            // เพิ่มเติมตามความต้องการ
+            'START DATE': element.tkt_time,
+            STATUS:element.tkt_status  ,
+            TYPE: element.tkt_types,
+            BOOKMARK: element.tkt_book,
+            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+          }));
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+
+      },     
+        
+    },
+    mounted(){
+      //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
+      this.getTicket();
+    }
+
   }
   </script>
   

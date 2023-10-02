@@ -112,13 +112,17 @@ export default {
       },
       async onLoginClick() {
         if (this.vaildateBeforeSave()) {
+          
 
         } else {
           try {
             const response = await axios.post('http://localhost:3000/auth/login', { username: this.form.username, password: this.form.password })
+            console.log(response);
             const user = {
-              role: response.data.data.role,  
-              token: response.data.data.token
+              id: response.data.user.id, 
+              USERNAME: response.data.user.USERNAME,
+              // role: response.data.data.role,  
+              token: response.data.user.token
             }
 
             localStorage.setItem('USER_DATA', JSON.stringify(user))

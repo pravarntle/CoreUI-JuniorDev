@@ -48,17 +48,6 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <div class="col-lg-1 "></div>
-            <CFormLabel class="col-lg-3 col-md-12 col-form-label">user</CFormLabel>
-            <div class="col-lg-7 col-md-12">
-              <CFormSelect
-              v-model="form.tkt_act"
-              :options="userOptions"
-              required
-              />
-            </div>
-          </CRow>
-          <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-3 col-md-12 col-form-label">Description</CFormLabel>
             <div class="col-lg-7 col-md-12">
@@ -107,6 +96,9 @@
 </style>
 
 <script>
+import dayjs from 'dayjs'
+import 'dayjs/locale/th'
+import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
 import { CForm } from '@coreui/vue-pro'
 import axios from 'axios';
 
@@ -205,18 +197,24 @@ export default {
         },
         //กดบันทึกแล้วเซฟข้อมูลลงดาต้า
         async onSave() {
-            const date = new Date;
+            dayjs.locale('th')
+            dayjs.extend(require('dayjs/plugin/timezone'))
+            dayjs.tz.setDefault('Asia/Bangkok')
+
+            const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+            const userId = userData.id; // ดึงค่า id จาก userData
+            const date = dayjs();
+            
             this.pageLoading = true;
             setTimeout(function () {
                 this.pageLoading = false;
             }.bind(this), 3000);
-            // const ticket_account = `64f9d0822eeb85d0fb62f022`;
             const ticket_status = `Pending`;
-            const ticket_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-            const ticket_number = `TKT-${date.getDate()}${date.getMonth()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}${date.getMilliseconds()}`;
+            const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+            const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
             this.form.tkt_time = ticket_date;
             this.form.tkt_number = ticket_number;
-            // this.form.tkt_act = ticket_account;
+            this.form.tkt_act = userId;
             this.form.tkt_status = ticket_status;
             console.log(this.form);
 
