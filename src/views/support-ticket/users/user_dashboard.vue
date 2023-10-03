@@ -242,12 +242,10 @@ export default {
         try {
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
-          
 
           const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
-              tkt_book:"true",
 
             },
           });
@@ -272,21 +270,6 @@ export default {
         }
 
       }, 
-
-
-
-      async getTicket(){
-        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-
-        .then(response => {
-          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
-          this.dataArray = response.data;
-        })
-        .catch(error => {
-          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-        });
-
-      },
 
 
       async getCountall (){
@@ -323,6 +306,7 @@ export default {
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getCountall();
       this.getTicket();
+
     }
   }
 </script>
