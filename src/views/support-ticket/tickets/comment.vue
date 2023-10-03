@@ -1,13 +1,4 @@
 <template>
-  <mark>Tong ไม่ทำงาน </mark>
-  <br />
-  <button type="submit" value="ยืนยัน" @click="myFunction">
-    กด Submit เพื่อยืนยันคำตอบ
-  </button>
-
-  <!-- Test -->
-  <br />
-  <br />
 
   <CCard class="p-2">
     <CCardbody>
@@ -46,16 +37,16 @@
       <div class="clearfix text-end" style="margin-right: 4%">
         <CButton
           class="btn btn-outline-info"
-          style="font-size: 10%"
+          style=" font-weight: bold; font-size: x-small; width: 10%;"
           id="b1"
           @click="
             () => {
               visibleA = !visibleA
               visibleB = !visibleB
+              javascript3()
             }
           "
-        >
-          <b>Short</b>
+        >Short
         </CButton>
 
         <CRow>
@@ -135,12 +126,7 @@
       <br />
     </CCardBody>
   </CCard>
-  <CButton
-      class="btn btn-outline-info"
-      style="font-size: 10%"
-      id="b1"
-    @click="javascript3()" >Short
-    </CButton>
+
   <!-- <CButton
     variant="outline"
     square
@@ -205,20 +191,11 @@ export default {
     async javascript3() {
       var x = document.getElementById('b1')
       if (x.innerHTML === 'Short') {
-        x.innerHTML = 'Test'
+        x.innerHTML  = 'Expand'
       } else {
         x.innerHTML = 'Short'
       }
     },
-
-    // ยังทำ Function ไม่ได้นะครับ
-    async switch() {
-      () => {
-              visibleA = !visibleA
-              visibleB = !visibleB
-            }
-    }
-
   },
 }
 </script>
