@@ -108,7 +108,6 @@
   
   <script>
   import { ref } from 'vue'
-  import data from './_data'
   import { CCol, CRow } from '@coreui/vue-pro'
   import axios from 'axios';
   export default {
@@ -131,21 +130,21 @@
             { key: 'TYPE', _style: { width: '10%' } },
             { key: 'BOOKMARK', _style: { width: '10%' } }
           ];
-          const items = ref(data);
-          const getBadge = (status) => {
-              switch (status) {
-                  case 'Active':
-                      return 'success';
-                  case 'Inactive':
-                      return 'secondary';
-                  case 'Pending':
-                      return 'warning';
-                  case 'Banned':
-                      return 'danger';
-                  default:
-                      'primary';
-              }
-          };
+          // const items = ref(data);
+          // const getBadge = (status) => {
+          //     switch (status) {
+          //         case 'Active':
+          //             return 'success';
+          //         case 'Inactive':
+          //             return 'secondary';
+          //         case 'Pending':
+          //             return 'warning';
+          //         case 'Banned':
+          //             return 'danger';
+          //         default:
+          //             'primary';
+          //     }
+          // };
   
           const toggleDetails = (item) => {
               items.value[item.id] = {
