@@ -288,6 +288,9 @@ const routes = [
         path: 'apps',
         name: 'Apps',
         redirect: '/apps/invoicing/invoice',
+        meta: {
+          restriction: "SUPER-ADMIN"
+        },
         component: {
           render() {
             return h(resolveComponent('router-view'))
@@ -357,6 +360,11 @@ const routes = [
             path: 'ticket/comment',
             name: 'ST - comment Ticket',
             component: () => import('@/views/support-ticket/tickets/comment'),
+          },
+          {
+            path: 'admin/priority_list',
+            name: 'ST - comment Ticket',
+            component: () => import('@/views/support-ticket/admin/priority_list.vue'),
           },
           {
             path: 'admin/add_account',
@@ -483,5 +491,22 @@ const router = createRouter({
     return { top: 0 }
   },
 })
+
+router.beforeEach(async (to, from, next) => {
+  const user = JSON.parse(localStorage.getItem('USER_DATA'))
+  const restrict = to.meta.restriction
+  if (!user && to.name !== "Login") {
+    return next({ name: "Login" })
+  } else if (user && to.name === "Login") {
+    return next("/support-ticket/user/dashboard");
+  } else {
+    if (restrict && user.role !== restrict) {
+      return next("/support-ticket/user/dashboard");
+    } else {
+      return next();
+    }
+    
+  }
+});
 
 export default router
