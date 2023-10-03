@@ -275,7 +275,7 @@ export default {
       async getCountall (){
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
-          console.log(useId)
+          console.log(userId)
           const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
