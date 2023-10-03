@@ -119,6 +119,7 @@ export default {
                 tkt_act: '',
             },
             userOptions:[],
+            userOptions:[],
             genderOptions: [],
             pageLoading: false,
             validatedCustom01: null,
@@ -145,6 +146,7 @@ export default {
                 { label: 'ไม่ระบุ', value: 'none', disabled: true }
             ];
             this.getUser() 
+
     },
 
     methods: {
@@ -155,6 +157,17 @@ export default {
           console.log(users)
           user.data.forEach(element => {
             this.userOptions.push({value:element._id,label:element.act_username})
+            
+          });
+
+          
+        },
+        async getType(){
+          const type= await axios.get('http://localhost:3000/mongoose/get/stts_types')
+          const types= await axios.post('http://localhost:3000/mongoose/get/stts_types')//,{populate:['tkt_act']}
+          console.log(types)
+          type.data.forEach(element => {
+            this.userOptions.push({value:element._id,label:element.typ_name})
             
           });
 
