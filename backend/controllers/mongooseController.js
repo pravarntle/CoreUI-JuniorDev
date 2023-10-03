@@ -56,9 +56,11 @@ module.exports = {
             let request = model.find(req.body.where ? req.body.where : {}, req.body.fields ? req.body.fields : "")
             
             // populate
+            console.log(req.body.populate)
             if (req.body.populate) {
                 const populateList = Array.isArray(req.body.populate) ? req.body.populate : req.body.populate.split(",")
                 for await (const item of populateList) {
+                    console.log(item)
                     request = request.populate(item)
                 }
             }
