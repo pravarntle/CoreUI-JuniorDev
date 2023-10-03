@@ -7,14 +7,13 @@
       </CCardHeader>
       <CCardBody>
         <CForm novalidate :validated="form.validatedCustom01" @submit.prevent="handleSubmitCustom01">
-
           <CRow class="mb-2" >
-            <CCol class="image-container" xs="3">
+            <CCol class="image-container"  xs="12" md="6" lg="4">
               <div  v-if="imageUrl">
               <img :src="imageUrl"/>
               </div>
             </CCol>
-            <CCol xs="3">
+            <CCol CCol xs="12" md="6" lg="4">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
               <CFormInput
                   name="upload_file"
@@ -27,32 +26,33 @@
                   id="upload_file"
                   hidden
               />
-              <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
+              <CCol xs="12" md="6" lg="4">
+                <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
+              </CCol>
             </CCol>
+
           </CRow>
 
           <CRow class="mb-2" >
-            <div class="col-lg-1"></div>
-            <CFormLabel class="col-md-12 col-form-label">Personal Info</CFormLabel>
+            <!-- <div class="col-lg-1"></div> -->
+            <CCol xs="12" md="6" lg="4">
+              <CFormLabel class="col-md-12 col-form-label">Personal Info</CFormLabel>
+            </CCol>
           </CRow>
 
           <CRow class="mb-3">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <CFormLabel for="FnameTH" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
-                  <CFormInput
-                  name="FnameTH"
-                  type="text"
-                  feedbackInvalid="Please input firstname(Thai)."
-                  id="FnameTH"
-                  v-model="form.act_first_name_th"
-                  :invalid="validate.act_first_name_th"
-                    required />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel for="FnameTH" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+                    <CFormInput
+                    name="FnameTH"
+                    type="text"
+                    feedbackInvalid="Please input firstname(Thai)."
+                    id="FnameTH"
+                    v-model="form.act_first_name_th"
+                    :invalid="validate.act_first_name_th"
+                      required />
+                  </CCol>
+                  <CCol xs="12" md="6" lg="4">
                   <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
                   <CFormInput
                     type="text"
@@ -63,208 +63,154 @@
                     :invalid="validate.act_last_name_th"
                     required
                     />
-                </div>
-              </div>
+                    </CCol>
               <br>
-            </div>
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="FnameEng"
-                    name="FnameEng"
-                    feedbackInvalid="Please input firstname(English)."
-                    v-model="form.act_first_name_eng"
-                    :invalid="validate.act_first_name_eng"
-                    required
-                    />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <CFormLabel for="LnameEng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="LnameEng"
-                    name="LnameEng"
-                    feedbackInvalid="Please input lastname(English)."
-                    v-model="form.act_last_name_eng"
-                    :invalid="validate.act_last_name_eng"
-                    required
-                    />
-                </div>
-              </div>
-              <br>
-            </div>
-
-            <div class="row">
-              <div class="col-md-7">
-                <div class="form-group">
-                  <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
-                  <CFormSelect
-                    v-model="form.act_role"
-                    :options="roleOptions"
-                    feedbackInvalid="Please select role."
-                    :invalid="validate.act_role"
-                    required
-                    @change="checkRole"
-                  />
-                </div>
-              </div>
-            </div>
-          </CRow>
-
-          <CRow class="mb-2">
-            <div class="col-lg-1"></div>
-            <CFormLabel class="col-md-12 col-form-label">Login Info</CFormLabel>
-          </CRow>
-
-          <CRow class="mb-3">
-            <div class="row">
-              <div class="col-md-7">
-                <div class="form-group">
-                  <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label">Employee ID</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="employeeID"
-                    name="employeeID"
-                    feedbackInvalid="Please input employee ID."
-                    v-model="form.act_username"
-                    :invalid="validate.act_username"
-                    required
-                    />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <CFormLabel
-                    for="inputPassword1"
-                    class="pamt1"
-                    >Password
-                  </CFormLabel>
-              <div class="pass">
-                  <CFormInput
-                  text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
-                    type="password"
-                    id="password1"
-                    v-model=form.act_password
-                    feedbackInvalid="Please input password."
-                    :invalid="validate.act_password"
-                    autocomplete="current-password"
-                    placeholder="•••••••"
-                    required
-                  />
-                <!-- <div class="eyeicon">
-                  <CImage
-                    type="checkbox"
-                    @click="showPassword"
-                    :src="pic_visibility"
-                  />
-                </div> -->
-              </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                  <div class="form-group">
-                      <CFormLabel for="Password" class="pamt1"
-                    >Confirm Password</CFormLabel>
-                    <div class="pass">
-                      <CFormInput
-                        type="password"
-                        id="password2"
-                        v-model=Confirmpassword
-                        feedbackInvalid="Please confirm password."
-                        :invalid="Confirmpassword"
-                        autocomplete="current-password"
-                        placeholder="•••••••"
-                        required
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="FnameEng"
+                      name="FnameEng"
+                      feedbackInvalid="Please input firstname(English)."
+                      v-model="form.act_first_name_eng"
+                      :invalid="validate.act_first_name_eng"
+                      required
                       />
-                        <!-- <div class="eyeicon">
-                          <CImage
-                            type="checkbox"
-                            @click="showConfirmPassword"
-                            id="eye"
-                            :src="pic_visibility_off"
-                          />
-                        </div> -->
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <div>
-              <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
-            </div>
+                    </CCol>
+
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel for="LnameEng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="LnameEng"
+                      name="LnameEng"
+                      feedbackInvalid="Please input lastname(English)."
+                      v-model="form.act_last_name_eng"
+                      :invalid="validate.act_last_name_eng"
+                      required
+                      />
+                  </CCol>
+              <br>
+                  <CCol xs="12" md="6" lg="8">
+                    <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
+                    <CFormSelect
+                      v-model="form.act_role"
+                      :options="roleOptions"
+                      feedbackInvalid="Please select role."
+                      :invalid="validate.act_role"
+                      required
+                      @change="checkRole"
+                    />
+                  </CCol>
           </CRow>
 
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
-            <CFormLabel class="col-md-12 col-form-label">Contact Info</CFormLabel>
+            <CCol xs="12" md="6" lg="4">
+              <CFormLabel class="col-md-12 col-form-label">Login Info</CFormLabel>
+            </CCol>
           </CRow>
 
           <CRow class="mb-3">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <CFormLabel for="Email" class="col-sm-12 col-form-label">Email Address</CFormLabel>
-                  <CFormInput
-                    type="email"
-                    id="email"
-                    name="email"
-                    feedbackInvalid="Please input email."
-                    v-model="form.act_email_address"
-                    :invalid="validate.act_email_address"
-                    required
+                  <CCol xs="12" md="6" lg="8">
+                    <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label">Employee ID</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="employeeID"
+                      name="employeeID"
+                      feedbackInvalid="Please input employee ID."
+                      v-model="form.act_username"
+                      :invalid="validate.act_username"
+                      required
+                      />
+                  </CCol>
+             <br>
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel
+                      for="inputPassword1"
+                      class="pamt1"
+                      >Password
+                    </CFormLabel>
+                    <CFormInput
+                    text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
+                      type="password"
+                      id="password1"
+                      v-model=form.act_password
+                      feedbackInvalid="Please input password."
+                      :invalid="validate.act_password"
+                      autocomplete="current-password"
+                      placeholder="•••••••"
+                      required
                     />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
-                  <CFormInput
-                    type="email"
-                    id="confirmEmail"
-                    name="confirmEmail"
-                    feedbackInvalid="Please input confirm email."
-                    v-model="confirmEmail"
-                    :invalid="confirmEmail"
-                    required
-                    />
-                </div>
-              </div>
-              <br>
-            </div>
-
-            <div class="row">
-              <div class="col-md-7">
-                <div class="form-group">
-                  <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
-                  <CFormInput
-                    type="number"
-                    id="phone"
-                    name="phone"
-                    feedbackInvalid="Please input your phone number."
-                    v-model="form.act_number_phone"
-                    :invalid="validate.act_number_phone"
-                    required
-                    />
-                </div>
-              </div>
-              <br>
-            </div>
+                 </CCol>
+                    <CCol xs="12" md="6" lg="4">
+                        <CFormLabel for="Password" class="pamt1"
+                      >Confirm Password</CFormLabel>
+                        <CFormInput
+                          type="password"
+                          id="password2"
+                          v-model="form.Confirmpassword"
+                          feedbackInvalid="Please confirm password."
+                          :invalid="validate.Confirmpassword"
+                          autocomplete="current-password"
+                          placeholder="•••••••"
+                          required
+                        />
+                    </CCol>
+             <br>
+              <CCol xs="12" md="6" lg="4">
+                <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
+              </CCol>
           </CRow>
 
-          <div class="col-6 mx-auto">
-            <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
-            <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave" >Submit</CButton>
-          </div>
+          <CRow class="mb-2">
+             <CCol xs="12" md="6" lg="4">
+              <CFormLabel class="col-md-12 col-form-label">Contact Info</CFormLabel>
+            </CCol>
+          </CRow>
 
+          <CRow class="mb-3">
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel for="Email" class="col-sm-12 col-form-label">Email Address</CFormLabel>
+                    <CFormInput
+                      type="email"
+                      id="email"
+                      name="email"
+                      feedbackInvalid="Please input email."
+                      v-model="form.act_email_address"
+                      :invalid="validate.act_email_address"
+                      required
+                      />
+                  </CCol>
+                  <CCol xs="12" md="6" lg="4">
+                    <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
+                    <CFormInput
+                      type="email"
+                      id="confirmEmail"
+                      name="confirmEmail"
+                      feedbackInvalid="Please input confirm email."
+                      v-model="form.confirmEmail"
+                      :invalid="validate.confirmEmail"
+                      required
+                      />
+                  </CCol>
+             <br>
+                  <CCol xs="12" md="6" lg="8">
+                    <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      id="phone"
+                      name="phone"
+                      feedbackInvalid="Please input your phone number."
+                      v-model="form.act_number_phone"
+                      :invalid="validate.act_number_phone"
+                      required
+                      />
+                  </CCol>
+          </CRow>
+             <CCol class="col-6 mx-auto">
+              <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
+              <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave" >Submit</CButton>
+            </CCol>
         </CForm>
       </CCardBody>
     </CCard>
@@ -289,17 +235,9 @@ export default {
         act_last_name_eng:'',
         act_picture:'',
         act_role: '',
-        // confirmEmail: '',
-        // Confirmpassword: ''
-        // FnameTH: '',
-        // LnameTH: '',
-        // FnameEng: '',
-        // LnameEng: '',
-        // Role: '',
-        // email: '',
-        // phone: '',
-        // employeeID: '',
-        // password: '',
+        confirmEmail: '',
+        Confirmpassword: '',
+        validatedCustom01:' '
       },
 
       validate: {
@@ -313,27 +251,13 @@ export default {
         act_last_name_eng:null,
         act_picture:null,
         act_role:null,
-        // confirmEmail:null,
-        // Confirmpassword:null
-        // FnameTH: null,
-        // LnameTH: null,
-        // FnameEng: null,
-        // LnameEng: null,
-        // Role: null,
-        // email: null,
-        // confirmEmail: null,
-        // phone: null,
-        // employeeID: null,
-        // password: null,
-        // Confirmpassword: null,
-        // info: null,
+        confirmEmail:null,
+        Confirmpassword: null,
+        validatedCustom01: null,
       },
-      confirmEmail: '',
-      Confirmpassword: '',
       imageUrl:"../../../assets/images/preProfile01.svg",
       imageFile: null,
       pageLoading: false,
-       validatedCustom01: false,
     }
   },
   created() {
@@ -394,7 +318,7 @@ export default {
       }
       if (this.confirmEmail === '') {
         error = true;
-        this.confirmEmail = true;
+        this.validate.confirmEmail = true;
       }
       if (this.form.act_number_phone === '') {
         error = true;
@@ -410,7 +334,7 @@ export default {
        }
        if (this.Confirmpassword === '') {
         error = true;
-        this.Confirmpassword = true;
+        this.validate.Confirmpassword = true;
       }
       if (error) {
       }
@@ -418,17 +342,6 @@ export default {
         this.onSave();
       }
     },
-    // showPasswordAll() {
-    //   var p1 = document.getElementById('password1');
-    //   var p2 = document.getElementById('password2');
-    //   if (p1.type === "password1") {
-    //     p1.type = "text";
-    //     p2.type = "text";
-    //   } else {
-    //     p1.type = "password1";
-    //     p2.type = "password2";
-    //   }
-    // },
     showPassword() {
             var p1 = document.getElementById('password1');
             var p2 = document.getElementById('password2');
@@ -446,14 +359,6 @@ export default {
             setTimeout(function () {
                 this.pageLoading = false;
             }.bind(this), 3000);
-            // const ticket_account = `64f9d0822eeb85d0fb62f022`;
-            // const ticket_status = `Pending`;
-            // const ticket_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-            // const ticket_number = `TKT-${date.getDate()}${date.getMonth()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}${date.getMilliseconds()}`;
-            // this.form.tkt_time = ticket_date;
-            // this.form.tkt_number = ticket_number;
-            // // this.form.tkt_act = ticket_account;
-            // this.form.tkt_status = ticket_status;
             console.log(this.form);
 
             try {
@@ -469,21 +374,6 @@ export default {
             }
 
         },
-    // showConfirmPassword() {
-    //   var xConfirm = document.getElementById("passwordConfirm");
-    //    var eye = document.getElementById("eye");
-    //   if (xConfirm.type === "password") {
-    //     xConfirm.type = "text";
-    //      eye.innerText = ("pic_visibility_off");
-    //   } else {
-    //     xConfirm.type = "password";
-    //     eye.innerText = pic_visibility;
-    //   }
-    // },
-    // checkRole(events) {
-    //         console.log(events.target.value);
-    // },
-
   }
 }
 </script>
