@@ -1,5 +1,4 @@
 export default [
-
   {
     component: 'CNavItem',
     icon:'cil-cursor',

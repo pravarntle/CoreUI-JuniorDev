@@ -205,7 +205,6 @@ export default {
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE', _style: { width: '11%' } },
-            { key: 'LAST UPDATE', _style: { width: '15%' } },
             { key: 'STATUS', _style: { width: '10%' } },
             { key: 'TYPE', _style: { width: '10%' } },
             { key: 'BOOKMARK', _style: { width: '10%' } }
@@ -231,6 +230,20 @@ export default {
         const toggleDetails = (item) => {
           item._toggled = !item._toggled;
         };
+
+        async function getData() {
+          const user = JSON.parse(localStorage.getItem("USER_DATA"))
+          try {
+            const response = await axios({
+              method: 'GET',
+              url: 'http://localhost:3000/mongoose/get/check-token',
+              headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
+        }
         
         return {
             LGblue,
@@ -240,6 +253,8 @@ export default {
             items,
             getBadge,
             toggleDetails,
+
+            getData,
         };
     },
     
@@ -247,18 +262,26 @@ export default {
     methods:{
       async getTicket(){
         try {
-    const response = await axios.get('http://localhost:3000/mongoose/get/stts_tickets/');
-    // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          console.log(response.data);
+          console.log(userId)
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
           this.items = response.data.map((element, index) => ({
-            
             '#': index + 1, // หมายเลขแถว
             TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
             TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
             // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
             // ตามลำดับของ columns ในตัวแปร columns
             // เพิ่มเติมตามความต้องการ
-            'START DATE': element.CREATED_AT,
-            'LAST UPDATE': element.UPDATED_AT,
+            'START DATE': element.tkt_time,
+            'LAST UPDATE': element.tkt_time,
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
@@ -272,8 +295,15 @@ export default {
 
       //บอกจำนวนของ ticket ทั้งหมด
       async getCountall (){
-        const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-        // console.log(allTicket)
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          // console.log(allTicket)
         var countAll =0;
         var countOpen =0;
         var countClosed =0;
