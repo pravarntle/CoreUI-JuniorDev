@@ -11,7 +11,7 @@
                             </div>
                         </div>
                         <div class="col-10">
-                            <CFormInput v-model="comment" class="comments_box" type="text" placeholder="เพิ่มความคิดเห็น"
+                            <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments"
                                 aria-label="comments_box"></CFormInput>
                         </div>
                         <div class="col">
