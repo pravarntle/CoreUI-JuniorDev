@@ -1,16 +1,18 @@
 <template>
-
   <CCard class="p-2">
     <CCardbody>
       <CRow>
         <div>
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
-
           <CCol class="text-start">
-            <div class="avatar">
+            <div
+              class="avatar"
+              style="padding: 1px; text-align: center; margin-top: 1%"
+            >
               <CAvatar class="Arrow_Left" :src="Arrow_Left" />
             </div>
+            <div>Testkkuuyty101</div>
           </CCol>
         </div>
       </CRow>
@@ -31,13 +33,13 @@
           <span class="badge bg-danger"> <li>High</li> </span>
         </CCol>
       </CRow>
-      <hr />
+      <hr/>
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
       <div class="clearfix text-end" style="margin-right: 4%">
         <CButton
           class="btn btn-outline-info"
-          style=" font-weight: bold; font-size: x-small; width: 10%;"
+          style="font-weight: bold; font-size: x-small; width: 65px"
           id="b1"
           @click="
             () => {
@@ -46,7 +48,7 @@
               javascript3()
             }
           "
-        >Short
+          >Short
         </CButton>
 
         <CRow>
@@ -183,17 +185,17 @@ export default {
   },
   data() {
     return {
-      visibleA: false,
-      visibleB: false,
+      visibleA: true,
+      visibleB: true,
     }
   },
   methods: {
     async javascript3() {
       var x = document.getElementById('b1')
-      if (x.innerHTML === 'Short') {
-        x.innerHTML  = 'Expand'
-      } else {
+      if (x.innerHTML === 'Expand') {
         x.innerHTML = 'Short'
+      } else {
+        x.innerHTML = 'Expand'
       }
     },
   },
@@ -255,6 +257,4 @@ img.commit {
   border-radius: 15px;
   border-color: white;
 }
-
-
 </style>
