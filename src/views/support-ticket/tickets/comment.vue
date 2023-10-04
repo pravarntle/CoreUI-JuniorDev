@@ -204,6 +204,12 @@ img.commit {
     border: none;
 }
 
+img.Attach_File {
+    width: 56px;
+    height: 56px;
+    border: none;
+}
+
 .card {
     border-radius: 15px;
     border-color: white;
