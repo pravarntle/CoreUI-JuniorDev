@@ -63,6 +63,7 @@
         footer
         header
         cleaner
+        
         :items="items"
         :columns="columns"
         columnFilter
@@ -80,27 +81,26 @@
           hover: true,
         }"
       >
+      
+      <template #status="{ item }">
+        <td>
+          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+        </td>
+      </template>
 
-        <template #status="{ item }">
-          <td>
-
-            <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
-          </td>
-        </template>
-        <template #show_details="{ item, index }">
-          <td class="py-2">
+        <template #BOOKMARK="{ item, index }" >
+          <td class="text-center">
             <CButton
-              color="primary"
               variant="outline"
               square
-              size="sm"
+              size="xl"
               @click="toggleDetails(item, index)"
             >
-              {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
+            {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
             </CButton>
           </td>
         </template>
-        <template #details="{ item }">
+        <!-- <template #details="{ item }">
           <CCollapse :visible="Boolean(item._toggled)">
             <CCardBody>
               <h4>
@@ -111,7 +111,7 @@
               <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
             </CCardBody>
           </CCollapse>
-        </template>
+        </template> -->
       </CSmartTable>
     </CCard>
   </div>
@@ -145,101 +145,84 @@
 
 <script>
 import { ref } from 'vue'
-import data from './_data'
 import { CCol, CRow } from '@coreui/vue-pro'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
 import axios from 'axios';
+import { CBadge } from '@coreui/vue-pro'
 export default {
 
   name: 'SmartTableBasixExample',
     data(){
       return {
-            form: {
-                tkt_number: '',
-                tkt_description: '',
-                tkt_picture: '',
-                tkt_title: '',
-                tkt_time: '',
-                tkt_last_update: '',
-                tkt_status: '',
-                tkt_priorities: '',
-                tkt_types: '',
-                tkt_book: '',
-                tkt_act: '',
-            },
+            data_array:[],
+            
+            tkt_number: '',
+            tkt_description: '',
+            tkt_picture: '',
+            tkt_title: '',
+            tkt_time: '',
+            tkt_last_update: '',
+            tkt_status: '',
+            tkt_priorities: '',
+            tkt_types: '',
+            tkt_book: '',
+            tkt_act: '',
             count_all:'',
             count_open:'',
             count_closed:'',
 
 
         };
-      this.getUser
 
     },
     setup() {
         const columns = [
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            // {
-            //   key:'TicketID',
-            //   _style: { width: '20%' },
-            // },
-            // { key: '#',_style: { width: '1%' }},
-            // { key: 'TICKET ID',_style:{ width:'15%' }},
-            // { key: 'TITLE', _style: { width: '10%' } },
-            // { key: 'START DATE', _style: { width: '15%' } },
-            // { key: 'LAST UPDATE', _style: { width: '15%' } },
-            // { key: 'STATUS', _style: { width: '10%' } },
-            // { key: 'TYPE', _style: { width: '10%' } },
-            // { key: 'BOOKMARK', _style: { width: '10%' } },
-            // {
-            //     key: 'show_details',
-            //     label: '',
-            //     _style: { width: '1%' },
-            //     filter: false,
-            //     sorter: false,
-            // },
-            {
-        key: 'name',
-        _style: { width: '40%' },
-      },
-      'registered',
-      { key: 'role', _style: { width: '20%' } },
-      { key: 'status', _style: { width: '20%' } },
-      {
-        key: 'show_details',
-        label: '',
-        _style: { width: '1%' },
-        filter: false,
-        sorter: false,
-      },
+            { key: '#',_style: { width: '5%' }},
+            { key: 'TicketID',_style: { width: '10%' }},            
+            { key: 'TITLE', _style: { width: '10%' } },
+            { key: 'START DATE', _style: { width: '11%' } },
+            { key: 'STATUS', _style: { width: '10%' } },
+            { key: 'TYPE', _style: { width: '10%' } },
+            { key: 'BOOKMARK', _style: { width: '10%' } }
+          
+            
+     
         ];
-
-        const getBadge = (status) => {
-            switch (status) {
-                case 'Active':
-                    return 'success';
-                case 'Inactive':
-                    return 'secondary';
-                case 'Pending':
-                    return 'warning';
-                case 'Banned':
-                    return 'danger';
-                default:
-                    'primary';
-            }
+        const getBadge = (tkt_status) => {
+          switch (tkt_status) {
+            case 'Pending':
+              return 'success';
+            case 'Open':
+              return 'secondary';
+            case 'Closed':
+              return 'warning';
+            case 'Banned':
+              return 'danger';
+            default:
+              return 'primary'; // Return a default color if none of the cases match.
+          }
         };
-        const items = ref(data);
+        const items = ref([]);
         const toggleDetails = (item) => {
-            items.value[item.id] = {
-                ...item,
-                _toggled: !item._toggled,
-            };
+          item._toggled = !item._toggled;
         };
+
+        async function getData() {
+          const user = JSON.parse(localStorage.getItem("USER_DATA"))
+          try {
+            const response = await axios({
+              method: 'GET',
+              url: 'http://localhost:3000/mongoose/get/check-token',
+              headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        
         return {
             LGblue,
             LGgreen,
@@ -248,11 +231,44 @@ export default {
             items,
             getBadge,
             toggleDetails,
+
+            getData,
         };
     },
 
     components: { CRow, CCol },
     methods:{
+      async getTicket(){
+        try {
+          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          console.log(response.data);
+          console.log(userId)
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          this.items = response.data.map((element, index) => ({
+            '#': index + 1, // หมายเลขแถว
+            TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
+            TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
+            // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+            // ตามลำดับของ columns ในตัวแปร columns
+            // เพิ่มเติมตามความต้องการ
+            'START DATE': element.tkt_time,
+            'LAST UPDATE': element.tkt_time,
+            STATUS:element.tkt_status  ,
+            TYPE: element.tkt_types,
+            BOOKMARK: element.tkt_book,
+            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+          }));
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      },
 
 
 
@@ -271,8 +287,15 @@ export default {
 
 
       async getCountall (){
-        const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-        // console.log(allTicket)
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          // console.log(allTicket)
         var countAll =0;
         var countOpen =0;
         var countClosed =0;

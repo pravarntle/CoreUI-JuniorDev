@@ -150,7 +150,7 @@
 import Arrow_Left from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import commit from '@/assets/images/commit.png'
-import Icon_user_man from '/Users/settawut/Desktop/STTS/CoreUI-JuniorDev/src/assets/images/Icon_user_man.jpg'
+import Icon_user_man from '@/assets/images/Icon_user_man.jpg'
 import Short from '@/assets/images/Short.jpg'
 import {
   CAvatar,
