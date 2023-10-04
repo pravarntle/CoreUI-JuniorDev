@@ -63,16 +63,13 @@
         footer
         header
         cleaner
-        
         :items="items"
         :columns="columns"
         columnFilter
         column-sorter
-        clickable-rows
         table-filter
         :items-per-page="5"
         items-per-page-select
-
         pagination
         columnSorter
         :sorterValue="{ column: 'status', state: 'asc' }"
@@ -81,10 +78,10 @@
           hover: true,
         }"
       >
-      
-      <template #status="{ item }">
+      <template #STATUS="{ item }">
         <td>
           <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+          
         </td>
       </template>
 
@@ -100,6 +97,7 @@
             </CButton>
           </td>
         </template>
+        
         <!-- <template #details="{ item }">
           <CCollapse :visible="Boolean(item._toggled)">
             <CCardBody>
@@ -183,9 +181,9 @@ export default {
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE', _style: { width: '11%' } },
-            { key: 'STATUS', _style: { width: '10%' } },
-            { key: 'TYPE', _style: { width: '10%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } }
+            { key: 'STATUS', _style: { width: '5%' } },
+            { key: 'TYPE', _style: { width: '4%' } },
+            { key: 'BOOKMARK', _style: { width: '5%' } },
           
             
      
@@ -242,7 +240,7 @@ export default {
             console.log(error)
           }
         }
-        
+        const activePage = ref(1)
         return {
             LGblue,
             LGgreen,
@@ -251,13 +249,14 @@ export default {
             items,
             getBadge,
             toggleDetails,
-
+            activePage,
             getData,
         };
     },
 
     components: { CRow, CCol },
     methods:{
+
       async getTicket(){
         try {
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
@@ -284,7 +283,7 @@ export default {
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
-            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+            MORE: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
           }));
         } catch (error) {
           console.error('Error fetching data:', error);

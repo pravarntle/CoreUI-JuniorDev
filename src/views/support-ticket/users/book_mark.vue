@@ -28,11 +28,12 @@
             hover: true,
           }"
         >
-        <template #status="{ item }">
-        <td>
-          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-        </td>
-      </template>
+        <template #STATUS="{ item }">
+          <td>
+            <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+          
+          </td>
+        </template>
 
         <template #BOOKMARK="{ item, index }" >
           <td class="text-center">
@@ -131,19 +132,19 @@
             { key: 'BOOKMARK', _style: { width: '10%' } }
           ];
           const items = ref([]);
-          const getBadge = (status) => {
-              switch (status) {
-                  case 'Active':
-                      return 'success';
-                  case 'Inactive':
-                      return 'secondary';
-                  case 'Pending':
-                      return 'warning';
-                  case 'Banned':
-                      return 'danger';
-                  default:
-                      'primary';
-              }
+          const getBadge = (tkt_status) => {
+            switch (tkt_status) {
+              case 'Pending':
+                return 'success';
+              case 'Open':
+                return 'secondary';
+              case 'Closed':
+                return 'warning';
+              case 'Banned':
+                return 'danger';
+              default:
+                return 'primary'; // Return a default color if none of the cases match.
+            }
           };
   
           const toggleDetails =  async(item) => {
