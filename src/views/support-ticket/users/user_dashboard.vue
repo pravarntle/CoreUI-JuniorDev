@@ -60,7 +60,6 @@
       </CCardHeader>
       <CSmartTable
         :active-page="1"
-        footer
         header
         cleaner
         :items="items"
@@ -78,8 +77,10 @@
           hover: true,
         }"
       >
+      
       <template #STATUS="{ item }">
         <td>
+          
           <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
           
         </td>
@@ -97,9 +98,21 @@
             </CButton>
           </td>
         </template>
-        
-        <!-- <template #details="{ item }">
-          <CCollapse :visible="Boolean(item._toggled)">
+        <template #MORE="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              color="primary"
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleButton(item, index)"
+            >
+            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+            </CButton>
+          </td>
+        </template>
+        <template #details="{ item }">
+          <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
                 {{ item.username }}
@@ -109,7 +122,7 @@
               <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
             </CCardBody>
           </CCollapse>
-        </template> -->
+        </template>
       </CSmartTable>
     </CCard>
   </div>
@@ -177,6 +190,7 @@ export default {
     },
     setup() {
         const columns = [
+            
             { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
@@ -184,7 +198,7 @@ export default {
             { key: 'STATUS', _style: { width: '5%' } },
             { key: 'TYPE', _style: { width: '4%' } },
             { key: 'BOOKMARK', _style: { width: '5%' } },
-          
+            { key: 'MORE',_style: { width: '5%' }},
             
      
         ];
@@ -202,6 +216,7 @@ export default {
               return 'primary'; // Return a default color if none of the cases match.
           }
         };
+        
         const items = ref([]);
         const toggleDetails =  async(item) => {
 
@@ -256,6 +271,9 @@ export default {
 
     components: { CRow, CCol },
     methods:{
+      async toggleButton(item) {
+        item.MORE = !item.MORE;
+        },
 
       async getTicket(){
         try {
