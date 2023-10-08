@@ -12,7 +12,7 @@
             >
               <CAvatar class="Arrow_Left" :src="Arrow_Left" />
             </div>
-            <div>Testkkuuyty101</div>
+            <div> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </div>
           </CCol>
         </div>
       </CRow>
@@ -115,13 +115,18 @@
               </div>
             </div>
             <div class="col-10">
+
+
               <CFormInput
                 v-model="comment"
                 class="comments_box"
                 type="text"
                 placeholder="add comments"
                 aria-label="comments_box"
-              ></CFormInput>
+                id="comments_box"
+                @input="countCharacters"
+              >
+              </CFormInput>
               <input
                 type="file"
                 ref="fileInput"
@@ -161,18 +166,19 @@
                   style="width: 20px"
                 />
               </CButton>
+              <p class="text-end" >Character count: {{ characterCount }} / 200</p>
             </div>
             <div class="col">
               <div class="avatar">
                 <CButton @click="submitComment" id="submitComment"
-                  ><img class="commit" :src="commit" alt="Commit Icon"
+                  > <img class="commit" :src="commit" alt="Commit Icon"
                 /></CButton>
               </div>
             </div>
           </div>
         </div>
         <br />
-        <div v-for="(item, index) in comments" :key="index">
+        <div v-for="(item, index) in comments" :key="index" >
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-1">
@@ -201,16 +207,14 @@
       </CCardBody>
     </CCard>
   </div>
+
 </template>
 
 <script>
-// export default {
-//   methods: {
-//     myFunction() {
-//       alert('ตองขี้เกียจ')
-//     },
-//   },
-// }
+var myText = document.getElementById('comment_box')
+var character_counts = document.getElementById('character_counts')
+
+
 import Arrow_Left from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
@@ -268,6 +272,9 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
+
+      comment: '',
+      characterCount: 0,
     }
   },
 
@@ -280,6 +287,20 @@ export default {
         x.innerHTML = 'Expand'
       }
     },
+
+    countCharacters() {
+      this.characterCount = this.comment.length;
+      if (this.characterCount > 200) {
+        this.comment = this.comment.slice(0, 200);
+        this.characterCount = 200;
+      }
+    },
+    // async test(){
+    //   myText.addEventListener("keyup", function() {
+    //     var character = myText.value.split('');
+    //     character_counts.innerHTML = character.length;
+    //   })
+    // },
     //------- AOM -------
     async attachImage() {
       const imageInput = this.$refs.fileInput
@@ -443,3 +464,56 @@ img.commit {
   box-shadow: none;
 }
 </style>
+
+
+
+<!-- <template>
+  <div>
+    <CFormInput v-model="inputValue" @input="countCharacters" />
+    <p>Character count: {{ characterCount }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      inputValue: '',
+      characterCount: 0,
+    };
+  },
+  methods: {
+    countCharacters() {
+      this.characterCount = this.inputValue.length;
+    },
+  },
+};
+</script> -->
+
+
+<!-- <template>
+  <div>
+    <CFormInput v-model="inputValue" @input="updateCharacterCount" />
+    <p>Character count: {{ characterCount }} / 200</p>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      inputValue: '',
+      characterCount: 0,
+    };
+  },
+  methods: {
+    updateCharacterCount() {
+      this.characterCount = this.inputValue.length;
+      if (this.characterCount > 200) {
+        this.inputValue = this.inputValue.slice(0, 200);
+        this.characterCount = 200;
+      }
+    },
+  },
+};
+</script> -->
