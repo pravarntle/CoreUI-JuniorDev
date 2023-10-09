@@ -29,8 +29,8 @@
           <p class="small">settawut@gmail.com</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b>Jul 17, 2023 &nbsp; </b>
-          <span class="badge bg-danger"> <li>High</li> </span>
+          <b>{{date}} &nbsp; </b>
+          <span class="badge bg-danger">{{ priorities }}</span>
         </CCol>
       </CRow>
       <hr />
@@ -57,17 +57,16 @@
               <CCardBody style="margin-left: 2%">
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Title : </b>
-                  <CCradText> Internet speed is very low</CCradText>
+                  <CCradText> {{title}}</CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Type : </b>
-                  <CCradText> Service Request </CCradText>
+                  <CCradText> {{ type }} </CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Description : </b>
                   <CCradText>
-                    The internet is slower than usual, please check the
-                    internet.
+                    {{description}}
                   </CCradText>
                 </CCol>
               </CCardBody>
@@ -85,7 +84,7 @@
                     :src="File_test"
                     style="padding: 2px"
                   />
-                  <CCradText> internet speed test image.jpg</CCradText>
+                  <CCradText> {{picture}}</CCradText>
                   <br />
                 </CCol>
                 <br />
@@ -226,6 +225,7 @@ import Attach_Image from '@/assets/images/Attach_Image.png'
 import { CButton, CFormInput } from '@coreui/vue-pro'
 import insert_link from '@/assets/images/insert_link.png'
 import Attach_File from '@/assets/images/Attach_File.png'
+import axios from 'axios';
 import {
   CAvatar,
   CCardBody,
@@ -260,6 +260,7 @@ export default {
     CButton,
   },
   data() {
+    
     return {
       visibleA: true,
       visibleB: true,
@@ -274,7 +275,13 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
-
+      ticketId:'',
+      type:'',
+      description:'',
+      title:'',
+      priorities:'',
+      picture:'',
+      date:'',
       comment: '',
       characterCount: 1,
       maxCharacterCount: 200,
@@ -390,6 +397,33 @@ export default {
       this.link = ''
       this.file = null
     },
+    async getTicket(){
+        try {
+          const ticketId=this.ticketIdId;
+          console.log(ticketId);
+
+          const response = await axios.get(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`);
+          console.log(response.data);
+
+          this.type = response.data.tkt_types;
+          this.description = response.data.tkt_description;
+          this.title = response.data.tkt_title;
+          this.priorities = response.data.tkt_priorities;
+          // this.picture = response.data.picture;
+          this.date = response.data.tkt_time;
+
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+  },
+  mounted(){
+    const itemId = this.$route.params.itemId;
+    this.ticketIdId=itemId;
+    this.getTicket();
+    
   },
 }
 </script>

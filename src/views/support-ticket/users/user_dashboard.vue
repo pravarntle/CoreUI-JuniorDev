@@ -60,19 +60,15 @@
       </CCardHeader>
       <CSmartTable
         :active-page="1"
-        footer
         header
         cleaner
-        
         :items="items"
         :columns="columns"
         columnFilter
         column-sorter
-        clickable-rows
         table-filter
         :items-per-page="5"
         items-per-page-select
-
         pagination
         columnSorter
         :sorterValue="{ column: 'status', state: 'asc' }"
@@ -82,9 +78,11 @@
         }"
       >
       
-      <template #status="{ item }">
+      <template #STATUS="{ item }">
         <td>
+          
           <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+          
         </td>
       </template>
 
@@ -96,22 +94,34 @@
               size="xl"
               @click="toggleDetails(item, index)"
             >
-            {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
+            {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
             </CButton>
           </td>
         </template>
-        <!-- <template #details="{ item }">
-          <CCollapse :visible="Boolean(item._toggled)">
+        <template #MORE="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              color="primary"
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleButton(item, index)"
+            >
+            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+            </CButton>
+          </td>
+        </template>
+        <template #details="{ item , index }">
+          <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
-                {{ item.username }}
+                {{ item.tkt_title }}
               </h4>
-              <p class="text-muted">User since: {{ item.registered }}</p>
-              <CButton size="sm" color="info" class=""> User Settings </CButton>
-              <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
+              <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
+              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
             </CCardBody>
           </CCollapse>
-        </template> -->
+        </template>
       </CSmartTable>
     </CCard>
   </div>
@@ -179,14 +189,15 @@ export default {
     },
     setup() {
         const columns = [
+            
             { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE', _style: { width: '11%' } },
-            { key: 'STATUS', _style: { width: '10%' } },
-            { key: 'TYPE', _style: { width: '10%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } }
-          
+            { key: 'STATUS', _style: { width: '5%' } },
+            { key: 'TYPE', _style: { width: '4%' } },
+            { key: 'BOOKMARK', _style: { width: '5%' } },
+            { key: 'MORE',_style: { width: '5%' }},
             
      
         ];
@@ -204,10 +215,9 @@ export default {
               return 'primary'; // Return a default color if none of the cases match.
           }
         };
+        
         const items = ref([]);
-        const toggleDetails = (item) => {
-          item._toggled = !item._toggled;
-        };
+        
 
         async function getData() {
           const user = JSON.parse(localStorage.getItem("USER_DATA"))
@@ -222,7 +232,7 @@ export default {
             console.log(error)
           }
         }
-        
+        const activePage = ref(1)
         return {
             LGblue,
             LGgreen,
@@ -230,14 +240,65 @@ export default {
             columns,
             items,
             getBadge,
-            toggleDetails,
-
+            activePage,
             getData,
         };
     },
 
     components: { CRow, CCol },
     methods:{
+      async contactIt(item){
+        const itemId = item._id.toString(); 
+
+        this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+        console.log('Item ID:', itemId);
+      },
+      async toggleDetails(item){
+
+      item.BOOKMARK = !item.BOOKMARK;
+      try {
+        const itemId = item._id.toString(); 
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+          data:{
+              tkt_book: item.BOOKMARK
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+      },
+
+      async buttonCancel(item) {
+
+      try {
+        const itemId = item._id.toString(); 
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+          data:{
+              tkt_status: "Cancel"
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        // รีเฟรชหน้า
+        window.location.reload();
+        
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+      },
+
+      async toggleButton(item) {
+        item.MORE = !item.MORE;
+        },
+
       async getTicket(){
         try {
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
@@ -246,53 +307,39 @@ export default {
           const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
+              tkt_status: { $ne: 'Cancel' }
+
             },
           });
-          console.log(response.data);
-          console.log(userId)
           // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
           this.items = response.data.map((element, index) => ({
             '#': index + 1, // หมายเลขแถว
+            _id:element._id,
             TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
             TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
             // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
             // ตามลำดับของ columns ในตัวแปร columns
             // เพิ่มเติมตามความต้องการ
             'START DATE': element.tkt_time,
-            'LAST UPDATE': element.tkt_time,
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
-            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+            MORE: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
           }));
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      },
 
-
-
-      async getTicket(){
-        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-
-        .then(response => {
-          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
-          this.dataArray = response.data;
-        })
-        .catch(error => {
-          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-        });
-
-      },
+      }, 
 
 
       async getCountall (){
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
-
           const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
+              tkt_status: { $ne: 'Cancel' }
             },
           });
           // console.log(allTicket)
@@ -320,6 +367,8 @@ export default {
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getCountall();
       this.getTicket();
+      
+
     }
   }
 </script>
