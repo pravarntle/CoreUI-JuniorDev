@@ -163,10 +163,10 @@
                   class="attach-file"
                   :src="Attach_File"
                   alt="Attach File"
-                  style="width: 20px"
+                  style="width: 12px"
                 />
               </CButton>
-              <p class="text-end" >Character count: {{ characterCount }} / 200</p>
+              <span class="text-end" style="margin-left: 720px;">Character count: {{ characterCount }} / 200</span>
             </div>
             <div class="col">
               <div class="avatar">
@@ -199,6 +199,7 @@
                   <a :href="item.file.url" target="_blank">{{
                     item.file.name
                   }}</a>
+
                 </div>
               </div>
             </div>
@@ -206,6 +207,7 @@
         </div>
       </CCardBody>
     </CCard>
+
   </div>
 
 </template>
@@ -274,7 +276,8 @@ export default {
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
 
       comment: '',
-      characterCount: 0,
+      characterCount: 1,
+      maxCharacterCount: 200,
     }
   },
 
@@ -289,11 +292,11 @@ export default {
     },
 
     countCharacters() {
-      this.characterCount = this.comment.length;
-      if (this.characterCount > 200) {
-        this.comment = this.comment.slice(0, 200);
-        this.characterCount = 200;
-      }
+      // this.characterCount = this.comment.length;
+      // if (this.characterCount > 200) {
+      //   this.comment = this.comment.slice(0, 200);
+      //   this.characterCount = 200;
+      // }
     },
     // async test(){
     //   myText.addEventListener("keyup", function() {
