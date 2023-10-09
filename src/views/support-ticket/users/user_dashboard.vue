@@ -1,10 +1,9 @@
 <template>
-
   <div class="box">
     <CRow>
       <Ccrad>
         <CCardHeader>
-        <h2>Dashboard</h2>
+          <h2>Dashboard</h2>
         </CCardHeader>
         <CRow class="mb-3">
           <CCol>
@@ -16,12 +15,7 @@
                     <p class="ps-5 ms-3" id="font">{{ count_all }}</p>
                   </CCol>
                   <CCol class="mt-5">
-                    <CImage
-                      class="LG"
-                      :src="LGblue"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGblue" fluid block />
                   </CCol>
                 </CRow>
               </CCardbody>
@@ -29,19 +23,14 @@
           </CCol>
           <CCol>
             <CCard class="p-2 mb-2" id="border">
-              <CCardbody >
+              <CCardbody>
                 <b id="open">Open Tickets</b>
                 <CRow>
                   <CCol>
                     <p class="ps-5 ms-3 " id="font">{{ count_open }}</p>
                   </CCol>
                   <CCol class="mt-5">
-                    <CImage
-                      class="LG"
-                      :src="LGgreen"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGgreen" fluid block />
                   </CCol>
                 </CRow>
               </CCardbody>
@@ -49,25 +38,19 @@
           </CCol>
           <CCol>
             <CCard class="p-2 mb-2" id="border">
-              <CCardbody >
-                <b  id="closed">Closed Tickets</b>
+              <CCardbody>
+                <b id="closed">Closed Tickets</b>
                 <CRow>
                   <CCol>
                     <p class="ps-5 ms-3" id="font">{{ count_closed }}</p>
                   </CCol>
                   <CCol class="mt-4">
-                    <CImage
-                      class="LG"
-                      :src="LGred"
-                      fluid
-                      block
-                    />
+                    <CImage class="LG" :src="LGred" fluid block />
                   </CCol>
-                </CRow>  
+                </CRow>
               </CCardbody>
             </CCard>
           </CCol>
-          
         </CRow>
       </Ccrad>
     </CRow>
@@ -89,7 +72,7 @@
         table-filter
         :items-per-page="5"
         items-per-page-select
-        
+
         pagination
         columnSorter
         :sorterValue="{ column: 'status', state: 'asc' }"
@@ -132,37 +115,32 @@
       </CSmartTable>
     </CCard>
   </div>
-
 </template>
 <style>
-  .text-right-header {
-    text-align: right;
-  }
-  #all{
-    font-size: 24px;
-    color: #1A72B8;
-  }
-  #open{
-    font-size: 24px;
-    color: #147A2A;
-  }
-  #closed{
-    font-size: 24px;
-    color: #B22424;
-  }
-  #font{
-    font-weight: 700;
-    align-items: center;
-    font-size: 100px;
-    color: #000;
-  }
-  .LG{
-  
-    width: 50%;
-  }
-  #border{
-    border-radius: 6%;
-  }
+#all {
+  font-size: 24px;
+  color: #1a72b8;
+}
+#open {
+  font-size: 24px;
+  color: #147a2a;
+}
+#closed {
+  font-size: 24px;
+  color: #b22424;
+}
+#font {
+  font-weight: 700;
+  align-items: center;
+  font-size: 100px;
+  color: #000;
+}
+.LG {
+  width: 50%;
+}
+#border {
+  border-radius: 6%;
+}
 </style>
 
 <script>
@@ -194,8 +172,8 @@ export default {
             count_all:'',
             count_open:'',
             count_closed:'',
-            
-            
+
+
         };
 
     },
@@ -205,7 +183,6 @@ export default {
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE', _style: { width: '11%' } },
-            { key: 'LAST UPDATE', _style: { width: '15%' } },
             { key: 'STATUS', _style: { width: '10%' } },
             { key: 'TYPE', _style: { width: '10%' } },
             { key: 'BOOKMARK', _style: { width: '10%' } }
@@ -231,6 +208,20 @@ export default {
         const toggleDetails = (item) => {
           item._toggled = !item._toggled;
         };
+
+        async function getData() {
+          const user = JSON.parse(localStorage.getItem("USER_DATA"))
+          try {
+            const response = await axios({
+              method: 'GET',
+              url: 'http://localhost:3000/mongoose/get/check-token',
+              headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
+        }
         
         return {
             LGblue,
@@ -240,25 +231,35 @@ export default {
             items,
             getBadge,
             toggleDetails,
+
+            getData,
         };
     },
-    
+
     components: { CRow, CCol },
     methods:{
       async getTicket(){
         try {
-    const response = await axios.get('http://localhost:3000/mongoose/get/stts_tickets/');
-    // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          console.log(response.data);
+          console.log(userId)
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
           this.items = response.data.map((element, index) => ({
-            
             '#': index + 1, // หมายเลขแถว
             TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
             TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
             // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
             // ตามลำดับของ columns ในตัวแปร columns
             // เพิ่มเติมตามความต้องการ
-            'START DATE': element.CREATED_AT,
-            'LAST UPDATE': element.UPDATED_AT,
+            'START DATE': element.tkt_time,
+            'LAST UPDATE': element.tkt_time,
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
@@ -267,13 +268,34 @@ export default {
         } catch (error) {
           console.error('Error fetching data:', error);
         }
+      },
+
+
+
+      async getTicket(){
+        const ticket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
+
+        .then(response => {
+          // เมื่อรับข้อมูลแล้ว ให้เก็บข้อมูลในตัวแปร array
+          this.dataArray = response.data;
+        })
+        .catch(error => {
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+        });
 
       },
 
-      //บอกจำนวนของ ticket ทั้งหมด
+
       async getCountall (){
-        const allTicket= await axios.get('http://localhost:3000/mongoose/get/stts_tickets/')
-        // console.log(allTicket)
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+          const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+            where: {
+              tkt_act: userId,
+            },
+          });
+          // console.log(allTicket)
         var countAll =0;
         var countOpen =0;
         var countClosed =0;
@@ -284,22 +306,20 @@ export default {
             }else if(element.tkt_status=='Closed'){
               countClosed++;
             }
-            
-          }); 
+
+          });
 
           this.count_all=countAll;
           this.count_open=countOpen;
           this.count_closed=countClosed;
       }
 
-        
+
     },
     mounted(){
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getCountall();
       this.getTicket();
     }
-
-
-}
+  }
 </script>
