@@ -5,50 +5,39 @@
         <div>
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
-          <CCol class="text-start">
-            <div
-              class="avatar"
-              style="padding: 1px; text-align: center; margin-top: 1%"
-            >
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
+          <CCol>
+            <div class="text-start" style="padding: 1px;  margin-top: 1%">
+              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+              <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label>
             </div>
-            <div> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </div>
           </CCol>
         </div>
       </CRow>
       <hr />
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
-        <CCardImage
-          class="Icon_user_man"
-          :src="Icon_user_man"
-          style="padding: -4px"
-        />
+        <CCardImage class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
           <b> Settawut101</b>
           <p class="small">settawut@gmail.com</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
           <b>Jul 17, 2023 &nbsp; </b>
-          <span class="badge bg-danger"> <li>High</li> </span>
+          <span class="badge bg-danger">
+            <li>High</li>
+          </span>
         </CCol>
       </CRow>
       <hr />
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
       <div class="clearfix text-end" style="margin-right: 4%">
-        <CButton
-          class="btn btn-outline-info"
-          style="font-weight: bold; font-size: x-small; width: 65px"
-          id="b1"
-          @click="
-            () => {
-              visibleA = !visibleA
-              visibleB = !visibleB
-              javascript3()
-            }
-          "
-          >Short
+        <CButton class="btn btn-outline-info" style="font-weight: bold; font-size: x-small; width: 65px" id="b1" @click="() => {
+          visibleA = !visibleA
+          visibleB = !visibleB
+          javascript3()
+        }
+          ">Short
         </CButton>
 
         <CRow>
@@ -80,11 +69,7 @@
               </Crow>
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
-                  <CCardImage
-                    class="File_test"
-                    :src="File_test"
-                    style="padding: 2px"
-                  />
+                  <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
                   <CCradText> internet speed test image.jpg</CCradText>
                   <br />
                 </CCol>
@@ -107,93 +92,55 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <img
-                  class="Icon_user_man"
-                  :src="Icon_user_man"
-                  alt="User Icon"
-                />
+                <img class="Icon_user_man" :src="Icon_user_man" alt="User Icon" />
               </div>
             </div>
             <div class="col-10">
 
 
-              <CFormInput
-                v-model="comment"
-                class="comments_box"
-                type="text"
-                placeholder="add comments"
-                aria-label="comments_box"
-                id="comments_box"
-                @input="countCharacters"
-              >
+              <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
+                aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
+                @keyup.enter="submitComment" maxlength="200">
               </CFormInput>
-              <input
-                type="file"
-                ref="fileInput"
-                @change="attachImage"
-                style="display: none"
-                id="imageInput"
-              />
-              <CButton @click="attachImage" id="attach_image"
-                ><img
-                  class="attach-image"
-                  :src="Attach_Image"
-                  id="attachImage"
-                  alt="Attach Image"
-                  style="width: 20px"
-                />
+              <br>
+              <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
+              <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
+                  id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
               <span id="selectedImage">{{ imageName }}</span>
-              <CButton @click="attachLink" id="attach_link"
-                ><img
-                  class="insert-link"
-                  :src="insert_link"
-                  alt="Insert Link"
-                  style="width: 20px"
-                />
+              <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
+                  style="width: 20px" />
               </CButton>
-              <input
-                type="file"
-                ref="fileInput"
-                @change="handleFileChange"
-                style="display: none"
-              />
-              <CButton @click="attachFile" id="attach_file"
-                ><img
-                  class="attach-file"
-                  :src="Attach_File"
-                  alt="Attach File"
-                  style="width: 20px"
-                />
+              <input type="file" ref="fileInput" @change="handleFileChange" style="display: none" />
+              <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
+                  style="width: 12px" />
               </CButton>
-              <p class="text-end" >Character count: {{ characterCount }} / 200</p>
+              <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @click="submitComment" id="submitComment"
-                  > <img class="commit" :src="commit" alt="Commit Icon"
-                /></CButton>
+                <CButton @keyup.enter="submitComment" @click="submitComment" id="submitComment"> <img class="commit"
+                    :src="commit" alt="Commit Icon" /></CButton>
               </div>
             </div>
           </div>
         </div>
         <br />
-        <div v-for="(item, index) in comments" :key="index" >
+        <div v-for="(item, index) in comments" :key="index">
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <img
-                    class="Icon_user_man"
-                    :src="Icon_user_man"
-                    alt="User Icon"
-                  />
+                  <img class="Icon_user_man" :src="Icon_user_man" alt="User Icon" />
                 </div>
               </div>
               <div class="col-10">
                 <p><b>ชื่อผู้ใช้งาน</b> &emsp;เวลาที่คอมเม้น</p>
                 <div class="comments_box" style="padding: 10px">
                   {{ item.comment }}
+                </div>
+                <div v-if="item.image">
+                  <CImage :src="item.image" alt="Comment Image" style="max-width: 500px; height: auto;" />
                 </div>
                 <div v-if="item.file">
                   <a :href="item.file.url" target="_blank">{{
@@ -207,7 +154,6 @@
       </CCardBody>
     </CCard>
   </div>
-
 </template>
 
 <script>
@@ -272,7 +218,6 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
-
       comment: '',
       characterCount: 0,
     }
@@ -289,12 +234,13 @@ export default {
     },
 
     countCharacters() {
-      this.characterCount = this.comment.length;
-      if (this.characterCount > 200) {
-        this.comment = this.comment.slice(0, 200);
-        this.characterCount = 200;
+      if (this.comment.length > 200) {
+        this.comment = this.comment.slice(0, 200); // จำกัดความยาวของ comment เป็น 200 ตัวอักษร
       }
+      this.characterCount = this.comment.length;
     },
+
+
     // async test(){
     //   myText.addEventListener("keyup", function() {
     //     var character = myText.value.split('');
@@ -386,6 +332,7 @@ export default {
       this.imageName = ''
       this.link = ''
       this.file = null
+
     },
   },
 }
@@ -395,14 +342,17 @@ export default {
 .Arrow_Left {
   width: 35px;
 }
+
 .Icon_user_man {
   /* margin-left: 0.5pc; */
   width: 56px;
   height: 56px;
 }
+
 .Short {
   width: 60px;
 }
+
 .Cte {
   margin-right: 50%;
 }
@@ -412,10 +362,12 @@ export default {
   justify-content: space-between;
   width: 35px;
 }
+
 .File_test {
   width: 20px;
   height: 20px;
 }
+
 .Dis_Between {
   display: flex;
   justify-content: space-between;
@@ -427,6 +379,10 @@ div .comments_box {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   height: 45px;
   border-radius: 15px;
+  white-space: pre-wrap;
+  /* เพื่อให้ข้อความคอมเมนต์ขึ้นบรรทัดใหม่เมื่อมีการพิมพ์และเกิน 1 บรรทัด */
+  word-wrap: break-word;
+  /* เพื่อให้ข้อความคอมเมนต์แตกคำเมื่อเกินขอบเขตของตัวอักษร */
 }
 
 div .comments_box:focus {
