@@ -157,9 +157,9 @@
             // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
             await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
               data:{
-                  tkt_book: item.BOOKMARK
-
-              }
+                  tkt_book: item.BOOKMARK,
+                  
+               }
             });
 
             // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
@@ -186,6 +186,7 @@
             where: {
               tkt_act: userId,
               tkt_book:"true",
+              tkt_status: { $ne: 'Cancel' }
 
             },
           });

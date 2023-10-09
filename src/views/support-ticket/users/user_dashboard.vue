@@ -111,15 +111,14 @@
             </CButton>
           </td>
         </template>
-        <template #details="{ item }">
+        <template #details="{ item , index }">
           <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
-                {{ item.username }}
+                {{ item.tkt_title }}
               </h4>
-              <p class="text-muted">User since: {{ item.registered }}</p>
-              <CButton size="sm" color="info" class=""> User Settings </CButton>
-              <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
+              <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
+              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
             </CCardBody>
           </CCollapse>
         </template>
@@ -218,28 +217,6 @@ export default {
         };
         
         const items = ref([]);
-        const toggleDetails =  async(item) => {
-
-          item.BOOKMARK = !item.BOOKMARK;
-          console.log(item.BOOKMARK)
-          console.log(item)
-          try {
-            const itemId = item._id.toString(); 
-            // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-            await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
-              data:{
-                  tkt_book: item.BOOKMARK
-
-              }
-            });
-
-            // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-            console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-          } catch (error) {
-            console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
-          }
-        };
-
         
 
         async function getData() {
@@ -263,7 +240,6 @@ export default {
             columns,
             items,
             getBadge,
-            toggleDetails,
             activePage,
             getData,
         };
@@ -271,6 +247,54 @@ export default {
 
     components: { CRow, CCol },
     methods:{
+      async contactIt(item){
+        const itemId = item._id.toString(); 
+
+        this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+
+      },
+      async toggleDetails(item){
+
+      item.BOOKMARK = !item.BOOKMARK;
+      try {
+        const itemId = item._id.toString(); 
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+          data:{
+              tkt_book: item.BOOKMARK
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+      },
+
+      async buttonCancel(item) {
+
+      try {
+        const itemId = item._id.toString(); 
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+          data:{
+              tkt_status: "Cancel"
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        // รีเฟรชหน้า
+        window.location.reload();
+        
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+      },
+
       async toggleButton(item) {
         item.MORE = !item.MORE;
         },
@@ -283,11 +307,10 @@ export default {
           const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
+              tkt_status: { $ne: 'Cancel' }
 
             },
           });
-          console.log(response.data);
-          console.log(userId)
           // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
           this.items = response.data.map((element, index) => ({
             '#': index + 1, // หมายเลขแถว
@@ -313,10 +336,10 @@ export default {
       async getCountall (){
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
-          console.log(userId)
           const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
             where: {
               tkt_act: userId,
+              tkt_status: { $ne: 'Cancel' }
             },
           });
           // console.log(allTicket)
