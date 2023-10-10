@@ -291,7 +291,7 @@ export default {
         const itemId = item._id.toString(); 
 
         this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
-        console.log('Item ID:', itemId);
+      
       },
       async toggleDetails(item){
 

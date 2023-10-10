@@ -1,15 +1,15 @@
 <template>
   <CFooter>
-    <!-- <div>
-      <a href="https://coreui.io" target="_blank">CoreUI</a>
+    <div>
+      <a href="/#/" target="_blank">STTS</a>
       <span class="ms-1"
-        >&copy; {{ new Date().getFullYear() }} creativeLabs.</span
+        >&copy; {{ new Date().getFullYear() }} Team 2 SE.</span
       >
     </div>
     <div class="ms-auto">
-      <span class="me-1" target="_blank">Powered by</span>
-      <a href="https://coreui.io/vue">CoreUI for Vue</a>
-    </div> -->
+      <span class="me-1" target="_blank"></span>
+      <a href="https://coreui.io/vue"></a>
+    </div>
   </CFooter>
 </template>
 
