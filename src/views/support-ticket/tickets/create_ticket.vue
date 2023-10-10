@@ -14,13 +14,16 @@
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
-        <CForm>
+        <CForm  :validated="form.validatedCustom01" >
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5><b> Title </b></h5>
               <CFormInput
+               type="text"
+               id ="tkt_title"
+               name = "tkt_title"
                 v-model="form.tkt_title"
                 feedbackInvalid="ห้ามเว้นว่าง"
                 :invalid="validate.tkt_title"
@@ -74,7 +77,7 @@
               />
             </div>
           </CRow>
-        </CForm>
+
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
@@ -85,6 +88,8 @@
               size="lg"
               id="formFileLg"
               v-model="form.tkt_picture"
+              :invalid="validate.tkt_picture"
+              required
             />
           </div>
         </CRow>
@@ -93,6 +98,7 @@
           <CButton class="btn-sec" color="success" @click="vaildateBeforeSave" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Submit</CButton>
         </div>
         <CElementCover :opacity="0.5" v-if="pageLoading" />
+        </CForm>
       </CCardBody>
     </CCard>
   </div>
@@ -118,7 +124,7 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
-import { CForm } from '@coreui/vue-pro'
+import { CForm, CFormLabel } from '@coreui/vue-pro'
 import axios from 'axios'
 
 export default {
@@ -136,7 +142,10 @@ export default {
         tkt_types: '',
         tkt_book: '',
         tkt_act: '',
+        validatedCustom01: ''
+
       },
+
       userOptions: [],
       userOptions: [],
       genderOptions: [],
@@ -192,11 +201,12 @@ export default {
       })
     },
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
+
     vaildateBeforeSave() {
-      let error
+      let error;
       if (this.form.tkt_title === '') {
-        error = true
-        this.validate.tkt_title = true
+        error = true;
+        this.validate.tkt_title = true;
       }
       if (this.form.tkt_types === '') {
         error = true
@@ -209,6 +219,9 @@ export default {
       if (this.form.tkt_description === '') {
         error = true
         this.validate.tkt_description = true
+      }
+      if (validate !== null) {
+        this.validatedCustom01 = false
       }
 
       if (error) {
@@ -273,6 +286,6 @@ export default {
       })
     },
   },
-  components: { CForm },
+  components: { CForm, CFormLabel },
 }
 </script>
