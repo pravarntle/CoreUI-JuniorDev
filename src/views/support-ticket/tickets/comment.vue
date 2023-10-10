@@ -100,7 +100,7 @@
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
                 aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
-                @keyup.enter="submitComment" maxlength="200" row="3"> 
+                @keyup.enter="submitComment" maxlength="200" row="3">
               </CFormInput>
               <br>
               <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
@@ -116,6 +116,7 @@
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
               <span id="selectedImage">{{ imageName }}</span>
+              <span v-if="link !== ''"> | <a >link : {{ link }}</a></span>
             </div>
             <div class="col">
               <div class="avatar">
@@ -138,20 +139,23 @@
                 <p><b>ชื่อผู้ใช้งาน</b> &emsp;เวลาที่คอมเม้น</p>
                 <div class="comments_box" style="padding: 10px">
                   {{ item.comment }}
-                  <span v-if="item.image">
-                    <CImage :src="item.image" alt="Comment Image" style="max-width: 500px; height: auto;" />
-                  </span>
-                  <!-- <span v-if="item.file">
-                    <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File Icon" style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
-                    <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
-                    <a :href="item.file.url" download><i class="cil-cloud-download"></i></a>
-                  </span> -->
+                  <a v-if="item.link" href="#" @click.prevent="openLink(item.link)">
+                    {{ item.link }}
+                  </a>
+                  <a v-if="item.image">
+                    <CImage :src="item.image" alt="Comment Image" style="max-width: 400px; height: auto;" />
+                  </a>
                 </div>
+                <!-- <template v-if="item.link">
+                    <a @click="openLink(item.link)" style="text-decoration: none; color: #007bff; ">
+                      {{ item.link }}
+                    </a>
+                  </template>   -->
                 <span v-if="item.file">
-                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File Icon"
+                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
                   <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
-                  <a :href="item.file.url" download><i class="cil-cloud-download"></i></a>
+                  <a :href="item.file.url" download></a>
                 </span>
               </div>
             </div>
@@ -170,7 +174,7 @@ var character_counts = document.getElementById('character_counts')
 import Arrow_Left from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
-import Icon_user_man from '@/assets/images/Icon_user_man.jpg'
+import Icon_user_man from '@/assets/images/icon_user_man.jpg'
 import commit from '@/assets/images/commit.png'
 import Attach_Image from '@/assets/images/Attach_Image.png'
 import { CButton, CFormInput } from '@coreui/vue-pro'
@@ -239,21 +243,12 @@ export default {
       }
     },
 
-    countCharacters() {
+    async countCharacters() {
       this.characterCount = this.comment.length;
-      // if (this.comment.length > 200) {
-      //   this.comment = this.comment.slice(0, 200); // จำกัดความยาวของ comment เป็น 200 ตัวอักษร
-      // }
-
     },
 
 
-    // async test(){
-    //   myText.addEventListener("keyup", function() {
-    //     var character = myText.value.split('');
-    //     character_counts.innerHTML = character.length;
-    //   })
-    // },
+
     //------- AOM -------
     async attachImage() {
       const imageInput = this.$refs.fileInput
@@ -278,14 +273,15 @@ export default {
         }
       })
     },
-    attachLink() {
+    async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
       if (link) {
         this.link = link // เก็บลิงค์ในคุณสมบัติข้อมูล
+        // this.comment = link; // อัปเดตค่า comment เพื่อแสดงข้อมูลลิงก์ใน comment box
         console.log('ลิงค์ถูกแนบเรียบร้อย')
       }
     },
-    attachFile() {
+    async attachFile() {
       const fileInput = this.$refs.fileInput;
       fileInput.click();
 
@@ -303,7 +299,7 @@ export default {
       });
 
     },
-    handleFileChange(event) {
+    async handleFileChange(event) {
       const file = event.target.files[0]
       if (file) {
         this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
@@ -313,7 +309,7 @@ export default {
         console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
       }
     },
-    submitComment() {
+    async submitComment() {
       if (
         this.comment.trim() === '' &&
         this.imageDataURL === '' &&
@@ -347,6 +343,11 @@ export default {
         };
       }
 
+      // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
+      if (this.comment.trim() !== '') {
+        newComment.comment = this.comment;
+      }
+
       // เพิ่มความคิดเห็นลงในรายการ
       this.comments.push(newComment)
 
@@ -358,28 +359,32 @@ export default {
       this.file = null
 
     },
-    isImageFile(filename) {
-      const imageExtensions = ['doc', 'docx', 'pdf']; // รายการส่วนขยายของไฟล์รูปภาพ
+    async isImageFile(filename) {
+      const imageExtensions = ['doc', 'docx', 'jpeg', 'png', 'pdf']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
       return imageExtensions.includes(fileExtension);
     },
 
-    getImageIcon(filename) {
+    async getImageIcon(filename) {
       const fileExtension = filename.split('.').pop().toLowerCase();
-      switch (fileExtension) {
+      switch (filename.split('.').pop().toLowerCase()) {
         case 'doc':
         case 'docx':
-          return require('@/assets/images/doc_icon.png');
-        // case 'jpeg':
-        //   return require('@/assets/images/jpg_icon.png');
-        // case 'png':
-        //   return require('@/assets/images/png_icon.png');
+          return require('@/assets/images/Doc_icon.png');
+        case 'jpg':
+        case 'jpeg':
+          return require('@/assets/images/Jpeg_icon.png');
+        case 'png':
+          return require('@/assets/images/Png_icon.png');
         case 'pdf':
-          return require('@/assets/images/pdf_icon.png');
+          return require('@/assets/images/Pdf_icon.png');
         // เพิ่มประเภทของไฟล์อื่นๆ ตามต้องการ
-        // default:
-        //   return require('@/assets/images/file_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
+        default:
+          return require('@/assets/images/File_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
       }
+    },
+    async openLink(link) {
+      window.open(link, '_blank');
     },
   },
 }
