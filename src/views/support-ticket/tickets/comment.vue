@@ -19,11 +19,11 @@
       <hr />
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
-        
+
         <CAvatar v-if="avatar"
           class="Icon_user_man"
           :src="require(`@/assets/images/${avatar}`)"
-          style="padding: -4px"
+          style="padding: -4px;"
         />
         <CAvatar
           v-else
@@ -279,7 +279,7 @@ export default {
     CButton,
   },
   data() {
-    
+
     return {
       visibleA: true,
       visibleB: true,
@@ -421,7 +421,7 @@ export default {
     },
     async getTicket(){
         try {
-          
+
           const ticketId=this.ticketIdId;
           console.log(ticketId);
 
@@ -439,18 +439,18 @@ export default {
           this.firstname = response.data.tkt_act.act_first_name_eng;
 
           // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-          
+
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       },
-      
+
   },
   mounted(){
     const itemId = this.$route.params.itemId;
     this.ticketIdId=itemId;
     this.getTicket();
-    
+
   },
 }
 </script>
@@ -459,6 +459,7 @@ export default {
 .Arrow_Left {
   width: 35px;
 }
+
 .Icon_user_man {
   /* margin-left: 0.5pc; */
   width: 56px;
