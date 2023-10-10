@@ -60,7 +60,7 @@
                 @change="checkpiority"
               />
             </div>
-            test
+            
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -221,9 +221,7 @@ export default {
         error = true
         this.validate.tkt_description = true
       }
-      if (validate !== null) {
-        this.validatedCustom01 = false
-      }
+      
 
       if (error) {
       } else {
