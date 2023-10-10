@@ -9,30 +9,33 @@
           </CRow>
           
         </CCardHeader>
+        <div class="table-responsive table-borderless">
         <CSmartTable
-          :active-page="3"
-          cleaner
-          column-filter
-          column-sorter
-          :columns="columns"
-          clickable-rows
-          footer
+          :active-page="1"
           header
+          cleaner
+          :items="items"
+          :columns="columns"
+          columnFilter
+          column-sorter
+          clickable-rows
+          table-filter
           :items-per-page="5"
           items-per-page-select
-          :items="items"
           pagination
-          table-filter
+          columnSorter
+          :sorterValue="{ column: 'status', state: 'asc' }"
           :table-props="{
             striped: true,
             hover: true,
           }"
         >
         <template #STATUS="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+        <td>
           
-          </td>
+          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+          
+        </td>
         </template>
 
         <template #BOOKMARK="{ item, index }" >
@@ -47,6 +50,32 @@
             </CButton>
           </td>
         </template>
+        <template #MORE="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              color="primary"
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleButton(item, index)"
+            >
+            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+            </CButton>
+          </td>
+        </template>
+        <template #details="{ item , index }">
+          <CCollapse :visible="Boolean(item.MORE)">
+            <CCardBody>
+              <h4>
+                {{ item.tkt_title }}
+              </h4>
+              <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
+              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
+            </CCardBody>
+          </CCollapse>
+        </template>
+        </CSmartTable>
+      </div>
           <!-- <template #status="{ item }">
             <td>
               <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
@@ -77,7 +106,7 @@
               </CCardBody>
             </CCollapse>
           </template> -->
-        </CSmartTable>
+        
       </CCard>
     </div>
   
@@ -123,13 +152,14 @@
               //   key:'TicketID',
               //   _style: { width: '20%' },
               // },
-            { key: '#',_style: { width: '5%' }},
+              { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE', _style: { width: '11%' } },
-            { key: 'STATUS', _style: { width: '10%' } },
-            { key: 'TYPE', _style: { width: '10%' } },
-            { key: 'BOOKMARK', _style: { width: '10%' } }
+            { key: 'STATUS', _style: { width: '5%' } },
+            { key: 'TYPE', _style: { width: '4%' } },
+            { key: 'BOOKMARK', _style: { width: '5%' } },
+            { key: 'MORE',_style: { width: '5%' }},
           ];
           const items = ref([]);
           const getBadge = (tkt_status) => {
@@ -177,6 +207,36 @@
       },
       components: { CRow, CCol },
       methods:{
+        async contactIt(item){
+        const itemId = item._id.toString(); 
+
+        this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+        console.log('Item ID:', itemId);
+      },
+      async buttonCancel(item) {
+
+      try {
+        const itemId = item._id.toString(); 
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+          data:{
+              tkt_status: "Cancel"
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        // รีเฟรชหน้า
+        window.location.reload();
+        
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+      },
+      async toggleButton(item) {
+        item.MORE = !item.MORE;
+        },
       async getTicket(){
         try {
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage

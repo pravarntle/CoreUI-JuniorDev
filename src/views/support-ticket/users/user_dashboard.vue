@@ -69,7 +69,8 @@
           <CImage
             class="me-2 align-middle"
             style="width: 51px; height: 36px"
-            :src="LGblack"
+            :src="LGlogo"
+            
           />
           <h2 class="d-inline align-middle">My Tickets</h2>
           <div
@@ -86,7 +87,6 @@
       <div class="table-responsive table-borderless">
         <CSmartTable
           :active-page="1"
-          footer
           header
           cleaner
           :items="items"
@@ -105,25 +105,40 @@
             hover: true,
           }"
         >
-          <template #status="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-            </td>
-          </template>
+        <template #STATUS="{ item }">
+        <td>
+          
+          <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+          
+        </td>
+      </template>
 
-          <template #BOOKMARK="{ item, index }">
-            <td class="text-center">
-              <CButton
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleDetails(item, index)"
-              >
-                {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
-              </CButton>
-            </td>
-          </template>
-          <template #details="{ item }">
+        <template #BOOKMARK="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleDetails(item, index)"
+            >
+            {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+            </CButton>
+          </td>
+        </template>
+        <template #MORE="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              color="primary"
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleButton(item, index)"
+            >
+            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+            </CButton>
+          </td>
+        </template>
+        <template #details="{ item , index }">
           <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
@@ -181,7 +196,7 @@ import { CCol, CRow } from '@coreui/vue-pro'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
-import LGblack from '@/assets/images/blackTick.png'
+import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
 export default {
@@ -261,6 +276,7 @@ export default {
             LGblue,
             LGgreen,
             LGred,
+            LGlogo,
             columns,
             items,
             getBadge,
