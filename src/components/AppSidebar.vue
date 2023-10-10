@@ -49,7 +49,7 @@
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
     <CNavItem href="/#/support-ticket/ticket/book" style="padding-top:600px">
       <CImage  customClassName="nav-icon" :src="Iconlogout" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
-      <font color="red">logout</font>
+      <font color="red" @click="onLogoutClick()">logout</font>
     </CNavItem>
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
   </CSidebarNav>
@@ -98,5 +98,18 @@ setup() {
     sidebarVisible: computed(() => store.state.sidebarVisible),
   }
 },
+methods:{
+  async onLogoutClick() {
+  try {
+    // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
+    localStorage.removeItem('USER_DATA');
+    
+    // 8soCfP12Ph19mi914zQaZz2KsGGtcANVhVVfKAnmVRqM (สามารถเปลี่ยน URL หรือ path ตามที่คุณต้องการได้)
+    this.$router.push('/login'); // เปลี่ยนเส้นทางไปยังหน้า login หรือหน้าที่คุณต้องการหลังจากออกจากระบบ
+  } catch (error) {
+    console.log(error);
+  }
+}
+}
 }
 </script>
