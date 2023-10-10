@@ -20,12 +20,12 @@
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
         
-        <CCardImage v-if="avatar"
+        <CAvatar v-if="avatar"
           class="Icon_user_man"
-          :src="getImage(avatar)"
+          :src="require(`@/assets/images/${avatar}`)"
           style="padding: -4px"
         />
-        <CCardImage
+        <CAvatar
           v-else
           class="Icon_user_man"
           :src="Icon_user_man"
@@ -113,10 +113,16 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <img
+                <CAvatar v-if="avatar"
+                  class="Icon_user_man"
+                  :src="require(`@/assets/images/${avatar}`)"
+                  style="padding: -4px"
+                />
+                <CAvatar
+                  v-else
                   class="Icon_user_man"
                   :src="Icon_user_man"
-                  alt="User Icon"
+                  style="padding: -4px"
                 />
               </div>
             </div>
@@ -429,18 +435,12 @@ export default {
           console.error('Error fetching data:', error);
         }
       },
-      async getImage(img) {
-        // src\assets\images\na.png
-        // src\views\support-ticket\tickets\comment.vue
-        console.log(img)
-        return `/src/assets/images/${img}`    
-    }
+      
   },
   mounted(){
     const itemId = this.$route.params.itemId;
     this.ticketIdId=itemId;
     this.getTicket();
-    this.getImage();
     
   },
 }
