@@ -100,14 +100,13 @@
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
                 aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
-                @keyup.enter="submitComment" maxlength="200">
+                @keyup.enter="submitComment" maxlength="200" row="3"> 
               </CFormInput>
               <br>
               <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
               <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
-              <span id="selectedImage">{{ imageName }}</span>
               <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
@@ -116,6 +115,7 @@
                   style="width: 12px" />
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
+              <span id="selectedImage">{{ imageName }}</span>
             </div>
             <div class="col">
               <div class="avatar">
@@ -138,15 +138,21 @@
                 <p><b>ชื่อผู้ใช้งาน</b> &emsp;เวลาที่คอมเม้น</p>
                 <div class="comments_box" style="padding: 10px">
                   {{ item.comment }}
+                  <span v-if="item.image">
+                    <CImage :src="item.image" alt="Comment Image" style="max-width: 500px; height: auto;" />
+                  </span>
+                  <!-- <span v-if="item.file">
+                    <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File Icon" style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
+                    <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
+                    <a :href="item.file.url" download><i class="cil-cloud-download"></i></a>
+                  </span> -->
                 </div>
-                <div v-if="item.image">
-                  <CImage :src="item.image" alt="Comment Image" style="max-width: 500px; height: auto;" />
-                </div>
-                <div v-if="item.file">
-                  <a :href="item.file.url" target="_blank">{{
-                    item.file.name
-                  }}</a>
-                </div>
+                <span v-if="item.file">
+                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File Icon"
+                    style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
+                  <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
+                  <a :href="item.file.url" download><i class="cil-cloud-download"></i></a>
+                </span>
               </div>
             </div>
           </div>
@@ -219,7 +225,7 @@ export default {
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
       comment: '',
-      characterCount: 0,
+      characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
     }
   },
 
@@ -234,10 +240,11 @@ export default {
     },
 
     countCharacters() {
-      if (this.comment.length > 200) {
-        this.comment = this.comment.slice(0, 200); // จำกัดความยาวของ comment เป็น 200 ตัวอักษร
-      }
       this.characterCount = this.comment.length;
+      // if (this.comment.length > 200) {
+      //   this.comment = this.comment.slice(0, 200); // จำกัดความยาวของ comment เป็น 200 ตัวอักษร
+      // }
+
     },
 
 
@@ -279,8 +286,22 @@ export default {
       }
     },
     attachFile() {
-      const fileInput = this.$refs.fileInput
-      fileInput.click()
+      const fileInput = this.$refs.fileInput;
+      fileInput.click();
+
+      fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+          this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
+          console.log('ไฟล์ถูกแนบเรียบร้อย');
+        } else {
+          this.file = null;
+          this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
+          console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
+        }
+      });
+
     },
     handleFileChange(event) {
       const file = event.target.files[0]
@@ -320,7 +341,10 @@ export default {
 
       // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
       if (this.file) {
-        newComment.file = this.file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+        newComment.file = {
+          name: this.file.name,
+          url: URL.createObjectURL(this.file),
+        };
       }
 
       // เพิ่มความคิดเห็นลงในรายการ
@@ -333,6 +357,29 @@ export default {
       this.link = ''
       this.file = null
 
+    },
+    isImageFile(filename) {
+      const imageExtensions = ['doc', 'docx', 'pdf']; // รายการส่วนขยายของไฟล์รูปภาพ
+      const fileExtension = filename.split('.').pop().toLowerCase();
+      return imageExtensions.includes(fileExtension);
+    },
+
+    getImageIcon(filename) {
+      const fileExtension = filename.split('.').pop().toLowerCase();
+      switch (fileExtension) {
+        case 'doc':
+        case 'docx':
+          return require('@/assets/images/doc_icon.png');
+        // case 'jpeg':
+        //   return require('@/assets/images/jpg_icon.png');
+        // case 'png':
+        //   return require('@/assets/images/png_icon.png');
+        case 'pdf':
+          return require('@/assets/images/pdf_icon.png');
+        // เพิ่มประเภทของไฟล์อื่นๆ ตามต้องการ
+        // default:
+        //   return require('@/assets/images/file_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
+      }
     },
   },
 }
@@ -377,7 +424,7 @@ export default {
 
 div .comments_box {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  height: 45px;
+  height: auto;
   border-radius: 15px;
   white-space: pre-wrap;
   /* เพื่อให้ข้อความคอมเมนต์ขึ้นบรรทัดใหม่เมื่อมีการพิมพ์และเกิน 1 บรรทัด */
@@ -385,10 +432,10 @@ div .comments_box {
   /* เพื่อให้ข้อความคอมเมนต์แตกคำเมื่อเกินขอบเขตของตัวอักษร */
 }
 
-div .comments_box:focus {
+/* div .comments_box:focus {
   width: 733;
   height: 90px;
-}
+} */
 
 div.col-1,
 .icon_user_man {
@@ -418,6 +465,16 @@ img.commit {
 
 #submitComment {
   box-shadow: none;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  margin-left: 5px;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 </style>
 
