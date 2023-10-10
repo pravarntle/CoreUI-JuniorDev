@@ -116,7 +116,7 @@
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
               <span id="selectedImage">{{ imageName }}</span>
-              <span v-if="link !== ''"> | <a >link : {{ link }}</a></span>
+              <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
             <div class="col">
               <div class="avatar">
@@ -143,7 +143,7 @@
                     {{ item.link }}
                   </a>
                   <a v-if="item.image">
-                    <CImage :src="item.image" alt="Comment Image" style="max-width: 400px; height: auto;" />
+                    <CImage :src="item.image" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
                 </div>
                 <!-- <template v-if="item.link">
@@ -360,14 +360,15 @@ export default {
 
     },
     async isImageFile(filename) {
-      const imageExtensions = ['doc', 'docx', 'jpeg', 'png', 'pdf']; // รายการส่วนขยายของไฟล์รูปภาพ
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
       return imageExtensions.includes(fileExtension);
     },
 
-    async getImageIcon(filename) {
+
+    getImageIcon(filename) {
       const fileExtension = filename.split('.').pop().toLowerCase();
-      switch (filename.split('.').pop().toLowerCase()) {
+      switch (fileExtension) {
         case 'doc':
         case 'docx':
           return require('@/assets/images/Doc_icon.png');
