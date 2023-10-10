@@ -19,14 +19,21 @@
       <hr />
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
-        <CCardImage
+        
+        <CAvatar v-if="avatar"
+          class="Icon_user_man"
+          :src="require(`@/assets/images/${avatar}`)"
+          style="padding: -4px"
+        />
+        <CAvatar
+          v-else
           class="Icon_user_man"
           :src="Icon_user_man"
           style="padding: -4px"
         />
         <CCol style="padding: 4px">
-          <b> Settawut101</b>
-          <p class="small">settawut@gmail.com</p>
+          <b> {{firstname}}</b>
+          <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
           <b>{{date}} &nbsp; </b>
@@ -106,10 +113,16 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <img
+                <CAvatar v-if="avatar"
+                  class="Icon_user_man"
+                  :src="require(`@/assets/images/${avatar}`)"
+                  style="padding: -4px"
+                />
+                <CAvatar
+                  v-else
                   class="Icon_user_man"
                   :src="Icon_user_man"
-                  alt="User Icon"
+                  style="padding: -4px"
                 />
               </div>
             </div>
@@ -182,10 +195,16 @@
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <img
+                  <CAvatar v-if="avatar"
+                    class="Icon_user_man"
+                    :src="require(`@/assets/images/${avatar}`)"
+                    style="padding: -4px"
+                  />
+                  <CAvatar
+                    v-else
                     class="Icon_user_man"
                     :src="Icon_user_man"
-                    alt="User Icon"
+                    style="padding: -4px"
                   />
                 </div>
               </div>
@@ -281,6 +300,9 @@ export default {
       title:'',
       priorities:'',
       picture:'',
+      avatar:'',
+      firstname:'',
+      email:'',
       date:'',
       comment: '',
       characterCount: 1,
@@ -399,25 +421,30 @@ export default {
     },
     async getTicket(){
         try {
+          
           const ticketId=this.ticketIdId;
           console.log(ticketId);
 
-          const response = await axios.get(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`);
+          const response = await axios.post(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
           console.log(response.data);
 
           this.type = response.data.tkt_types;
           this.description = response.data.tkt_description;
           this.title = response.data.tkt_title;
           this.priorities = response.data.tkt_priorities;
-          // this.picture = response.data.picture;
+          this.picture = response.data.tkt_picture;
           this.date = response.data.tkt_time;
+          this.avatar = response.data.tkt_act.act_picture;
+          this.email = response.data.tkt_act.act_email_address;
+          this.firstname = response.data.tkt_act.act_first_name_eng;
 
           // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
           
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      }
+      },
+      
   },
   mounted(){
     const itemId = this.$route.params.itemId;

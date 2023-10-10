@@ -3,7 +3,16 @@
     <CRow>
       <Ccrad>
         <CCardHeader>
-          <h2>Dashboard</h2>
+          <h1
+            style="
+              width: 180px;
+              border-bottom: 5px solid transparent;
+              border-image: linear-gradient(to right, #ea5252, #030303);
+              border-image-slice: 1;
+            "
+          >
+            Dashbord
+          </h1>
         </CCardHeader>
         <CRow class="mb-3">
           <CCol>
@@ -27,7 +36,7 @@
                 <b id="open">Open Tickets</b>
                 <CRow>
                   <CCol>
-                    <p class="ps-5 ms-3 " id="font">{{ count_open }}</p>
+                    <p class="ps-5 ms-3" id="font">{{ count_open }}</p>
                   </CCol>
                   <CCol class="mt-5">
                     <CImage class="LG" :src="LGgreen" fluid block />
@@ -44,7 +53,7 @@
                   <CCol>
                     <p class="ps-5 ms-3" id="font">{{ count_closed }}</p>
                   </CCol>
-                  <CCol class="mt-4">
+                  <CCol class="mt-5">
                     <CImage class="LG" :src="LGred" fluid block />
                   </CCol>
                 </CRow>
@@ -54,31 +63,49 @@
         </CRow>
       </Ccrad>
     </CRow>
-    <CCard class="p-2">
-      <CCardHeader>
-        <h2>My Tickets</h2>
+    <CCard class="p-2 rounded-4">
+      <CCardHeader class="bg-white border-white">
+        <div class="d-inline ms-2">
+          <CImage
+            class="me-2 align-middle"
+            style="width: 51px; height: 36px"
+            :src="LGlogo"
+            
+          />
+          <h2 class="d-inline align-middle">My Tickets</h2>
+          <div
+            style="
+              width: 225px;
+              border-bottom: 5px solid transparent;
+              border-image: linear-gradient(to right, red, blue);
+              border-image-slice: 1;
+              padding: 3px;
+            "
+          ></div>
+        </div>
       </CCardHeader>
-      <CSmartTable
-        :active-page="1"
-        header
-        cleaner
-        :items="items"
-        :columns="columns"
-        columnFilter
-        column-sorter
-        table-filter
-        :items-per-page="5"
-        items-per-page-select
-        pagination
-        columnSorter
-        :sorterValue="{ column: 'status', state: 'asc' }"
-        :table-props="{
-          striped: true,
-          hover: true,
-        }"
-      >
-      
-      <template #STATUS="{ item }">
+      <div class="table-responsive table-borderless">
+        <CSmartTable
+          :active-page="1"
+          header
+          cleaner
+          :items="items"
+          :columns="columns"
+          columnFilter
+          column-sorter
+          clickable-rows
+          table-filter
+          :items-per-page="5"
+          items-per-page-select
+          pagination
+          columnSorter
+          :sorterValue="{ column: 'status', state: 'asc' }"
+          :table-props="{
+            striped: true,
+            hover: true,
+          }"
+        >
+        <template #STATUS="{ item }">
         <td>
           
           <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
@@ -122,11 +149,16 @@
             </CCardBody>
           </CCollapse>
         </template>
-      </CSmartTable>
+        </CSmartTable>
+      </div>
     </CCard>
   </div>
+  <div></div>
 </template>
 <style>
+.text-right-header {
+  text-align: right;
+}
 #all {
   font-size: 24px;
   color: #1a72b8;
@@ -151,6 +183,11 @@
 #border {
   border-radius: 6%;
 }
+
+.table-responsive {
+  overflow-x: auto;
+  max-width: 100%;
+}
 </style>
 
 <script>
@@ -159,11 +196,13 @@ import { CCol, CRow } from '@coreui/vue-pro'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
-import axios from 'axios';
+import LGlogo from '@/assets/images/blackTick.png'
+import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
 export default {
-
   name: 'SmartTableBasixExample',
+  
+
     data(){
       return {
             data_array:[],
@@ -237,6 +276,7 @@ export default {
             LGblue,
             LGgreen,
             LGred,
+            LGlogo,
             columns,
             items,
             getBadge,
@@ -251,7 +291,7 @@ export default {
         const itemId = item._id.toString(); 
 
         this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
-        console.log('Item ID:', itemId);
+      
       },
       async toggleDetails(item){
 
