@@ -1,8 +1,13 @@
 <template>
   <div class="bg-white rounded" style="width: 100%; height: 845px">
     <!-- Head Priorities List -->
-    <div class="bg-white rounded px-5 py-3 ">
-      <h1 class="underline">Priorities List</h1>
+    <div class="bg-white rounded ms-5 py-3" 
+          >
+      <h1 style="width: 238px; 
+                border-bottom: 2px solid transparent;
+                border-image: linear-gradient(to right, red, blue); 
+                border-image-slice: 1;">
+                Priorities List</h1>
     </div>
 
     <!-- body Priorities List -->
@@ -11,7 +16,7 @@
       <CButton class="px-5" variant="ghost">Priority</CButton>
 
       <!-- Search bar -->
-      <div class="container pt-5">
+      <!-- <div class="container pt-5">
         <div class="row justify-content-center w-75">
           <div class="col-md-6">
             <form class="form-inline">
@@ -33,7 +38,7 @@
             </form>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- End Search bar -->
 
       <!-- Smart Table -->
@@ -57,6 +62,7 @@
           hover: true,
         }"
       >
+      <!---->
         <template #status_eng="{ item }">
           <td>
             <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
@@ -229,6 +235,7 @@ export default {
 }
 
 .underline {
+  
   position: relative; /* ตั้งค่าตำแหน่งเป็น relative เพื่อให้เราสามารถกำหนดตำแหน่งของ ::after pseudo-element ได้ */
 }
 
@@ -237,7 +244,7 @@ export default {
   position: absolute; /* ตั้งค่าตำแหน่งเป็น absolute เพื่อให้เส้นใต้เริ่มต้นจากตัวหนังสือ */
   bottom: 0; /* ตำแหน่งด้านล่างของ pseudo-element */
   left: 0; /* ตำแหน่งด้านซ้ายของ pseudo-element (จากด้านขวาของตัวหนังสือ) */
-  width: 100%; /* กว้างเท่ากับตัวหนังสือ */
+  width: auto; /* กว้างเท่ากับตัวหนังสือ */
   height: 2px; /* ความสูงของเส้นใต้ */
   background-image: linear-gradient(to right, red 30%, blue 30%); /* สร้างเส้นใต้ที่มีสีแดง 30% และน้ำเงิน 70% */
   background-repeat: no-repeat; /* ไม่ต้องรีเพียต์พื้นหลัง */
