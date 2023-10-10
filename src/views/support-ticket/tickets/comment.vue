@@ -195,10 +195,16 @@
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <img
+                  <CAvatar v-if="avatar"
+                    class="Icon_user_man"
+                    :src="require(`@/assets/images/${avatar}`)"
+                    style="padding: -4px"
+                  />
+                  <CAvatar
+                    v-else
                     class="Icon_user_man"
                     :src="Icon_user_man"
-                    alt="User Icon"
+                    style="padding: -4px"
                   />
                 </div>
               </div>
