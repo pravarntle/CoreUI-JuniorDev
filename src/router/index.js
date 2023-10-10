@@ -357,13 +357,13 @@ const routes = [
             component: () => import('@/views/support-ticket/users/book_mark.vue'),
           },
           {
-            path: 'ticket/comment',
+            path: 'ticket/comment/:itemId',
             name: 'ST - comment Ticket',
-            component: () => import('@/views/support-ticket/tickets/comment.vue'),
+            component: () => import('@/views/support-ticket/tickets/comment'),
           },
           {
             path: 'admin/priority_list',
-            name: 'ST - comment Ticket',
+            name: 'ST - priority_list Ticket',
             component: () => import('@/views/support-ticket/admin/priority_list.vue'),
           },
           {
