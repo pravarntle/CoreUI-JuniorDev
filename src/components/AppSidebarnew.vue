@@ -81,5 +81,8 @@ export default {
       sidebarVisible: computed(() => store.state.sidebarVisible),
     }
   },
+  created() {
+  console.log('AppSidebarNav component created! 1 ');
+  }
 }
 </script>
