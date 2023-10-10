@@ -123,8 +123,8 @@
               </CButton>
             </td>
           </template>
-          <!-- <template #details="{ item }">
-          <CCollapse :visible="Boolean(item._toggled)">
+          <template #details="{ item }">
+          <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
                 {{ item.tkt_title }}
@@ -133,7 +133,7 @@
               <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
             </CCardBody>
           </CCollapse>
-        </template> -->
+        </template>
         </CSmartTable>
       </div>
     </CCard>
