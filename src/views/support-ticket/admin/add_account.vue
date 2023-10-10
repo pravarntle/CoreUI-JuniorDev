@@ -2,16 +2,37 @@
 <template>
   <div>
     <CCard>
-      <CCardHeader>
-        <h2>Create New Account</h2>
-      </CCardHeader>
       <CCardBody>
         <CForm
           novalidate
           :validated="form.validatedCustom01"
-
         >
-          <CRow class="mb-2">
+        <CRow class="mb-3">
+          <CCol class="header1" xs="12" md="6" lg="4">
+            <h1 style="width: 399px;
+                border-bottom: 5px solid transparent;
+                border-image: linear-gradient(to right, #EA5252, #030303);
+                border-image-slice: 1;"
+            >
+                Create New Account
+            </h1>
+          </CCol>
+            <!-- <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="80"
+            viewBox="300 0 50 50"
+            fill="none"
+            class="header1" xs="12" md="6" lg="4"
+          >
+            <rect y="0.259277" width="200" height="2.2588" fill="#EA5252" />
+            <path
+              d="M49.4795 0.259277H219V2.51807H69.4795V0.259277Z"
+              fill="#030303"
+            />
+          </svg> -->
+        </CRow>
+          <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
               <div v-if="imageUrl">
                 <img :src="imageUrl" />
@@ -21,9 +42,9 @@
               <CFormLabel class="btn-Picture" for="upload_file"
                 >Add Picture</CFormLabel
               >
+
               <CFormInput
                 name="upload_file"
-                feedbackInvalid="Please input picture."
                 v-model="form.act_picture"
                 :invalid="validate.act_picture"
                 required
@@ -32,6 +53,11 @@
                 id="upload_file"
                 hidden
               />
+               <div
+                v-if="imageUrl==='../../../assets/images/preProfile01.svg'"
+                class="text-danger"
+                > Please input picture.
+               </div>
               <CCol xs="12" md="6" lg="4">
                 <CButton
                   class="btn-Picture"
@@ -164,14 +190,15 @@
                 >Password
               </CFormLabel>
               <CFormInput
+              feedbackInvalid="Please input password."
                 text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                 type="password"
                 id="password1"
                 v-model="form.act_password"
-                feedbackInvalid="Please input password."
                 :invalid="validate.act_password"
                 autocomplete="current-password"
                 placeholder="•••••••"
+                maxlength="6"
                 required
               />
             </CCol>
@@ -187,6 +214,7 @@
                 :invalid="validate.Confirmpassword"
                 autocomplete="current-password"
                 placeholder="•••••••"
+                maxlength="6"
                 required
 
               />
@@ -339,11 +367,12 @@ export default {
       if (file) {
         this.imageUrl = URL.createObjectURL(file)
         this.imageFile = file
+
       }
     },
     deleteImage() {
       this.imageUrl = '../../../assets/images/preProfile01.svg'
-      this.imageFile = '../../../assets/images/preProfile01.svg'
+      this.imageFile = '../../../assets/images/preProfile01.png'
       // You can also send an API request to delete the image on the server here.
     },
     // handleSubmitCustom01(event) {
@@ -354,7 +383,11 @@ export default {
     // },
     validateBeforeSave() {
       let error
-      if (this.form.act_first_name_th === '') {
+      if (!this.form.act_picture) {
+        error = true
+        this.validate.act_picture = false
+      }
+      if (this.form.act_first_name_th === '' ) {
         error = true
         this.validate.act_first_name_th = false
       }
@@ -384,11 +417,12 @@ export default {
       }
        if(this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
            error = true
-        this.validate.confirmEmail = true
+         this.validate.confirmEmail = true
+         this.form.confirmEmail = ''
       }
        if(this.form.act_email_address === this.form.confirmEmail) {
            error = true
-        this.validate.confirmEmail = false
+         this.validate.confirmEmail = false
        }
       if (this.form.act_number_phone === '') {
         error = true
@@ -409,12 +443,12 @@ export default {
       if(this.form.act_password !== this.form.Confirmpassword && this.form.Confirmpassword !== '') {
            error = true
         this.validate.Confirmpassword = true
+        this.form.Confirmpassword = ''
       }
        if(this.form.act_password === this.form.Confirmpassword) {
            error = true
         this.validate.Confirmpassword = false
        }
-
 
       if (error) {
       } else {
@@ -580,5 +614,13 @@ export default {
   stroke-width: 20px;
   stroke: #f7f9fc;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.header1{
+color: #303030;
+font-size: 36px;
+font-style: normal;
+font-weight: 800;
+margin-top: 40px;
+margin-bottom: 30px;
 }
 </style>
