@@ -373,17 +373,17 @@ export default {
       switch (fileExtension) {
         case 'doc':
         case 'docx':
-          return require('@/assets/images/Doc_icon.png');
+          return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/Jpeg_icon.png');
+          return require('@/assets/images/jpeg_icon.png');
         case 'png':
-          return require('@/assets/images/Png_icon.png');
+          return require('@/assets/images/png_icon.png');
         case 'pdf':
-          return require('@/assets/images/Pdf_icon.png');
+          return require('@/assets/images/pdf_icon.png');
         // เพิ่มประเภทของไฟล์อื่นๆ ตามต้องการ
         default:
-          return require('@/assets/images/File_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
+          return require('@/assets/images/file_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
       }
     },
     async openLink(link) {
