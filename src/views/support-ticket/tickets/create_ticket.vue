@@ -14,16 +14,16 @@
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
-        <CForm  :validated="form.validatedCustom01" >
+        <CForm :validated="form.validatedCustom01">
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5><b> Title </b></h5>
               <CFormInput
-               type="text"
-               id ="tkt_title"
-               name = "tkt_title"
+                type="text"
+                id="tkt_title"
+                name="tkt_title"
                 v-model="form.tkt_title"
                 feedbackInvalid="ห้ามเว้นว่าง"
                 :invalid="validate.tkt_title"
@@ -60,7 +60,6 @@
                 @change="checkpiority"
               />
             </div>
-
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -79,26 +78,49 @@
             </div>
           </CRow>
 
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-          <div class="col-lg-7 col-md-12">
-            <h5><b>Upload A File</b></h5>
-            <CFormInput
-              type="file"
-              size="lg"
-              id="formFileLg"
-              v-model="form.tkt_picture"
-              :invalid="validate.tkt_picture"
-              required
-            />
+          <CRow class="mb-2">
+            <div class="col-lg-1"></div>
+            <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
+            <div class="col-lg-7 col-md-12">
+              <h5><b>Upload A File</b></h5>
+              <CFormInput
+                type="file"
+                size="lg"
+                id="formFileLg"
+                v-model="form.tkt_picture"
+                :invalid="validate.tkt_picture"
+                required
+              />
+            </div>
+          </CRow>
+          <div class="clearfix text-end">
+            <CButton
+              color="secondary"
+              @click="vaildateBeforeSave, createToast"
+              style="
+                font-weight: bold;
+                font-size: x-large;
+                width: 150px;
+                color: white;
+                border-radius: 20px;
+              "
+              >Cancle</CButton
+            >
+            <CButton
+              class="btn-sec"
+              color="success"
+              @click="vaildateBeforeSave"
+              style="
+                font-weight: bold;
+                font-size: x-large;
+                width: 150px;
+                color: white;
+                border-radius: 20px;
+              "
+              >Submit</CButton
+            >
           </div>
-        </CRow>
-        <div class="clearfix text-end">
-          <CButton color="secondary" @click="vaildateBeforeSave, createToast" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Cancle</CButton>
-          <CButton class="btn-sec" color="success" @click="vaildateBeforeSave" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Submit</CButton>
-        </div>
-        <CElementCover :opacity="0.5" v-if="pageLoading" />
+          <CElementCover :opacity="0.5" v-if="pageLoading" />
         </CForm>
       </CCardBody>
     </CCard>
@@ -144,7 +166,6 @@ export default {
         tkt_book: '',
         tkt_act: '',
         validatedCustom01: false,
-
       },
 
       userOptions: [],
@@ -204,10 +225,10 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error = false;
+      let error
       if (this.form.tkt_title === '') {
-        error = true;
-        this.validate.tkt_title = false;
+        error = true
+        this.validate.tkt_title = false
       }
       if (this.form.tkt_types === '') {
         error = true
@@ -222,11 +243,10 @@ export default {
         this.validate.tkt_description = false
       }
 
-
       if (!error) {
+         this.onSave()
       } else {
-        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.onSave()
+        this.form.validatedCustom01 = true // เปลี่ยนเป็น true เมื่อคลิก "Submit"
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
