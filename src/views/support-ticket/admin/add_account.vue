@@ -3,35 +3,21 @@
   <div>
     <CCard>
       <CCardBody>
-        <CForm
-          novalidate
-          :validated="form.validatedCustom01"
-        >
-        <CRow class="mb-3">
-          <CCol class="header1" xs="12" md="6" lg="4">
-            <h1 style="width: 399px;
-                border-bottom: 5px solid transparent;
-                border-image: linear-gradient(to right, #EA5252, #030303);
-                border-image-slice: 1;"
-            >
+        <CForm novalidate :validated="form.validatedCustom01">
+          <CRow class="mb-3">
+            <CCol class="header1" xs="12" md="6" lg="4">
+              <h1
+                style="
+                  width: 399px;
+                  border-bottom: 5px solid transparent;
+                  border-image: linear-gradient(to right, #ea5252, #030303);
+                  border-image-slice: 1;
+                "
+              >
                 Create New Account
-            </h1>
-          </CCol>
-            <!-- <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="50"
-            height="80"
-            viewBox="300 0 50 50"
-            fill="none"
-            class="header1" xs="12" md="6" lg="4"
-          >
-            <rect y="0.259277" width="200" height="2.2588" fill="#EA5252" />
-            <path
-              d="M49.4795 0.259277H219V2.51807H69.4795V0.259277Z"
-              fill="#030303"
-            />
-          </svg> -->
-        </CRow>
+              </h1>
+            </CCol>
+          </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
               <div v-if="imageUrl">
@@ -45,6 +31,7 @@
 
               <CFormInput
                 name="upload_file"
+                feedbackInvalid="Please input picture."
                 v-model="form.act_picture"
                 :invalid="validate.act_picture"
                 required
@@ -53,11 +40,6 @@
                 id="upload_file"
                 hidden
               />
-               <div
-                v-if="imageUrl==='../../../assets/images/preProfile01.svg'"
-                class="text-danger"
-                > Please input picture.
-               </div>
               <CCol xs="12" md="6" lg="4">
                 <CButton
                   class="btn-Picture"
@@ -190,7 +172,7 @@
                 >Password
               </CFormLabel>
               <CFormInput
-              feedbackInvalid="Please input password."
+                feedbackInvalid="Please input password."
                 text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                 type="password"
                 id="password1"
@@ -216,9 +198,10 @@
                 placeholder="•••••••"
                 maxlength="6"
                 required
-
               />
-              <div v-if="validate.Confirmpassword" class="text-danger"> Passwords do not match. </div>
+              <div v-if="validate.Confirmpassword" class="text-danger">
+                Passwords do not match.
+              </div>
             </CCol>
 
             <div>
@@ -269,7 +252,9 @@
                 :invalid="validate.confirmEmail"
                 required
               />
-               <div v-if="validate.confirmEmail" class="text-danger"> Email do not match. </div>
+              <div v-if="validate.confirmEmail" class="text-danger">
+                Email do not match.
+              </div>
             </CCol>
             <br />
             <CCol xs="12" md="6" lg="8">
@@ -328,7 +313,7 @@ export default {
         act_role: '',
         confirmEmail: '',
         Confirmpassword: '',
-        validatedCustom01: '',
+        validatedCustom01: false,
       },
 
       validate: {
@@ -367,7 +352,6 @@ export default {
       if (file) {
         this.imageUrl = URL.createObjectURL(file)
         this.imageFile = file
-
       }
     },
     deleteImage() {
@@ -382,12 +366,12 @@ export default {
     //   this.form.validatedCustom01 = true
     // },
     validateBeforeSave() {
-      let error
+      let error = false
       if (!this.form.act_picture) {
         error = true
         this.validate.act_picture = false
       }
-      if (this.form.act_first_name_th === '' ) {
+      if (this.form.act_first_name_th === '') {
         error = true
         this.validate.act_first_name_th = false
       }
@@ -415,15 +399,18 @@ export default {
         error = true
         this.validate.confirmEmail = false
       }
-       if(this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
-           error = true
-         this.validate.confirmEmail = true
-         this.form.confirmEmail = ''
+      if (
+        this.form.act_email_address !== this.form.confirmEmail &&
+        this.form.confirmEmail !== ''
+      ) {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
       }
-       if(this.form.act_email_address === this.form.confirmEmail) {
-           error = true
-         this.validate.confirmEmail = false
-       }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
+      }
       if (this.form.act_number_phone === '') {
         error = true
         this.validate.act_number_phone = false
@@ -433,25 +420,29 @@ export default {
         this.validate.act_username = false
       }
       if (this.form.act_password === '') {
-          error = true
-          this.validate.act_password = false
+        error = true
+        this.validate.act_password = false
       }
       if (this.form.Confirmpassword === '') {
-           error = true
-          this.validate.Confirmpassword = false
+        error = true
+        this.validate.Confirmpassword = false
       }
-      if(this.form.act_password !== this.form.Confirmpassword && this.form.Confirmpassword !== '') {
-           error = true
+      if (
+        this.form.act_password !== this.form.Confirmpassword &&
+        this.form.Confirmpassword !== ''
+      ) {
+        error = true
         this.validate.Confirmpassword = true
         this.form.Confirmpassword = ''
       }
-       if(this.form.act_password === this.form.Confirmpassword) {
-           error = true
+      if (this.form.act_password === this.form.Confirmpassword) {
+        error = true
         this.validate.Confirmpassword = false
-       }
+      }
 
-      if (error) {
+      if (!error) {
       } else {
+        this.form.validatedCustom01 = true
         this.onSave()
       }
     },
@@ -615,12 +606,12 @@ export default {
   stroke: #f7f9fc;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
-.header1{
-color: #303030;
-font-size: 36px;
-font-style: normal;
-font-weight: 800;
-margin-top: 40px;
-margin-bottom: 30px;
+.header1 {
+  color: #303030;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 </style>
