@@ -16,9 +16,9 @@
       <hr />
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
-        
+
         <CAvatar v-if="avatar"
-          class="Icon_user_man"
+          class="Icon_user_man avatar-round"
           :src="require(`@/assets/images/${avatar}`)"
           style="padding: -4px"
         />
@@ -27,6 +27,7 @@
           class="Icon_user_man"
           :src="Icon_user_man"
           style="padding: -4px"
+
         />
         <CCol style="padding: 4px">
           <b> {{firstname}}</b>
@@ -103,7 +104,7 @@
             <div class="col-1">
               <div class="avatar">
                 <CAvatar v-if="avatar"
-                  class="Icon_user_man"
+                  class="Icon_user_man avatar-round"
                   :src="require(`@/assets/images/${avatar}`)"
                   style="padding: -4px"
                 />
@@ -273,7 +274,7 @@ export default {
       date:'',
       comment: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
-      
+
     };
   },
 
@@ -461,10 +462,10 @@ export default {
         dayjs.extend(require('dayjs/plugin/timezone'))
         dayjs.tz.setDefault('Asia/Bangkok')
 
-        
+
         const date = dayjs()
 
-        
+
         const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
         const ticketId=this.ticketId
         this.form.cmt_message = this.comment
@@ -473,7 +474,7 @@ export default {
         this.form.cmt_link = this.link
         this.form.cmt_picture = this.imageName
         this.form.cmt_file = this.file
-        
+
         // console.log(this.form)
 
         // try {
@@ -514,6 +515,12 @@ export default {
 </script>
 
 <style>
+.avatar-round {
+  width: 100px; /* ปรับขนาดตามที่ต้องการ */
+  height: 100px; /* ปรับขนาดตามที่ต้องการ */
+  border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
+}
+
 .Arrow_Left {
   width: 35px;
 }
