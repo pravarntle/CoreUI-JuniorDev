@@ -246,6 +246,7 @@ export default {
       cmt_picture: '',
       cmt_file: '',
       cmt_date: '',
+      cmt_act: '',
       cmt_tkt: '',
        },
       visibleA: true,
@@ -460,36 +461,25 @@ export default {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
         dayjs.tz.setDefault('Asia/Bangkok')
-
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
         
         const date = dayjs()
 
-        
         const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
         const ticketId=this.ticketId
         this.form.cmt_message = this.comment
         this.form.cmt_date = comment_date
         this.form.cmt_tkt = ticketId
         this.form.cmt_link = this.link
+        this.form.cmt_act = userId
         this.form.cmt_picture = this.imageName
         this.form.cmt_file = this.file
-        
-        // console.log(this.form)
-
-        // try {
-        //   await axios
-        //     .post('http://localhost:3000/mongoose/insert/stts_comments', {
-        //       data: this.form,
-        //     })
+    
         //     // .then((result) => {
         //     //   this.$router.push('/support-ticket/user/dashboard')
         //     // })
-        //     .catch((err) => {
-        //       console.log(error)
-        //     })
-        // } catch (error) {
-        //   console.log(error)
-        // }
+       
         console.log(this.form);
 
         try {
@@ -501,6 +491,23 @@ export default {
           console.log(error);
           // Handle the error appropriately (e.g., display an error message)
         }
+        this.comment = ''
+        this.imageDataURL = ''
+        this.imageName = ''
+        this.link = ''
+        this.file = null
+        // window.location.reload();
+    },
+    async getComment(){
+      const ticketId=this.ticketId
+      const comment = await axios.post('http://localhost:3000/mongoose/get/stts_comments', {
+            where: {
+              cmt_tkt: ticketId,
+            },
+          });
+          console.log(ticketId)
+          console.log(comment.data)
+          this.comments = comment.data;
     }
 
   },
@@ -508,6 +515,7 @@ export default {
     const itemId = this.$route.params.itemId;
     this.ticketId=itemId;
     this.getTicket();
+    this.getComment();
 
   },
 }
