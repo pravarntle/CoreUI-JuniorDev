@@ -207,19 +207,19 @@ export default {
       let error = false;
       if (this.form.tkt_title === '') {
         error = true;
-        this.validate.tkt_title = true;
+        this.validate.tkt_title = false;
       }
       if (this.form.tkt_types === '') {
         error = true
-        this.validate.tkt_types = true
+        this.validate.tkt_types = false
       }
       if (this.form.tkt_priorities === '') {
         error = true
-        this.validate.tkt_priorities = true
+        this.validate.tkt_priorities = false
       }
       if (this.form.tkt_description === '') {
         error = true
-        this.validate.tkt_description = true
+        this.validate.tkt_description = false
       }
 
 
