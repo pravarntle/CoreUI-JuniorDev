@@ -223,11 +223,12 @@ export default {
       }
 
 
-      if (error) {
+      if (!error) {
+        this.onSave()
       } else {
         
         this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.onSave()
+        
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -248,13 +249,7 @@ export default {
       const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
 
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
+      
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`

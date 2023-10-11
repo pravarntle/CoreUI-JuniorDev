@@ -232,7 +232,7 @@ export default {
             { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
-            { key: 'START DATE', _style: { width: '11%' } },
+            { key: 'START DATE(D/M/Y)', _style: { width: '11%' } },
             { key: 'STATUS', _style: { width: '5%' } },
             { key: 'TYPE', _style: { width: '4%' } },
             { key: 'BOOKMARK', _style: { width: '5%' } },
@@ -360,7 +360,7 @@ export default {
             // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
             // ตามลำดับของ columns ในตัวแปร columns
             // เพิ่มเติมตามความต้องการ
-            'START DATE': element.tkt_time,
+            'START DATE(D/M/Y)': element.tkt_time,
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
