@@ -223,8 +223,9 @@ export default {
       }
 
 
-      if (!error) {
+      if (error) {
       } else {
+        
         this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.onSave()
       }
