@@ -60,7 +60,7 @@
                 @change="checkpiority"
               />
             </div>
-            
+
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -143,7 +143,7 @@ export default {
         tkt_types: '',
         tkt_book: '',
         tkt_act: '',
-        validatedCustom01: ''
+        validatedCustom01: false,
 
       },
 
@@ -204,7 +204,7 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error;
+      let error = false;
       if (this.form.tkt_title === '') {
         error = true;
         this.validate.tkt_title = true;
@@ -221,10 +221,11 @@ export default {
         error = true
         this.validate.tkt_description = true
       }
-      
 
-      if (error) {
+
+      if (!error) {
       } else {
+        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.onSave()
       }
     },
