@@ -8,7 +8,7 @@
           <CCol>
             <div class="text-start" style="padding: 1px;  margin-top: 1%">
               <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
-              <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label>
+              <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
         </div>
@@ -16,15 +16,26 @@
       <hr />
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
-        <CCardImage class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
+        
+        <CAvatar v-if="avatar"
+          class="Icon_user_man"
+          :src="require(`@/assets/images/${avatar}`)"
+          style="padding: -4px"
+        />
+        <CAvatar
+          v-else
+          class="Icon_user_man"
+          :src="Icon_user_man"
+          style="padding: -4px"
+        />
         <CCol style="padding: 4px">
           <b> {{firstname}}</b>
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b>Jul 17, 2023 &nbsp; </b>
+          <b>{{date}} &nbsp; </b>
           <span class="badge bg-danger">
-            <li>High</li>
+            <li>{{priorities}}</li>
           </span>
         </CCol>
       </CRow>
@@ -69,7 +80,7 @@
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  <CCradText> internet speed test image.jpg</CCradText>
+                  <CCradText> {{ picture }}</CCradText>
                   <br />
                 </CCol>
                 <br />
@@ -91,7 +102,17 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <img class="Icon_user_man" :src="Icon_user_man" alt="User Icon" />
+                <CAvatar v-if="avatar"
+                  class="Icon_user_man"
+                  :src="require(`@/assets/images/${avatar}`)"
+                  style="padding: -4px"
+                />
+                <CAvatar
+                  v-else
+                  class="Icon_user_man"
+                  :src="Icon_user_man"
+                  style="padding: -4px"
+                />
               </div>
             </div>
             <div class="col-10">
@@ -99,7 +120,7 @@
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
                 aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
-                @keyup.enter="submitComment" maxlength="200" row="3">
+                @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
               <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
@@ -119,7 +140,7 @@
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="submitComment" @click="submitComment" id="submitComment"> <img class="commit"
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit"
                     :src="commit" alt="Commit Icon" /></CButton>
               </div>
             </div>
@@ -181,6 +202,9 @@ import { CButton, CFormInput } from '@coreui/vue-pro'
 import insert_link from '@/assets/images/insert_link.png'
 import Attach_File from '@/assets/images/Attach_File.png'
 import axios from 'axios';
+import dayjs from 'dayjs'
+import 'dayjs/locale/th'
+import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
 import {
   CAvatar,
   CCardBody,
@@ -215,8 +239,16 @@ export default {
     CButton,
   },
   data() {
-
     return {
+      form: {  // Initialize the form object
+      cmt_message: '',
+      cmt_link: '',
+      cmt_picture: '',
+      cmt_file: '',
+      cmt_date: '',
+      cmt_act: '',
+      cmt_tkt: '',
+       },
       visibleA: true,
       visibleB: true,
       Icon_user_man,
@@ -230,9 +262,20 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
+      ticketId:'',
+      type:'',
+      description:'',
+      title:'',
+      priorities:'',
+      picture:'',
+      avatar:'',
+      firstname:'',
+      email:'',
+      date:'',
       comment: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
-    }
+      
+    };
   },
 
   methods: {
@@ -392,7 +435,7 @@ export default {
     async getTicket(){
         try {
 
-          const ticketId=this.ticketIdId;
+          const ticketId=this.ticketId;
           console.log(ticketId);
 
           const response = await axios.post(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
@@ -414,12 +457,65 @@ export default {
           console.error('Error fetching data:', error);
         }
       },
+      async onSave() {
+        dayjs.locale('th')
+        dayjs.extend(require('dayjs/plugin/timezone'))
+        dayjs.tz.setDefault('Asia/Bangkok')
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        
+        const date = dayjs()
+
+        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+        const ticketId=this.ticketId
+        this.form.cmt_message = this.comment
+        this.form.cmt_date = comment_date
+        this.form.cmt_tkt = ticketId
+        this.form.cmt_link = this.link
+        this.form.cmt_act = userId
+        this.form.cmt_picture = this.imageName
+        this.form.cmt_file = this.file
+    
+        //     // .then((result) => {
+        //     //   this.$router.push('/support-ticket/user/dashboard')
+        //     // })
+       
+        console.log(this.form);
+
+        try {
+          await axios.post('http://localhost:3000/mongoose/insert/stts_comments', {
+            data: this.form,
+          });
+          // Handle success here
+        } catch (error) {
+          console.log(error);
+          // Handle the error appropriately (e.g., display an error message)
+        }
+        this.comment = ''
+        this.imageDataURL = ''
+        this.imageName = ''
+        this.link = ''
+        this.file = null
+        // window.location.reload();
+    },
+    async getComment(){
+      const ticketId=this.ticketId
+      const comment = await axios.post('http://localhost:3000/mongoose/get/stts_comments', {
+            where: {
+              cmt_tkt: ticketId,
+            },
+          });
+          console.log(ticketId)
+          console.log(comment.data)
+          this.comments = comment.data;
+    }
 
   },
   mounted(){
     const itemId = this.$route.params.itemId;
-    this.ticketIdId=itemId;
+    this.ticketId=itemId;
     this.getTicket();
+    this.getComment();
 
   },
 }

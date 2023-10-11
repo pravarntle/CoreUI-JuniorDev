@@ -3,18 +3,30 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const SchemaData = new schema({
-    cmt_messasge: {
+    cmt_message: {
         type: String,
-        required: true,
+        required: false,
+    },
+    cmt_link: {
+        type: String,
+        required: false,
+    },
+    cmt_picture: {
+        type: String,
+        required: false,
+    },
+    cmt_file: {
+        type: String,
+        required: false,
     },
     cmt_date: {
         type: String,
-        required: true,
+        required: false,
     },
     cmt_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
-        required: true
+        required: false
     },
     cmt_tkt: {
         type: schema.Types.ObjectId,
