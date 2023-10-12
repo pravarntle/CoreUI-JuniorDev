@@ -298,9 +298,11 @@ export default {
     async attachImage() {
       const imageInput = this.$refs.fileInput
       imageInput.click()
+     
 
       imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0]
+        const file = event.target.files[0] 
+        console.log(file)
         if (file) {
           this.imageName = file.name
 
@@ -480,7 +482,7 @@ export default {
         //     //   this.$router.push('/support-ticket/user/dashboard')
         //     // })
        
-        console.log(this.form);
+       
 
         try {
           await axios.post('http://localhost:3000/mongoose/insert/stts_comments', {
@@ -504,6 +506,9 @@ export default {
             where: {
               cmt_tkt: ticketId,
             },
+            populate:["cmt_act"]
+              
+            
           });
           console.log(ticketId)
           console.log(comment.data)
