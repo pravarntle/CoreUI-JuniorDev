@@ -191,10 +191,10 @@ export default {
     // },
     async getType() {
       const type = await axios.get(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       )
       const types = await axios.post(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       ) //,{populate:['tkt_act']}
       console.log(types)
       type.data.forEach((element) => {
@@ -262,7 +262,7 @@ export default {
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_tickets', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
           })
           .then((result) => {

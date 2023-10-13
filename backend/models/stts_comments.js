@@ -12,11 +12,11 @@ const SchemaData = new schema({
         required: false,
     },
     cmt_picture: {
-        type: String,
+        type: Buffer,
         required: false,
     },
     cmt_file: {
-        type: String,
+        type: Buffer,
         required: false,
     },
     cmt_date: {

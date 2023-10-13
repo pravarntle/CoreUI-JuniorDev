@@ -263,7 +263,7 @@ export default {
           try {
             const response = await axios({
               method: 'GET',
-              url: 'http://localhost:3000/mongoose/get/check-token',
+              url: `${process.env.VUE_APP_URL}/mongoose/get/check-token`,
               headers: { 'Authorization': 'Bearer ' + user.token }
             })
             console.log(response)

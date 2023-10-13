@@ -185,7 +185,7 @@
           try {
             const itemId = item._id.toString(); 
             // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-            await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+            await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
               data:{
                   tkt_book: item.BOOKMARK,
                   
@@ -218,7 +218,7 @@
       try {
         const itemId = item._id.toString(); 
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data:{
               tkt_status: "Cancel"
 
@@ -242,7 +242,7 @@
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
 
-          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
             where: {
               tkt_act: userId,
               tkt_book:"true",

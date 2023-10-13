@@ -450,7 +450,7 @@ export default {
           const ticketId=this.ticketId;
           console.log(ticketId);
 
-          const response = await axios.post(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
           console.log(response.data);
 
           this.type = response.data.tkt_types;
@@ -495,7 +495,7 @@ export default {
        
 
         try {
-          await axios.post('http://localhost:3000/mongoose/insert/stts_comments', {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
             data: this.form,
           });
           // Handle success here
@@ -512,7 +512,7 @@ export default {
     },
     async getComment(){
       const ticketId=this.ticketId
-      const comment = await axios.post('http://localhost:3000/mongoose/get/stts_comments', {
+      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
             where: {
               cmt_tkt: ticketId,
             },
