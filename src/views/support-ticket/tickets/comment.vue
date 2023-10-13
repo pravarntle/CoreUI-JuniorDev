@@ -17,26 +17,17 @@
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-        <CAvatar v-if="avatar"
-          class="Icon_user_man avatar-round"
-          :src="require(`@/assets/images/${avatar}`)"
-          style="padding: -4px"
-        />
-        <CAvatar
-          v-else
-          class="Icon_user_man"
-          :src="Icon_user_man"
-          style="padding: -4px"
-
-        />
+        <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+          style="padding: -4px" />
+        <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
-          <b> {{firstname}}</b>
+          <b> {{ firstname }}</b>
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b>{{date}} &nbsp; </b>
+          <b>{{ date }} &nbsp; </b>
           <span class="badge bg-danger">
-            <li>{{priorities}}</li>
+            <li>{{ priorities }}</li>
           </span>
         </CCol>
       </CRow>
@@ -58,7 +49,7 @@
               <CCardBody style="margin-left: 2%">
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Title : </b>
-                  <CCradText> {{title}}</CCradText>
+                  <CCradText> {{ title }}</CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Type : </b>
@@ -67,7 +58,7 @@
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Description : </b>
                   <CCradText>
-                    {{description}}
+                    {{ description }}
                   </CCradText>
                 </CCol>
               </CCardBody>
@@ -103,17 +94,9 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="avatar"
-                  class="Icon_user_man avatar-round"
-                  :src="require(`@/assets/images/${avatar}`)"
-                  style="padding: -4px"
-                />
-                <CAvatar
-                  v-else
-                  class="Icon_user_man"
-                  :src="Icon_user_man"
-                  style="padding: -4px"
-                />
+                <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+                  style="padding: -4px" />
+                <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
             </div>
             <div class="col-10">
@@ -141,8 +124,8 @@
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit"
-                    :src="commit" alt="Commit Icon" /></CButton>
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit" :src="commit"
+                    alt="Commit Icon" /></CButton>
               </div>
             </div>
           </div>
@@ -153,21 +136,13 @@
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <CAvatar v-if="item.cmt_act.act_picture"
-                  class="Icon_user_man"
-                  :src="require(`@/assets/images/${item.cmt_act.act_picture}`)"
-                  style="padding: -4px"
-                />
-                <CAvatar
-                  v-else
-                  class="Icon_user_man"
-                  :src="Icon_user_man"
-                  style="padding: -4px"
-                />
+                  <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
+                    :src="require(`@/assets/images/${item.cmt_act.act_picture}`)" style="padding: -4px" />
+                  <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
                 </div>
               </div>
               <div class="col-10">
-                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date}}</p>
+                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
                 <div class="comments_box" style="padding: 10px">
                   {{ item.cmt_message }}
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
@@ -252,14 +227,14 @@ export default {
   data() {
     return {
       form: {  // Initialize the form object
-      cmt_message: '',
-      cmt_link: '',
-      cmt_picture: '',
-      cmt_file: '',
-      cmt_date: '',
-      cmt_act: '',
-      cmt_tkt: '',
-       },
+        cmt_message: '',
+        cmt_link: '',
+        cmt_picture: '',
+        cmt_file: '',
+        cmt_date: '',
+        cmt_act: '',
+        cmt_tkt: '',
+      },
       visibleA: true,
       visibleB: true,
       Icon_user_man,
@@ -273,16 +248,16 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
-      ticketId:'',
-      type:'',
-      description:'',
-      title:'',
-      priorities:'',
-      picture:'',
-      avatar:'',
-      firstname:'',
-      email:'',
-      date:'',
+      ticketId: '',
+      type: '',
+      description: '',
+      title: '',
+      priorities: '',
+      picture: '',
+      avatar: '',
+      firstname: '',
+      email: '',
+      date: '',
       comment: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
 
@@ -306,30 +281,64 @@ export default {
 
 
     //------- AOM -------
+    // async attachImage() {
+    //   const imageInput = this.$refs.fileInput
+    //   imageInput.click()
+
+
+    //   imageInput.addEventListener('change', (event) => {
+    //     const file = event.target.files[0] 
+    //     console.log(file)
+    //     if (file) {
+    //       this.imageName = file.name
+
+    //       // อ่านรูปภาพเป็น Data URL
+    //       const reader = new FileReader()
+    //       reader.onload = (e) => {
+    //         this.imageDataURL = e.target.result
+    //       }
+    //       reader.readAsDataURL(file)
+
+    //       console.log('รูปถูกแนบเรียบร้อย')
+    //     } else {
+    //       this.imageName = ''
+    //       console.error('เกิดข้อผิดพลาดในการแนบรูป')
+    //     }
+    //   })
+    // },
     async attachImage() {
-      const imageInput = this.$refs.fileInput
-      imageInput.click()
-     
+      const imageInput = this.$refs.fileInput;
+      imageInput.click();
 
       imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0] 
-        console.log(file)
+        const file = event.target.files[0];
+
         if (file) {
-          this.imageName = file.name
+          // ตรวจสอบประเภทของไฟล์ที่แนบ
+          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+          const fileExtension = file.name.split('.').pop().toLowerCase();
 
-          // อ่านรูปภาพเป็น Data URL
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.imageDataURL = e.target.result
+          if (allowedExtensions.includes(fileExtension)) {
+            this.imageName = file.name;
+
+            // อ่านไฟล์เป็น Blob
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const imageBlob = new Blob([e.target.result], { type: file.type });
+              this.form.cmt_picture = imageBlob; // บันทึกข้อมูลรูปภาพเป็น Blob
+            };
+            reader.readAsArrayBuffer(file);
+
+            console.log('รูปถูกแนบเรียบร้อย');
+          } else {
+            this.imageName = '';
+            console.error('ประเภทของไฟล์ไม่รองรับ');
           }
-          reader.readAsDataURL(file)
-
-          console.log('รูปถูกแนบเรียบร้อย')
         } else {
-          this.imageName = ''
-          console.error('เกิดข้อผิดพลาดในการแนบรูป')
+          this.imageName = '';
+          console.error('เกิดข้อผิดพลาดในการแนบรูป');
         }
-      })
+      });
     },
     async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
@@ -345,17 +354,33 @@ export default {
 
       fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
+
         if (file) {
-          this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-          this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
-          console.log('ไฟล์ถูกแนบเรียบร้อย');
+          // ตรวจสอบประเภทของไฟล์ที่แนบ
+          const allowedExtensions = ['pdf'];
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+
+          if (allowedExtensions.includes(fileExtension)) {
+            this.imageName = file.name;
+
+            // อ่านไฟล์เป็น Blob
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const fileBlob = new Blob([e.target.result], { type: file.type });
+              this.form.cmt_file = fileBlob; // บันทึกข้อมูลไฟล์เป็น Blob
+            };
+            reader.readAsArrayBuffer(file);
+
+            console.log('ไฟล์ถูกแนบเรียบร้อย');
+          } else {
+            this.imageName = '';
+            console.error('ประเภทของไฟล์ไม่รองรับ');
+          }
         } else {
-          this.file = null;
-          this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
+          this.imageName = '';
           console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
         }
       });
-
     },
     async handleFileChange(event) {
       const file = event.target.files[0]
@@ -445,91 +470,103 @@ export default {
     async openLink(link) {
       window.open(link, '_blank');
     },
-    async getTicket(){
-        try {
+    async getTicket() {
+      try {
 
-          const ticketId=this.ticketId;
-          console.log(ticketId);
+        const ticketId = this.ticketId;
+        console.log(ticketId);
 
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
-          console.log(response.data);
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: ["tkt_act"] });
+        console.log(response.data);
 
-          this.type = response.data.tkt_types;
-          this.description = response.data.tkt_description;
-          this.title = response.data.tkt_title;
-          this.priorities = response.data.tkt_priorities;
-          this.picture = response.data.tkt_picture;
-          this.date = response.data.tkt_time;
-          this.avatar = response.data.tkt_act.act_picture;
-          this.email = response.data.tkt_act.act_email_address;
-          this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.type = response.data.tkt_types;
+        this.description = response.data.tkt_description;
+        this.title = response.data.tkt_title;
+        this.priorities = response.data.tkt_priorities;
+        this.picture = response.data.tkt_picture;
+        this.date = response.data.tkt_time;
+        this.avatar = response.data.tkt_act.act_picture;
+        this.email = response.data.tkt_act.act_email_address;
+        this.firstname = response.data.tkt_act.act_first_name_eng;
 
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      },
-      async onSave() {
-        dayjs.locale('th')
-        dayjs.extend(require('dayjs/plugin/timezone'))
-        dayjs.tz.setDefault('Asia/Bangkok')
-        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-        const userId = userData.id.toString(); // ดึงค่า id จาก userData
-        
-        const date = dayjs()
-
-        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-        const ticketId=this.ticketId
-        this.form.cmt_message = this.comment
-        this.form.cmt_date = comment_date
-        this.form.cmt_tkt = ticketId
-        this.form.cmt_link = this.link
-        this.form.cmt_act = userId
-        this.form.cmt_picture = this.imageName
-        this.form.cmt_file = this.file
-    
-        //     // .then((result) => {
-        //     //   this.$router.push('/support-ticket/user/dashboard')
-        //     // })
-       
-       
-
-        try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
-            data: this.form,
-          });
-          // Handle success here
-        } catch (error) {
-          console.log(error);
-          // Handle the error appropriately (e.g., display an error message)
-        }
-        this.comment = ''
-        this.imageDataURL = ''
-        this.imageName = ''
-        this.link = ''
-        this.file = null
-        // window.location.reload();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
-    async getComment(){
-      const ticketId=this.ticketId
+    async onSave() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+      const date = dayjs()
+
+      const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+      const ticketId = this.ticketId
+
+      this.form.cmt_message = this.comment
+      this.form.cmt_date = comment_date
+      this.form.cmt_tkt = ticketId
+      this.form.cmt_link = this.link
+      this.form.cmt_act = userId
+      this.form.cmt_picture = this.imageName
+      this.form.cmt_file = this.file
+
+
+      //     // .then((result) => {
+      //     //   this.$router.push('/support-ticket/user/dashboard')
+      //     // })
+
+
+
+      try {
+        await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
+          data: this.form,
+        });
+        // Handle success here
+      } catch (error) {
+        console.log(error);
+        // Handle the error appropriately (e.g., display an error message)
+      }
+      // รีเซ็ตค่าของ this.form หลังจากบันทึกเสร็จ
+      this.form = {
+        cmt_message: '',
+        cmt_link: '',
+        cmt_picture: '', // รีเซ็ตค่า cmt_picture เป็นสตริงว่าง
+        cmt_file: '',
+        cmt_date: '',
+        cmt_act: '',
+        cmt_tkt: '',
+      };
+      this.comment = ''
+      this.imageDataURL = ''
+      this.imageName = ''
+      this.link = ''
+      this.file = null
+      // window.location.reload();
+    },
+    async getComment() {
+      const ticketId = this.ticketId
       const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-            where: {
-              cmt_tkt: ticketId,
-            },
-            populate:["cmt_act"]
-              
-            
-          });
-          console.log(ticketId)
-          console.log(comment.data)
-          this.comments = comment.data;
+        where: {
+          cmt_tkt: ticketId,
+        },
+        populate: ["cmt_act"]
+
+
+      });
+      console.log(ticketId)
+      console.log(comment.data)
+      this.comments = comment.data;
     }
 
   },
-  mounted(){
+  mounted() {
     const itemId = this.$route.params.itemId;
-    this.ticketId=itemId;
+    this.ticketId = itemId;
     this.getTicket();
     this.getComment();
 
@@ -539,9 +576,12 @@ export default {
 
 <style>
 .avatar-round {
-  width: 100px; /* ปรับขนาดตามที่ต้องการ */
-  height: 100px; /* ปรับขนาดตามที่ต้องการ */
-  border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
+  width: 100px;
+  /* ปรับขนาดตามที่ต้องการ */
+  height: 100px;
+  /* ปรับขนาดตามที่ต้องการ */
+  border-radius: 50%;
+  /* ทำให้รูปเป็นวงกลม */
 }
 
 .Arrow_Left {
@@ -635,56 +675,3 @@ a:hover {
   text-decoration: underline;
 }
 </style>
-
-
-
-<!-- <template>
-  <div>
-    <CFormInput v-model="inputValue" @input="countCharacters" />
-    <p>Character count: {{ characterCount }}</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      inputValue: '',
-      characterCount: 0,
-    };
-  },
-  methods: {
-    countCharacters() {
-      this.characterCount = this.inputValue.length;
-    },
-  },
-};
-</script> -->
-
-
-<!-- <template>
-  <div>
-    <CFormInput v-model="inputValue" @input="updateCharacterCount" />
-    <p>Character count: {{ characterCount }} / 200</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      inputValue: '',
-      characterCount: 0,
-    };
-  },
-  methods: {
-    updateCharacterCount() {
-      this.characterCount = this.inputValue.length;
-      if (this.characterCount > 200) {
-        this.inputValue = this.inputValue.slice(0, 200);
-        this.characterCount = 200;
-      }
-    },
-  },
-};
-</script> -->
