@@ -70,7 +70,7 @@
             class="me-2 align-middle"
             style="width: 51px; height: 36px"
             :src="LGlogo"
-            
+
           />
           <h2 class="d-inline align-middle">My Tickets</h2>
           <div
@@ -107,9 +107,9 @@
         >
         <template #STATUS="{ item }">
         <td>
-          
+
           <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-          
+
         </td>
       </template>
 
@@ -179,9 +179,12 @@
 }
 .LG {
   width: 50%;
+  max-height: 100px;
 }
+
 #border {
-  border-radius: 6%;
+  height: 220px;
+  border-radius: 15px;
 }
 
 .table-responsive {
@@ -201,12 +204,12 @@ import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
 export default {
   name: 'SmartTableBasixExample',
-  
+
 
     data(){
       return {
             data_array:[],
-            
+
             tkt_number: '',
             tkt_description: '',
             tkt_picture: '',
@@ -228,17 +231,17 @@ export default {
     },
     setup() {
         const columns = [
-            
+
             { key: '#',_style: { width: '5%' }},
-            { key: 'TicketID',_style: { width: '10%' }},            
+            { key: 'TicketID',_style: { width: '10%' }},
             { key: 'TITLE', _style: { width: '10%' } },
             { key: 'START DATE(D/M/Y)', _style: { width: '11%' } },
             { key: 'STATUS', _style: { width: '5%' } },
             { key: 'TYPE', _style: { width: '4%' } },
             { key: 'BOOKMARK', _style: { width: '5%' } },
             { key: 'MORE',_style: { width: '5%' }},
-            
-     
+
+
         ];
         const getBadge = (tkt_status) => {
           switch (tkt_status) {
@@ -254,9 +257,9 @@ export default {
               return 'primary'; // Return a default color if none of the cases match.
           }
         };
-        
+
         const items = ref([]);
-        
+
 
         async function getData() {
           const user = JSON.parse(localStorage.getItem("USER_DATA"))
@@ -288,16 +291,16 @@ export default {
     components: { CRow, CCol },
     methods:{
       async contactIt(item){
-        const itemId = item._id.toString(); 
+        const itemId = item._id.toString();
 
         this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
-      
+
       },
       async toggleDetails(item){
 
       item.BOOKMARK = !item.BOOKMARK;
       try {
-        const itemId = item._id.toString(); 
+        const itemId = item._id.toString();
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data:{
@@ -317,7 +320,7 @@ export default {
       async buttonCancel(item) {
 
       try {
-        const itemId = item._id.toString(); 
+        const itemId = item._id.toString();
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data:{
@@ -330,7 +333,7 @@ export default {
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
         // รีเฟรชหน้า
         window.location.reload();
-        
+
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
@@ -371,7 +374,7 @@ export default {
           console.error('Error fetching data:', error);
         }
 
-      }, 
+      },
 
 
       async getCountall (){
@@ -401,7 +404,7 @@ export default {
           this.count_open=countOpen;
           this.count_closed=countClosed;
       },
-      
+
 
 
     },
@@ -409,7 +412,7 @@ export default {
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getCountall();
       this.getTicket();
-      
+
 
     }
   }
