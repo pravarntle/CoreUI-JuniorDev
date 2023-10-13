@@ -29,8 +29,8 @@
                     <CFormLabel>Password</CFormLabel>
                     <CInputGroup class="mb-4">
                       <CFormInput
-                        type="password"
                         id="password"
+                        :type="showPassword?'text':'password'"
                         v-model="form.password"
                         feedbackInvalid="ห้ามเว้นว่าง"
                         :invalid="validate.password"
@@ -41,7 +41,7 @@
                         <CFormCheck
                         type="radio"
                         autocomplete="off"
-                        @click="showPassword"
+                        @click="showPassword=!showPassword"
                         >
                         <template #label><CIcon :icon="cilToggleOff" /></template>
                         </CFormCheck>
@@ -88,7 +88,8 @@ export default {
         validate: {
           username: null,
           password: null,
-        }
+        },
+        showPassword:false,
       };
     },
     methods: {
@@ -140,14 +141,14 @@ export default {
         
         // this.$router.push('/support-ticket/user/dashboard');
       },
-      showPassword(){
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-          x.type = "text";
-        } else {
-          x.type = "password";
-        }
-      },
+      // showPassword(){
+      //   var x = document.getElementById("password");
+      //   if (x.type === "password") {
+      //     x.type = "text";
+      //   } else {
+      //     x.type = "password";
+      //   }
+      // },
     },
     components: {
       CFormInput,

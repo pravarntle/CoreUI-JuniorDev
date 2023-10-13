@@ -153,18 +153,28 @@
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <img class="Icon_user_man" :src="Icon_user_man" alt="User Icon" />
+                  <CAvatar v-if="item.cmt_act.act_picture"
+                  class="Icon_user_man"
+                  :src="require(`@/assets/images/${item.cmt_act.act_picture}`)"
+                  style="padding: -4px"
+                />
+                <CAvatar
+                  v-else
+                  class="Icon_user_man"
+                  :src="Icon_user_man"
+                  style="padding: -4px"
+                />
                 </div>
               </div>
               <div class="col-10">
-                <p><b>ชื่อผู้ใช้งาน</b> &emsp;เวลาที่คอมเม้น</p>
+                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date}}</p>
                 <div class="comments_box" style="padding: 10px">
-                  {{ item.comment }}
-                  <a v-if="item.link" href="#" @click.prevent="openLink(item.link)">
-                    {{ item.link }}
+                  {{ item.cmt_message }}
+                  <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
+                    {{ item.cmt_link }}
                   </a>
-                  <a v-if="item.image">
-                    <CImage :src="item.image" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                  <a v-if="item.cmt_picture">
+                    <CImage :src="item.cmt_picture" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
                 </div>
                 <!-- <template v-if="item.link">
@@ -172,12 +182,12 @@
                       {{ item.link }}
                     </a>
                   </template>   -->
-                <span v-if="item.file">
+                <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
                   <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
                   <a :href="item.file.url" download></a>
-                </span>
+                </span> -->
               </div>
             </div>
           </div>
@@ -247,6 +257,7 @@ export default {
       cmt_picture: '',
       cmt_file: '',
       cmt_date: '',
+      cmt_act: '',
       cmt_tkt: '',
        },
       visibleA: true,
@@ -298,9 +309,11 @@ export default {
     async attachImage() {
       const imageInput = this.$refs.fileInput
       imageInput.click()
+     
 
       imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0]
+        const file = event.target.files[0] 
+        console.log(file)
         if (file) {
           this.imageName = file.name
 
@@ -438,7 +451,7 @@ export default {
           const ticketId=this.ticketId;
           console.log(ticketId);
 
-          const response = await axios.post(`http://localhost:3000/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
           console.log(response.data);
 
           this.type = response.data.tkt_types;
@@ -461,10 +474,10 @@ export default {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
         dayjs.tz.setDefault('Asia/Bangkok')
-
-
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        
         const date = dayjs()
-
 
         const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
         const ticketId=this.ticketId
@@ -472,29 +485,18 @@ export default {
         this.form.cmt_date = comment_date
         this.form.cmt_tkt = ticketId
         this.form.cmt_link = this.link
+        this.form.cmt_act = userId
         this.form.cmt_picture = this.imageName
         this.form.cmt_file = this.file
-
-        // console.log(this.form)
-
-        // try {
-        //   await axios
-        //     .post('http://localhost:3000/mongoose/insert/stts_comments', {
-        //       data: this.form,
-        //     })
+    
         //     // .then((result) => {
         //     //   this.$router.push('/support-ticket/user/dashboard')
         //     // })
-        //     .catch((err) => {
-        //       console.log(error)
-        //     })
-        // } catch (error) {
-        //   console.log(error)
-        // }
-        console.log(this.form);
+       
+       
 
         try {
-          await axios.post('http://localhost:3000/mongoose/insert/stts_comments', {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
             data: this.form,
           });
           // Handle success here
@@ -502,6 +504,26 @@ export default {
           console.log(error);
           // Handle the error appropriately (e.g., display an error message)
         }
+        this.comment = ''
+        this.imageDataURL = ''
+        this.imageName = ''
+        this.link = ''
+        this.file = null
+        // window.location.reload();
+    },
+    async getComment(){
+      const ticketId=this.ticketId
+      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
+            where: {
+              cmt_tkt: ticketId,
+            },
+            populate:["cmt_act"]
+              
+            
+          });
+          console.log(ticketId)
+          console.log(comment.data)
+          this.comments = comment.data;
     }
 
   },
@@ -509,6 +531,7 @@ export default {
     const itemId = this.$route.params.itemId;
     this.ticketId=itemId;
     this.getTicket();
+    this.getComment();
 
   },
 }

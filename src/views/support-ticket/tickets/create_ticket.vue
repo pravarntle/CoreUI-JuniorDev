@@ -60,7 +60,7 @@
                 @change="checkpiority"
               />
             </div>
-            
+
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -143,7 +143,7 @@ export default {
         tkt_types: '',
         tkt_book: '',
         tkt_act: '',
-        validatedCustom01: ''
+        validatedCustom01: false,
 
       },
 
@@ -191,10 +191,10 @@ export default {
     // },
     async getType() {
       const type = await axios.get(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       )
       const types = await axios.post(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       ) //,{populate:['tkt_act']}
       console.log(types)
       type.data.forEach((element) => {
@@ -204,28 +204,31 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error;
+      let error = false;
       if (this.form.tkt_title === '') {
         error = true;
-        this.validate.tkt_title = true;
+        this.validate.tkt_title = false;
       }
       if (this.form.tkt_types === '') {
         error = true
-        this.validate.tkt_types = true
+        this.validate.tkt_types = false
       }
       if (this.form.tkt_priorities === '') {
         error = true
-        this.validate.tkt_priorities = true
+        this.validate.tkt_priorities = false
       }
       if (this.form.tkt_description === '') {
         error = true
-        this.validate.tkt_description = true
+        this.validate.tkt_description = false
       }
-      
 
-      if (error) {
-      } else {
+
+      if (!error) {
         this.onSave()
+      } else {
+        
+        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -246,13 +249,7 @@ export default {
       const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
 
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
+      
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
@@ -265,7 +262,7 @@ export default {
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_tickets', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
           })
           .then((result) => {

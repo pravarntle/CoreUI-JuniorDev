@@ -5,7 +5,7 @@
       <CCardBody>
         <CForm
           novalidate
-          :validated="form.validatedCustom01"
+    :validated="form.validatedCustom01"
         >
         <CRow class="mb-3">
           <CCol class="header1" xs="12" md="6" lg="4">
@@ -17,20 +17,6 @@
                 Create New Account
             </h1>
           </CCol>
-            <!-- <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="50"
-            height="80"
-            viewBox="300 0 50 50"
-            fill="none"
-            class="header1" xs="12" md="6" lg="4"
-          >
-            <rect y="0.259277" width="200" height="2.2588" fill="#EA5252" />
-            <path
-              d="M49.4795 0.259277H219V2.51807H69.4795V0.259277Z"
-              fill="#030303"
-            />
-          </svg> -->
         </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
@@ -44,6 +30,7 @@
               >
 
               <CFormInput
+                 feedbackInvalid="Please input picture."
                 name="upload_file"
                 v-model="form.act_picture"
                 :invalid="validate.act_picture"
@@ -53,11 +40,6 @@
                 id="upload_file"
                 hidden
               />
-               <div
-                v-if="imageUrl==='../../../assets/images/preProfile01.svg'"
-                class="text-danger"
-                > Please input picture.
-               </div>
               <CCol xs="12" md="6" lg="4">
                 <CButton
                   class="btn-Picture"
@@ -77,7 +59,6 @@
               >
             </CCol>
           </CRow>
-
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
               <CFormLabel
@@ -309,10 +290,16 @@
   </div>
 </template>
 <script>
-import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
+import { CForm, CFormLabel, CFormInput, CButton } from '@coreui/vue-pro'
 import axios from 'axios'
 export default {
-  components: { CFormLabel },
+  components: {
+    CFormLabel,
+    CForm,
+    CFormInput,
+    CFormLabel,
+    CButton,
+  },
   data: () => {
     return {
       form: {
@@ -328,27 +315,27 @@ export default {
         act_role: '',
         confirmEmail: '',
         Confirmpassword: '',
-        validatedCustom01: '',
+        validatedCustom01: false,
       },
 
       validate: {
-        // act_username:null,
-        // act_password: null,
-        // act_number_phone:null,
-        // act_email_address:null,
-        // act_first_name_th:null,
-        // act_first_name_eng:null,
-        // act_last_name_th:null,
-        // act_last_name_eng:null,
-        // act_picture:null,
-        // act_role:null,
+        act_username:false,
+        act_password: false,
+        act_number_phone:false,
+        act_email_address:false,
+        act_first_name_th:false,
+        act_first_name_eng:false,
+        act_last_name_th:false,
+        act_last_name_eng:false,
+        act_picture:false,
+        act_role:false,
         // confirmEmail:null,
-        // Confirmpassword: null,
+        // Confirmpassword:null
       },
       imageUrl: '../../../assets/images/preProfile01.svg',
       imageFile: null,
       pageLoading: false,
-      validatedCustom01: null,
+      //validatedCustom01: '',
     }
   },
   created() {
@@ -361,33 +348,26 @@ export default {
     ]
   },
   methods: {
-    // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
-    handleImageUpload(event) {
-      const file = event.target.files[0]
+  handleImageUpload(event) {
+      const file = event.target.files[0];
       if (file) {
-        this.imageUrl = URL.createObjectURL(file)
-        this.imageFile = file
-
+        this.imageUrl = URL.createObjectURL(file);
+        this.imageFile = file;
       }
     },
+    // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
       this.imageUrl = '../../../assets/images/preProfile01.svg'
       this.imageFile = '../../../assets/images/preProfile01.png'
       // You can also send an API request to delete the image on the server here.
     },
-    // handleSubmitCustom01(event) {
-    //   if (!event.currentTarget.checkValidity()) {
-    //     event.preventDefault()
-    //   }
-    //   this.form.validatedCustom01 = true
-    // },
     validateBeforeSave() {
-      let error
+      let error = false;
       if (!this.form.act_picture) {
         error = true
         this.validate.act_picture = false
       }
-      if (this.form.act_first_name_th === '' ) {
+      if (!this.form.act_first_name_th) {
         error = true
         this.validate.act_first_name_th = false
       }
@@ -450,8 +430,10 @@ export default {
         this.validate.Confirmpassword = false
        }
 
-      if (error) {
+      if (!error) {
+
       } else {
+        this.form.validatedCustom01 = true;
         this.onSave()
       }
     },

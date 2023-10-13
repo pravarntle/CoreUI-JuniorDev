@@ -232,7 +232,7 @@ export default {
             { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
-            { key: 'START DATE', _style: { width: '11%' } },
+            { key: 'START DATE(D/M/Y)', _style: { width: '11%' } },
             { key: 'STATUS', _style: { width: '5%' } },
             { key: 'TYPE', _style: { width: '4%' } },
             { key: 'BOOKMARK', _style: { width: '5%' } },
@@ -263,7 +263,7 @@ export default {
           try {
             const response = await axios({
               method: 'GET',
-              url: 'http://localhost:3000/mongoose/get/check-token',
+              url: `${process.env.VUE_APP_URL}/mongoose/get/check-token`,
               headers: { 'Authorization': 'Bearer ' + user.token }
             })
             console.log(response)
@@ -299,7 +299,7 @@ export default {
       try {
         const itemId = item._id.toString(); 
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data:{
               tkt_book: item.BOOKMARK
 
@@ -309,6 +309,7 @@ export default {
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
+        window.alert("เจ๋ง พัง ยับ")
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
       },
@@ -318,7 +319,7 @@ export default {
       try {
         const itemId = item._id.toString(); 
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`http://localhost:3000/mongoose/update/stts_tickets/${itemId}`, {
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data:{
               tkt_status: "Cancel"
 
@@ -344,7 +345,7 @@ export default {
           const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
 
-          const response = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
             where: {
               tkt_act: userId,
               tkt_status: { $ne: 'Cancel' }
@@ -360,7 +361,7 @@ export default {
             // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
             // ตามลำดับของ columns ในตัวแปร columns
             // เพิ่มเติมตามความต้องการ
-            'START DATE': element.tkt_time,
+            'START DATE(D/M/Y)': element.tkt_time,
             STATUS:element.tkt_status  ,
             TYPE: element.tkt_types,
             BOOKMARK: element.tkt_book,
@@ -376,7 +377,7 @@ export default {
       async getCountall (){
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
           const userId = userData.id.toString(); // ดึงค่า id จาก userData
-          const allTicket = await axios.post('http://localhost:3000/mongoose/get/stts_tickets', {
+          const allTicket = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
             where: {
               tkt_act: userId,
               tkt_status: { $ne: 'Cancel' }
@@ -399,7 +400,8 @@ export default {
           this.count_all=countAll;
           this.count_open=countOpen;
           this.count_closed=countClosed;
-      }
+      },
+      
 
 
     },
