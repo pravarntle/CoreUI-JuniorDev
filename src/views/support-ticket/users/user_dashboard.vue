@@ -184,6 +184,7 @@
 .LG {
   width: 100px;
   max-height: 100px;
+
 }
 
 #border {
