@@ -14,9 +14,9 @@
             Dashbord
           </h1>
         </CCardHeader>
-        <CRow class="mb-3">
-          <CCol>
-            <CCard class="p-2 mb-2" id="border">
+        <CRow style="height: auto;">
+          <CCol :sm="4">
+            <CCard class="p-2 mb-2" id="border" >
               <CCardbody>
                 <b id="all">All Tickets</b>
                 <CRow>
@@ -30,8 +30,8 @@
               </CCardbody>
             </CCard>
           </CCol>
-          <CCol>
-            <CCard class="p-2 mb-2" id="border">
+          <CCol :sm="4">
+            <CCard class="p-2 mb-2" id="border" >
               <CCardbody>
                 <b id="open">Open Tickets</b>
                 <CRow>
@@ -45,8 +45,8 @@
               </CCardbody>
             </CCard>
           </CCol>
-          <CCol>
-            <CCard class="p-2 mb-2" id="border">
+          <CCol :sm="4">
+            <CCard class="p-2 mb-2" id="border" >
               <CCardbody>
                 <b id="closed">Closed Tickets</b>
                 <CRow>
@@ -154,6 +154,10 @@
     </CCard>
   </div>
   <div></div>
+
+
+<br><br>
+
 </template>
 <style>
 .text-right-header {
@@ -178,7 +182,7 @@
   color: #000;
 }
 .LG {
-  width: 50%;
+  width: 100px;
   max-height: 100px;
 }
 
