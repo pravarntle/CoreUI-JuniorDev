@@ -129,8 +129,18 @@ export default {
             }
 
             localStorage.setItem('USER_DATA', JSON.stringify(user))
+            console.log(user.role)
             setTimeout(function() {
-              this.$router.push('/support-ticket/user/dashboard');
+              if (user.role === 'Employee') {
+                this.$router.push('/support-ticket/user/dashboard');
+              } else if (user.role === 'Admin') {
+                this.$router.push('/support-ticket/admin/admin_dashboard');
+              } else if (user.role === 'ItSupport') {
+                this.$router.push('/support-ticket/it/it_dashboard');
+              } else if (user.role === 'Manager') {
+                this.$router.push('/support-ticket/manager/manager_dashboard');
+              }
+
             }.bind(this), 1500)
             
           } catch (error) {
