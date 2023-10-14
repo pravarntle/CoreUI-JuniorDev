@@ -71,7 +71,7 @@
                       </font>
                       <br />
                       <font style="color: #ef5466"
-                        >height = ดำเนินการภายใน 24 ชม.
+                        >Height = ดำเนินการภายใน 24 ชม.
                       </font>
                     </p>
                   </div>
