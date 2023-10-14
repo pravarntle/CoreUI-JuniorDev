@@ -50,7 +50,33 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Priority</b></h5>
+              <div class="d-flex align-items-center">
+                <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
+                <h5><b>Priority</b></h5>
+                <div class="popup" @click="togglePopup">
+                  <CAvatar
+                    class="popup_priority"
+                    :src="popup_priority"
+                    style="text-align: left; margin-left: 10px; margin-top: -5px;"
+
+                  />
+                  <div class="popuptext" :class="{ show: isPopupVisible }">
+                    <p>
+                      <font style="color: #38a06c">
+                        Low = ดำเนินการภายใน 72 ชม.
+                      </font>
+                      <br />
+                      <font style="color: #c97a20">
+                        Medium = ดำเนินการภายใน 48 ชม.
+                      </font>
+                      <br />
+                      <font style="color: #ef5466"
+                        >height = ดำเนินการภายใน 24 ชม.
+                      </font>
+                    </p>
+                  </div>
+                </div>
+              </div>
               <CFormSelect
                 v-model="form.tkt_priorities"
                 :options="piorityOptions"
@@ -104,7 +130,7 @@
                 color: white;
                 border-radius: 20px;
               "
-              >Cancle</CButton
+              >Cancel</CButton
             >
             <CButton
               class="btn-sec"
@@ -121,12 +147,71 @@
             >
           </div>
           <CElementCover :opacity="0.5" v-if="pageLoading" />
+          <div style="text-align: center"></div>
         </CForm>
       </CCardBody>
     </CCard>
   </div>
+
+  <br />
 </template>
 <style>
+.popup_priority {
+  width: 16px;
+}
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 255px;
+  background-color: rgb(255, 255, 255);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -47px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #000000 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* เพิ่ม CSS Media Query เพื่อปรับแต่งการ padding-left เมื่อหน้าจอเล็ก */
 /* @media (max-width: 768px) {
   .col-lg-3.col-md-12 h5 {
@@ -144,6 +229,7 @@
 </style>
 
 <script>
+import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
@@ -167,7 +253,8 @@ export default {
         tkt_act: '',
         validatedCustom01: false,
       },
-
+      popup_priority,
+      isPopupVisible: false,
       userOptions: [],
       userOptions: [],
       genderOptions: [],
@@ -210,6 +297,9 @@ export default {
     //   });
 
     // },
+    async togglePopup() {
+      this.isPopupVisible = !this.isPopupVisible
+    },
     async getType() {
       const type = await axios.get(
         'http://localhost:3000/mongoose/get/stts_types',
@@ -244,7 +334,7 @@ export default {
       }
 
       if (!error) {
-         this.onSave()
+        this.onSave()
       } else {
         this.form.validatedCustom01 = true // เปลี่ยนเป็น true เมื่อคลิก "Submit"
       }
