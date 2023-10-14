@@ -11,7 +11,7 @@
               border-image-slice: 1;
             "
           >
-            Dashbord
+            Dashboard
           </h1>
         </CCardHeader>
         <CRow style="height: auto;">
