@@ -6,13 +6,13 @@
           <CCardBody>
           <CRow>
               <CCol>
-                <img :src="dataImageURL" width="50" height="50"/>
-                <!-- <CImage
+                <!-- <img :src="dataImageURL" width="50" height="50"/> -->
+                <CImage
                   :src="login"
                   fluid
                   block
                   class="c-image"
-                /> -->
+                />
               </CCol>
               <CCol>
                   <CForm>
