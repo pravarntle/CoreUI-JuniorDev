@@ -6,12 +6,13 @@
           <CCardBody>
           <CRow>
               <CCol>
-                <CImage
+                <img :src="dataImageURL" width="50" height="50"/>
+                <!-- <CImage
                   :src="login"
                   fluid
                   block
                   class="c-image"
-                />
+                /> -->
               </CCol>
               <CCol>
                   <CForm>
@@ -61,6 +62,17 @@
         </CCardGroup>
       </CContainer>
     </div>
+
+    <CToaster placement="top-end">
+        <CToast visible color="primary" v-for="(toast) in toastProp">
+            <CToastHeader closeButton v-if="toast.title">
+                <span class="me-auto fw-bold">{{ toast.title }}</span>
+            </CToastHeader>
+            <CToastBody v-if="toast.content">
+                <span class="text-white">{{ toast.content }}</span>
+            </CToastBody>
+        </CToast>
+    </CToaster>
 </template>
 <style>
 .c-image {
@@ -77,6 +89,7 @@ export default {
     name: 'Login1',
     data() {
       return {
+        dataImageURL: '',
         cilToggleOff,
         cilToggleOn,
         login: login,
@@ -90,9 +103,25 @@ export default {
           password: null,
         },
         showPassword:false,
+
+        toastProp: [],
       };
     },
+    created() {
+      this.getImage()
+      this.toastProp.push({
+        content: 'OK'
+      })
+    },
     methods: {
+      async getImage() {
+        try {
+          const dataResponse = await axios.post('http://localhost:3000/mongoose/getOne/stts_files/652c0247d44e6b62f7b1f65f')
+          this.dataImageURL = `data:${dataResponse.data.filetype};base64,${dataResponse.data.image}`
+        } catch (error) {
+          
+        }
+      },
       vaildateBeforeSave() {
         let error = false
         if (this.form.username === '') {

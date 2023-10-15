@@ -123,7 +123,8 @@
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
-              <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
+              <CFormInput type="file" @change="onFileUpload" />
+              <!-- <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" /> -->
               <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
@@ -173,7 +174,7 @@
                     {{ item.cmt_link }}
                   </a>
                   <a v-if="item.cmt_picture">
-                    <CImage :src="item.cmt_picture" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
                 </div>
                 <!-- <template v-if="item.link">
@@ -250,6 +251,8 @@ export default {
   },
   data() {
     return {
+      uploadImage: '',
+      uploadFile: '',
       form: {  // Initialize the form object
       cmt_message: '',
       cmt_link: '',
@@ -431,7 +434,7 @@ export default {
           return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/jpeg_icon.png');
+          return require('@/assets/images/Jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
@@ -469,6 +472,25 @@ export default {
           console.error('Error fetching data:', error);
         }
       },
+      async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_picture = dataResponse.data._id
+      },
+      // onImageUpload(event) {
+      //   this.uploadImage = event.target.files[0]
+      // },
+      // async onUpload() {
+        
+        
+      // },
       async onSave() {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
@@ -485,14 +507,12 @@ export default {
         this.form.cmt_tkt = ticketId
         this.form.cmt_link = this.link
         this.form.cmt_act = userId
-        this.form.cmt_picture = this.imageName
+        // this.form.cmt_picture = this.imageName
         this.form.cmt_file = this.file
     
         //     // .then((result) => {
         //     //   this.$router.push('/support-ticket/user/dashboard')
         //     // })
-       
-       
 
         try {
           await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
@@ -516,13 +536,14 @@ export default {
             where: {
               cmt_tkt: ticketId,
             },
-            populate:["cmt_act"]
+            populate:["cmt_act", "cmt_picture"]
               
             
           });
           console.log(ticketId)
           console.log(comment.data)
           this.comments = comment.data;
+          console.log(this.comments)
     }
 
   },
