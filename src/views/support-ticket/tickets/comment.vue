@@ -518,6 +518,9 @@ export default {
           await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
             data: this.form,
           });
+          setTimeout(function() {
+            this.getComment()
+          }.bind(this), 1500)
           // Handle success here
         } catch (error) {
           console.log(error);
