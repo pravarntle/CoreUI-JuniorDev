@@ -18,6 +18,7 @@ router.get('/getOne/:model/:id', mongooseController.findOne)
 
 // POST //
 router.post('/insert/:model', mongooseController.save)
+router.post('/upload/:model', mongooseController.saveFile)
 
 router.post('/get/:model', mongooseController.find)
 

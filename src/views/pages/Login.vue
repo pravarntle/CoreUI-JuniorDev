@@ -6,6 +6,7 @@
           <CCardBody>
           <CRow>
               <CCol>
+                <!-- <img :src="dataImageURL" width="50" height="50"/> -->
                 <CImage
                   :src="login"
                   fluid
@@ -61,6 +62,17 @@
         </CCardGroup>
       </CContainer>
     </div>
+
+    <CToaster placement="top-end">
+        <CToast visible color="primary" v-for="(toast) in toastProp">
+            <CToastHeader closeButton v-if="toast.title">
+                <span class="me-auto fw-bold">{{ toast.title }}</span>
+            </CToastHeader>
+            <CToastBody v-if="toast.content">
+                <span class="text-white">{{ toast.content }}</span>
+            </CToastBody>
+        </CToast>
+    </CToaster>
 </template>
 <style>
 .c-image {
@@ -77,6 +89,7 @@ export default {
     name: 'Login1',
     data() {
       return {
+        dataImageURL: '',
         cilToggleOff,
         cilToggleOn,
         login: login,
@@ -90,9 +103,25 @@ export default {
           password: null,
         },
         showPassword:false,
+
+        toastProp: [],
       };
     },
+    created() {
+      this.getImage()
+      this.toastProp.push({
+        content: 'OK'
+      })
+    },
     methods: {
+      async getImage() {
+        try {
+          const dataResponse = await axios.post('http://localhost:3000/mongoose/getOne/stts_files/652c0247d44e6b62f7b1f65f')
+          this.dataImageURL = `data:${dataResponse.data.filetype};base64,${dataResponse.data.image}`
+        } catch (error) {
+          
+        }
+      },
       vaildateBeforeSave() {
         let error = false
         if (this.form.username === '') {
@@ -129,8 +158,18 @@ export default {
             }
 
             localStorage.setItem('USER_DATA', JSON.stringify(user))
+            console.log(user.role)
             setTimeout(function() {
-              this.$router.push('/support-ticket/user/dashboard');
+              if (user.role === 'Employee') {
+                this.$router.push('/support-ticket/user/dashboard');
+              } else if (user.role === 'Admin') {
+                this.$router.push('/support-ticket/admin/admin_dashboard');
+              } else if (user.role === 'ItSupport') {
+                this.$router.push('/support-ticket/it/it_dashboard');
+              } else if (user.role === 'Manager') {
+                this.$router.push('/support-ticket/manager/manager_dashboard');
+              }
+
             }.bind(this), 1500)
             
           } catch (error) {
