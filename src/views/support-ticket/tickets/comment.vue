@@ -123,16 +123,16 @@
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
-              <CFormInput type="file" @change="onFileUpload" />
-              <input type="file" ref="fileInput" @change="onPictureUpload" style="display: none" id="imageInput" />
-              <CButton  id="attach_image"><img class="attach-image" :src="Attach_Image"
+              <!-- <CFormInput type="file" @change="onFileUpload" /> -->
+              <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput" accept=".png, .jpg, .jpeg" />
+              <CButton @click="attachImage  " id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
-              <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
+              <CButton  @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none"  />
-              <CButton  id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
+              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" accept=".txt, .pdf, .docx ,.xlsx" />
+              <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
@@ -177,14 +177,16 @@
                     <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
                   <a v-if="item.cmt_file">
-                    <CImage :src="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${item.cmt_file.filename}`}}</a>
                   </a>
-                </div>
-                <template v-if="item.cmt_link">
-                    <a @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
+                  <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
                       {{ item.cmt_link }}
-                    </a>
-                  </template>  
+                  </a>
+                  
+                </div>
+                
+                    
+                 
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
@@ -311,31 +313,31 @@ export default {
 
 
     //------- AOM -------
-    // async attachImage() {
-    //   const imageInput = this.$refs.fileInput
-    //   imageInput.click()
+    async attachImage() {
+      const imageInput = this.$refs.pictureInput
+      this.$refs.pictureInput.click()
      
 
-    //   imageInput.addEventListener('change', (event) => {
-    //     const file = event.target.files[0] 
-    //     console.log(file)
-    //     if (file) {
-    //       this.imageName = file.name
+      imageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0] 
+        console.log(file)
+        if (file) {
+          this.imageName = file.name
 
-    //       // อ่านรูปภาพเป็น Data URL
-    //       const reader = new FileReader()
-    //       reader.onload = (e) => {
-    //         this.imageDataURL = e.target.result
-    //       }
-    //       reader.readAsDataURL(file)
+          // อ่านรูปภาพเป็น Data URL
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.imageDataURL = e.target.result
+          }
+          reader.readAsDataURL(file)
 
-    //       console.log('รูปถูกแนบเรียบร้อย')
-    //     } else {
-    //       this.imageName = ''
-    //       console.error('เกิดข้อผิดพลาดในการแนบรูป')
-    //     }
-    //   })
-    // },
+          console.log('รูปถูกแนบเรียบร้อย')
+        } else {
+          this.imageName = ''
+          console.error('เกิดข้อผิดพลาดในการแนบรูป')
+        }
+      })
+    },
     async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
       if (link) {
@@ -344,24 +346,24 @@ export default {
         console.log('ลิงค์ถูกแนบเรียบร้อย')
       }
     },
-    // async attachFile() {
-    //   const fileInput = this.$refs.fileInput;
-    //   fileInput.click();
+    async attachFile() {
+      const fileInput = this.$refs.fileInput;
+      this.$refs.fileInput.click();
 
-    //   fileInput.addEventListener('change', (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //       this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-    //       this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
-    //       console.log('ไฟล์ถูกแนบเรียบร้อย');
-    //     } else {
-    //       this.file = null;
-    //       this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
-    //       console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
-    //     }
-    //   });
+      fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+          this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
+          console.log('ไฟล์ถูกแนบเรียบร้อย');
+        } else {
+          this.file = null;
+          this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
+          console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
+        }
+      });
 
-    // },
+    },
     // async handleFileChange(event) {
     //   const file = event.target.files[0]
     //   if (file) {
@@ -552,7 +554,8 @@ export default {
         this.imageDataURL = ''
         this.imageName = ''
         this.link = ''
-        this.file = null
+        
+        
         
         // window.location.reload();
     },
@@ -570,7 +573,25 @@ export default {
           console.log(comment.data)
           this.comments = comment.data;
           console.log(this.comments)
-    }
+    },
+    async getFileType(filetype) {
+      console.log("เข้า")
+      switch (filetype) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+          return 'รูปภาพ';
+        case 'application/pdf':
+          return 'ไฟล์ PDF';
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          return 'ไฟล์เอกสาร Microsoft Word';
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+          return 'ไฟล์เอกสาร Microsoft Excel';
+        default:
+          return 'ไฟล์อื่น ๆ';
+      }
+  }
 
   },
   mounted(){
