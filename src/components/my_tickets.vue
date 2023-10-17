@@ -102,7 +102,7 @@ import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
 
 export default {
-name: 'AppSidebar',
+name: 'my_ticket',
     data(){
       return {
             data_array:[],
