@@ -123,15 +123,16 @@
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
-              <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
-              <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
+              <CFormInput type="file" @change="onFileUpload" />
+              <input type="file" ref="fileInput" @change="onPictureUpload" style="display: none" id="imageInput" />
+              <CButton  id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
               <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="handleFileChange" style="display: none" />
-              <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
+              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none"  />
+              <CButton  id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
@@ -173,14 +174,17 @@
                     {{ item.cmt_link }}
                   </a>
                   <a v-if="item.cmt_picture">
-                    <CImage :src="item.cmt_picture" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                  </a>
+                  <a v-if="item.cmt_file">
+                    <CImage :src="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
                 </div>
-                <!-- <template v-if="item.link">
-                    <a @click="openLink(item.link)" style="text-decoration: none; color: #007bff; ">
-                      {{ item.link }}
+                <template v-if="item.cmt_link">
+                    <a @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
+                      {{ item.cmt_link }}
                     </a>
-                  </template>   -->
+                  </template>  
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
@@ -250,6 +254,8 @@ export default {
   },
   data() {
     return {
+      uploadImage: '',
+      uploadFile: '',
       form: {  // Initialize the form object
       cmt_message: '',
       cmt_link: '',
@@ -271,7 +277,7 @@ export default {
       Attach_File,
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
-      file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
+      file: '', // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
       ticketId:'',
       type:'',
       description:'',
@@ -305,31 +311,31 @@ export default {
 
 
     //------- AOM -------
-    async attachImage() {
-      const imageInput = this.$refs.fileInput
-      imageInput.click()
+    // async attachImage() {
+    //   const imageInput = this.$refs.fileInput
+    //   imageInput.click()
      
 
-      imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0] 
-        console.log(file)
-        if (file) {
-          this.imageName = file.name
+    //   imageInput.addEventListener('change', (event) => {
+    //     const file = event.target.files[0] 
+    //     console.log(file)
+    //     if (file) {
+    //       this.imageName = file.name
 
-          // อ่านรูปภาพเป็น Data URL
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.imageDataURL = e.target.result
-          }
-          reader.readAsDataURL(file)
+    //       // อ่านรูปภาพเป็น Data URL
+    //       const reader = new FileReader()
+    //       reader.onload = (e) => {
+    //         this.imageDataURL = e.target.result
+    //       }
+    //       reader.readAsDataURL(file)
 
-          console.log('รูปถูกแนบเรียบร้อย')
-        } else {
-          this.imageName = ''
-          console.error('เกิดข้อผิดพลาดในการแนบรูป')
-        }
-      })
-    },
+    //       console.log('รูปถูกแนบเรียบร้อย')
+    //     } else {
+    //       this.imageName = ''
+    //       console.error('เกิดข้อผิดพลาดในการแนบรูป')
+    //     }
+    //   })
+    // },
     async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
       if (link) {
@@ -338,84 +344,85 @@ export default {
         console.log('ลิงค์ถูกแนบเรียบร้อย')
       }
     },
-    async attachFile() {
-      const fileInput = this.$refs.fileInput;
-      fileInput.click();
+    // async attachFile() {
+    //   const fileInput = this.$refs.fileInput;
+    //   fileInput.click();
 
-      fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-          this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
-          console.log('ไฟล์ถูกแนบเรียบร้อย');
-        } else {
-          this.file = null;
-          this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
-          console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
-        }
-      });
+    //   fileInput.addEventListener('change', (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //       this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+    //       this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
+    //       console.log('ไฟล์ถูกแนบเรียบร้อย');
+    //     } else {
+    //       this.file = null;
+    //       this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
+    //       console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
+    //     }
+    //   });
 
-    },
-    async handleFileChange(event) {
-      const file = event.target.files[0]
-      if (file) {
-        this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-        console.log('ไฟล์ถูกแนบเรียบร้อย')
-      } else {
-        this.file = null
-        console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
-      }
-    },
-    async submitComment() {
-      if (
-        this.comment.trim() === '' &&
-        this.imageDataURL === '' &&
-        this.link.trim() === '' &&
-        !this.file
-      ) {
-        console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
-        return
-      }
+    // },
+    // async handleFileChange(event) {
+    //   const file = event.target.files[0]
+    //   if (file) {
+    //     this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+    //     console.log('ไฟล์ถูกแนบเรียบร้อย')
+    //   } else {
+    //     this.file = null
+    //     console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
+    //   }
+    // },
+    // async submitComment() {
+    //   if (
+    //     this.comment.trim() === '' &&
+    //     this.imageDataURL === '' &&
+    //     this.link.trim() === '' &&
+    //     !this.file
+    //   ) {
+    //     console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
+    //     return
+    //   }
 
-      console.log('ข้อความคิดเห็น:', this.comment)
+    //   console.log('ข้อความคิดเห็น:', this.comment)
 
-      // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
-      const newComment = { comment: this.comment }
+    //   // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
+    //   const newComment = { comment: this.comment }
 
-      // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
-      if (this.imageDataURL !== '') {
-        newComment.image = this.imageDataURL
-      }
+    //   // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
+    //   if (this.imageDataURL !== '') {
+    //     newComment.image = this.imageDataURL
+    //   }
 
-      // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
-      if (this.link.trim() !== '') {
-        newComment.link = this.link
-      }
+    //   // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
+    //   if (this.link.trim() !== '') {
+    //     newComment.link = this.link
+    //   }
 
-      // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
-      if (this.file) {
-        newComment.file = {
-          name: this.file.name,
-          url: URL.createObjectURL(this.file),
-        };
-      }
+    //   // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
+    //   if (this.file) {
+    //     newComment.file = {
+    //       name: this.file.name,
+    //       url: URL.createObjectURL(this.file),
+    //     };
+    //   }
 
-      // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
-      if (this.comment.trim() !== '') {
-        newComment.comment = this.comment;
-      }
+    //   // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
+    //   if (this.comment.trim() !== '') {
+    //     newComment.comment = this.comment;
+    //   }
 
-      // เพิ่มความคิดเห็นลงในรายการ
-      this.comments.push(newComment)
+    //   // เพิ่มความคิดเห็นลงในรายการ
+    //   this.comments.push(newComment)
 
-      // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
-      this.comment = ''
-      this.imageDataURL = ''
-      this.imageName = ''
-      this.link = ''
-      this.file = null
+    //   // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
+    //   this.comment = ''
+    //   this.imageDataURL = ''
+    //   this.imageName = ''
+    //   this.link = ''
+    //   this.file = null
+    //   this.picture = null
 
-    },
+    // },
     async isImageFile(filename) {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
@@ -431,7 +438,7 @@ export default {
           return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/jpeg_icon.png');
+          return require('@/assets/images/Jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
@@ -469,6 +476,37 @@ export default {
           console.error('Error fetching data:', error);
         }
       },
+      async onPictureUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_picture = dataResponse.data._id
+      },
+      async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_file = dataResponse.data._id
+      },
+      // onImageUpload(event) {
+      //   this.uploadImage = event.target.files[0]
+      // },
+      // async onUpload() {
+        
+        
+      // },
       async onSave() {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
@@ -477,6 +515,12 @@ export default {
         const userId = userData.id.toString(); // ดึงค่า id จาก userData
         
         const date = dayjs()
+        console.log(this.cmt_file)
+        console.log(this.cmt_picture)
+
+
+        this.form.cmt_file = this.form.cmt_file || null;
+        this.form.cmt_picture = this.form.cmt_picture || null;
 
         const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
         const ticketId=this.ticketId
@@ -485,19 +529,20 @@ export default {
         this.form.cmt_tkt = ticketId
         this.form.cmt_link = this.link
         this.form.cmt_act = userId
-        this.form.cmt_picture = this.imageName
-        this.form.cmt_file = this.file
+        // this.form.cmt_picture = this.imageName
+        // this.form.cmt_file = this.file
     
         //     // .then((result) => {
         //     //   this.$router.push('/support-ticket/user/dashboard')
         //     // })
-       
-       
 
         try {
           await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
             data: this.form,
           });
+          setTimeout(function() {
+            this.getComment()
+          }.bind(this), 200)
           // Handle success here
         } catch (error) {
           console.log(error);
@@ -508,6 +553,7 @@ export default {
         this.imageName = ''
         this.link = ''
         this.file = null
+        
         // window.location.reload();
     },
     async getComment(){
@@ -516,13 +562,14 @@ export default {
             where: {
               cmt_tkt: ticketId,
             },
-            populate:["cmt_act"]
+            populate:["cmt_act", "cmt_picture","cmt_file"]
               
             
           });
           console.log(ticketId)
           console.log(comment.data)
           this.comments = comment.data;
+          console.log(this.comments)
     }
 
   },

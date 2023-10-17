@@ -47,7 +47,7 @@
       <font style="color:black">Bookmark</font>
     </CNavItem>
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
-    <CNavItem href="/#/support-ticket/ticket/book" style="padding-top:600px">
+    <CNavItem href="#" style="padding-top:600px">
       <CImage  customClassName="nav-icon" :src="Iconlogout" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
       <font color="red" @click="onLogoutClick()">logout</font>
     </CNavItem>
