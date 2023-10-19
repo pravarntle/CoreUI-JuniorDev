@@ -554,7 +554,8 @@ export default {
         this.imageDataURL = ''
         this.imageName = ''
         this.link = ''
-        
+        this.form.cmt_file = null;
+        this.form.cmt_picture = null;
         
         
         // window.location.reload();
