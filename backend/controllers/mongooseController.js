@@ -7,7 +7,7 @@ const models = require("require-all")({
         return fileName.replace(".js", "");
     },
 });
-
+const fs = require('fs')
 const ObjectId = require("mongoose").Types.ObjectId;
 
 module.exports = {
@@ -105,18 +105,37 @@ module.exports = {
             next(error);
         }
     },
+    saveFile: async (req, res, next) => {
+        try {
+            console.log(req.files)
+            const file = req.files.file
+            const model = models[req.params.model]
+            console.log(file)
+            let base64 = file.data.toString('base64')
+            let image = new Buffer(base64, 'base64')
+            const result = await model.create({
+                filename: file.name,
+                filetype: file.mimetype,
+                image: image
+            })
+
+            
+
+            res.send(result)
+        } catch (error) {
+            next(error);
+        }
+    },
     save: async (req, res, next) => {
         try {
-            const model = models[req.params.model];
-
-            console.log(req.body.data)
+            const model = models[req.params.model]
             if (!model) {
                 throw model;
             }
-
+            console.log(req.body.data)
             let data = Array.isArray(req.body.data)
                 ? await model.insertMany(req.body.data)
-                : await model.create(req.body.data);
+                : await model.create(req.body.data)
 
             // populate
             if (req.body.populate) {

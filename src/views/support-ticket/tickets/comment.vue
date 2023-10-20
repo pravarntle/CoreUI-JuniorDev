@@ -25,10 +25,10 @@
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b>{{ date }} &nbsp; </b>
-          <span class="badge bg-danger">
+          <b>{{date}} &nbsp; </b>
+          <CBadge :color="getBadge(priorities)"><span >
             <li>{{ priorities }}</li>
-          </span>
+          </span></CBadge>
         </CCol>
       </CRow>
       <hr />
@@ -107,14 +107,15 @@
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
-              <input type="file" ref="fileInput" @change="attachImage" style="display: none" id="imageInput" />
-              <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
+              <!-- <CFormInput type="file" @change="onFileUpload" /> -->
+              <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput" accept=".png, .jpg, .jpeg" />
+              <CButton @click="attachImage  " id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
-              <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
+              <CButton  @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="handleFileChange" style="display: none" />
+              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" accept=".txt, .pdf, .docx ,.xlsx" />
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
@@ -149,14 +150,19 @@
                     {{ item.cmt_link }}
                   </a>
                   <a v-if="item.cmt_picture">
-                    <CImage :src="item.cmt_picture" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
+                  <a v-if="item.cmt_file">
+                    <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${item.cmt_file.filename}`}}</a>
+                  </a>
+                  <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
+                      {{ item.cmt_link }}
+                  </a>
+                  
                 </div>
-                <!-- <template v-if="item.link">
-                    <a @click="openLink(item.link)" style="text-decoration: none; color: #007bff; ">
-                      {{ item.link }}
-                    </a>
-                  </template>   -->
+                
+                    
+                 
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
@@ -184,7 +190,7 @@ import Short from '@/assets/images/Short.jpg'
 import Icon_user_man from '@/assets/images/icon_user_man.jpg'
 import commit from '@/assets/images/commit.png'
 import Attach_Image from '@/assets/images/Attach_Image.png'
-import { CButton, CFormInput } from '@coreui/vue-pro'
+import { CBadge, CButton, CFormInput } from '@coreui/vue-pro'
 import insert_link from '@/assets/images/insert_link.png'
 import Attach_File from '@/assets/images/Attach_File.png'
 import axios from 'axios';
@@ -223,9 +229,12 @@ export default {
     CCardText,
     CFormInput,
     CButton,
-  },
+    CBadge
+},
   data() {
     return {
+      uploadImage: '',
+      uploadFile: '',
       form: {  // Initialize the form object
         cmt_message: '',
         cmt_link: '',
@@ -247,21 +256,43 @@ export default {
       Attach_File,
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
-      file: null, // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
-      ticketId: '',
-      type: '',
-      description: '',
-      title: '',
-      priorities: '',
-      picture: '',
-      avatar: '',
-      firstname: '',
-      email: '',
-      date: '',
+      file: '', // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
+      ticketId:'',
+      type:'',
+      description:'',
+      title:'',
+      priorities:'',
+      picture:'',
+      avatar:'',
+      firstname:'',
+      email:'',
+      date:'',
       comment: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
 
     };
+  },
+  setup(){
+    const getBadge = (priorities) => {
+        
+          switch (priorities) {
+            case 'Low':
+              return 'success' ;
+            case 'Medium':
+              return 'warning' ;
+            case 'High':
+              return 'danger' ;
+            
+            default:
+              return 'primary'; // Return a default color if none of the cases match.
+          }
+      };
+      
+      return{
+        getBadge
+      }
+
+
   },
 
   methods: {
@@ -307,8 +338,9 @@ export default {
     //   })
     // },
     async attachImage() {
-      const imageInput = this.$refs.fileInput;
-      imageInput.click();
+      const imageInput = this.$refs.pictureInput
+      this.$refs.pictureInput.click()
+     
 
       imageInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -350,7 +382,7 @@ export default {
     },
     async attachFile() {
       const fileInput = this.$refs.fileInput;
-      fileInput.click();
+      this.$refs.fileInput.click();
 
       fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -382,66 +414,67 @@ export default {
         }
       });
     },
-    async handleFileChange(event) {
-      const file = event.target.files[0]
-      if (file) {
-        this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-        console.log('ไฟล์ถูกแนบเรียบร้อย')
-      } else {
-        this.file = null
-        console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
-      }
-    },
-    async submitComment() {
-      if (
-        this.comment.trim() === '' &&
-        this.imageDataURL === '' &&
-        this.link.trim() === '' &&
-        !this.file
-      ) {
-        console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
-        return
-      }
+    // async handleFileChange(event) {
+    //   const file = event.target.files[0]
+    //   if (file) {
+    //     this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
+    //     console.log('ไฟล์ถูกแนบเรียบร้อย')
+    //   } else {
+    //     this.file = null
+    //     console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
+    //   }
+    // },
+    // async submitComment() {
+    //   if (
+    //     this.comment.trim() === '' &&
+    //     this.imageDataURL === '' &&
+    //     this.link.trim() === '' &&
+    //     !this.file
+    //   ) {
+    //     console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
+    //     return
+    //   }
 
-      console.log('ข้อความคิดเห็น:', this.comment)
+    //   console.log('ข้อความคิดเห็น:', this.comment)
 
-      // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
-      const newComment = { comment: this.comment }
+    //   // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
+    //   const newComment = { comment: this.comment }
 
-      // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
-      if (this.imageDataURL !== '') {
-        newComment.image = this.imageDataURL
-      }
+    //   // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
+    //   if (this.imageDataURL !== '') {
+    //     newComment.image = this.imageDataURL
+    //   }
 
-      // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
-      if (this.link.trim() !== '') {
-        newComment.link = this.link
-      }
+    //   // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
+    //   if (this.link.trim() !== '') {
+    //     newComment.link = this.link
+    //   }
 
-      // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
-      if (this.file) {
-        newComment.file = {
-          name: this.file.name,
-          url: URL.createObjectURL(this.file),
-        };
-      }
+    //   // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
+    //   if (this.file) {
+    //     newComment.file = {
+    //       name: this.file.name,
+    //       url: URL.createObjectURL(this.file),
+    //     };
+    //   }
 
-      // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
-      if (this.comment.trim() !== '') {
-        newComment.comment = this.comment;
-      }
+    //   // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
+    //   if (this.comment.trim() !== '') {
+    //     newComment.comment = this.comment;
+    //   }
 
-      // เพิ่มความคิดเห็นลงในรายการ
-      this.comments.push(newComment)
+    //   // เพิ่มความคิดเห็นลงในรายการ
+    //   this.comments.push(newComment)
 
-      // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
-      this.comment = ''
-      this.imageDataURL = ''
-      this.imageName = ''
-      this.link = ''
-      this.file = null
+    //   // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
+    //   this.comment = ''
+    //   this.imageDataURL = ''
+    //   this.imageName = ''
+    //   this.link = ''
+    //   this.file = null
+    //   this.picture = null
 
-    },
+    // },
     async isImageFile(filename) {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
@@ -457,7 +490,7 @@ export default {
           return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/jpeg_icon.png');
+          return require('@/assets/images/Jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
@@ -491,9 +524,92 @@ export default {
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      },
+      async onPictureUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_picture = dataResponse.data._id
+      },
+      async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_file = dataResponse.data._id
+      },
+      
+      // onImageUpload(event) {
+      //   this.uploadImage = event.target.files[0]
+      // },
+      // async onUpload() {
+        
+        
+      // },
+      async onSave() {
+        dayjs.locale('th')
+        dayjs.extend(require('dayjs/plugin/timezone'))
+        dayjs.tz.setDefault('Asia/Bangkok')
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        
+        const date = dayjs()
+        console.log(this.cmt_file)
+        console.log(this.cmt_picture)
+
+
+        this.form.cmt_file = this.form.cmt_file || null;
+        this.form.cmt_picture = this.form.cmt_picture || null;
+
+        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+        const ticketId=this.ticketId
+        this.form.cmt_message = this.comment
+        this.form.cmt_date = comment_date
+        this.form.cmt_tkt = ticketId
+        this.form.cmt_link = this.link
+        this.form.cmt_act = userId
+        // this.form.cmt_picture = this.imageName
+        // this.form.cmt_file = this.file
+    
+        //     // .then((result) => {
+        //     //   this.$router.push('/support-ticket/user/dashboard')
+        //     // })
+
+        try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
+            data: this.form,
+          });
+          setTimeout(function() {
+            this.getComment()
+          }.bind(this), 200)
+          // Handle success here
+        } catch (error) {
+          console.log(error);
+          // Handle the error appropriately (e.g., display an error message)
+        }
+        this.comment = ''
+        this.imageDataURL = ''
+        this.imageName = ''
+        this.link = ''
+        this.form.cmt_file = null;
+        this.form.cmt_picture = null;
+        
+        
+        // window.location.reload();
     },
     async onSave() {
       dayjs.locale('th')
@@ -551,24 +667,43 @@ export default {
     async getComment() {
       const ticketId = this.ticketId
       const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-        where: {
-          cmt_tkt: ticketId,
-        },
-        populate: ["cmt_act"]
-
-
-      });
-      console.log(ticketId)
-      console.log(comment.data)
-      this.comments = comment.data;
-    }
+            where: {
+              cmt_tkt: ticketId,
+            },
+            populate:["cmt_act", "cmt_picture","cmt_file"]
+              
+            
+          });
+          console.log(ticketId)
+          console.log(comment.data)
+          this.comments = comment.data;
+          console.log(this.comments)
+    },
+    async getFileType(filetype) {
+      console.log("เข้า")
+      switch (filetype) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+          return 'รูปภาพ';
+        case 'application/pdf':
+          return 'ไฟล์ PDF';
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          return 'ไฟล์เอกสาร Microsoft Word';
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+          return 'ไฟล์เอกสาร Microsoft Excel';
+        default:
+          return 'ไฟล์อื่น ๆ';
+      }
+  }
 
   },
   mounted() {
     const itemId = this.$route.params.itemId;
     this.ticketId = itemId;
     this.getTicket();
-    this.getComment();
+    this.getComment(); 
 
   },
 }

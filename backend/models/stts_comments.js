@@ -12,11 +12,13 @@ const SchemaData = new schema({
         required: false,
     },
     cmt_picture: {
-        type: Buffer,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     cmt_file: {
-        type: Buffer,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     cmt_date: {
@@ -31,7 +33,7 @@ const SchemaData = new schema({
     cmt_tkt: {
         type: schema.Types.ObjectId,
         ref: "stts_tickets",
-        required: true
+        required: false
     },
 }, {
     timestamps: {

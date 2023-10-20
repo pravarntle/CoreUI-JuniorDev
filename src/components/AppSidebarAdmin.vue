@@ -37,9 +37,19 @@
   <font style="padding-left: 9px; color:whitesmoke"><b>New Ticket</b></font>
 </CNavItem>
     <!-- <li class="nav-title" style="color:black">Menu</li> -->
-    <CNavItem href="/#/support-ticket/user/dashboard">
+    <CNavItem href="/#/support-ticket/admin/admin_dashboard">
       <CImage  customClassName="nav-icon" :src="Icondashboard" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
       <font style="color:black;">Dashboard Admin</font>
+    </CNavItem>
+    <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
+    <CNavItem href="/#/support-ticket/admin/add_account">
+      <CImage  customClassName="nav-icon" :src="Icondashboard" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
+      <font style="color:black;">add</font>
+    </CNavItem>
+    <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
+    <CNavItem href="/#/support-ticket/admin/priority_list">
+      <CImage  customClassName="nav-icon" :src="Icondashboard" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
+      <font style="color:black;">manage priority</font>
     </CNavItem>
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
     <CNavItem href="/#/support-ticket/ticket/book" style="">
@@ -47,7 +57,17 @@
       <font style="color:black">Bookmark</font>
     </CNavItem>
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
-    <CNavItem href="/#/support-ticket/ticket/book" style="padding-top:600px">
+    <CNavItem href="/#/support-ticket/user/dashboard">
+      <CImage  customClassName="nav-icon" :src="Icondashboard" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
+      <font style="color:black;">MY Ticket</font>
+    </CNavItem>
+    <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
+    <CNavItem href="/#/support-ticket/user/dashboard">
+      <CImage  customClassName="nav-icon" :src="Icondashboard" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
+      <font style="color:black;">MY book</font>
+    </CNavItem>
+    <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
+    <CNavItem href="#" style="padding-top:300px">
       <CImage  customClassName="nav-icon" :src="Iconlogout" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
       <font color="red" @click="onLogoutClick()">logout</font>
     </CNavItem>
