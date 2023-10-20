@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     asideVisible: false,
-    sidebarVisible: '',
+    sidebarVisible: true,
     sidebarUnfoldable: false,
     theme: 'default',
   },
