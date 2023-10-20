@@ -72,7 +72,11 @@
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  <CCradText> {{ picture }}</CCradText>
+                  
+                  <a v-if="picture">
+                    <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${picture.filename}`}}</a>
+                  </a>
+
                   <br />
                 </CCol>
                 <br />
@@ -180,10 +184,6 @@
 </template>
 
 <script>
-var myText = document.getElementById('comment_box')
-var character_counts = document.getElementById('character_counts')
-
-
 import Arrow_Left from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
@@ -414,67 +414,6 @@ export default {
         }
       });
     },
-    // async handleFileChange(event) {
-    //   const file = event.target.files[0]
-    //   if (file) {
-    //     this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-    //     console.log('ไฟล์ถูกแนบเรียบร้อย')
-    //   } else {
-    //     this.file = null
-    //     console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
-    //   }
-    // },
-    // async submitComment() {
-    //   if (
-    //     this.comment.trim() === '' &&
-    //     this.imageDataURL === '' &&
-    //     this.link.trim() === '' &&
-    //     !this.file
-    //   ) {
-    //     console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
-    //     return
-    //   }
-
-    //   console.log('ข้อความคิดเห็น:', this.comment)
-
-    //   // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
-    //   const newComment = { comment: this.comment }
-
-    //   // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
-    //   if (this.imageDataURL !== '') {
-    //     newComment.image = this.imageDataURL
-    //   }
-
-    //   // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
-    //   if (this.link.trim() !== '') {
-    //     newComment.link = this.link
-    //   }
-
-    //   // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
-    //   if (this.file) {
-    //     newComment.file = {
-    //       name: this.file.name,
-    //       url: URL.createObjectURL(this.file),
-    //     };
-    //   }
-
-    //   // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
-    //   if (this.comment.trim() !== '') {
-    //     newComment.comment = this.comment;
-    //   }
-
-    //   // เพิ่มความคิดเห็นลงในรายการ
-    //   this.comments.push(newComment)
-
-    //   // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
-    //   this.comment = ''
-    //   this.imageDataURL = ''
-    //   this.imageName = ''
-    //   this.link = ''
-    //   this.file = null
-    //   this.picture = null
-
-    // },
     async isImageFile(filename) {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
@@ -509,7 +448,7 @@ export default {
         const ticketId = this.ticketId;
         console.log(ticketId);
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: ["tkt_act"] });
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: ["tkt_act","tkt_picture"] });
         console.log(response.data);
 
         this.type = response.data.tkt_types;
