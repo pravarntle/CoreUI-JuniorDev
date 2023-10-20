@@ -88,6 +88,16 @@
         </CSmartTable>
       </div>
     </CCard>
+    <CToaster placement="top-end">
+        <CToast visible color="info" v-for="(toast) in toastProp">
+            <CToastHeader closeButton v-if="toast.title">
+                <span class="me-auto fw-bold">{{ toast.title }}</span>
+            </CToastHeader>
+            <CToastBody v-if="toast.content">
+                <span class="text-white">{{ toast.content }}</span>
+            </CToastBody>
+        </CToast>
+    </CToaster>
 </template>
 <style>
 .table-responsive {
@@ -121,6 +131,7 @@ name: 'my_ticket',
             count_all:'',
             count_open:'',
             count_closed:'',
+            toastProp: [],
 
 
         };
@@ -203,7 +214,10 @@ name: 'my_ticket',
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
-        window.alert("เจ๋ง พัง ยับ")
+          this.toastProp.push({
+          content: 'บุคมาร์คไม่สำเร็จ'
+        })
+      
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
       },
