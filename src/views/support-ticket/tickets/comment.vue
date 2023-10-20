@@ -527,8 +527,8 @@ export default {
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      },
-      async onPictureUpload(event) {
+    },
+    async onPictureUpload(event) {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
         formData.append('file', uploadFile)
@@ -540,7 +540,7 @@ export default {
         })
         this.form.cmt_picture = dataResponse.data._id
       },
-      async onFileUpload(event) {
+    async onFileUpload(event) {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
         formData.append('file', uploadFile)
@@ -610,43 +610,43 @@ export default {
         
         
         // window.location.reload();
-    },
-    async getComment() {
-      const ticketId = this.ticketId
-      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-            where: {
-              cmt_tkt: ticketId,
-            },
-            populate:["cmt_act", "cmt_picture","cmt_file"]
+      },
+      async getComment(){
+        const ticketId=this.ticketId
+        const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
+              where: {
+                cmt_tkt: ticketId,
+              },
+              populate:["cmt_act", "cmt_picture","cmt_file"]
+                
               
-            
-          });
-          console.log(ticketId)
-          console.log(comment.data)
-          this.comments = comment.data;
-          console.log(this.comments)
-    },
-    async getFileType(filetype) {
-      console.log("เข้า")
-      switch (filetype) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-          return 'รูปภาพ';
-        case 'application/pdf':
-          return 'ไฟล์ PDF';
-        case 'application/msword':
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-          return 'ไฟล์เอกสาร Microsoft Word';
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-          return 'ไฟล์เอกสาร Microsoft Excel';
-        default:
-          return 'ไฟล์อื่น ๆ';
-      }
-  }
+            });
+            console.log(ticketId)
+            console.log(comment.data)
+            this.comments = comment.data;
+            console.log(this.comments)
+      },
+      async getFileType(filetype) {
+        console.log("เข้า")
+        switch (filetype) {
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+            return 'รูปภาพ';
+          case 'application/pdf':
+            return 'ไฟล์ PDF';
+          case 'application/msword':
+          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            return 'ไฟล์เอกสาร Microsoft Word';
+          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            return 'ไฟล์เอกสาร Microsoft Excel';
+          default:
+            return 'ไฟล์อื่น ๆ';
+        }
+        }
 
-  },
-  mounted() {
+    },
+  mounted(){
     const itemId = this.$route.params.itemId;
     this.ticketId = itemId;
     this.getTicket();
