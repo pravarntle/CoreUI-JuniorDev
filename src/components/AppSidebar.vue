@@ -56,10 +56,16 @@
       <font style="color:black">Bookmark</font>
     </CNavItem>
     <hr style="color:black; width:70%; margin-left: 20px; margin-top: 0px;">
-    <CNavItem href="#" style="padding-top:580px">
-      <CImage  customClassName="nav-icon" :src="Iconlogout" style="max-height: 20px; margin-left: 15px; margin-right: 15px;"/>
-      <font color="red" @click="onLogoutClick()">logout</font>
-    </CNavItem>
+
+    
+    <CNavItem href="#" class="position-absolute bottom-0 start-0">
+        <CImage
+          customClassName="nav-icon"
+          :src="Iconlogout"
+          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
+        />
+        <font color="red" @click="onLogoutClick()">logout</font>
+      </CNavItem>
   </CSidebarNav>
   <!-- <CSidebarToggler
     class="d-none d-lg-flex"
