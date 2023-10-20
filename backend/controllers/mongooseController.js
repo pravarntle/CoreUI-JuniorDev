@@ -110,7 +110,7 @@ module.exports = {
             console.log(req.files)
             const file = req.files.file
             const model = models[req.params.model]
-            // console.log(file)
+            console.log(file)
             let base64 = file.data.toString('base64')
             let image = new Buffer(base64, 'base64')
             const result = await model.create({
@@ -118,6 +118,9 @@ module.exports = {
                 filetype: file.mimetype,
                 image: image
             })
+
+            
+
             res.send(result)
         } catch (error) {
             next(error);
