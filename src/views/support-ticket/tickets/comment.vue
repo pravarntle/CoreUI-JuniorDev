@@ -611,59 +611,6 @@ export default {
         
         // window.location.reload();
     },
-    async onSave() {
-      dayjs.locale('th')
-      dayjs.extend(require('dayjs/plugin/timezone'))
-      dayjs.tz.setDefault('Asia/Bangkok')
-      const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-      const userId = userData.id.toString(); // ดึงค่า id จาก userData
-
-      const date = dayjs()
-
-      const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-      const ticketId = this.ticketId
-
-      this.form.cmt_message = this.comment
-      this.form.cmt_date = comment_date
-      this.form.cmt_tkt = ticketId
-      this.form.cmt_link = this.link
-      this.form.cmt_act = userId
-      this.form.cmt_picture = this.imageName
-      this.form.cmt_file = this.file
-
-
-      //     // .then((result) => {
-      //     //   this.$router.push('/support-ticket/user/dashboard')
-      //     // })
-
-
-
-      try {
-        await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
-          data: this.form,
-        });
-        // Handle success here
-      } catch (error) {
-        console.log(error);
-        // Handle the error appropriately (e.g., display an error message)
-      }
-      // รีเซ็ตค่าของ this.form หลังจากบันทึกเสร็จ
-      this.form = {
-        cmt_message: '',
-        cmt_link: '',
-        cmt_picture: '', // รีเซ็ตค่า cmt_picture เป็นสตริงว่าง
-        cmt_file: '',
-        cmt_date: '',
-        cmt_act: '',
-        cmt_tkt: '',
-      };
-      this.comment = ''
-      this.imageDataURL = ''
-      this.imageName = ''
-      this.link = ''
-      this.file = null
-      // window.location.reload();
-    },
     async getComment() {
       const ticketId = this.ticketId
       const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
