@@ -601,6 +601,7 @@ export default {
           console.log(error);
           // Handle the error appropriately (e.g., display an error message)
         }
+        
         this.comment = ''
         this.imageDataURL = ''
         this.imageName = ''
