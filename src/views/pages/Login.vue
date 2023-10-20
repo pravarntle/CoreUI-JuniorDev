@@ -63,7 +63,7 @@
       </CContainer>
     </div>
 
-    <CToaster placement="top-end">
+    <!-- <CToaster placement="top-end">
         <CToast visible color="primary" v-for="(toast) in toastProp">
             <CToastHeader closeButton v-if="toast.title">
                 <span class="me-auto fw-bold">{{ toast.title }}</span>
@@ -72,7 +72,7 @@
                 <span class="text-white">{{ toast.content }}</span>
             </CToastBody>
         </CToast>
-    </CToaster>
+    </CToaster> -->
 </template>
 <style>
 .c-image {
@@ -104,14 +104,14 @@ export default {
         },
         showPassword:false,
 
-        toastProp: [],
+        // toastProp: [],
       };
     },
     created() {
       this.getImage()
-      this.toastProp.push({
-        content: 'OK'
-      })
+      // this.toastProp.push({
+      //   content: 'OK'
+      // })
     },
     methods: {
       async getImage() {
