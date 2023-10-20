@@ -120,7 +120,7 @@
                   style="width: 12px" />
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
-              <span id="selectedImage">{{ imageName }}</span>
+              <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
             <div class="col">
@@ -144,7 +144,7 @@
               </div>
               <div class="col-10">
                 <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
-                <div class="comments_box" style="padding: 10px">
+                <div class="comments_box" style="width: fit-content; padding: 10px;">
                   {{ item.cmt_message }}
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                     {{ item.cmt_link }}
@@ -490,7 +490,7 @@ export default {
           return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/Jpeg_icon.png');
+          return require('@/assets/images/jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
