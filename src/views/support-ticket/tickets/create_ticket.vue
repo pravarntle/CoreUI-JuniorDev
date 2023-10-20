@@ -91,6 +91,7 @@
               v-model="form.tkt_picture"
               :invalid="validate.tkt_picture"
               required
+              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
             />
           </div>
         </CRow>
