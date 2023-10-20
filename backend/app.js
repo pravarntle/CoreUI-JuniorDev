@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const dotenv = require('dotenv')
 const cors = require('cors');
+const fileUpload = require('express-fileupload')
 
 var indexRouter = require('./routes/index')
 var usersRouter = require('./routes/users')
@@ -22,9 +23,7 @@ const corsOptions = {
     preflightContinue: false,
 }
 app.use(cors(corsOptions))
-
-
-
+app.use(fileUpload())
   
 app.use(logger('dev'));
 app.use(express.json());
