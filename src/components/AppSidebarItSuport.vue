@@ -82,10 +82,16 @@
 
         <!-- Dropdown Icon -->
         <CImage
-  :src="Icondropdown"
-  @click="dropdownOpen = !dropdownOpen"
-  :style="{ 'max-height': '20px', cursor: 'pointer', marginLeft: '5px', transform: dropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s' }"
-/>
+          :src="Icondropdown"
+          @click="dropdownOpen = !dropdownOpen"
+          :style="{
+            'max-height': '20px',
+            cursor: 'pointer',
+            marginLeft: '5px',
+            transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+            transition: 'transform 0.3s',
+          }"
+        />
 
         <!-- Dropdown items -->
         <div
@@ -99,18 +105,33 @@
             left: 0;
           "
         >
-          <CNavItem href="/#/support-ticket/ticket/book1" style="padding-left: 52px; ">
+          <CNavItem
+            href="/#/support-ticket/ticket/book1"
+            style="padding-left: 52px"
+          >
             <font style="color: black">Bookmark Ticket</font>
           </CNavItem>
           <hr
-        style="color: black; width: 50%; margin-left: 65px; margin-top: 0px;margin-bottom: 0px;"
-      />
-          <CNavItem href="/#/support-ticket/ticket/book2" style="padding-left: 52px;  margin-top: 0px; margin-bottom: 0px;">
+            style="
+              color: black;
+              width: 50%;
+              margin-left: 65px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+            "
+          />
+          <CNavItem
+            href="/#/support-ticket/ticket/book2"
+            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
+          >
             <font style="color: black">Bookmark Tasks</font>
           </CNavItem>
         </div>
       </CNavItem>
-      <CNavItem href="#" class="position-absolute bottom-0 start-0" >
+      <hr
+        style="color: black; width: 70%; margin-left: 20px; margin-top: 15px"
+      />
+      <CNavItem href="#" class="position-absolute bottom-0 start-0">
         <CImage
           customClassName="nav-icon"
           :src="Iconlogout"
