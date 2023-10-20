@@ -34,9 +34,9 @@
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
           <b>{{date}} &nbsp; </b>
-          <span class="badge bg-danger">
-            <li>{{priorities}}</li>
-          </span>
+          <CBadge :color="getBadge(priorities)"><span >
+            <li>{{ priorities }}</li>
+          </span></CBadge>
         </CCol>
       </CRow>
       <hr />
@@ -214,7 +214,7 @@ import Short from '@/assets/images/Short.jpg'
 import Icon_user_man from '@/assets/images/icon_user_man.jpg'
 import commit from '@/assets/images/commit.png'
 import Attach_Image from '@/assets/images/Attach_Image.png'
-import { CButton, CFormInput } from '@coreui/vue-pro'
+import { CBadge, CButton, CFormInput } from '@coreui/vue-pro'
 import insert_link from '@/assets/images/insert_link.png'
 import Attach_File from '@/assets/images/Attach_File.png'
 import axios from 'axios';
@@ -253,7 +253,8 @@ export default {
     CCardText,
     CFormInput,
     CButton,
-  },
+    CBadge
+},
   data() {
     return {
       uploadImage: '',
@@ -294,6 +295,28 @@ export default {
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
       
     };
+  },
+  setup(){
+    const getBadge = (priorities) => {
+        
+          switch (priorities) {
+            case 'Low':
+              return 'success' ;
+            case 'Medium':
+              return 'warning' ;
+            case 'High':
+              return 'danger' ;
+            
+            default:
+              return 'primary'; // Return a default color if none of the cases match.
+          }
+      };
+      
+      return{
+        getBadge
+      }
+
+
   },
 
   methods: {
@@ -502,6 +525,7 @@ export default {
         })
         this.form.cmt_file = dataResponse.data._id
       },
+      
       // onImageUpload(event) {
       //   this.uploadImage = event.target.files[0]
       // },
@@ -599,7 +623,7 @@ export default {
     const itemId = this.$route.params.itemId;
     this.ticketId=itemId;
     this.getTicket();
-    this.getComment();
+    this.getComment(); 
 
   },
 }

@@ -143,15 +143,13 @@ name: 'my_ticket',
         const getBadge = (tkt_status) => {
           switch (tkt_status) {
             case 'Pending':
-              return 'success';
-            case 'Open':
-              return 'secondary';
-            case 'Closed':
               return 'warning';
-            case 'Banned':
+            case 'Open':
+              return 'primary';
+            case 'Closed':
               return 'danger';
             default:
-              return 'primary'; // Return a default color if none of the cases match.
+              return 'warning'; // Return a default color if none of the cases match.
           }
         };
         
