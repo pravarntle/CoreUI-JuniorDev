@@ -163,7 +163,7 @@ export default {
     ;(this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
-      { label: 'Mediem', value: 'Mediem' },
+      { label: 'Mediem', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
     ]),
