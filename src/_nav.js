@@ -1,3 +1,4 @@
+
 export default [
   {
     component: 'CNavItem',
@@ -20,11 +21,40 @@ export default [
     },
   },
   {
+    component: 'CSidebarNavDropdown',
+    name: 'Manage Account',
+    icon: 'cil-list',
+    items: [
+      {
+        component: 'CSidebarNavItem',
+        name: 'Add Account',
+        to: '/support-ticket/admin/add_account'
+      },
+      {
+        component: 'CSidebarNavItem',
+        name: 'Edit Account',
+        to: '/support-ticket/admin/edit_account'
+      },
+      {
+        component: 'CSidebarNavItem',
+        name: 'Delete Account',
+        to: '/support-ticket/admin/delete_account'
+      },
+    ]
+  },
+  {
+    component:  'CNavItem',
+    icon: 'cil-list-low-priority',
+    name: 'Priority',
+    to: '/support-ticket/admin/priority_list',
+  },
+  {
     component: 'CNavItem',
     icon:'cilBookmark',
     name: 'Bookmark',
     to: '/support-ticket/ticket/book',
   },
+
 
       // {
       //   component: 'CNavItem',

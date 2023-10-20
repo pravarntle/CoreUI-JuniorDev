@@ -357,7 +357,7 @@ const routes = [
             component: () => import('@/views/support-ticket/users/book_mark.vue'),
           },
           {
-            path: 'ticket/comment',
+            path: 'ticket/comment/:itemId',
             name: 'ST - comment Ticket',
             component: () => import('@/views/support-ticket/tickets/comment'),
           },
