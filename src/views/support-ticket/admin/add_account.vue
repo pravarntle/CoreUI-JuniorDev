@@ -20,9 +20,9 @@
           </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div >
+              <div v-if="accountPicture" >
                 <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
-                <img :src="d" />
+                <img :src="accountPicture" />
 
               </div>
             </CCol>
@@ -315,8 +315,9 @@ export default {
         confirmEmail: '',
         Confirmpassword: '',
         validatedCustom01: false,
+        
       },
-
+      accountPicture:'../../../assets/images/preProfile01.svg',
       validate: {
         // act_username:null,
         // act_password: null,
@@ -348,24 +349,13 @@ export default {
   },
   methods: {
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
-    handleImageUpload(event) {
-      const file = event.target.files[0]
-      if (file) {
-        this.imageUrl = URL.createObjectURL(file)
-        this.imageFile = file
-      }
-    },
+    
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
       this.act_picture = null
       // You can also send an API request to delete the image on the server here.
     },
-    // handleSubmitCustom01(event) {
-    //   if (!event.currentTarget.checkValidity()) {
-    //     event.preventDefault()
-    //   }
-    //   this.form.validatedCustom01 = true
-    // },
+    
     validateBeforeSave() {
       let error = false
       if (!this.form.act_picture) {
@@ -497,7 +487,9 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
+        console.log(dataResponse.data.image)
         this.form.act_picture = dataResponse.data._id
+
 
         
         
