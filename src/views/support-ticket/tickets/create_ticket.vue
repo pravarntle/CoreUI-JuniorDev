@@ -88,9 +88,10 @@
               type="file"
               size="lg"
               id="formFileLg"
-              v-model="form.tkt_picture"
-              :invalid="validate.tkt_picture"
               required
+              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
+              @change="onFileUpload"
+              :invalid="validate.tkt_picture"
             />
           </div>
         </CRow>
@@ -281,6 +282,18 @@ export default {
         content: 'สร้างสำเร็จ',
       })
     },
+    async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.tkt_picture = dataResponse.data._id
+      },
   },
   components: { CForm, CFormLabel },
 }

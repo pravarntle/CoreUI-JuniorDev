@@ -17,20 +17,11 @@
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-        <CAvatar v-if="avatar"
-          class="Icon_user_man avatar-round"
-          :src="require(`@/assets/images/${avatar}`)"
-          style="padding: -4px"
-        />
-        <CAvatar
-          v-else
-          class="Icon_user_man"
-          :src="Icon_user_man"
-          style="padding: -4px"
-
-        />
+        <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+          style="padding: -4px" />
+        <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
-          <b> {{firstname}}</b>
+          <b> {{ firstname }}</b>
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
@@ -58,7 +49,7 @@
               <CCardBody style="margin-left: 2%">
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Title : </b>
-                  <CCradText> {{title}}</CCradText>
+                  <CCradText> {{ title }}</CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Type : </b>
@@ -67,7 +58,7 @@
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Description : </b>
                   <CCradText>
-                    {{description}}
+                    {{ description }}
                   </CCradText>
                 </CCol>
               </CCardBody>
@@ -81,7 +72,11 @@
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  <CCradText> {{ picture }}</CCradText>
+                  
+                  <a v-if="picture">
+                    <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${picture.filename}`}}</a>
+                  </a>
+
                   <br />
                 </CCol>
                 <br />
@@ -103,17 +98,9 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="avatar"
-                  class="Icon_user_man avatar-round"
-                  :src="require(`@/assets/images/${avatar}`)"
-                  style="padding: -4px"
-                />
-                <CAvatar
-                  v-else
-                  class="Icon_user_man"
-                  :src="Icon_user_man"
-                  style="padding: -4px"
-                />
+                <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+                  style="padding: -4px" />
+                <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
             </div>
             <div class="col-10">
@@ -137,13 +124,13 @@
                   style="width: 12px" />
               </CButton>
               <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
-              <span id="selectedImage">{{ imageName }}</span>
+              <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit"
-                    :src="commit" alt="Commit Icon" /></CButton>
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit" :src="commit"
+                    alt="Commit Icon" /></CButton>
               </div>
             </div>
           </div>
@@ -154,22 +141,14 @@
             <div class="row align-items-center">
               <div class="col-1">
                 <div class="avatar">
-                  <CAvatar v-if="item.cmt_act.act_picture"
-                  class="Icon_user_man"
-                  :src="require(`@/assets/images/${item.cmt_act.act_picture}`)"
-                  style="padding: -4px"
-                />
-                <CAvatar
-                  v-else
-                  class="Icon_user_man"
-                  :src="Icon_user_man"
-                  style="padding: -4px"
-                />
+                  <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
+                    :src="require(`@/assets/images/${item.cmt_act.act_picture}`)" style="padding: -4px" />
+                  <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
                 </div>
               </div>
               <div class="col-10">
-                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date}}</p>
-                <div class="comments_box" style="padding: 10px">
+                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
+                <div class="comments_box" style="width: fit-content; padding: 10px;">
                   {{ item.cmt_message }}
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                     {{ item.cmt_link }}
@@ -205,10 +184,6 @@
 </template>
 
 <script>
-var myText = document.getElementById('comment_box')
-var character_counts = document.getElementById('character_counts')
-
-
 import Arrow_Left from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
@@ -261,14 +236,14 @@ export default {
       uploadImage: '',
       uploadFile: '',
       form: {  // Initialize the form object
-      cmt_message: '',
-      cmt_link: '',
-      cmt_picture: '',
-      cmt_file: '',
-      cmt_date: '',
-      cmt_act: '',
-      cmt_tkt: '',
-       },
+        cmt_message: '',
+        cmt_link: '',
+        cmt_picture: '',
+        cmt_file: '',
+        cmt_date: '',
+        cmt_act: '',
+        cmt_tkt: '',
+      },
       visibleA: true,
       visibleB: true,
       Icon_user_man,
@@ -337,30 +312,65 @@ export default {
 
 
     //------- AOM -------
+    // async attachImage() {
+    //   const imageInput = this.$refs.fileInput
+    //   imageInput.click()
+
+
+    //   imageInput.addEventListener('change', (event) => {
+    //     const file = event.target.files[0] 
+    //     console.log(file)
+    //     if (file) {
+    //       this.imageName = file.name
+
+    //       // อ่านรูปภาพเป็น Data URL
+    //       const reader = new FileReader()
+    //       reader.onload = (e) => {
+    //         this.imageDataURL = e.target.result
+    //       }
+    //       reader.readAsDataURL(file)
+
+    //       console.log('รูปถูกแนบเรียบร้อย')
+    //     } else {
+    //       this.imageName = ''
+    //       console.error('เกิดข้อผิดพลาดในการแนบรูป')
+    //     }
+    //   })
+    // },
     async attachImage() {
       const imageInput = this.$refs.pictureInput
       this.$refs.pictureInput.click()
      
 
       imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0] 
-        console.log(file)
+        const file = event.target.files[0];
+
         if (file) {
-          this.imageName = file.name
+          // ตรวจสอบประเภทของไฟล์ที่แนบ
+          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+          const fileExtension = file.name.split('.').pop().toLowerCase();
 
-          // อ่านรูปภาพเป็น Data URL
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.imageDataURL = e.target.result
+          if (allowedExtensions.includes(fileExtension)) {
+            this.imageName = file.name;
+
+            // อ่านไฟล์เป็น Blob
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const imageBlob = new Blob([e.target.result], { type: file.type });
+              this.form.cmt_picture = imageBlob; // บันทึกข้อมูลรูปภาพเป็น Blob
+            };
+            reader.readAsArrayBuffer(file);
+
+            console.log('รูปถูกแนบเรียบร้อย');
+          } else {
+            this.imageName = '';
+            console.error('ประเภทของไฟล์ไม่รองรับ');
           }
-          reader.readAsDataURL(file)
-
-          console.log('รูปถูกแนบเรียบร้อย')
         } else {
-          this.imageName = ''
-          console.error('เกิดข้อผิดพลาดในการแนบรูป')
+          this.imageName = '';
+          console.error('เกิดข้อผิดพลาดในการแนบรูป');
         }
-      })
+      });
     },
     async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
@@ -376,79 +386,34 @@ export default {
 
       fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
+
         if (file) {
-          this.file = file; // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-          this.imageName = file.name; // แสดงชื่อไฟล์ที่เลือก
-          console.log('ไฟล์ถูกแนบเรียบร้อย');
+          // ตรวจสอบประเภทของไฟล์ที่แนบ
+          const allowedExtensions = ['pdf'];
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+
+          if (allowedExtensions.includes(fileExtension)) {
+            this.imageName = file.name;
+
+            // อ่านไฟล์เป็น Blob
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const fileBlob = new Blob([e.target.result], { type: file.type });
+              this.form.cmt_file = fileBlob; // บันทึกข้อมูลไฟล์เป็น Blob
+            };
+            reader.readAsArrayBuffer(file);
+
+            console.log('ไฟล์ถูกแนบเรียบร้อย');
+          } else {
+            this.imageName = '';
+            console.error('ประเภทของไฟล์ไม่รองรับ');
+          }
         } else {
-          this.file = null;
-          this.imageName = ''; // ล้างชื่อไฟล์ถ้าไม่มีไฟล์
+          this.imageName = '';
           console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
         }
       });
-
     },
-    // async handleFileChange(event) {
-    //   const file = event.target.files[0]
-    //   if (file) {
-    //     this.file = file // ตรวจสอบว่าคุณตั้งค่าไฟล์ที่แนบถูกต้อง
-    //     console.log('ไฟล์ถูกแนบเรียบร้อย')
-    //   } else {
-    //     this.file = null
-    //     console.error('เกิดข้อผิดพลาดในการแนบไฟล์')
-    //   }
-    // },
-    // async submitComment() {
-    //   if (
-    //     this.comment.trim() === '' &&
-    //     this.imageDataURL === '' &&
-    //     this.link.trim() === '' &&
-    //     !this.file
-    //   ) {
-    //     console.log('โปรดเพิ่มข้อความคิดเห็น, แนบรูป, แทรกลิงค์, หรือแนบไฟล์')
-    //     return
-    //   }
-
-    //   console.log('ข้อความคิดเห็น:', this.comment)
-
-    //   // สร้างอ็อบเจ็กต์ความคิดเห็นใหม่
-    //   const newComment = { comment: this.comment }
-
-    //   // หากมีรูปที่แนบมา, เพิ่มลงในความคิดเห็น
-    //   if (this.imageDataURL !== '') {
-    //     newComment.image = this.imageDataURL
-    //   }
-
-    //   // หากมีลิงค์ที่แทรกมา, เพิ่มลงในความคิดเห็น
-    //   if (this.link.trim() !== '') {
-    //     newComment.link = this.link
-    //   }
-
-    //   // หากมีไฟล์ที่แนบมา, เพิ่มลงในความคิดเห็น
-    //   if (this.file) {
-    //     newComment.file = {
-    //       name: this.file.name,
-    //       url: URL.createObjectURL(this.file),
-    //     };
-    //   }
-
-    //   // เพิ่มข้อความ comment ที่ถูกพิมพ์ในกล่องข้อความ
-    //   if (this.comment.trim() !== '') {
-    //     newComment.comment = this.comment;
-    //   }
-
-    //   // เพิ่มความคิดเห็นลงในรายการ
-    //   this.comments.push(newComment)
-
-    //   // ล้างความคิดเห็น, รูป, ลิงค์, และไฟล์
-    //   this.comment = ''
-    //   this.imageDataURL = ''
-    //   this.imageName = ''
-    //   this.link = ''
-    //   this.file = null
-    //   this.picture = null
-
-    // },
     async isImageFile(filename) {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
       const fileExtension = filename.split('.').pop().toLowerCase();
@@ -464,7 +429,7 @@ export default {
           return require('@/assets/images/doc_icon.png');
         case 'jpg':
         case 'jpeg':
-          return require('@/assets/images/Jpeg_icon.png');
+          return require('@/assets/images/jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
@@ -477,32 +442,32 @@ export default {
     async openLink(link) {
       window.open(link, '_blank');
     },
-    async getTicket(){
-        try {
+    async getTicket() {
+      try {
 
-          const ticketId=this.ticketId;
-          console.log(ticketId);
+        const ticketId = this.ticketId;
+        console.log(ticketId);
 
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,{populate: ["tkt_act"] });
-          console.log(response.data);
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: ["tkt_act","tkt_picture"] });
+        console.log(response.data);
 
-          this.type = response.data.tkt_types;
-          this.description = response.data.tkt_description;
-          this.title = response.data.tkt_title;
-          this.priorities = response.data.tkt_priorities;
-          this.picture = response.data.tkt_picture;
-          this.date = response.data.tkt_time;
-          this.avatar = response.data.tkt_act.act_picture;
-          this.email = response.data.tkt_act.act_email_address;
-          this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.type = response.data.tkt_types;
+        this.description = response.data.tkt_description;
+        this.title = response.data.tkt_title;
+        this.priorities = response.data.tkt_priorities;
+        this.picture = response.data.tkt_picture;
+        this.date = response.data.tkt_time;
+        this.avatar = response.data.tkt_act.act_picture;
+        this.email = response.data.tkt_act.act_email_address;
+        this.firstname = response.data.tkt_act.act_first_name_eng;
 
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      },
-      async onPictureUpload(event) {
+    },
+    async onPictureUpload(event) {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
         formData.append('file', uploadFile)
@@ -514,7 +479,7 @@ export default {
         })
         this.form.cmt_picture = dataResponse.data._id
       },
-      async onFileUpload(event) {
+    async onFileUpload(event) {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
         formData.append('file', uploadFile)
@@ -584,45 +549,45 @@ export default {
         
         
         // window.location.reload();
-    },
-    async getComment(){
-      const ticketId=this.ticketId
-      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-            where: {
-              cmt_tkt: ticketId,
-            },
-            populate:["cmt_act", "cmt_picture","cmt_file"]
+      },
+      async getComment(){
+        const ticketId=this.ticketId
+        const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
+              where: {
+                cmt_tkt: ticketId,
+              },
+              populate:["cmt_act", "cmt_picture","cmt_file"]
+                
               
-            
-          });
-          console.log(ticketId)
-          console.log(comment.data)
-          this.comments = comment.data;
-          console.log(this.comments)
-    },
-    async getFileType(filetype) {
-      console.log("เข้า")
-      switch (filetype) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-          return 'รูปภาพ';
-        case 'application/pdf':
-          return 'ไฟล์ PDF';
-        case 'application/msword':
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-          return 'ไฟล์เอกสาร Microsoft Word';
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-          return 'ไฟล์เอกสาร Microsoft Excel';
-        default:
-          return 'ไฟล์อื่น ๆ';
-      }
-  }
+            });
+            console.log(ticketId)
+            console.log(comment.data)
+            this.comments = comment.data;
+            console.log(this.comments)
+      },
+      async getFileType(filetype) {
+        console.log("เข้า")
+        switch (filetype) {
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+            return 'รูปภาพ';
+          case 'application/pdf':
+            return 'ไฟล์ PDF';
+          case 'application/msword':
+          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            return 'ไฟล์เอกสาร Microsoft Word';
+          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            return 'ไฟล์เอกสาร Microsoft Excel';
+          default:
+            return 'ไฟล์อื่น ๆ';
+        }
+        }
 
-  },
+    },
   mounted(){
     const itemId = this.$route.params.itemId;
-    this.ticketId=itemId;
+    this.ticketId = itemId;
     this.getTicket();
     this.getComment(); 
 
@@ -632,9 +597,12 @@ export default {
 
 <style>
 .avatar-round {
-  width: 100px; /* ปรับขนาดตามที่ต้องการ */
-  height: 100px; /* ปรับขนาดตามที่ต้องการ */
-  border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
+  width: 100px;
+  /* ปรับขนาดตามที่ต้องการ */
+  height: 100px;
+  /* ปรับขนาดตามที่ต้องการ */
+  border-radius: 50%;
+  /* ทำให้รูปเป็นวงกลม */
 }
 
 .Arrow_Left {
@@ -728,56 +696,3 @@ a:hover {
   text-decoration: underline;
 }
 </style>
-
-
-
-<!-- <template>
-  <div>
-    <CFormInput v-model="inputValue" @input="countCharacters" />
-    <p>Character count: {{ characterCount }}</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      inputValue: '',
-      characterCount: 0,
-    };
-  },
-  methods: {
-    countCharacters() {
-      this.characterCount = this.inputValue.length;
-    },
-  },
-};
-</script> -->
-
-
-<!-- <template>
-  <div>
-    <CFormInput v-model="inputValue" @input="updateCharacterCount" />
-    <p>Character count: {{ characterCount }} / 200</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      inputValue: '',
-      characterCount: 0,
-    };
-  },
-  methods: {
-    updateCharacterCount() {
-      this.characterCount = this.inputValue.length;
-      if (this.characterCount > 200) {
-        this.inputValue = this.inputValue.slice(0, 200);
-        this.characterCount = 200;
-      }
-    },
-  },
-};
-</script> -->

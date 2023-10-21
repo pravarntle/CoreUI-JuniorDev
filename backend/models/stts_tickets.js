@@ -12,7 +12,8 @@ const SchemaData = new schema({
         required: false,
     },
     tkt_picture: {
-        type: String,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     tkt_title: {
