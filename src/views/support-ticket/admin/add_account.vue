@@ -20,8 +20,11 @@
           </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div v-if="imageUrl">
-                <img :src="imageUrl" />
+              <div >
+
+                <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
+                <img :src="d" />
+
               </div>
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
@@ -36,8 +39,9 @@
                 :invalid="validate.act_picture"
                 required
                 type="file"
-                @change="handleImageUpload"
+                @change="onFileUpload"
                 id="upload_file"
+                accept=".png, .jpg, .jpeg "
                 hidden
               />
               <CCol xs="12" md="6" lg="4">
@@ -355,8 +359,7 @@ export default {
     },
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
-      this.imageUrl = '../../../assets/images/preProfile01.svg'
-      this.imageFile = '../../../assets/images/preProfile01.png'
+      this.act_picture = null
       // You can also send an API request to delete the image on the server here.
     },
     // handleSubmitCustom01(event) {
@@ -468,18 +471,11 @@ export default {
     },
     async onSave() {
       // const date = new Date;
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
-      console.log(this.form)
+      
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_accounts', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts.js`, {
             data: this.form,
           })
           .then((result) => {
@@ -492,7 +488,25 @@ export default {
         console.log(error)
       }
     },
+    async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.act_picture = dataResponse.data._id
+
+        
+        
+      },
   },
+  mounted(){
+    console.log(this.form.act_picture)
+  }
 }
 </script>
 <style>
