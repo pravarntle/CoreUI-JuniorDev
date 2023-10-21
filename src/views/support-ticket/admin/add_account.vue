@@ -59,7 +59,6 @@
               >
             </CCol>
           </CRow>
-
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
               <CFormLabel
@@ -354,6 +353,7 @@ export default {
         this.imageFile = file
       }
     },
+    // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
       this.imageUrl = '../../../assets/images/preProfile01.svg'
       this.imageFile = '../../../assets/images/preProfile01.png'
@@ -411,6 +411,15 @@ export default {
         error = true
         this.validate.confirmEmail = false
       }
+       if(this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
+           error = true
+         this.validate.confirmEmail = true
+         this.form.confirmEmail = ''
+      }
+       if(this.form.act_email_address === this.form.confirmEmail) {
+           error = true
+         this.validate.confirmEmail = false
+       }
       if (this.form.act_number_phone === '') {
         error = true
         this.validate.act_number_phone = false

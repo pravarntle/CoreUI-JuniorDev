@@ -12,7 +12,8 @@ const SchemaData = new schema({
         required: false,
     },
     tkt_picture: {
-        type: String,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     tkt_title: {
@@ -44,8 +45,8 @@ const SchemaData = new schema({
         required: true,
     },
     tkt_book: {
-        type: String,
-        required: false,
+        type: Boolean,
+        required: true,
     },
     tkt_act: {
         type: schema.Types.ObjectId,

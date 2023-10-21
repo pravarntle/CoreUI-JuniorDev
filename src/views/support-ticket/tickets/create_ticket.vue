@@ -14,16 +14,16 @@
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
-        <CForm :validated="form.validatedCustom01">
+        <CForm  :validated="form.validatedCustom01" >
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5><b> Title </b></h5>
               <CFormInput
-                type="text"
-                id="tkt_title"
-                name="tkt_title"
+               type="text"
+               id ="tkt_title"
+               name = "tkt_title"
                 v-model="form.tkt_title"
                 feedbackInvalid="ห้ามเว้นว่าง"
                 :invalid="validate.tkt_title"
@@ -60,6 +60,7 @@
                 @change="checkpiority"
               />
             </div>
+
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -78,7 +79,7 @@
             </div>
           </CRow>
 
-          <CRow class="mb-2">
+          <!-- <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
@@ -120,7 +121,28 @@
               >Submit</CButton
             >
           </div>
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
+          <CElementCover :opacity="0.5" v-if="pageLoading" /> -->
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
+          <div class="col-lg-7 col-md-12">
+            <h5><b>Upload A File</b></h5>
+            <CFormInput
+              type="file"
+              size="lg"
+              id="formFileLg"
+              required
+              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
+              @change="onFileUpload"
+              :invalid="validate.tkt_picture"
+            />
+          </div>
+        </CRow>
+        <div class="clearfix text-end">
+          <CButton color="secondary" @click="vaildateBeforeSave, createToast" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Cancle</CButton>
+          <CButton class="btn-sec" color="success" @click="vaildateBeforeSave" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Submit</CButton>
+        </div>
+        <CElementCover :opacity="0.5" v-if="pageLoading" />
         </CForm>
       </CCardBody>
     </CCard>
@@ -184,7 +206,7 @@ export default {
     ;(this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
-      { label: 'Mediem', value: 'Mediem' },
+      { label: 'Mediem', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
     ]),
@@ -212,10 +234,10 @@ export default {
     // },
     async getType() {
       const type = await axios.get(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       )
       const types = await axios.post(
-        'http://localhost:3000/mongoose/get/stts_types',
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
       ) //,{populate:['tkt_act']}
       console.log(types)
       type.data.forEach((element) => {
@@ -225,10 +247,10 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error = false
+      let error = false;
       if (this.form.tkt_title === '') {
-        error = true
-        this.validate.tkt_title = false
+        error = true;
+        this.validate.tkt_title = false;
       }
       if (this.form.tkt_types === '') {
         error = true
@@ -243,10 +265,13 @@ export default {
         this.validate.tkt_description = false
       }
 
+
       if (!error) {
-      } else {
-        this.form.validatedCustom01 = true // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.onSave()
+      } else {
+        
+        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -267,13 +292,7 @@ export default {
       const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
 
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
+      
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
@@ -286,7 +305,7 @@ export default {
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_tickets', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
           })
           .then((result) => {
@@ -305,6 +324,18 @@ export default {
         content: 'สร้างสำเร็จ',
       })
     },
+    async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.tkt_picture = dataResponse.data._id
+      },
   },
   components: { CForm, CFormLabel },
 }
