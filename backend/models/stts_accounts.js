@@ -36,7 +36,8 @@ const SchemaData = new schema({
         required: false,
     },
     act_picture: {
-        type: String,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     act_gender: {

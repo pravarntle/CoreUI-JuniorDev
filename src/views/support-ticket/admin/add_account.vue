@@ -20,8 +20,10 @@
           </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div v-if="imageUrl">
-                <img :src="imageUrl" />
+              <div >
+                <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
+                <img :src="d" />
+
               </div>
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
@@ -32,12 +34,12 @@
               <CFormInput
                 name="upload_file"
                 feedbackInvalid="Please input picture."
-                v-model="form.act_picture"
                 :invalid="validate.act_picture"
                 required
                 type="file"
-                @change="handleImageUpload"
+                @change="onFileUpload"
                 id="upload_file"
+                accept=".png, .jpg, .jpeg "
                 hidden
               />
               <CCol xs="12" md="6" lg="4">
@@ -339,10 +341,10 @@ export default {
   created() {
     this.roleOptions = [
       { label: 'Select Role', value: '' },
-      { label: 'Employee', value: 'Employee' },
-      { label: 'IT Support', value: 'IT Support' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Manager', value: 'Manager' },
+      { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
+      { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
+      { label: 'Admin', value: '651636008cadea5f0570a27e' },
+      { label: 'Manager', value: '651636358cadea5f0570a27f' },
     ]
   },
   methods: {
@@ -355,8 +357,7 @@ export default {
       }
     },
     deleteImage() {
-      this.imageUrl = '../../../assets/images/preProfile01.svg'
-      this.imageFile = '../../../assets/images/preProfile01.png'
+      this.act_picture = null
       // You can also send an API request to delete the image on the server here.
     },
     // handleSubmitCustom01(event) {
@@ -459,18 +460,12 @@ export default {
     },
     async onSave() {
       // const date = new Date;
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
-      console.log(this.form)
+      this.form.act_picture = this.form.act_picture || null;
+
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_accounts', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts`, {
             data: this.form,
           })
           .then((result) => {
@@ -483,7 +478,25 @@ export default {
         console.log(error)
       }
     },
+    async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.act_picture = dataResponse.data._id
+
+        
+        
+      },
   },
+  mounted(){
+    console.log(this.form.act_picture)
+  }
 }
 </script>
 <style>
