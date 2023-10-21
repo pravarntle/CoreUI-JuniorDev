@@ -478,6 +478,8 @@ export default {
           }
         })
         this.form.cmt_picture = dataResponse.data._id
+        this.form.cmt_file = null
+
       },
     async onFileUpload(event) {
         const uploadFile = event.target.files[0]
@@ -490,6 +492,7 @@ export default {
           }
         })
         this.form.cmt_file = dataResponse.data._id
+        this.form.cmt_picture = null
       },
       
       // onImageUpload(event) {
