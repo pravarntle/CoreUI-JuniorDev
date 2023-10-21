@@ -290,12 +290,12 @@ export default {
 
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()
-
-      
+      const date = dayjs()   
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
+      this.form.tkt_picture = this.form.tkt_picture || null;
+
       this.form.tkt_time = ticket_date
       this.form.tkt_number = ticket_number
       this.form.tkt_act = userId

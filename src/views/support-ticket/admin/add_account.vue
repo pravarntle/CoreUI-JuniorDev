@@ -21,7 +21,6 @@
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
               <div >
-
                 <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
                 <img :src="d" />
 
@@ -35,7 +34,6 @@
               <CFormInput
                 name="upload_file"
                 feedbackInvalid="Please input picture."
-                v-model="form.act_picture"
                 :invalid="validate.act_picture"
                 required
                 type="file"
@@ -342,10 +340,10 @@ export default {
   created() {
     this.roleOptions = [
       { label: 'Select Role', value: '' },
-      { label: 'Employee', value: 'Employee' },
-      { label: 'IT Support', value: 'IT Support' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Manager', value: 'Manager' },
+      { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
+      { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
+      { label: 'Admin', value: '651636008cadea5f0570a27e' },
+      { label: 'Manager', value: '651636358cadea5f0570a27f' },
     ]
   },
   methods: {
@@ -471,11 +469,12 @@ export default {
     },
     async onSave() {
       // const date = new Date;
-      
+      this.form.act_picture = this.form.act_picture || null;
+
 
       try {
         await axios
-          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts.js`, {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts`, {
             data: this.form,
           })
           .then((result) => {
