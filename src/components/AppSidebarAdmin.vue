@@ -122,10 +122,42 @@
       >
         <CImage
           customClassName="nav-icon"
-          :src="IconmyTicket"
-          style="max-height: 23px; margin-left: 10px; margin-right: 12px"
+          :src="IconmanagePriority"
+          style="max-height: 23px; margin-left: 10px; margin-right: 17px"
         />
-        <font style="color: black">My Task</font>
+        <font style="color: black">Manage Priorites</font>
+      </CNavItem>
+
+      <hr
+        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
+      />
+
+      <CNavItem
+        href="/#/support-ticket/user/dashboard"
+        style="position: relative"
+      >
+        <CImage
+          customClassName="nav-icon"
+          :src="IconmyTicket"
+          style="max-height: 23px; margin-left: 10px; margin-right: 12px;"
+        />
+        <font style="color: black">My Ticket</font>
+      </CNavItem>
+
+      <hr
+        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
+      />
+
+      <CNavItem
+        href="/#/support-ticket/user/dashboard"
+        style="position: relative"
+      >
+        <CImage
+          customClassName="nav-icon"
+          :src="Iconbookmark"
+          style="max-height: 23px; margin-left: 10px; margin-right: 18px"
+        />
+        <font style="color: black">Bookmark</font>
       </CNavItem>
 
       <hr
@@ -152,6 +184,7 @@ import Iconbookmark from '@/assets/images/Icon_bookmark.png'
 import IconmyTicket from '@/assets/images/Icon_myticket.png'
 import Icondropdown from '@/assets/images/Icon_dropdown.png'
 import IconmanageAccount from '@/assets/images/Icon_manageAccount.png'
+import IconmanagePriority from '@/assets/images/Icon_managePriority.png'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
@@ -176,6 +209,7 @@ export default {
       Icondropdown: Icondropdown,
       dropdownOpen: false,
       IconmanageAccount: IconmanageAccount,
+      IconmanagePriority: IconmanagePriority,
     }
   },
   setup() {
