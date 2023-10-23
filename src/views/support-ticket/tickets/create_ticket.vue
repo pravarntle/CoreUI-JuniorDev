@@ -118,8 +118,30 @@
                 required
               />
             </div>
-          </CRow>
-          <div class="clearfix text-end">
+          </CRow> -->
+          
+          
+          
+          <CElementCover :opacity="0.5" v-if="pageLoading" />
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
+          <div class="col-lg-7 col-md-12">
+            <h5><b>Upload A File</b></h5>
+            <CFormInput
+              type="file"
+              size="lg"
+              id="formFileLg"
+              required
+              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
+              @change="onFileUpload"
+              :invalid="validate.tkt_picture"
+            />
+          </div>
+          <CElementCover :opacity="0.5" v-if="pageLoading" />
+          <div style="text-align: center"></div>
+        </CRow>
+        <div class="clearfix text-end">
             <CButton
               color="secondary"
               @click="vaildateBeforeSave, createToast"
@@ -146,25 +168,6 @@
               >Submit</CButton
             >
           </div>
-          <CElementCover :opacity="0.5" v-if="pageLoading" /> -->
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-          <div class="col-lg-7 col-md-12">
-            <h5><b>Upload A File</b></h5>
-            <CFormInput
-              type="file"
-              size="lg"
-              id="formFileLg"
-              required
-              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
-              @change="onFileUpload"
-              :invalid="validate.tkt_picture"
-            />
-          </div>
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
-          <div style="text-align: center"></div>
-        </CRow>
         </CForm>
       </CCardBody>
     </CCard>
