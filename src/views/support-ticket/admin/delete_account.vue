@@ -1,27 +1,29 @@
+// Create By: Sirinya Sondilok 15-09-2566 Add Acount
 <template>
   <div>
     <CCard>
-      <CCardHeader>
-        <h2>Delete Account</h2>
-      </CCardHeader>
       <CCardBody>
-        <CForm novalidate :validated="form.validatedCustom01" @submit.prevent="handleSubmitCustom01">
-          <CRow class="mb-2">
+        <CForm novalidate :validated="form.validatedCustom01">
+          <CRow class="mb-3">
+            <CCol class="header1" xs="12" md="6" lg="4">
+              <h1 style="
+                  width: 280px;
+                  border-bottom: 5px solid transparent;
+                  border-image: linear-gradient(to right, #ea5252, #030303);
+                  border-image-slice: 1;
+                ">
+                Delete Account
+              </h1>
+            </CCol>
+          </CRow>
+          <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div v-if="imageUrl">
-                <img :src="imageUrl" />
+              <div>
+                <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
+                <img :src="d" />
+
               </div>
             </CCol>
-            <!-- <CCol CCol xs="12" md="6" lg="4">
-              <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
-              <CFormInput name="upload_file" feedbackInvalid="Please input picture." v-model="form.act_picture"
-                :invalid="validate.act_picture" required type="file" @change="handleImageUpload" id="upload_file"
-                hidden />
-              <CCol xs="12" md="6" lg="4">
-                <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
-              </CCol>
-            </CCol> -->
-
           </CRow>
 
           <CRow class="mb-2">
@@ -33,20 +35,23 @@
 
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="FnameTH" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
-              <CFormInput name="FnameTH" type="text" feedbackInvalid="Please input firstname(Thai)." id="FnameTH"
-                v-model="form.act_first_name_th" :invalid="validate.act_first_name_th" required />
+              <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+              <CFormInput type="text" name="act_first_name_th" id="act_first_name_th"
+                feedbackInvalid="Please input firstname(Thai)." v-model="form.act_first_name_th"
+                :invalid="validate.act_first_name_th" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
               <CFormInput type="text" id="LnameTH" name="FnameTH" feedbackInvalid="Please input lastname(Thai)."
                 v-model="form.act_last_name_th" :invalid="validate.act_last_name_th" required />
             </CCol>
-            <br>
+            <div>
+              <br />
+            </div>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
               <CFormInput type="text" id="FnameEng" name="FnameEng" feedbackInvalid="Please input firstname(English)."
-                v-model="form.act_first_name_eng" :invalid="validate.act_first_name_eng" required />
+                v-model="form.act_first_name_eng" :invalid="validate.act_first_name_eng" required p/>
             </CCol>
 
             <CCol xs="12" md="6" lg="4">
@@ -54,7 +59,9 @@
               <CFormInput type="text" id="LnameEng" name="LnameEng" feedbackInvalid="Please input lastname(English)."
                 v-model="form.act_last_name_eng" :invalid="validate.act_last_name_eng" required />
             </CCol>
-            <br>
+            <div>
+              <br />
+            </div>
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
               <CFormSelect v-model="form.act_role" :options="roleOptions" feedbackInvalid="Please select role."
@@ -74,21 +81,30 @@
               <CFormInput type="text" id="employeeID" name="employeeID" feedbackInvalid="Please input employee ID."
                 v-model="form.act_username" :invalid="validate.act_username" required />
             </CCol>
-            <br>
+            <div>
+              <br />
+            </div>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="inputPassword1" class="pamt1">Password
               </CFormLabel>
-              <CFormInput text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." type="password" id="password1"
-                v-model=form.act_password feedbackInvalid="Please input password." :invalid="validate.act_password"
-                autocomplete="current-password" placeholder="•••••••" required />
+              <CFormInput feedbackInvalid="Please input password."
+                text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." type="password" id="password1"
+                v-model="form.act_password" :invalid="validate.act_password" autocomplete="current-password"
+                placeholder="•••••••" maxlength="6" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="Password" class="pamt1">Confirm Password</CFormLabel>
               <CFormInput type="password" id="password2" v-model="form.Confirmpassword"
                 feedbackInvalid="Please confirm password." :invalid="validate.Confirmpassword"
-                autocomplete="current-password" placeholder="•••••••" required />
+                autocomplete="current-password" placeholder="•••••••" maxlength="6" required />
+              <div v-if="validate.Confirmpassword" class="text-danger">
+                Passwords do not match.
+              </div>
             </CCol>
-            <br>
+
+            <div>
+              <br />
+            </div>
             <CCol xs="12" md="6" lg="4">
               <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
             </CCol>
@@ -110,8 +126,11 @@
               <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
               <CFormInput type="email" id="confirmEmail" name="confirmEmail" feedbackInvalid="Please input confirm email."
                 v-model="form.confirmEmail" :invalid="validate.confirmEmail" required />
+              <div v-if="validate.confirmEmail" class="text-danger">
+                Email do not match.
+              </div>
             </CCol>
-            <br>
+            <br />
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
               <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."
@@ -119,15 +138,8 @@
             </CCol>
           </CRow>
           <CCol class="col-6 mx-auto">
-            <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
-            <CButton class="btn-sec" color="danger" variant="outline" @click="confirmDelete">Delete</CButton>
-            <CModal v-model="showDeleteConfirmation" title="Confirmation">
-              <p>Are you sure you want to delete this account?</p>
-              <div class="text-right">
-                <CButton color="secondary" @click="cancelDelete">Cancel</CButton>
-                <CButton color="danger" @click="deleteAccount">Delete</CButton>
-              </div>
-            </CModal>
+            <CButton class="btn-sec" color="secondary" style="color: white;" @click="cancel">Cancel</CButton>
+            <CButton class="btn-sec" color="danger" style="color: white;"  @click="confirmDelete">Delete</CButton>
           </CCol>
         </CForm>
       </CCardBody>
@@ -135,14 +147,10 @@
   </div>
 </template>
 <script>
-import { CFormLabel, CButton, CModal } from '@coreui/vue-pro';
-import axios from 'axios';
+import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
+import axios from 'axios'
 export default {
-  components: {
-    CFormLabel,
-    CButton,
-    CModal
-  },
+  components: { CFormLabel },
   data: () => {
     return {
       form: {
@@ -158,108 +166,187 @@ export default {
         act_role: '',
         confirmEmail: '',
         Confirmpassword: '',
-        validatedCustom01: ' '
+        validatedCustom01: false,
       },
 
       validate: {
-        act_username: null,
-        act_password: null,
-        act_number_phone: null,
-        act_email_address: null,
-        act_first_name_th: null,
-        act_first_name_eng: null,
-        act_last_name_th: null,
-        act_last_name_eng: null,
-        act_picture: null,
-        act_role: null,
-        confirmEmail: null,
-        Confirmpassword: null,
-        validatedCustom01: null,
+        // act_username:null,
+        // act_password: null,
+        // act_number_phone:null,
+        // act_email_address:null,
+        // act_first_name_th:null,
+        // act_first_name_eng:null,
+        // act_last_name_th:null,
+        // act_last_name_eng:null,
+        // act_picture:null,
+        // act_role:null,
+        // confirmEmail:null,
+        // Confirmpassword: null,
       },
-      imageUrl: "../../../assets/images/preProfile01.svg",
+      imageUrl: '../../../assets/images/preProfile01.svg',
       imageFile: null,
       pageLoading: false,
-      showDeleteConfirmation: false,
+      validatedCustom01: null,
     }
   },
   created() {
     this.roleOptions = [
       { label: 'Select Role', value: '' },
-      { label: 'Employee', value: 'Employee' },
-      { label: 'IT Support', value: 'IT Support' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Manager', value: 'Manager' }
-    ];
+      { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
+      { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
+      { label: 'Admin', value: '651636008cadea5f0570a27e' },
+      { label: 'Manager', value: '651636358cadea5f0570a27f' },
+    ]
   },
-
   methods: {
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     handleImageUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        this.imageUrl = URL.createObjectURL(file);
-        this.imageFile = file;
+        this.imageUrl = URL.createObjectURL(file)
+        this.imageFile = file
       }
     },
     deleteImage() {
-      this.imageUrl = "../../../assets/images/preProfile01.svg";
-      this.imageFile = "../../../assets/images/preProfile01.svg";
+      this.act_picture = null
       // You can also send an API request to delete the image on the server here.
     },
-    handleSubmitCustom01(event) {
-      if (!event.currentTarget.checkValidity()) {
-        event.preventDefault();
+    // handleSubmitCustom01(event) {
+    //   if (!event.currentTarget.checkValidity()) {
+    //     event.preventDefault()
+    //   }
+    //   this.form.validatedCustom01 = true
+    // },
+    validateBeforeSave() {
+      let error = false
+      if (!this.form.act_picture) {
+        error = true
+        this.validate.act_picture = false
       }
-      this.form.validatedCustom01 = true;
-    },
-    // แสดงกล่องแจ้งเตือนเมื่อคลิกปุ่ม "Delete"
-    deleteAccount() {
-      // เพิ่มโค้ดสำหรับลบบัญชีที่นี่
-      // หลังจากลบแล้วคุณสามารถปิดกล่องแจ้งเตือนด้วยคำสั่งนี้
-      this.showDeleteConfirmation = false;
-    },
-    // เมื่อคลิกปุ่ม Delete
-    confirmDelete() {
-      // แสดงกล่องแจ้งเตือนการลบ
-      this.showDeleteConfirmation = true;
-    },
-    // เมื่อคลิกปุ่ม Cancel ในกล่องแจ้งเตือน
-    cancelDelete() {
-      // ปิดกล่องแจ้งเตือน
-      this.showDeleteConfirmation = false;
+      if (this.form.act_first_name_th === '') {
+        error = true
+        this.validate.act_first_name_th = false
+      }
+      if (this.form.act_last_name_th === '') {
+        error = true
+        this.validate.act_last_name_th = false
+      }
+      if (this.form.act_first_name_eng === '') {
+        error = true
+        this.validate.act_first_name_eng = false
+      }
+      if (this.form.act_last_name_eng === '') {
+        error = true
+        this.validate.act_last_name_eng = false
+      }
+      if (this.form.act_role === '') {
+        error = true
+        this.validate.act_role = false
+      }
+      if (this.form.act_email_address === '') {
+        error = true
+        this.validate.act_email_address = false
+      }
+      if (this.form.confirmEmail === '') {
+        error = true
+        this.validate.confirmEmail = false
+      }
+      if (
+        this.form.act_email_address !== this.form.confirmEmail &&
+        this.form.confirmEmail !== ''
+      ) {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
+      }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
+      }
+      if (this.form.act_number_phone === '') {
+        error = true
+        this.validate.act_number_phone = false
+      }
+      if (this.form.act_username === '') {
+        error = true
+        this.validate.act_username = false
+      }
+      if (this.form.act_password === '') {
+        error = true
+        this.validate.act_password = false
+      }
+      if (this.form.Confirmpassword === '') {
+        error = true
+        this.validate.Confirmpassword = false
+      }
+      if (
+        this.form.act_password !== this.form.Confirmpassword &&
+        this.form.Confirmpassword !== ''
+      ) {
+        error = true
+        this.validate.Confirmpassword = true
+        this.form.Confirmpassword = ''
+      }
+      if (this.form.act_password === this.form.Confirmpassword) {
+        error = true
+        this.validate.Confirmpassword = false
+      }
+
+      if (!error) {
+      } else {
+        this.form.validatedCustom01 = true
+        this.onSave()
+      }
     },
     showPassword() {
-      var p1 = document.getElementById('password1');
-      var p2 = document.getElementById('password2');
+      var p1 = document.getElementById('password1')
+      var p2 = document.getElementById('password2')
       if (p1.type === 'password') {
-        p1.type = 'text';
-        p2.type = 'text';
+        p1.type = 'text'
+        p2.type = 'text'
       } else {
-        p1.type = 'password';
-        p2.type = 'password';
+        p1.type = 'password'
+        p2.type = 'password'
       }
     },
     async onSave() {
       // const date = new Date;
-      this.pageLoading = true;
-      setTimeout(function () {
-        this.pageLoading = false;
-      }.bind(this), 3000);
-      console.log(this.form);
+      this.form.act_picture = this.form.act_picture || null;
+
 
       try {
-        await axios.post('http://localhost:3000/mongoose/insert/stts_accounts', { data: this.form })
+        await axios
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts`, {
+            data: this.form,
+          })
           .then((result) => {
-
             this.$router.push('/support-ticket/user/dashboard')
-          }).catch((err) => {
+          })
+          .catch((err) => {
             console.log(error)
-          });
+          })
       } catch (error) {
         console.log(error)
       }
+    },
+    async onFileUpload(event) {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      this.form.act_picture = dataResponse.data._id
+
+
 
     },
+  },
+  mounted() {
+    console.log(this.form.act_picture)
   }
 }
 </script>
@@ -277,12 +364,11 @@ export default {
   width: 1160px;
   height: 1496px;
   flex-shrink: 0;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 5px;
 }
 
 .h2 {
-
   color: #303030;
   font-family: Inter;
   font-size: 36px;
@@ -299,7 +385,7 @@ export default {
   width: 357.501px;
   height: 2.223px;
   flex-shrink: 0;
-  background: #EA5252;
+  background: #ea5252;
 }
 
 .btn-Picture {
@@ -307,7 +393,7 @@ export default {
   height: 53px;
   background-color: transparent;
   /* Set the background color to transparent */
-  border: 2px solid #5E5ADB;
+  border: 2px solid #5e5adb;
   /* Add a border with a 2px width and color of your choice */
   padding: 10px 20px;
   /* Add padding to provide spacing inside the button */
@@ -325,11 +411,10 @@ export default {
   margin-top: 30px;
   text-align: center;
   /* margin-bottom: 30px; */
-
 }
 
 .btn-Picture:hover {
-  background-color: #5E5ADB;
+  background-color: #5e5adb;
   /* Change the background color on hover */
   color: #fff;
   /* Change text color on hover */
@@ -337,7 +422,7 @@ export default {
 
 .mb-2 {
   padding-left: 150px;
-  color: #5E5ADB;
+  color: #5e5adb;
   /* font-family:'Inter'; */
   font-size: 32px;
   font-style: normal;
@@ -360,7 +445,6 @@ export default {
   display: flex;
   justify-content: end;
   border-radius: 20px;
-
 }
 
 .btn-sec {
@@ -381,16 +465,18 @@ export default {
   border-radius: 50%;
   margin-top: 20px;
   margin-bottom: 30px;
-  border: 20px solid #F7F9FC;
+  border: 20px solid #f7f9fc;
   stroke-width: 20px;
-  stroke: #F7F9FC;
+  stroke: #f7f9fc;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
-.red-text {
-  color: red;
+.header1 {
+  color: #303030;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 </style>
-
-
-
