@@ -52,16 +52,7 @@
         </CRow>
         <CRow class="justify-content-between">
           <CCol xs="4">
-            <!---------------------------------------------------------------------------------------->
-            <!-- <CFormSelect id="Form_border" aria-label="Default select example" :options="[
-              '1',
-              { label: 'One', value: '1' },
-              { label: 'Two', value: '2' },
-              { label: 'Three', value: '3', disabled: true }
-            ]">
-            </CFormSelect> -->
             <CFormInput type="number" value="1" min="1" max="5" step="1"></CFormInput>
-            <!---------------------------------------------------------------------------------------->
           </CCol>
           <CCol xs="4">
             <div class="border rounded align-items-center" id="Form_border" style="width: 100%; ">
