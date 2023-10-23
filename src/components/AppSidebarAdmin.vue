@@ -38,7 +38,7 @@
         >
       </CNavItem>
 
-      <CNavItem href="/#/support-ticket/it/it_dashboard">
+      <CNavItem href="/#/support-ticket/admin/admin_dashboard">
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"

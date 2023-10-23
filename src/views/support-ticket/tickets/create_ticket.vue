@@ -288,7 +288,7 @@ export default {
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
   created() {
-    ;(this.piorityOptions = [
+    (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
       { label: 'Mediem', value: 'Medium' },

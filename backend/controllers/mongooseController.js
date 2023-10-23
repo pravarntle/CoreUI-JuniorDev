@@ -99,6 +99,8 @@ module.exports = {
             }
 
             const data = await request.lean().exec()
+
+
             res.send(data);
         } catch (error) {
             console.log("Error At mongoose-findOne: ", error);

@@ -17,7 +17,7 @@
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-        <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+        <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`"
           style="padding: -4px" />
         <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
@@ -98,7 +98,7 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+                <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`" 
                   style="padding: -4px" />
                 <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
@@ -264,6 +264,8 @@ export default {
       priorities:'',
       picture:'',
       avatar:'',
+      acountFile:'',
+      acountImage:'',
       firstname:'',
       email:'',
       date:'',
@@ -460,6 +462,26 @@ export default {
         this.avatar = response.data.tkt_act.act_picture;
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
+
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.getAcount();
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    },
+    async getAcount() {
+      try {
+
+        const acountId = this.avatar;
+        console.log(acountId);
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${acountId}`, { populate: ["act_picture"] });
+        console.log(response.data);
+        this.acountFile=response.data.act_picture.filetype
+        this.acountImage=response.data.act_picture.image
+
+        
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 

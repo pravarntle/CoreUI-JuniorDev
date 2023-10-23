@@ -20,11 +20,9 @@
           </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div v-if="accountPicture" >
-                <!-- <img :src="`data:${this.act_picture.filetype};base64,${this.act_picture.image}`" /> -->
-                <img :src="accountPicture" />
 
-              </div>
+              <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
+              <img v-else :src="user_man" />
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
               <CFormLabel class="btn-Picture" for="upload_file"
@@ -279,15 +277,18 @@
               color="secondary"
               variant="outline"
               @click="cancel"
-              >Cancel</CButton
-            >
+              >
+              Cancel
+            </CButton>
             <CButton
               class="btn-sec"
               color="success"
               variant="outline"
               @click="validateBeforeSave"
-              >Submit</CButton
             >
+            
+              Submit
+            </CButton>
           </CCol>
         </CForm>
       </CCardBody>
@@ -297,6 +298,7 @@
 <script>
 import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
 import axios from 'axios'
+import user_man from '../../../assets/images/preProfile.png'
 export default {
   components: { CFormLabel },
   data: () => {
@@ -317,7 +319,6 @@ export default {
         validatedCustom01: false,
         
       },
-      accountPicture:'../../../assets/images/preProfile01.svg',
       validate: {
         // act_username:null,
         // act_password: null,
@@ -332,10 +333,12 @@ export default {
         // confirmEmail:null,
         // Confirmpassword: null,
       },
-      imageUrl: '../../../assets/images/preProfile01.svg',
       imageFile: null,
+      fileType:"",
+      fileImage:"",
       pageLoading: false,
       validatedCustom01: null,
+      user_man ,
     }
   },
   created() {
@@ -352,7 +355,11 @@ export default {
     
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
-      this.act_picture = null
+      this.form.act_picture = null; // Set act_picture to null to delete the image
+      this.fileType = ""; // Clear the file type
+      this.fileImage = ""; // Clear the file image
+      console.log('Image deleted');
+      console.log(this.form.act_picture);
       // You can also send an API request to delete the image on the server here.
     },
     
@@ -487,16 +494,32 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        console.log(dataResponse.data.image)
+        
         this.form.act_picture = dataResponse.data._id
+        this.getPicture();
 
+    },
+    async getPicture(){
+      const pictureId = this.form.act_picture;
+      try{
+        const data = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_files`,{
+          where:{
+            _id:pictureId
+          }
+        })
+        this.fileType = data.data.filetype
+        this.fileImage = data.data.image
 
-        
-        
-      },
+        console.log(data.data)
+      } catch (error) {
+        console.log(error)
+      }
+      
+      
+    }
+
   },
   mounted(){
-    console.log(this.form.act_picture)
   }
 }
 </script>
