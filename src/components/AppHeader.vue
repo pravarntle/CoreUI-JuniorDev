@@ -10,15 +10,16 @@
       <CHeaderNav class="d-none d-md-flex me-auto">
 
       </CHeaderNav>
-      <CHeaderNav class="ms-auto me-4">
-          <CFormCheck
-
-            type="radio"
-            :button="{ color: 'dark' }"
-          >
-            <template #label><CIcon icon="cilBell" /></template>
-          </CFormCheck>
-      </CHeaderNav>
+      <CHeaderNav class="ms-auto me-1"> <!-- ลดค่า margin ที่ฝั่งขวาเป็น me-2 -->
+    <CFormCheck type="radio" :button="{ color: 'gray' }">
+        <template #label><CIcon icon="cilTranslate" /></template>
+    </CFormCheck>
+</CHeaderNav>
+<CHeaderNav class="ms-1 me-2"> <!-- เพิ่มค่า margin ที่ฝั่งซ้ายเป็น ms-2 -->
+    <CFormCheck type="radio" :button="{ color: 'gray' }">
+        <template #label><CIcon icon="cilBell" /></template>
+    </CFormCheck>
+</CHeaderNav>
       <CHeaderNav class="ms-1 me-5">
         
       <AppHeaderDropdownAccnt />
@@ -56,3 +57,5 @@ export default {
   },
 }
 </script>
+
+

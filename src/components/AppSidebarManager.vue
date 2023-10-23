@@ -38,7 +38,7 @@
         >
       </CNavItem>
 
-      <CNavItem href="/#/support-ticket/it/it_dashboard">
+      <CNavItem href="/#/support-ticket/it/it_dashboard" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"
@@ -54,6 +54,7 @@
       <CNavItem
         href="/#/support-ticket/user/dashboard"
         style="position: relative"
+        class="custom-nav-item"
       >
         <CImage
           customClassName="nav-icon"
@@ -70,6 +71,7 @@
       <CNavItem
         href="/#/support-ticket/user/dashboard"
         style="position: relative"
+        class="custom-nav-item"
       >
         <CImage
           customClassName="nav-icon"
@@ -142,7 +144,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.updateSidebarVisibility)
-    this.updateSidebarVisibility() // ใช้ตรวจสอบครั้งแรกเมื่อ component ถูก mounted
+    this.updateSidebarVisibility() 
   },
 
   beforeDestroy() {
@@ -154,8 +156,8 @@ export default {
         // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
         localStorage.removeItem('USER_DATA')
 
-        // 8soCfP12Ph19mi914zQaZz2KsGGtcANVhVVfKAnmVRqM (สามารถเปลี่ยน URL หรือ path ตามที่คุณต้องการได้)
-        this.$router.push('/login') // เปลี่ยนเส้นทางไปยังหน้า login หรือหน้าที่คุณต้องการหลังจากออกจากระบบ
+      
+        this.$router.push('/login')
       } catch (error) {
         console.log(error)
       }
@@ -165,10 +167,16 @@ export default {
         // ขยาย sidebar
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
-        // ซ่อน sidebar (หรือคุณสามารถเลือกว่าจะไม่ทำอะไรก็ได้ หากคุณต้องการให้มันยังคงแสดงอยู่)
-        // ตัวอย่าง: this.$store.commit('updateSidebarVisible', { value: false });
+        // ซ่อน sidebar 
       }
     },
   },
 }
 </script>
+<style scoped>
+.custom-nav-item:hover {
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(230, 230, 230, 1) !important;
+  transition: background-color 0.3s, border 0.3s !important;
+}
+</style>

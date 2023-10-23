@@ -39,7 +39,10 @@
         >
       </CNavItem>
       <!-- <li class="nav-title" style="color:black">Menu</li> -->
-      <CNavItem href="/#/support-ticket/it/it_dashboard">
+      <CNavItem
+        href="/#/support-ticket/it/it_dashboard"
+        class="custom-nav-item"
+      >
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"
@@ -50,7 +53,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard">
+      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -61,7 +64,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard">
+      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -72,11 +75,16 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem style="position: relative">
+      <CNavItem style="position: relative" >
         <CImage
           customClassName="nav-icon"
           :src="Iconbookmark"
-          style="max-height: 20px; margin-left: 30px; margin-right: 17px"
+          style="
+            max-height: 20px;
+            margin-left: 30px;
+            margin-right: 18px;
+            max-width: 25px;
+          "
         />
         <font style="color: black">Bookmark</font>
 
@@ -96,20 +104,33 @@
         <!-- Dropdown items -->
         <div
           v-show="dropdownOpen"
-          style="
-            position: absolute;
-            background-color: white;
-            width: 100%;
-            z-index: 100;
-            top: 100%;
-            left: 0;
-          "
+          style="background-color: white; width: 100%; z-index: 100"
+          class="dropdown-content"
         >
           <CNavItem
             href="/#/support-ticket/ticket/book1"
             style="padding-left: 52px"
+            class="custom-nav-item"
           >
-            <font style="color: black">Bookmark Ticket</font>
+            <font style="color: black">Bookmark tickets</font>
+          </CNavItem>
+
+          <hr
+            style="
+              color: black;
+              width: 50%;
+              margin-left: 65px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+            "
+          />
+
+          <CNavItem
+            href="/#/support-ticket/ticket/book2"
+            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
+            class="custom-nav-item"
+          >
+            <font style="color: black">Bookmark tasks</font>
           </CNavItem>
           <hr
             style="
@@ -120,17 +141,13 @@
               margin-bottom: 0px;
             "
           />
-          <CNavItem
-            href="/#/support-ticket/ticket/book2"
-            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
-          >
-            <font style="color: black">Bookmark Tasks</font>
-          </CNavItem>
         </div>
       </CNavItem>
+
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 15px"
       />
+
       <CNavItem href="#" class="position-absolute bottom-0 start-0">
         <CImage
           customClassName="nav-icon"
@@ -190,7 +207,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.updateSidebarVisibility)
-    this.updateSidebarVisibility() // ใช้ตรวจสอบครั้งแรกเมื่อ component ถูก mounted
+    this.updateSidebarVisibility() 
   },
 
   beforeDestroy() {
@@ -202,8 +219,7 @@ export default {
         // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
         localStorage.removeItem('USER_DATA')
 
-        // 8soCfP12Ph19mi914zQaZz2KsGGtcANVhVVfKAnmVRqM (สามารถเปลี่ยน URL หรือ path ตามที่คุณต้องการได้)
-        this.$router.push('/login') // เปลี่ยนเส้นทางไปยังหน้า login หรือหน้าที่คุณต้องการหลังจากออกจากระบบ
+        this.$router.push('/login') 
       } catch (error) {
         console.log(error)
       }
@@ -213,10 +229,16 @@ export default {
         // ขยาย sidebar
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
-        // ซ่อน sidebar (หรือคุณสามารถเลือกว่าจะไม่ทำอะไรก็ได้ หากคุณต้องการให้มันยังคงแสดงอยู่)
-        // ตัวอย่าง: this.$store.commit('updateSidebarVisible', { value: false });
+        // ซ่อน sidebar
       }
     },
   },
 }
 </script>
+<style scoped>
+.custom-nav-item:hover {
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(230, 230, 230, 1) !important;
+  transition: background-color 0.3s, border 0.3s !important;
+}
+</style>
