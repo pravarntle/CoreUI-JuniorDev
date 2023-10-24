@@ -56,5 +56,7 @@ const SchemaData = new schema({
     },
 });
 
+
+
 const stts_accounts = mongoose.model("stts_accounts", SchemaData, "stts_accounts");
 module.exports = stts_accounts;
