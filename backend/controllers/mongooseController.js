@@ -96,9 +96,22 @@ module.exports = {
                 for await (const item of populateList) {
                     request = request.populate(item)
                 }
+                // for await (const item of populateList) {
+                //     if (item.includes('.')) {
+
+                //         const [path, nestedPath] = item.split('.');
+                //         request = request.populate(path).populate(nestedPath);
+
+                //     } else {
+                //         console.log("3")
+                //         request = request.populate(item);
+                //     }
+                // }
             }
 
             const data = await request.lean().exec()
+
+
             res.send(data);
         } catch (error) {
             console.log("Error At mongoose-findOne: ", error);

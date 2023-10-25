@@ -17,7 +17,7 @@
       <CRow class="g-0">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-        <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+        <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`"
           style="padding: -4px" />
         <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
@@ -98,7 +98,7 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="avatar" class="Icon_user_man avatar-round" :src="require(`@/assets/images/${avatar}`)"
+                <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`" 
                   style="padding: -4px" />
                 <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
@@ -249,7 +249,6 @@ export default {
       Icon_user_man,
       commit,
       Attach_Image,
-      comment: '',
       comments: [],
       imageName: '',
       imageDataURL: '', // เก็บรูปภาพที่แนบเป็น Data URL
@@ -264,10 +263,13 @@ export default {
       priorities:'',
       picture:'',
       avatar:'',
+      acountFile:'',
+      acountImage:'',
       firstname:'',
       email:'',
       date:'',
       comment: '',
+      commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
 
     };
@@ -446,10 +448,8 @@ export default {
       try {
 
         const ticketId = this.ticketId;
-        console.log(ticketId);
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: ["tkt_act","tkt_picture"] });
-        console.log(response.data);
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: [,"tkt_picture"] });
 
         this.type = response.data.tkt_types;
         this.description = response.data.tkt_description;
@@ -457,9 +457,30 @@ export default {
         this.priorities = response.data.tkt_priorities;
         this.picture = response.data.tkt_picture;
         this.date = response.data.tkt_time;
-        this.avatar = response.data.tkt_act.act_picture;
-        this.email = response.data.tkt_act.act_email_address;
-        this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.avatar = response.data.tkt_act;
+        // this.email = response.data.tkt_act.act_email_address;
+        // this.firstname = response.data.tkt_act.act_first_name_eng;
+
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.getAcount();
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    },
+    async getAcount() {
+      try {
+
+        const acountId = this.avatar;
+        console.log(acountId);
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${acountId}`, { populate: ["act_picture"] });
+        console.log(response.data);
+        this.acountFile=response.data.act_picture.filetype
+        this.acountImage=response.data.act_picture.image
+        this.email = response.data.act_email_address;
+        this.firstname = response.data.act_first_name_eng;
+        
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
@@ -478,6 +499,8 @@ export default {
           }
         })
         this.form.cmt_picture = dataResponse.data._id
+        this.form.cmt_file = null
+
       },
     async onFileUpload(event) {
         const uploadFile = event.target.files[0]
@@ -490,6 +513,7 @@ export default {
           }
         })
         this.form.cmt_file = dataResponse.data._id
+        this.form.cmt_picture = null
       },
       
       // onImageUpload(event) {
@@ -556,14 +580,32 @@ export default {
               where: {
                 cmt_tkt: ticketId,
               },
-              populate:["cmt_act", "cmt_picture","cmt_file"]
+              populate:[ "cmt_picture","cmt_file"]
                 
               
             });
             console.log(ticketId)
             console.log(comment.data)
             this.comments = comment.data;
+            this.commentAccount= comment.data.cmt_act;
             console.log(this.comments)
+      },
+      async getAcountComment() {
+        try {
+
+          const commentAcount = this.commentAccount;
+          console.log(commentAcount);
+
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
+          console.log(response.data);
+          
+          
+
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
       },
       async getFileType(filetype) {
         console.log("เข้า")

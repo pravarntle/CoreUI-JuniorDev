@@ -36,7 +36,8 @@ const SchemaData = new schema({
         required: false,
     },
     act_picture: {
-        type: String,
+        type: schema.Types.ObjectId,
+        ref: "stts_files",
         required: false,
     },
     act_gender: {
@@ -54,6 +55,8 @@ const SchemaData = new schema({
         updatedAt: "UPDATED_AT"
     },
 });
+
+
 
 const stts_accounts = mongoose.model("stts_accounts", SchemaData, "stts_accounts");
 module.exports = stts_accounts;

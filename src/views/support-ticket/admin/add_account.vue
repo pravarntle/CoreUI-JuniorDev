@@ -3,26 +3,26 @@
   <div>
     <CCard>
       <CCardBody>
-        <CForm
-          novalidate
-    :validated="form.validatedCustom01"
-        >
-        <CRow class="mb-3">
-          <CCol class="header1" xs="12" md="6" lg="4">
-            <h1 style="width: 399px;
-                border-bottom: 5px solid transparent;
-                border-image: linear-gradient(to right, #EA5252, #030303);
-                border-image-slice: 1;"
-            >
+        <CForm novalidate :validated="form.validatedCustom01">
+          <CRow class="mb-3">
+            <CCol class="header1" xs="12" md="6" lg="4">
+              <h1
+                style="
+                  width: 399px;
+                  border-bottom: 5px solid transparent;
+                  border-image: linear-gradient(to right, #ea5252, #030303);
+                  border-image-slice: 1;
+                "
+              >
                 Create New Account
-            </h1>
-          </CCol>
-        </CRow>
+              </h1>
+            </CCol>
+          </CRow>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
-              <div v-if="imageUrl">
-                <img :src="imageUrl" />
-              </div>
+
+              <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
+              <img v-else :src="user_man" />
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
               <CFormLabel class="btn-Picture" for="upload_file"
@@ -30,14 +30,14 @@
               >
 
               <CFormInput
-                 feedbackInvalid="Please input picture."
                 name="upload_file"
-                v-model="form.act_picture"
+                feedbackInvalid="Please input picture."
                 :invalid="validate.act_picture"
                 required
                 type="file"
-                @change="handleImageUpload"
+                @change="onFileUpload"
                 id="upload_file"
+                accept=".png, .jpg, .jpeg "
                 hidden
               />
               <CCol xs="12" md="6" lg="4">
@@ -171,7 +171,7 @@
                 >Password
               </CFormLabel>
               <CFormInput
-              feedbackInvalid="Please input password."
+                feedbackInvalid="Please input password."
                 text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                 type="password"
                 id="password1"
@@ -197,9 +197,10 @@
                 placeholder="•••••••"
                 maxlength="6"
                 required
-
               />
-              <div v-if="validate.Confirmpassword" class="text-danger"> Passwords do not match. </div>
+              <div v-if="validate.Confirmpassword" class="text-danger">
+                Passwords do not match.
+              </div>
             </CCol>
 
             <div>
@@ -250,7 +251,9 @@
                 :invalid="validate.confirmEmail"
                 required
               />
-               <div v-if="validate.confirmEmail" class="text-danger"> Email do not match. </div>
+              <div v-if="validate.confirmEmail" class="text-danger">
+                Email do not match.
+              </div>
             </CCol>
             <br />
             <CCol xs="12" md="6" lg="8">
@@ -274,15 +277,18 @@
               color="secondary"
               variant="outline"
               @click="cancel"
-              >Cancel</CButton
-            >
+              >
+              Cancel
+            </CButton>
             <CButton
               class="btn-sec"
               color="success"
               variant="outline"
               @click="validateBeforeSave"
-              >Submit</CButton
             >
+            
+              Submit
+            </CButton>
           </CCol>
         </CForm>
       </CCardBody>
@@ -290,16 +296,11 @@
   </div>
 </template>
 <script>
-import { CForm, CFormLabel, CFormInput, CButton } from '@coreui/vue-pro'
+import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
 import axios from 'axios'
+import user_man from '../../../assets/images/preProfile.png'
 export default {
-  components: {
-    CFormLabel,
-    CForm,
-    CFormInput,
-    CFormLabel,
-    CButton,
-  },
+  components: { CFormLabel },
   data: () => {
     return {
       form: {
@@ -316,58 +317,59 @@ export default {
         confirmEmail: '',
         Confirmpassword: '',
         validatedCustom01: false,
+        
       },
-
       validate: {
-        act_username:false,
-        act_password: false,
-        act_number_phone:false,
-        act_email_address:false,
-        act_first_name_th:false,
-        act_first_name_eng:false,
-        act_last_name_th:false,
-        act_last_name_eng:false,
-        act_picture:false,
-        act_role:false,
+        // act_username:null,
+        // act_password: null,
+        // act_number_phone:null,
+        // act_email_address:null,
+        // act_first_name_th:null,
+        // act_first_name_eng:null,
+        // act_last_name_th:null,
+        // act_last_name_eng:null,
+        // act_picture:null,
+        // act_role:null,
         // confirmEmail:null,
-        // Confirmpassword:null
+        // Confirmpassword: null,
       },
-      imageUrl: '../../../assets/images/preProfile01.svg',
       imageFile: null,
+      fileType:"",
+      fileImage:"",
       pageLoading: false,
-      //validatedCustom01: '',
+      validatedCustom01: null,
+      user_man ,
     }
   },
   created() {
     this.roleOptions = [
       { label: 'Select Role', value: '' },
-      { label: 'Employee', value: 'Employee' },
-      { label: 'IT Support', value: 'IT Support' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Manager', value: 'Manager' },
+      { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
+      { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
+      { label: 'Admin', value: '651636008cadea5f0570a27e' },
+      { label: 'Manager', value: '651636358cadea5f0570a27f' },
     ]
   },
   methods: {
-  handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.imageUrl = URL.createObjectURL(file);
-        this.imageFile = file;
-      }
-    },
+    // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
+    
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     deleteImage() {
-      this.imageUrl = '../../../assets/images/preProfile01.svg'
-      this.imageFile = '../../../assets/images/preProfile01.png'
+      this.form.act_picture = null; // Set act_picture to null to delete the image
+      this.fileType = ""; // Clear the file type
+      this.fileImage = ""; // Clear the file image
+      console.log('Image deleted');
+      console.log(this.form.act_picture);
       // You can also send an API request to delete the image on the server here.
     },
+    
     validateBeforeSave() {
-      let error = false;
+      let error = false
       if (!this.form.act_picture) {
         error = true
         this.validate.act_picture = false
       }
-      if (!this.form.act_first_name_th) {
+      if (this.form.act_first_name_th === '') {
         error = true
         this.validate.act_first_name_th = false
       }
@@ -395,6 +397,18 @@ export default {
         error = true
         this.validate.confirmEmail = false
       }
+      if (
+        this.form.act_email_address !== this.form.confirmEmail &&
+        this.form.confirmEmail !== ''
+      ) {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
+      }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
+      }
        if(this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
            error = true
          this.validate.confirmEmail = true
@@ -413,27 +427,29 @@ export default {
         this.validate.act_username = false
       }
       if (this.form.act_password === '') {
-          error = true
-          this.validate.act_password = false
+        error = true
+        this.validate.act_password = false
       }
       if (this.form.Confirmpassword === '') {
-           error = true
-          this.validate.Confirmpassword = false
+        error = true
+        this.validate.Confirmpassword = false
       }
-      if(this.form.act_password !== this.form.Confirmpassword && this.form.Confirmpassword !== '') {
-           error = true
+      if (
+        this.form.act_password !== this.form.Confirmpassword &&
+        this.form.Confirmpassword !== ''
+      ) {
+        error = true
         this.validate.Confirmpassword = true
         this.form.Confirmpassword = ''
       }
-       if(this.form.act_password === this.form.Confirmpassword) {
-           error = true
+      if (this.form.act_password === this.form.Confirmpassword) {
+        error = true
         this.validate.Confirmpassword = false
-       }
+      }
 
       if (!error) {
-
       } else {
-        this.form.validatedCustom01 = true;
+        this.form.validatedCustom01 = true
         this.onSave()
       }
     },
@@ -450,18 +466,12 @@ export default {
     },
     async onSave() {
       // const date = new Date;
-      this.pageLoading = true
-      setTimeout(
-        function () {
-          this.pageLoading = false
-        }.bind(this),
-        3000,
-      )
-      console.log(this.form)
+      this.form.act_picture = this.form.act_picture || null;
+
 
       try {
         await axios
-          .post('http://localhost:3000/mongoose/insert/stts_accounts', {
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accounts`, {
             data: this.form,
           })
           .then((result) => {
@@ -474,7 +484,43 @@ export default {
         console.log(error)
       }
     },
+    async onFileUpload(event) {
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        
+        this.form.act_picture = dataResponse.data._id
+        this.getPicture();
+
+    },
+    async getPicture(){
+      const pictureId = this.form.act_picture;
+      try{
+        const data = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_files`,{
+          where:{
+            _id:pictureId
+          }
+        })
+        this.fileType = data.data.filetype
+        this.fileImage = data.data.image
+
+        console.log(data.data)
+      } catch (error) {
+        console.log(error)
+      }
+      
+      
+    }
+
   },
+  mounted(){
+  }
 }
 </script>
 <style>
@@ -597,12 +643,12 @@ export default {
   stroke: #f7f9fc;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
-.header1{
-color: #303030;
-font-size: 36px;
-font-style: normal;
-font-weight: 800;
-margin-top: 40px;
-margin-bottom: 30px;
+.header1 {
+  color: #303030;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 </style>

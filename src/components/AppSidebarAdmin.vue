@@ -38,10 +38,7 @@
         >
       </CNavItem>
 
-      <CNavItem
-        href="/#/support-ticket/it/it_dashboard"
-        class="custom-nav-item"
-      >
+      <CNavItem href="/#/support-ticket/admin/admin_dashboard">
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"
@@ -86,7 +83,7 @@
           style="background-color: white; width: 100%; z-index: 100"
         >
           <CNavItem
-            href="/#/support-ticket/ticket/book1"
+            href="/#/support-ticket/admin/add_account"
             style="padding-left: 52px"
             class="custom-nav-item"
           >
@@ -104,7 +101,7 @@
           />
 
           <CNavItem
-            href="/#/support-ticket/ticket/book2"
+            href="/#/support-ticket/admin/edit_account"
             style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
             class="custom-nav-item"
           >
@@ -127,7 +124,7 @@
       />
 
       <CNavItem
-        href="/#/support-ticket/user/dashboard"
+        href="/#/support-ticket/admin/priority_list"
         style="position: relative"
         class="custom-nav-item"
       >
@@ -161,7 +158,7 @@
       />
 
       <CNavItem
-        href="/#/support-ticket/user/dashboard"
+        href="/#/support-ticket/ticket/book"
         style="position: relative"
         class="custom-nav-item"
       >

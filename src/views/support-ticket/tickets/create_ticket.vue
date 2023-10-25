@@ -14,16 +14,16 @@
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
-        <CForm  :validated="form.validatedCustom01" >
+        <CForm :validated="form.validatedCustom01">
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5><b> Title </b></h5>
               <CFormInput
-               type="text"
-               id ="tkt_title"
-               name = "tkt_title"
+                type="text"
+                id="tkt_title"
+                name="tkt_title"
                 v-model="form.tkt_title"
                 feedbackInvalid="ห้ามเว้นว่าง"
                 :invalid="validate.tkt_title"
@@ -50,7 +50,33 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Priority</b></h5>
+              <div class="d-flex align-items-center">
+                <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
+                <h5><b>Priority</b></h5>
+                <div class="popup" @click="togglePopup">
+                  <CAvatar
+                    class="popup_priority"
+                    :src="popup_priority"
+                    style="text-align: left; margin-left: 10px; margin-top: -5px;"
+
+                  />
+                  <div class="popuptext" :class="{ show: isPopupVisible }">
+                    <p>
+                      <font style="color: #38a06c">
+                        Low = ดำเนินการภายใน 72 ชม.
+                      </font>
+                      <br />
+                      <font style="color: #c97a20">
+                        Medium = ดำเนินการภายใน 48 ชม.
+                      </font>
+                      <br />
+                      <font style="color: #ef5466"
+                        >High = ดำเนินการภายใน 24 ชม.
+                      </font>
+                    </p>
+                  </div>
+                </div>
+              </div>
               <CFormSelect
                 v-model="form.tkt_priorities"
                 :options="piorityOptions"
@@ -60,7 +86,6 @@
                 @change="checkpiority"
               />
             </div>
-
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
@@ -79,6 +104,25 @@
             </div>
           </CRow>
 
+          <!-- <CRow class="mb-2">
+            <div class="col-lg-1"></div>
+            <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
+            <div class="col-lg-7 col-md-12">
+              <h5><b>Upload A File</b></h5>
+              <CFormInput
+                type="file"
+                size="lg"
+                id="formFileLg"
+                v-model="form.tkt_picture"
+                :invalid="validate.tkt_picture"
+                required
+              />
+            </div>
+          </CRow> -->
+          
+          
+          
+          <CElementCover :opacity="0.5" v-if="pageLoading" />
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
@@ -94,18 +138,100 @@
               :invalid="validate.tkt_picture"
             />
           </div>
+          <CElementCover :opacity="0.5" v-if="pageLoading" />
+          <div style="text-align: center"></div>
         </CRow>
         <div class="clearfix text-end">
-          <CButton color="secondary" @click="vaildateBeforeSave, createToast" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Cancle</CButton>
-          <CButton class="btn-sec" color="success" @click="vaildateBeforeSave" style="font-weight: bold; font-size: x-large; width: 150px; color: white; border-radius: 20px;">Submit</CButton>
-        </div>
-        <CElementCover :opacity="0.5" v-if="pageLoading" />
+            <CButton
+              color="secondary"
+              @click="vaildateBeforeSave, createToast"
+              style="
+                font-weight: bold;
+                font-size: x-large;
+                width: 150px;
+                color: white;
+                border-radius: 20px;
+              "
+              >Cancle</CButton
+            >
+            <CButton
+              class="btn-sec"
+              color="success"
+              @click="vaildateBeforeSave"
+              style="
+                font-weight: bold;
+                font-size: x-large;
+                width: 150px;
+                color: white;
+                border-radius: 20px;
+              "
+              >Submit</CButton
+            >
+          </div>
         </CForm>
       </CCardBody>
     </CCard>
   </div>
+
+  <br />
 </template>
 <style>
+.popup_priority {
+  width: 16px;
+}
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 255px;
+  background-color: rgb(255, 255, 255);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -47px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #000000 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* เพิ่ม CSS Media Query เพื่อปรับแต่งการ padding-left เมื่อหน้าจอเล็ก */
 /* @media (max-width: 768px) {
   .col-lg-3.col-md-12 h5 {
@@ -123,6 +249,7 @@
 </style>
 
 <script>
+import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
@@ -145,9 +272,9 @@ export default {
         tkt_book: '',
         tkt_act: '',
         validatedCustom01: false,
-
       },
-
+      popup_priority,
+      isPopupVisible: false,
       userOptions: [],
       userOptions: [],
       genderOptions: [],
@@ -161,7 +288,7 @@ export default {
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
   created() {
-    ;(this.piorityOptions = [
+    (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
       { label: 'Mediem', value: 'Medium' },
@@ -190,6 +317,9 @@ export default {
     //   });
 
     // },
+    async togglePopup() {
+      this.isPopupVisible = !this.isPopupVisible
+    },
     async getType() {
       const type = await axios.get(
         `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
@@ -205,10 +335,10 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error = false;
+      let error
       if (this.form.tkt_title === '') {
-        error = true;
-        this.validate.tkt_title = false;
+        error = true
+        this.validate.tkt_title = false
       }
       if (this.form.tkt_types === '') {
         error = true
@@ -222,7 +352,6 @@ export default {
         error = true
         this.validate.tkt_description = false
       }
-
 
       if (!error) {
         this.onSave()
@@ -248,12 +377,12 @@ export default {
 
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()
-
-      
+      const date = dayjs()   
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
+      this.form.tkt_picture = this.form.tkt_picture || null;
+
       this.form.tkt_time = ticket_date
       this.form.tkt_number = ticket_number
       this.form.tkt_act = userId
