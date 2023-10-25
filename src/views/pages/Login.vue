@@ -139,6 +139,7 @@ export default {
         // }else{
           // alert("เข้าสู่ระบบไม่สำเร็จ")
         // }
+
       },
       async onLoginClick() {
         if (this.vaildateBeforeSave()) {
@@ -174,6 +175,12 @@ export default {
             
           } catch (error) {
             console.log(error)
+            if (error.response.status === 401) {
+              alert('รหัสผ่านไม่ถูกต้อง หรือ ไม่พบผู้ใช้'); // แสดง Alert ถ้ามีค่าสถานะ 401
+            }
+            if (error.response.status === 500) {
+              alert('เซิฟเวอร์มีปัญหา'); // แสดง Alert ถ้ามีค่าสถานะ 401
+            }
           }
         }
         
