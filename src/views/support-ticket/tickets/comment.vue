@@ -426,12 +426,10 @@ export default {
     getImageIcon(filename) {
       const fileExtension = filename.split('.').pop().toLowerCase();
       switch (fileExtension) {
-        case 'doc':
         case 'docx':
           return require('@/assets/images/doc_icon.png');
-        case 'jpg':
-        case 'jpeg':
-          return require('@/assets/images/jpeg_icon.png');
+        // case 'jpeg':
+        //   return require('@/assets/images/jpeg_icon.png');
         case 'png':
           return require('@/assets/images/png_icon.png');
         case 'pdf':
