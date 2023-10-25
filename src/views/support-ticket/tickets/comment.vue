@@ -129,7 +129,7 @@
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment"> <img class="commit" :src="commit"
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
                     alt="Commit Icon" /></CButton>
               </div>
             </div>
@@ -564,6 +564,7 @@ export default {
           console.log(error);
           // Handle the error appropriately (e.g., display an error message)
         }
+        
         this.comment = ''
         this.imageDataURL = ''
         this.imageName = ''
