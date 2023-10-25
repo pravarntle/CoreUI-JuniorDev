@@ -79,15 +79,14 @@
     color: #b22424;
   }
   #font {
-    font-weight: 700;
+    font-weight: bold;
     align-items: center;
     font-size: 100px;
     color: #000;
   }
   .LG {
-    width: 100px;
+    max-width: 100px;
     max-height: 100px;
-  
   }
   
   #border {
