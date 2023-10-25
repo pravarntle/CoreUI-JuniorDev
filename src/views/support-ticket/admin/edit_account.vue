@@ -1,12 +1,23 @@
+Complete Add account v.1.0.0
+// Create By: puri senjanta 15-09-2566 Add Acount
 <template>
   <div>
     <CCard>
-      <CCardHeader>
-        <h2>Edit Account</h2>
-      </CCardHeader>
       <CCardBody>
-        <CForm novalidate :validated="form.validatedCustom01" @submit.prevent="handleSubmitCustom01">
-          <CRow class="mb-2">
+        <CForm novalidate :validated="form.validatedCustom01">
+          <CRow class="mb-3">
+            <CCol class="header1" xs="12" md="6" lg="4">
+              <h1 style="
+                  width: 399px;
+                  border-bottom: 5px solid transparent;
+                  border-image: linear-gradient(to right, #ea5252, #030303);
+                  border-image-slice: 1;
+                ">
+                Edit Account
+              </h1>
+            </CCol>
+          </CRow>
+          <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
               <div v-if="imageUrl">
                 <img :src="imageUrl" />
@@ -14,6 +25,7 @@
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
+
               <CFormInput name="upload_file" feedbackInvalid="Please input picture." v-model="form.act_picture"
                 :invalid="validate.act_picture" required type="file" @change="handleImageUpload" id="upload_file"
                 hidden />
@@ -21,7 +33,6 @@
                 <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
               </CCol>
             </CCol>
-
           </CRow>
 
           <CRow class="mb-2">
@@ -33,9 +44,10 @@
 
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="FnameTH" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
-              <CFormInput name="FnameTH" type="text" feedbackInvalid="Please input firstname(Thai)." id="FnameTH"
-                v-model="form.act_first_name_th" :invalid="validate.act_first_name_th" required />
+              <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+              <CFormInput type="text" name="act_first_name_th" id="act_first_name_th"
+                feedbackInvalid="Please input firstname(Thai)." v-model="form.act_first_name_th"
+                :invalid="validate.act_first_name_th" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
@@ -43,7 +55,7 @@
                 v-model="form.act_last_name_th" :invalid="validate.act_last_name_th" required />
             </CCol>
             <div>
-              <br>
+              <br />
             </div>
             <CCol xs="12" md="6" lg="4">
               <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
@@ -56,7 +68,9 @@
               <CFormInput type="text" id="LnameEng" name="LnameEng" feedbackInvalid="Please input lastname(English)."
                 v-model="form.act_last_name_eng" :invalid="validate.act_last_name_eng" required />
             </CCol>
-            <br>
+            <div>
+              <br />
+            </div>
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
               <CFormSelect v-model="form.act_role" :options="roleOptions" feedbackInvalid="Please select role."
@@ -77,22 +91,28 @@
                 v-model="form.act_username" :invalid="validate.act_username" required />
             </CCol>
             <div>
-              <br>
+              <br />
             </div>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="Password">Password</CFormLabel>
-              <CFormInput text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." type="password" id="password1"
-                v-model=form.act_password feedbackInvalid="Please input password." :invalid="validate.act_password"
-                autocomplete="current-password" placeholder="•••••••" required />
+              <CFormLabel for="inputPassword1" class="pamt1">Password
+              </CFormLabel>
+              <CFormInput feedbackInvalid="Please input password."
+                text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." type="password" id="password1"
+                v-model="form.act_password" :invalid="validate.act_password" autocomplete="current-password"
+                placeholder="•••••••" maxlength="6" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="Password">Confirm Password</CFormLabel>
+              <CFormLabel for="Password" class="pamt1">Confirm Password</CFormLabel>
               <CFormInput type="password" id="password2" v-model="form.Confirmpassword"
                 feedbackInvalid="Please confirm password." :invalid="validate.Confirmpassword"
-                autocomplete="current-password" placeholder="•••••••" required />
+                autocomplete="current-password" placeholder="•••••••" maxlength="6" required />
+              <div v-if="validate.Confirmpassword" class="text-danger">
+                Passwords do not match.
+              </div>
             </CCol>
+
             <div>
-              <br>
+              <br />
             </div>
             <CCol xs="12" md="6" lg="4">
               <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
@@ -115,8 +135,11 @@
               <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
               <CFormInput type="email" id="confirmEmail" name="confirmEmail" feedbackInvalid="Please input confirm email."
                 v-model="form.confirmEmail" :invalid="validate.confirmEmail" required />
+              <div v-if="validate.confirmEmail" class="text-danger">
+                Email do not match.
+              </div>
             </CCol>
-            <br>
+            <br />
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
               <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."
@@ -133,8 +156,8 @@
   </div>
 </template>
 <script>
-import { CFormLabel } from '@coreui/vue-pro';
-import axios from 'axios';
+import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
+import axios from 'axios'
 export default {
   components: { CFormLabel },
   data: () => {
@@ -152,27 +175,27 @@ export default {
         act_role: '',
         confirmEmail: '',
         Confirmpassword: '',
-        validatedCustom01: ''
+        validatedCustom01: false,
       },
 
       validate: {
-        act_username: null,
-        act_password: null,
-        act_number_phone: null,
-        act_email_address: null,
-        act_first_name_th: null,
-        act_first_name_eng: null,
-        act_last_name_th: null,
-        act_last_name_eng: null,
-        act_picture: null,
-        act_role: null,
-        confirmEmail: null,
-        Confirmpassword: null,
-        validatedCustom01: null,
+        // act_username:null,
+        // act_password: null,
+        // act_number_phone:null,
+        // act_email_address:null,
+        // act_first_name_th:null,
+        // act_first_name_eng:null,
+        // act_last_name_th:null,
+        // act_last_name_eng:null,
+        // act_picture:null,
+        // act_role:null,
+        // confirmEmail:null,
+        // Confirmpassword: null,
       },
-      imageUrl: "../../../assets/images/preProfile01.svg",
+      imageUrl: '../../../assets/images/preProfile01.svg',
       imageFile: null,
       pageLoading: false,
+      validatedCustom01: null,
     }
   },
   created() {
@@ -181,143 +204,147 @@ export default {
       { label: 'Employee', value: 'Employee' },
       { label: 'IT Support', value: 'IT Support' },
       { label: 'Admin', value: 'Admin' },
-      { label: 'Manager', value: 'Manager' }
-    ];
+      { label: 'Manager', value: 'Manager' },
+    ]
   },
-
   methods: {
+
     // Create By: Sirinya Sondilok xx-09-2566 Upload image to profile
     handleImageUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        this.imageUrl = URL.createObjectURL(file);
-        this.imageFile = file;
+        this.imageUrl = URL.createObjectURL(file)
+        this.imageFile = file
       }
     },
     deleteImage() {
-      this.imageUrl = "../../../assets/images/preProfile01.svg";
-      this.imageFile = "../../../assets/images/preProfile01.svg";
+      this.imageUrl = '../../../assets/images/preProfile01.svg'
+      this.imageFile = '../../../assets/images/preProfile01.png'
       // You can also send an API request to delete the image on the server here.
     },
-    handleSubmitCustom01(event) {
-      if (event.currentTarget.checkValidity()) {
-        event.preventDefault();
-      }
-      this.form.validatedCustom01 = true;
-    },
-    // Function เพื่อตรวจสอบรหัสผ่านว่าตรงกันหรือไม่
-    // checkPassword(form) {
-    //   password1 = form.password1.value;
-    //   password2 = form.password2.value;
-
-    //   // ถ้าช่่องรหัสผ่านไม่ถูกกรอก
-    //   if (password1 == '')
-    //     alert("Please enter Password");
-
-    //   // ถ้าช่่องยืนยันรหัสผ่านไม่ถูกกรอก
-    //   else if (password2 == '')
-    //     alert("Please enter confirm password");
-
-    //   //ถ้าทั้งสองช่องไม่ตรงกัน   ให้แจ้งผู้ใช้  และ  return false
-    //   else if (password1 != password2) {
-    //     alert("\nPassword did not match: Please try again...")
-    //     return false;
-    //   }
-
-    //   //ถ้าทั้งสองช่องตรงกัน  return true
-    //   else {
-
-    //     alert("Password Match: Welcome to Mindphp!")
-    //     return true;
-    //   }
-    // },
-
-
     validateBeforeSave() {
-      let error = false;
+      let error = false
+      if (!this.form.act_picture) {
+        error = true
+        this.validate.act_picture = false
+      }
       if (this.form.act_first_name_th === '') {
-        error = true;
-        this.validate.act_first_name_th = true;
+        error = true
+        this.validate.act_first_name_th = false
       }
       if (this.form.act_last_name_th === '') {
-        error = true;
-        this.validate.act_last_name_th = true;
+        error = true
+        this.validate.act_last_name_th = false
       }
       if (this.form.act_first_name_eng === '') {
-        error = true;
-        this.validate.act_first_name_eng = true;
+        error = true
+        this.validate.act_first_name_eng = false
       }
       if (this.form.act_last_name_eng === '') {
-        error = true;
-        this.validate.act_last_name_eng = true;
+        error = true
+        this.validate.act_last_name_eng = false
       }
       if (this.form.act_role === '') {
-        error = true;
-        this.validate.act_role = true;
+        error = true
+        this.validate.act_role = false
       }
       if (this.form.act_email_address === '') {
-        error = true;
-        this.validate.act_email_address = true;
+        error = true
+        this.validate.act_email_address = false
       }
-      if (this.confirmEmail === '') {
-        error = true;
-        this.validate.confirmEmail = true;
+      if (this.form.confirmEmail === '') {
+        error = true
+        this.validate.confirmEmail = false
+      }
+      if (
+        this.form.act_email_address !== this.form.confirmEmail &&
+        this.form.confirmEmail !== ''
+      ) {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
+      }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
       }
       if (this.form.act_number_phone === '') {
-        error = true;
-        this.validate.act_number_phone = true;
+        error = true
+        this.validate.act_number_phone = false
       }
       if (this.form.act_username === '') {
-        error = true;
-        this.validate.act_username = true;
+        error = true
+        this.validate.act_username = false
       }
       if (this.form.act_password === '') {
-        error = true;
-        this.validate.act_password = true;
+        error = true
+        this.validate.act_password = false
       }
-      if (this.Confirmpassword === '') {
-        error = true;
-        this.validate.Confirmpassword = true;
+      if (this.form.Confirmpassword === '') {
+        error = true
+        this.validate.Confirmpassword = false
       }
-      if (error) {
+      if (
+        this.form.act_password !== this.form.Confirmpassword &&
+        this.form.Confirmpassword !== ''
+      ) {
+        error = true
+        this.validate.Confirmpassword = true
+        this.form.Confirmpassword = ''
       }
-      else {
-        this.onSave();
+      if (this.form.act_password === this.form.Confirmpassword) {
+        error = true
+        this.validate.Confirmpassword = false
+      }
+      if (/^(?=.*[A-Za-z]{2})&&(?=.*\d{4})/.test(this.form.act_password)) {
+        error = true
+        this.validate.act_password = false
+      }
+
+      if (!error) {
+        this.onSave()
+      } else {
+        this.form.validatedCustom01 = true
       }
     },
     showPassword() {
-      var p1 = document.getElementById('password1');
-      var p2 = document.getElementById('password2');
+      var p1 = document.getElementById('password1')
+      var p2 = document.getElementById('password2')
       if (p1.type === 'password') {
-        p1.type = 'text';
-        p2.type = 'text';
+        p1.type = 'text'
+        p2.type = 'text'
       } else {
-        p1.type = 'password';
-        p2.type = 'password';
+        p1.type = 'password'
+        p2.type = 'password'
       }
     },
     async onSave() {
       // const date = new Date;
-      this.pageLoading = true;
-      setTimeout(function () {
-        this.pageLoading = false;
-      }.bind(this), 3000);
-      console.log(this.form);
+      this.pageLoading = true
+      setTimeout(
+        function () {
+          this.pageLoading = false
+        }.bind(this),
+        3000,
+      )
+      console.log(this.form)
 
       try {
-        await axios.post('http://localhost:3000/mongoose/insert/stts_accounts', { data: this.form })
+        await axios
+          .post('http://localhost:3000/mongoose/insert/stts_accounts', {
+            data: this.form,
+          })
           .then((result) => {
-
             this.$router.push('/support-ticket/user/dashboard')
-          }).catch((err) => {
+          })
+          .catch((err) => {
             console.log(error)
-          });
+          })
       } catch (error) {
         console.log(error)
       }
-
     },
-  }
+  },
 }
 </script>
 <style>
@@ -334,12 +361,11 @@ export default {
   width: 1160px;
   height: 1496px;
   flex-shrink: 0;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 5px;
 }
 
 .h2 {
-
   color: #303030;
   font-family: Inter;
   font-size: 36px;
@@ -356,7 +382,7 @@ export default {
   width: 357.501px;
   height: 2.223px;
   flex-shrink: 0;
-  background: #EA5252;
+  background: #ea5252;
 }
 
 .btn-Picture {
@@ -364,7 +390,7 @@ export default {
   height: 53px;
   background-color: transparent;
   /* Set the background color to transparent */
-  border: 2px solid #5E5ADB;
+  border: 2px solid #5e5adb;
   /* Add a border with a 2px width and color of your choice */
   padding: 10px 20px;
   /* Add padding to provide spacing inside the button */
@@ -382,11 +408,10 @@ export default {
   margin-top: 30px;
   text-align: center;
   /* margin-bottom: 30px; */
-
 }
 
 .btn-Picture:hover {
-  background-color: #5E5ADB;
+  background-color: #5e5adb;
   /* Change the background color on hover */
   color: #fff;
   /* Change text color on hover */
@@ -394,7 +419,7 @@ export default {
 
 .mb-2 {
   padding-left: 150px;
-  color: #5E5ADB;
+  color: #5e5adb;
   /* font-family:'Inter'; */
   font-size: 32px;
   font-style: normal;
@@ -417,7 +442,6 @@ export default {
   display: flex;
   justify-content: end;
   border-radius: 20px;
-
 }
 
 .btn-sec {
@@ -438,10 +462,19 @@ export default {
   border-radius: 50%;
   margin-top: 20px;
   margin-bottom: 30px;
-  border: 20px solid #F7F9FC;
+  border: 20px solid #f7f9fc;
   stroke-width: 20px;
-  stroke: #F7F9FC;
+  stroke: #f7f9fc;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
 
+.header1 {
+  color: #303030;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 </style>
+
