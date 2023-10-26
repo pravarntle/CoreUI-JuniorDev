@@ -6,7 +6,7 @@
 
     <CCard>
       <CCard>
-        <CChart
+        <!-- <CChart
           class="ItCharetDoughnut w-25 d-inline"
           type="doughnut"
           width="1000"
@@ -19,7 +19,7 @@
               },
             ],
           }"
-        />
+        /> -->
       </CCard>
     </CCard>
 
@@ -57,41 +57,54 @@
         :sorterValue="{ column: 'status', state: 'asc' }"
         pagination
       >
-        <template #show_details="{ item, index }">
-          <td class="py-2">
+      <template #status="{ item }">
+        <td>
+          
+          <CBadge :color="getBadge(item.status)"><li>{{ item.status }}</li></CBadge>
+          
+        </td>
+        </template>
+      <template #type="{ item }">
+        <td>
+          
+          <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
+          
+        </td>
+        </template>
+
+        <!-- <template #BOOKMARK="{ item, index }" >
+          <td class="text-center">
+            <CButton
+              variant="outline"
+              square
+              size="xl"
+              @click="toggleDetails(item, index)"
+            >
+            {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+            </CButton>
+          </td>
+        </template> -->
+        <template #MORE="{ item, index }" >
+          <td class="text-center">
             <CButton
               color="primary"
               variant="outline"
               square
-              size="sm"
-              @click="toggleDetails(item, index)"
+              size="xl"
+              @click="toggleButton(item, index)"
             >
-              {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
+            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
             </CButton>
           </td>
-        <!-- เปลี่ยนสีตามสถานะ -->
         </template>
-        <template #status="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.status)"><li>{{ item.status }}</li></CBadge>
-          </td>
-        </template>
-
-        <template #type="{ item }">
-          <td>
-            <CBadge class="bg-light text-black" >{{ item.type }}</CBadge>
-          </td>
-        </template>
-
-        <template #details="{ item }">
-          <CCollapse :visible="this.details.includes(item._id)">
+        <template #details="{ item , index }">
+          <CCollapse :visible="Boolean(item.MORE)">
             <CCardBody>
               <h4>
-                {{ item.username }}
+                {{ item.tkt_title }}
               </h4>
-              <p class="text-muted">User since: {{ item.registered }}</p>
-              <CButton size="sm" color="info" class=""> User Settings </CButton>
-              <CButton size="sm" color="danger" class="ml-1"> Delete </CButton>
+              <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
+              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
             </CCardBody>
           </CCollapse>
         </template>
@@ -102,32 +115,23 @@
 
 
 <script>
+import { ref } from 'vue'
 import { CCol, CRow } from '@coreui/vue-pro'
 import count_ticket from '@/components/count_ticket.vue'
 import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
+import axios from 'axios';
 import * as icon from '@coreui/icons'
+
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon },
   setup() {
-    return {
-      icon,
-    }
-  },
-  data() {
-    return {
-      columns: [
-        {
-          key: 'option',
-          label: '',
-          filter: false,
-          sorter: false,
-          _style: { width: '10%' },
-        },
+      const columns = [
         {
           key: 'number',
           label: '#',
           _style: { width: '10%' },
+          
         },
         {
           key: 'ticket_id',
@@ -141,7 +145,7 @@ export default {
         },
         {
           key: 'start_date',
-          label: 'START DATE',
+          label: 'START DATE(D/M/Y)',
           _style: { width: '15%' },
         },
         {
@@ -154,79 +158,134 @@ export default {
           label: 'TYPE',
           _style: { width: '10%' },
         },
-        {
-          key: 'book_mark',
-          label: 'BOOK MARK',
-          _style: { width: '10%' },
-          filter: false,
+        // {
+        //   key: 'book_mark',
+        //   label: 'BOOKMARK',
+        //   _style: { width: '10%' },
+        //   filter: false,
+        //   sorter: false,
+        // },
+        { key: 'MORE',
+        _style: { width: '5%' },
+        filter: false,
           sorter: false,
         },
-      ],
-      details: [],
-      items: [
-        {
-          option: '',
-          number: 1,
-          ticket_id: 'TK001',
-          owner: 'Samppa Nori',
-          start_date: '25 Mar 2021',
-          status: 'High',
-          type: 'Service Request',
-          book_mark: '',
-        },
-        {
-          option: '',
-          number: 2,
-          ticket_id: 'TK002',
-          owner: 'Estavan Lykos',
-          start_date: '21 Mar 2021',
-          status: 'High',
-          type: 'Service Request',
-          book_mark: '',
-        },
-        {
-          option: '',
-          number: 3,
-          ticket_id: 'TK003',
-          owner: 'Chetan Mohamed',
-          start_date: '17 Mar 2021',
-          status: 'Normal',
-          type: 'Hardware',
-          book_mark: '',
-          _selected: true,
-        },
-        {
-          option: '',
-          number: 4,
-          ticket_id: 'TK004',
-          owner: 'Derick Maximinus',
-          start_date: '16 Mar 2021',
-          status: 'Low',
-          type: 'Software',
-          book_mark: '',
-        },
-      ],
+          ];
+          const items = ref([]);
+          const getBadge = (tkt_status) => {
+          switch (tkt_status) {
+            case 'Pending':
+              return 'warning';
+            case 'Open':
+              return 'primary';
+            case 'Closed':
+              return 'danger';
+            default:
+              return 'secondary'; // Return a default color if none of the cases match.
+          }
+          };
+  
+          const toggleDetails =  async(item) => {
+
+          item.BOOKMARK = !item.BOOKMARK;
+          console.log(item.BOOKMARK)
+          console.log(item)
+          try {
+            const itemId = item._id.toString(); 
+            // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+            await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+              data:{
+                  tkt_book: item.BOOKMARK,
+                  
+               }
+            });
+
+            // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+            console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+          } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+          }
+          };
+          return {
+              columns,
+              items,
+              getBadge,
+              toggleDetails,
+              icon
+          };
+      },
+  data() {
+    return {
+
     }
   },
-  methods: {
-    getBadge(status) {
-      switch (status) {
-        case 'Low':
-          return 'success'
-        case 'Normal':
-          return 'warning'
-        case 'High':
-          return 'danger'
+  methods:{
+        async contactIt(item){
+          const itemId = item._id.toString(); 
+
+          this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+          console.log('Item ID:', itemId);
+        },
+        async buttonCancel(item) {
+
+          try {
+            const itemId = item._id.toString(); 
+            // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+            await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+              data:{
+                  tkt_status: "Cancel"
+
+              }
+            });
+
+            // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+            console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+            // รีเฟรชหน้า
+            window.location.reload();
+            
+          } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+          }
+        },
+        async toggleButton(item) {
+          item.MORE = !item.MORE;
+        },
+        async getTicket(){
+          try {
+
+            const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+              where: {
+                tkt_status: 'Pending'
+              },
+              "populate":"tkt_act"
+              
+              
+            });
+            console.log(response.data);
+            // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+            this.items = response.data.map((element, index) => ({
+              number: index + 1, // หมายเลขแถว
+              _id:element._id,
+              ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
+              owner: `${element.tkt_act.act_first_name_eng} ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+              // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+              // ตามลำดับของ columns ในตัวแปร columns
+              // เพิ่มเติมตามความต้องการ
+              start_date: element.tkt_time,
+              status:element.tkt_status  ,
+              type: element.tkt_types,
+              _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+            }));
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+
+        },     
+        
+      },
+      mounted(){
+      //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
+      this.getTicket();
       }
-    },
-    toggleDetails(item) {
-      if (this.details.includes(item._id)) {
-        this.details = this.details.filter((_item) => _item !== item._id)
-        return
-      }
-      this.details.push(item._id)
-    },
-    
-  },
 }
 </script>

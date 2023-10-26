@@ -299,6 +299,7 @@
 import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
 import axios from 'axios'
 import user_man from '../../../assets/images/preProfile.png'
+import bcrypt from 'bcryptjs';
 export default {
   components: { CFormLabel },
   data: () => {
@@ -450,7 +451,7 @@ export default {
       if (!error) {
       } else {
         this.form.validatedCustom01 = true
-        this.onSave()
+        this.encryptPasswordBeforeSave();
       }
     },
     showPassword() {
@@ -464,8 +465,23 @@ export default {
         p2.type = 'password'
       }
     },
+    encryptPasswordBeforeSave() {
+      
+      const password = this.form.act_password;
+      const saltRounds = 10;
+
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) {
+          console.error(err);
+          // จัดการข้อผิดพลาดที่เกิดขึ้น
+        } else {
+          this.form.act_password = hash; // กำหนดรหัสผ่านเข้าไปใน form ใหม่
+          this.onSave(); // เรียกฟังก์ชัน onSave เพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์
+        }
+      });
+    },
     async onSave() {
-      // const date = new Date;
+
       this.form.act_picture = this.form.act_picture || null;
 
 

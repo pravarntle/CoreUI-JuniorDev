@@ -98,7 +98,7 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`" 
+                <CAvatar v-if="acountIdFile" class="Icon_user_man avatar-round" :src="`data:${acountIdFile};base64,${acountIdImage}`" 
                   style="padding: -4px" />
                 <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
@@ -119,7 +119,7 @@
               <CButton  @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" accept=".txt, .pdf, .docx ,.xlsx" />
+              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" id="fileInput" accept=".txt, .pdf, .docx ,.xlsx" />
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
@@ -142,7 +142,7 @@
               <div class="col-1">
                 <div class="avatar">
                   <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
-                    :src="require(`@/assets/images/${item.cmt_act.act_picture}`)" style="padding: -4px" />
+                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`" style="padding: -4px" />
                   <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
                 </div>
               </div>
@@ -265,6 +265,8 @@ export default {
       avatar:'',
       acountFile:'',
       acountImage:'',
+      acountIdFile:'',
+      acountIdImage:'',
       firstname:'',
       email:'',
       date:'',
@@ -311,34 +313,6 @@ export default {
       this.characterCount = this.comment.length;
     },
 
-
-
-    //------- AOM -------
-    // async attachImage() {
-    //   const imageInput = this.$refs.fileInput
-    //   imageInput.click()
-
-
-    //   imageInput.addEventListener('change', (event) => {
-    //     const file = event.target.files[0] 
-    //     console.log(file)
-    //     if (file) {
-    //       this.imageName = file.name
-
-    //       // อ่านรูปภาพเป็น Data URL
-    //       const reader = new FileReader()
-    //       reader.onload = (e) => {
-    //         this.imageDataURL = e.target.result
-    //       }
-    //       reader.readAsDataURL(file)
-
-    //       console.log('รูปถูกแนบเรียบร้อย')
-    //     } else {
-    //       this.imageName = ''
-    //       console.error('เกิดข้อผิดพลาดในการแนบรูป')
-    //     }
-    //   })
-    // },
     async attachImage() {
       const imageInput = this.$refs.pictureInput
       this.$refs.pictureInput.click()
@@ -447,20 +421,30 @@ export default {
 
         const ticketId = this.ticketId;
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, { populate: [,"tkt_picture"] });
-
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, 
+        { populate: [
+              {
+                  "path":"tkt_act",
+                  "populate":"act_picture"
+              }
+              ,"tkt_picture"
+          ] 
+        });
         this.type = response.data.tkt_types;
         this.description = response.data.tkt_description;
         this.title = response.data.tkt_title;
         this.priorities = response.data.tkt_priorities;
         this.picture = response.data.tkt_picture;
         this.date = response.data.tkt_time;
-        this.avatar = response.data.tkt_act;
+        this.acountFile=response.data.tkt_act.act_picture.filetype
+        this.acountImage=response.data.tkt_act.act_picture.image
+        this.email = response.data.tkt_act.act_email_address;
+        this.firstname = response.data.tkt_act.act_first_name_eng;
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-        this.getAcount();
+        // this.getAcount();
 
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -469,17 +453,13 @@ export default {
     async getAcount() {
       try {
 
-        const acountId = this.avatar;
-        console.log(acountId);
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id // ดึงค่า id จาก userData
+        console.log(userId);
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${acountId}`, { populate: ["act_picture"] });
-        console.log(response.data);
-        this.acountFile=response.data.act_picture.filetype
-        this.acountImage=response.data.act_picture.image
-        this.email = response.data.act_email_address;
-        this.firstname = response.data.act_first_name_eng;
-        
-
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
+        this.acountIdFile=response.data.act_picture.filetype
+        this.acountIdImage=response.data.act_picture.image
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
         } catch (error) {
@@ -498,6 +478,8 @@ export default {
         })
         this.form.cmt_picture = dataResponse.data._id
         this.form.cmt_file = null
+        document.getElementById('imageInput').value = ''
+        
 
       },
     async onFileUpload(event) {
@@ -512,15 +494,9 @@ export default {
         })
         this.form.cmt_file = dataResponse.data._id
         this.form.cmt_picture = null
+        document.getElementById('fileInput').value = ''
       },
-      
-      // onImageUpload(event) {
-      //   this.uploadImage = event.target.files[0]
-      // },
-      // async onUpload() {
-        
-        
-      // },
+
       async onSave() {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
@@ -529,8 +505,6 @@ export default {
         const userId = userData.id.toString(); // ดึงค่า id จาก userData
         
         const date = dayjs()
-        console.log(this.cmt_file)
-        console.log(this.cmt_picture)
 
 
         this.form.cmt_file = this.form.cmt_file || null;
@@ -579,7 +553,13 @@ export default {
               where: {
                 cmt_tkt: ticketId,
               },
-              populate:[ "cmt_picture","cmt_file"]
+              populate:[
+              {
+                  "path":"cmt_act",
+                  "populate":"act_picture"
+              },
+              "cmt_picture","cmt_file"
+              ]
                 
               
             });
@@ -631,6 +611,7 @@ export default {
     this.ticketId = itemId;
     this.getTicket();
     this.getComment(); 
+    this.getAcount(); 
 
   },
 }

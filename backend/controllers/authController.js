@@ -11,74 +11,56 @@ const models = require("require-all")({
 
 const ObjectId = require("mongoose").Types.ObjectId;
 
+
+const bcrypt = require('bcryptjs');
+
 module.exports = {
-    login: async (req, res) => {
-        const username = req.body.username
-        const password = req.body.password
+  login: async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
-        try {
-            const model = models['stts_accounts'];
+    try {
+      const model = models['stts_accounts'];
 
-            if (!model) {
-                throw model;
-            }
+      if (!model) {
+        throw model;
+      }
 
-            let request = model.find({ act_username: username }, req.body.fields ? req.body.fields : "")
-            request = request.populate('act_role')
+      // ค้นหาผู้ใช้ด้วยชื่อผู้ใช้
+      const user = await model.findOne({ act_username: username }).populate('act_role').exec();
 
-            // if (req.body.populate) {
-            //     const populateList = Array.isArray(req.body.populate) ? req.body.populate : req.body.populate.split(",")
-            //     for await (const item of populateList) {
-            //         request = request.populate(item)
-            //     }
-            // }
+      if (!user) {
+        return res.status(401).json({ message: 'ไม่พบผู้ใช้' });
+      }
 
-            // sort
-            if (req.body.orderBy) {
-                request = request.sort(req.body.orderBy)
-            }
+      // ตรวจสอบรหัสผ่าน
+      const isPasswordValid = await bcrypt.compareSync(password, user.act_password);
 
-            const data = await request.lean().exec()
-            if (data[0].act_password === password) {
-                console.log('OK')
-                const user = {
-                    id: data[0]._id,
-                    USERNAME: data[0].act_username,
-                    FIRST_NAME: data[0].act_first_name_th,
-                    LAST_NAME: data[0].act_last_name_th,
-                    EMAIL: data[0].act_email_address,
-                    role: data[0].act_role.rol_name,
-                }
-                console.log(user)
-                const token = jwt.sign(user, 'IVSOFT', { expiresIn: '3600s' });
-                user.token = token
-                res.status(200).send({
-                    statusText: 'Login Success',
-                    user
-                })
-            } else {
-                res.send('authentication failed')
-            }
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'รหัสผ่านไม่ถูกต้อง' });
+        
+      }
 
-        } catch (error) {
-            console.log("Error At mongoose-find: ", error);
-            res.send('error')
-            // next(error);
-        }
+      // รหัสผ่านถูกต้อง, สร้าง JWT token
+      const userPayload = {
+        id: user._id,
+        USERNAME: user.act_username,
+        FIRST_NAME: user.act_first_name_th,
+        LAST_NAME: user.act_last_name_th,
+        EMAIL: user.act_email_address,
+        role: user.act_role.rol_name,
+      };
 
-        // const user = {
-        //     FIRST_NAME: 'Tatat',
-        //     LAST_NAME: 'Thanakanok',
-        //     EMAIL: 'tatat@osdev.co.th'
-        // }
-        // const token = jwt.sign(user, 'IVSOFT', { expiresIn: '3600s' });
-    
-        // res.status(200).send({
-        //     statusText: 'Login Success',
-        //     data: {
-        //         token: token,
-        //         role: 'ADMIN'
-        //     }
-        // })
+      const token = jwt.sign(userPayload, 'IVSOFT', { expiresIn: '3600s' });
+      userPayload.token = token;
+
+      res.status(200).json({
+        statusText: 'Login Success',
+        user: userPayload,
+      });
+    } catch (error) {
+      console.log('Error At mongoose-find:', error);
+      res.status(500).json({ message: 'เกิดข้อผิดพลาด' });
     }
-}
+  }
+};

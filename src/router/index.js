@@ -416,6 +416,16 @@ const routes = [
             name: 'ST - it_my_task',
             component: () => import('@/views/support-ticket/it/it_my_task.vue'),
           },
+          {
+            path: 'it/it_my_ticket',
+            name: 'ST - it/it_my_ticket',
+            component: () => import('@/views/support-ticket/it/it_my_ticket.vue'),
+          },
+          {
+            path: 'it/it_task_book',
+            name: 'ST - it/it_task_book',
+            component: () => import('@/views/support-ticket/it/it_task_book.vue'),
+          },
         ],
       },
     ],

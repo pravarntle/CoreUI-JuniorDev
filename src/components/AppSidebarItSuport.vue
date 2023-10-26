@@ -16,7 +16,7 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <CNavItem
+      <!-- <CNavItem
         href="/#/support-ticket/ticket/create"
         style="
           background-color: #ea5252;
@@ -37,8 +37,9 @@
         <font style="padding-left: 9px; color: whitesmoke"
           ><b>New Ticket</b></font
         >
-      </CNavItem>
+      </CNavItem> -->
       <!-- <li class="nav-title" style="color:black">Menu</li> -->
+      <ShareMenu/>
       <CNavItem
         href="/#/support-ticket/it/it_dashboard"
         class="custom-nav-item"
@@ -53,7 +54,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
+      <CNavItem href="/#/support-ticket/it/it_my_ticket" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -64,7 +65,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
+      <CNavItem href="/#/support-ticket/it/it_my_task" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -108,7 +109,7 @@
           class="dropdown-content"
         >
           <CNavItem
-            href="/#/support-ticket/ticket/book1"
+            href="/#/support-ticket/it/it_book_mark"
             style="padding-left: 52px"
             class="custom-nav-item"
           >
@@ -126,7 +127,7 @@
           />
 
           <CNavItem
-            href="/#/support-ticket/ticket/book2"
+            href="/#/support-ticket/it/it_task_book"
             style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
             class="custom-nav-item"
           >
@@ -171,6 +172,7 @@ import IconnewTicket from '@/assets/images/Icon_addTicket.png'
 import Iconbookmark from '@/assets/images/Icon_bookmark.png'
 import IconmyTicket from '@/assets/images/Icon_myticket.png'
 import Icondropdown from '@/assets/images/Icon_dropdown.png'
+import ShareMenu from './ShareMenu.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
@@ -183,6 +185,7 @@ export default {
   components: {
     AppSidebarNav,
     CImage,
+    ShareMenu
   },
   data() {
     return {
