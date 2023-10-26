@@ -142,7 +142,7 @@
       />
 
       <CNavItem
-        href="/#/support-ticket/user/dashboard"
+        href="/#/support-ticket/my_ticket"
         style="position: relative"
         class="custom-nav-item"
       >
@@ -159,7 +159,7 @@
       />
 
       <CNavItem
-        href="/#/support-ticket/ticket/book"
+        href="/#/support-ticket/book_mark"
         style="position: relative"
         class="custom-nav-item"
       >

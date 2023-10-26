@@ -543,6 +543,12 @@ export default {
         this.link = ''
         this.form.cmt_file = null;
         this.form.cmt_picture = null;
+
+
+        this.$socket.sendObj({
+        type: 'new-comment',
+        comment: this.form,
+        });
         
         
         // window.location.reload();
@@ -614,6 +620,7 @@ export default {
     this.getAcount(); 
 
   },
+
 }
 </script>
 

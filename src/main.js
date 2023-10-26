@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 
 
-
 import CoreuiVue from '@coreui/vue-pro'
 import CIcon from '@coreui/icons-vue'
 import { iconsSet as icons } from '@/assets/icons'
@@ -22,3 +21,5 @@ app.component('DocsCallout', DocsCallout)
 app.component('DocsExample', DocsExample)
 
 app.mount('#app')
+
+

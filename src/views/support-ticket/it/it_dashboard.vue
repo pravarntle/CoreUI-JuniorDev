@@ -37,78 +37,81 @@
       >
         <CIcon :icon="icon.cilInbox" size="xxl" />Inbox
       </h1>
-
-      <CSmartTable
-        clickableRows
-        :tableProps="{
-          striped: true,
-          hover: true,
-        }"
-        :activePage="2"
-        header
-        :items="items"
-        :columns="columns"
-        columnFilter
-        tableFilter
-        cleaner
-        itemsPerPageSelect
-        :itemsPerPage="5"
-        columnSorter
-        :sorterValue="{ column: 'status', state: 'asc' }"
-        pagination
-      >
-      <template #status="{ item }">
-        <td>
-          
-          <CBadge :color="getBadge(item.status)"><li>{{ item.status }}</li></CBadge>
-          
-        </td>
-        </template>
-      <template #type="{ item }">
-        <td>
-          
-          <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
-          
-        </td>
-        </template>
-
-        <!-- <template #BOOKMARK="{ item, index }" >
-          <td class="text-center">
-            <CButton
-              variant="outline"
-              square
-              size="xl"
-              @click="toggleDetails(item, index)"
-            >
-            {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
-            </CButton>
+      <div class="table-responsive table-borderless">
+          <CSmartTable
+          clickableRows
+          :tableProps="{
+            striped: true,
+            hover: true,
+          }"
+          :activePage="2"
+          header
+          :items="items"
+          :columns="columns"
+          columnFilter
+          tableFilter
+          cleaner
+          itemsPerPageSelect
+          items-per-page-select
+          :itemsPerPage="5"
+          columnSorter
+          :sorterValue="{ column: 'status', state: 'asc' }"
+          pagination
+        >
+        <template #status="{ item }">
+          <td>
+            
+            <CBadge :color="getBadge(item.status)"><li>{{ item.status }}</li></CBadge>
+            
           </td>
-        </template> -->
-        <template #MORE="{ item, index }" >
-          <td class="text-center">
-            <CButton
-              color="primary"
-              variant="outline"
-              square
-              size="xl"
-              @click="toggleButton(item, index)"
-            >
-            {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-            </CButton>
+          </template>
+        <template #type="{ item }">
+          <td>
+            
+            <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
+            
           </td>
-        </template>
-        <template #details="{ item , index }">
-          <CCollapse :visible="Boolean(item.MORE)">
-            <CCardBody>
-              <h4>
-                {{ item.tkt_title }}
-              </h4>
-              <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
-              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
-            </CCardBody>
-          </CCollapse>
-        </template>
-      </CSmartTable>
+          </template>
+
+          <!-- <template #BOOKMARK="{ item, index }" >
+            <td class="text-center">
+              <CButton
+                variant="outline"
+                square
+                size="xl"
+                @click="toggleDetails(item, index)"
+              >
+              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+              </CButton>
+            </td>
+          </template> -->
+          <template #MORE="{ item, index }" >
+            <td class="text-center">
+              <CButton
+                color="primary"
+                variant="outline"
+                square
+                size="xl"
+                @click="toggleButton(item, index)"
+              >
+              {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+              </CButton>
+            </td>
+          </template>
+          <template #details="{ item , index }">
+            <CCollapse :visible="Boolean(item.MORE)">
+              <CCardBody>
+                <h4>
+                  {{ item.tkt_title }}
+                </h4>
+                <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
+                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
+              </CCardBody>
+            </CCollapse>
+          </template>
+        </CSmartTable>
+      </div>
+      
     </CCard>
   </div>
 </template>
