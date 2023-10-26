@@ -48,6 +48,13 @@
           
         </td>
       </template>
+      <template #TYPE="{ item }">
+        <td>
+          
+          <CBadge :color="getBadge(item.TYPE)">{{ item.TYPE }}</CBadge>
+          
+        </td>
+        </template>
 
         <template #BOOKMARK="{ item, index }" >
           <td class="text-center">
@@ -160,7 +167,7 @@ name: 'my_ticket',
             case 'Closed':
               return 'danger';
             default:
-              return 'warning'; // Return a default color if none of the cases match.
+              return 'secondary'; // Return a default color if none of the cases match.
           }
         };
         

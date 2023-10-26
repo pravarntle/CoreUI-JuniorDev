@@ -37,6 +37,13 @@
           
         </td>
         </template>
+        <template #TYPE="{ item }">
+        <td>
+          
+          <CBadge :color="getBadge(item.TYPE)">{{ item.TYPE }}</CBadge>
+          
+        </td>
+        </template>
 
         <template #BOOKMARK="{ item, index }" >
           <td class="text-center">
@@ -163,19 +170,17 @@
           ];
           const items = ref([]);
           const getBadge = (tkt_status) => {
-            switch (tkt_status) {
-              case 'Pending':
-                return 'success';
-              case 'Open':
-                return 'secondary';
-              case 'Closed':
-                return 'warning';
-              case 'Banned':
-                return 'danger';
-              default:
-                return 'primary'; // Return a default color if none of the cases match.
-            }
-          };
+          switch (tkt_status) {
+            case 'Pending':
+              return 'warning';
+            case 'Open':
+              return 'primary';
+            case 'Closed':
+              return 'danger';
+            default:
+              return 'secondary'; // Return a default color if none of the cases match.
+          }
+        };
   
           const toggleDetails =  async(item) => {
 
@@ -191,7 +196,7 @@
                   
                }
             });
-
+            window.location.reload();
             // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
             console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
           } catch (error) {
@@ -208,72 +213,73 @@
       components: { CRow, CCol },
       methods:{
         async contactIt(item){
-        const itemId = item._id.toString(); 
+          const itemId = item._id.toString(); 
 
-        this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
-        console.log('Item ID:', itemId);
-      },
-      async buttonCancel(item) {
-
-      try {
-        const itemId = item._id.toString(); 
-        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
-          data:{
-              tkt_status: "Cancel"
-
-          }
-        });
-
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-        // รีเฟรชหน้า
-        window.location.reload();
-        
-      } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
-      }
-      },
-      async toggleButton(item) {
-        item.MORE = !item.MORE;
+          this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+          console.log('Item ID:', itemId);
         },
-      async getTicket(){
-        try {
-          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-          const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        async buttonCancel(item) {
 
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
-            where: {
-              tkt_act: userId,
-              tkt_book:"true",
-              tkt_status: { $ne: 'Cancel' }
+          try {
+            const itemId = item._id.toString(); 
+            // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+            await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+              data:{
+                  tkt_status: "Cancel"
 
-            },
-          });
-          console.log(response.data);
-          console.log(userId)
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-          this.items = response.data.map((element, index) => ({
-            '#': index + 1, // หมายเลขแถว
-            _id:element._id,
-            TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
-            TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
-            // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
-            // ตามลำดับของ columns ในตัวแปร columns
-            // เพิ่มเติมตามความต้องการ
-            'START DATE(D/M/Y)': element.tkt_time,
-            STATUS:element.tkt_status  ,
-            TYPE: element.tkt_types,
-            BOOKMARK: element.tkt_book,
-            _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
-          }));
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+              }
+            });
 
-      },     
+            // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+            console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+            // รีเฟรชหน้า
+            window.location.reload();
+            
+          } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+          }
+        },
+        async toggleButton(item) {
+          item.MORE = !item.MORE;
+          
+        },
+        async getTicket(){
+          try {
+            const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+            const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+            const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+              where: {
+                tkt_act: userId,
+                tkt_book:"true",
+                tkt_status: { $ne: 'Cancel' }
+
+              },
+            });
+            console.log(response.data);
+            console.log(userId)
+            // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+            this.items = response.data.map((element, index) => ({
+              '#': index + 1, // หมายเลขแถว
+              _id:element._id,
+              TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
+              TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
+              // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+              // ตามลำดับของ columns ในตัวแปร columns
+              // เพิ่มเติมตามความต้องการ
+              'START DATE(D/M/Y)': element.tkt_time,
+              STATUS:element.tkt_status  ,
+              TYPE: element.tkt_types,
+              BOOKMARK: element.tkt_book,
+              _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+            }));
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+
+        },     
         
-    },
+      },
     mounted(){
       //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
       this.getTicket();

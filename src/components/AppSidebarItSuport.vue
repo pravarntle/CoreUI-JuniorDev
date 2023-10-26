@@ -54,7 +54,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
+      <CNavItem href="/#/support-ticket/it/it_my_ticket" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -65,7 +65,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
+      <CNavItem href="/#/support-ticket/it/it_my_task" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -109,7 +109,7 @@
           class="dropdown-content"
         >
           <CNavItem
-            href="/#/support-ticket/ticket/book1"
+            href="/#/support-ticket/it/it_book_mark"
             style="padding-left: 52px"
             class="custom-nav-item"
           >
@@ -127,7 +127,7 @@
           />
 
           <CNavItem
-            href="/#/support-ticket/ticket/book2"
+            href="/#/support-ticket/it/it_task_book"
             style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
             class="custom-nav-item"
           >
