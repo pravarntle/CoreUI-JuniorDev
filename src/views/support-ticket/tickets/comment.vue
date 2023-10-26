@@ -119,7 +119,7 @@
               <CButton  @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" accept=".txt, .pdf, .docx ,.xlsx" />
+              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" id="fileInput" accept=".txt, .pdf, .docx ,.xlsx" />
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
@@ -142,7 +142,7 @@
               <div class="col-1">
                 <div class="avatar">
                   <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
-                    :src="require(`@/assets/images/${item.cmt_act.act_picture}`)" style="padding: -4px" />
+                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`" style="padding: -4px" />
                   <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
                 </div>
               </div>
@@ -498,6 +498,8 @@ export default {
         })
         this.form.cmt_picture = dataResponse.data._id
         this.form.cmt_file = null
+        document.getElementById('imageInput').value = ''
+        
 
       },
     async onFileUpload(event) {
@@ -512,6 +514,7 @@ export default {
         })
         this.form.cmt_file = dataResponse.data._id
         this.form.cmt_picture = null
+        document.getElementById('fileInput').value = ''
       },
       
       // onImageUpload(event) {
@@ -579,7 +582,13 @@ export default {
               where: {
                 cmt_tkt: ticketId,
               },
-              populate:[ "cmt_picture","cmt_file"]
+              populate:[
+              {
+                  "path":"cmt_act",
+                  "populate":"act_picture"
+              },
+              "cmt_picture","cmt_file"
+              ]
                 
               
             });

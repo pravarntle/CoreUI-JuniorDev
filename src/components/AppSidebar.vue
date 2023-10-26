@@ -16,7 +16,8 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <CNavItem
+      <ShareMenu/>
+      <!-- <CNavItem
         href="/#/support-ticket/ticket/create"
         style="
           background-color: #ea5252;
@@ -37,7 +38,7 @@
         <font style="padding-left: 9px; color: whitesmoke"
           ><b>New Ticket</b></font
         >
-      </CNavItem>
+      </CNavItem> -->
       <!-- <li class="nav-title" style="color:black">Menu</li> -->
       <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
         <CImage
@@ -90,11 +91,13 @@ import logo from '@/assets/images/logo.png'
 import { logoNegative } from '@/assets/brand/logo-negative'
 import { sygnet } from '@/assets/brand/sygnet'
 import { CImage } from '@coreui/vue-pro'
+import ShareMenu from './ShareMenu.vue'
 export default {
   name: 'AppSidebar',
   components: {
     AppSidebarNav,
     CImage,
+    ShareMenu
   },
   data() {
     return {

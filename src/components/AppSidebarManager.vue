@@ -16,7 +16,7 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <CNavItem
+      <!-- <CNavItem
         href="/#/support-ticket/ticket/create"
         style="
           background-color: #ea5252;
@@ -36,7 +36,8 @@
         <font style="padding-left: 9px; color: whitesmoke"
           ><b>New Ticket</b></font
         >
-      </CNavItem>
+      </CNavItem> -->
+      <ShareMenu/>
 
       <CNavItem href="/#/support-ticket/it/it_dashboard" class="custom-nav-item">
         <CImage
@@ -106,6 +107,7 @@ import IconmyTicket from '@/assets/images/Icon_myticket.png'
 import Icondropdown from '@/assets/images/Icon_dropdown.png'
 import IconmanageAccount from '@/assets/images/Icon_manageAccount.png'
 import IconmanagePriority from '@/assets/images/Icon_managePriority.png'
+import ShareMenu from './ShareMenu.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
@@ -118,6 +120,7 @@ export default {
   components: {
     AppSidebarNav,
     CImage,
+    ShareMenu
   },
   data() {
     return {
