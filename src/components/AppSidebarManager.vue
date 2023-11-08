@@ -107,7 +107,7 @@ import IconmyTicket from '@/assets/images/Icon_myticket.png'
 import Icondropdown from '@/assets/images/Icon_dropdown.png'
 import IconmanageAccount from '@/assets/images/Icon_manageAccount.png'
 import IconmanagePriority from '@/assets/images/Icon_managePriority.png'
-import ShareMenu from './ShareMenu.vue'
+import MenuNewticket from './MenuNewticket.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarNav } from './AppSidebarNav'
@@ -120,7 +120,7 @@ export default {
   components: {
     AppSidebarNav,
     CImage,
-    ShareMenu
+    MenuNewticket,
   },
   data() {
     return {

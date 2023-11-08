@@ -1,6 +1,10 @@
 <template>
   <CSidebar
     position="fixed"
+    top="0"
+    left="0"
+    height="100vh"
+    overflow-y="auto"
     :unfoldable="sidebarUnfoldable"
     :visible="sidebarVisible"
     @visible-change="
@@ -16,30 +20,7 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <ShareMenu/>
-      <!-- <CNavItem
-        href="/#/support-ticket/ticket/create"
-        style="
-          background-color: #ea5252;
-          border-radius: 20px;
-          margin-top: 15px;
-          margin-bottom: 10px;
-          width: 200px;
-          margin-left: 10px;
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        "
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconnewTicket"
-          style="max-height: 20px; margin-left: 5px; margin-right: 5px"
-        />
-
-        <font style="padding-left: 9px; color: whitesmoke"
-          ><b>New Ticket</b></font
-        >
-      </CNavItem> -->
-      <!-- <li class="nav-title" style="color:black">Menu</li> -->
+      <MenuNewticket/>
       <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
@@ -91,13 +72,13 @@ import logo from '@/assets/images/logo.png'
 import { logoNegative } from '@/assets/brand/logo-negative'
 import { sygnet } from '@/assets/brand/sygnet'
 import { CImage } from '@coreui/vue-pro'
-import ShareMenu from './ShareMenu.vue'
+import MenuNewticket from './MenuNewticket.vue'
 export default {
   name: 'AppSidebar',
   components: {
     AppSidebarNav,
     CImage,
-    ShareMenu
+    MenuNewticket,
   },
   data() {
     return {
@@ -143,6 +124,7 @@ export default {
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
         // ซ่อน sidebar 
+        this.$store.commit('updateSidebarVisible', { value: false })
       }
     },
   },
@@ -151,12 +133,18 @@ export default {
 <style scoped>
 /* ให้ CSidebar มีความกว้าง 300px ในหน้าจอทั่วไป */
 .c-sidebar {
-  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: rgba(230, 230, 230, 1) !important;
 }
 
 @media (max-width: 768px) {
   .c-sidebar {
-    width: 150px;
+    width: 100%;
+    background-color: rgba(230, 230, 230, 1) !important;
   }
 }
 
