@@ -9,13 +9,12 @@
 
           <CRow class="mb-2" >
             <CCol class="image-container" xs="3">
-              <div  v-if="imageUrl">
-              <img :src="imageUrl"/>
-              </div>
+              <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
+                <img v-else :src="user_man" />
             </CCol>
             <CCol xs="3">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
-              <CFormInput type="file" @change="handleImageUpload" id="upload_file" hidden />
+              <CFormInput type="file" @change="onFileUpload" id="upload_file" hidden />
               <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
             </CCol>
           </CRow>
@@ -28,27 +27,27 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="FnameTH" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+                  <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
                   <CFormInput
-                  name="FnameTH"
+                  name="act_first_name_th"
                   type="text"
                   feedbackInvalid="Please input firstname(Thai)."
                   id="FnameTH"
-                  v-model="form.FnameTH"
-                  :invalid="validate.FnameTH"
+                  v-model="form.act_first_name_th"
+                  :invalid="validate.act_first_name_th"
                     required />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
+                  <CFormLabel for="act_last_name_th" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
                   <CFormInput
                     type="text"
                     id="LnameTH"
                     name="FnameTH"
                     feedbackInvalid="Please input lastname(Thai)."
-                    v-model="form.LnameTH"
-                    :invalid="validate.LnameTH"
+                    v-model="form.act_last_name_th"
+                    :invalid="validate.act_last_name_th"
                     required
                     />
                 </div>
@@ -59,28 +58,28 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
+                  <CFormLabel for="act_first_name_eng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
                   <CFormInput
                     type="text"
                     id="FnameEng"
                     name="FnameEng"
                     feedbackInvalid="Please input firstname(English)."
-                    v-model="form.FnameEng"
-                    :invalid="validate.FnameEng"
+                    v-model="form.act_first_name_eng"
+                    :invalid="validate.act_first_name_eng"
                     required
                     />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <CFormLabel for="LnameEng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
+                  <CFormLabel for="act_last_name_eng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
                   <CFormInput
                     type="text"
                     id="LnameEng"
                     name="LnameEng"
                     feedbackInvalid="Please input lastname(English)."
-                    v-model="form.LnameEng"
-                    :invalid="validate.LnameEng"
+                    v-model="form.act_last_name_eng"
+                    :invalid="validate.act_last_name_eng"
                     required
                     />
                 </div>
@@ -92,10 +91,10 @@
                 <div class="form-group">
                   <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
                   <CFormSelect
-                    v-model="form.Role"
+                    v-model="form.act_role"
                     :options="roleOptions"
                     feedbackInvalid="Please select role."
-                    :invalid="validate.Role"
+                    :invalid="validate.act_role"
                     required
                     @change="checkRole"
                   />
@@ -118,8 +117,8 @@
                     id="employeeID"
                     name="employeeID"
                     feedbackInvalid="Please input employee ID."
-                    v-model="form.employeeID"
-                    :invalid="validate.employeeID"
+                    v-model="form.act_username"
+                    :invalid="validate.act_username"
                     required
                     />
                 </div>
@@ -137,9 +136,9 @@
                 text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                   type="password"
                   id="password"
-                  v-model=form.password
+                  v-model="form.act_password"
                   feedbackInvalid="Please input password."
-                  :invalid="validate.password"
+                  :invalid="validate.act_password"
                   autocomplete="current-password"
                   placeholder="•••••••"
                   required
@@ -157,9 +156,9 @@
                 <CFormInput
                   type="password"
                   id="Confirmpassword"
-                  v-model=form.Confirmpassword
+                  v-model=form.act_password
                   feedbackInvalid="Please confirm password."
-                  :invalid="validate.Confirmpassword"
+                  :invalid="validate.act_password"
                   autocomplete="current-password"
                   placeholder="•••••••"
                   required
@@ -186,8 +185,8 @@
                     id="email"
                     name="email"
                     feedbackInvalid="Please input email."
-                    v-model="form.email"
-                    :invalid="validate.email"
+                    v-model="form.act_email_address"
+                    :invalid="validate.act_email_address"
                     required
                     />
                 </div>
@@ -200,8 +199,8 @@
                     id="confirmEmail"
                     name="confirmEmail"
                     feedbackInvalid="Please input confirm email."
-                    v-model="form.confirmEmail"
-                    :invalid="validate.confirmEmail"
+                    v-model="form.act_email_address"
+                    :invalid="validate.act_email_address"
                     required
                     />
                 </div>
@@ -218,8 +217,8 @@
                     id="phone"
                     name="phone"
                     feedbackInvalid="Please input your phone number."
-                    v-model="form.phone"
-                    :invalid="validate.phone"
+                    v-model="form.act_number_phone"
+                    :invalid="validate.act_number_phone"
                     required
                     />
                 </div>
@@ -239,32 +238,45 @@
 
 </template>
 <script>
-import { CFormLabel} from '@coreui/vue-pro';
+import { CFormLabel } from '@coreui/vue-pro';
+import axios from 'axios'
+import user_man from '../../../assets/images/preProfile.png'
+import bcrypt from 'bcryptjs';
 export default {
   components: { CFormLabel},
   data: () => {
     return {
       form: {
-        FnameTH: '',
-        LnameTH: '',
-        FnameEng: '',
-        LnameEng: '',
-        Role: '',
-        email: '',
+        act_username: '',
+        act_password: '',
+        act_number_phone: '',
+        act_email_address: '',
+        act_first_name_th: '',
+        act_first_name_eng: '',
+        act_last_name_th: '',
+        act_last_name_eng: '',
+        act_picture: '',
+        act_role: '',
         confirmEmail: '',
-        phone: '',
-        employeeID: '',
-        password: '',
-        Confirmpassword: ''
+        Confirmpassword: '',
+        validatedCustom01: false,
       },
+      user_man,
       validate: {
-        info:null,
+        act_first_name_th: false,
+        act_last_name_th: false,
+        act_first_name_eng: false,
+        act_last_name_eng: false,
+        act_role: false,
+        act_email_address: false,
+        act_number_phone: false,
+        act_username: false,
+        act_password: false,
       },
-      imageUrl:"../../../assets/images/preProfile01.svg",
-      imageFile: null,
       pageLoading: false,
     }
   },
+  
   created() {
         this.roleOptions  = [
             { label: 'Select Role', value: '' },
@@ -283,9 +295,11 @@ export default {
       }
     },
     deleteImage() {
-      this.imageUrl = "../../../assets/images/preProfile01.svg";
-      this.imageFile = "../../../assets/images/preProfile01.svg";
-      // You can also send an API request to delete the image on the server here.
+      this.form.act_picture = null; // Set act_picture to null to delete the image
+      this.fileType = ""; // Clear the file type
+      this.fileImage = ""; // Clear the file image
+      console.log('Image deleted');
+      console.log(this.form.act_picture);
     },
     handleSubmitCustom01(event) {
       if (!event.currentTarget.checkValidity()) {
@@ -295,55 +309,70 @@ export default {
     },
     validateBeforeSave() {
       let error = false;
-      if (this.form.FnameTH === '') {
+      if (this.form.act_first_name_th === '') {
         error = true;
-        this.validate.FnameTH = true;
+        this.validate.act_first_name_th = true;
       }
-      if (this.form.LnameTH === '') {
+      if (this.form.act_last_name_th === '') {
         error = true;
-        this.validate.LnameTH = true;
+        this.validate.act_last_name_th = true;
       }
-      if (this.form.FnameEng === '') {
+      if (this.form.act_first_name_eng === '') {
         error = true;
-        this.validate.FnameEng = true;
+        this.validate.act_first_name_eng = true;
       }
-      if (this.form.LnameEng === '') {
+      if (this.form.act_last_name_eng === '') {
         error = true;
-        this.validate.LnameEng = true;
+        this.validate.act_last_name_eng = true;
       }
-      if (this.form.Role === '') {
+      if (this.form.act_role === '') {
         error = true;
-        this.validate.Role = true;
+        this.validate.act_role = true;
       }
-      if (this.form.email === '') {
+      if (this.form.act_email_address === '') {
         error = true;
-        this.validate.email = true;
+        this.validate.act_email_address = true;
       }
-      if (this.form.confirmEmail === '') {
+      if (this.form.act_email_address === '') {
         error = true;
-        this.validate.confirmEmail = true;
+        this.validate.act_email_address = true;
       }
-      if (this.form.phone === '') {
+      if (this.form.act_number_phone === '') {
         error = true;
-        this.validate.phone = true;
+        this.validate.act_number_phone = true;
       }
-      if (this.form.employeeID === '') {
+      if (this.form.act_username === '') {
         error = true;
-        this.validate.employeeID = true;
+        this.validate.act_username = true;
       }
-       if (this.form.password === '') {
+       if (this.form.act_password === '') {
         error = true;
-        this.validate.password = true;
+        this.validate.act_password = true;
        }
-       if (this.form.Confirmpassword === '') {
+       if (this.form.act_password === '') {
         error = true;
-        this.validate.Confirmpassword = true;
+        this.validate.act_password = true;
       }
       if (error) {
       }
       else {
         this.onSave();
       }
+    },
+    async onFileUpload(event) {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      this.form.act_picture = dataResponse.data._id
+      this.getPicture();
+
     },
     showPassword() {
             var p1 = document.getElementById('password');
