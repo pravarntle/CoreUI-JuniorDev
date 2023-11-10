@@ -426,6 +426,11 @@ const routes = [
             name: 'ST - it/it_task_book',
             component: () => import('@/views/support-ticket/it/it_task_book.vue'),
           },
+          {
+            path: 'admin/user_list',
+            name: 'ST - admin/user_list',
+            component: () => import('@/views/support-ticket/admin/user_list.vue'),
+          },
         ],
       },
     ],

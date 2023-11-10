@@ -102,7 +102,7 @@
           />
 
           <CNavItem
-            href="/#/support-ticket/admin/edit_account"
+            href="/#/support-ticket/admin/user_list"
             style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
             class="custom-nav-item"
           >

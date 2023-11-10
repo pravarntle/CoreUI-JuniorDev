@@ -90,10 +90,15 @@
           </td>
         </template>
       </CSmartTable>
+      
       </div>
+      
       <!-- END Smart Table -->
+      
     </div>
+    
   </div>
+  
 </template>
 
 
@@ -104,6 +109,7 @@ import { CIcon } from '@coreui/icons-vue'
 import * as icon from '@coreui/icons'
 import More_Priority from '@/assets/images/More_Priority.png'
 import { CAvatar, CButton, CCol, CImage, CRow } from '@coreui/vue-pro'
+
 
 export default {
   components: {
