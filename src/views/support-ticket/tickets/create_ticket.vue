@@ -119,9 +119,9 @@
               />
             </div>
           </CRow> -->
-          
-          
-          
+
+
+
           <CElementCover :opacity="0.5" v-if="pageLoading" />
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
@@ -356,9 +356,9 @@ export default {
       if (!error) {
         this.onSave()
       } else {
-        
+
         this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        
+
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -377,7 +377,7 @@ export default {
 
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()   
+      const date = dayjs()
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
@@ -415,7 +415,7 @@ export default {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
         formData.append('file', uploadFile)
-      
+
         const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
