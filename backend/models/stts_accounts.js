@@ -44,6 +44,10 @@ const SchemaData = new schema({
         type: String,
         required: false,
     },
+    act_status: {
+        type: String,
+        required: false,
+    },
     act_role: {
         type: schema.Types.ObjectId,
         ref: "stts_roles",
