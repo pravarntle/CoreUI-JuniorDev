@@ -9,8 +9,8 @@
 
           <CRow class="mb-2" >
             <CCol class="image-container" xs="3">
-              <!-- <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
-                <img v-else :src="user_man" /> -->
+              <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
+                <img v-else :src="user_man" />
             </CCol>
             <CCol xs="3">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
@@ -239,11 +239,12 @@
 </template>
 <script>
 import { CFormLabel } from '@coreui/vue-pro';
+import { CFormSelect } from '@coreui/vue-pro';
 import axios from 'axios'
 import user_man from '../../../assets/images/preProfile.png'
 import bcrypt from 'bcryptjs';
 export default {
-  components: { CFormLabel},
+  components: { CFormLabel,CFormSelect},
   data: () => {
     return {
       form: {
@@ -260,9 +261,12 @@ export default {
         confirmEmail: '',
         Confirmpassword: '',
         validatedCustom01: false,
+        act_role_name:'',
       },
+      fileType: '',
+      fileImage:'',
       user_man,
-      accountId:'',
+      accountId: '',
       validate: {
         act_first_name_th: false,
         act_last_name_th: false,
@@ -278,15 +282,6 @@ export default {
     }
   },
   
-  created() {
-        this.roleOptions  = [
-            { label: 'Select Role', value: '' },
-            { label: 'Employee', value: 'Employee' },
-            { label: 'IT Support', value: 'IT Support' },
-            { label: 'Admin', value: 'Admin' },
-            { label: 'Manager', value: 'Manager'}
-        ];
-    },
   methods: {
     handleImageUpload(event) {
       const file = event.target.files[0];
@@ -372,7 +367,6 @@ export default {
       })
 
       this.form.act_picture = dataResponse.data._id
-      this.getPicture();
 
     },
     showPassword() {
@@ -388,24 +382,47 @@ export default {
     },
     async getAcount() {
       try {
-
-        
         const userId = this.accountId
-        
-
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture","act_role"] });
         this.acountIdFile = response.data.act_picture.filetype
         this.acountIdImage = response.data.act_picture.image
+        this.form.act_email_address=response.data.act_email_address
+        this.form.act_first_name_eng=response.data.act_first_name_eng
+        this.form.act_first_name_th=response.data.act_first_name_th
+        this.form.act_last_name_eng=response.data.act_last_name_eng
+        this.form.act_last_name_th = response.data.act_last_name_th
+        this.form.act_number_phone = response.data.act_number_phone
+        this.form.act_role = response.data.act_role._id
+        this.form.act_role_name = response.data.act_role.rol_name
+        this.form.act_username = response.data.act_username
+        this.form.act_password = response.data.act_password
+        this.fileType = response.data.act_picture.filetype
+        this.fileImage = response.data.act_picture.image
+
+
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        console.log(response.data)
+        
 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
+    async cancel() {
+       this.$router.push({ name: 'ST - admin/user_list'});
+    }
   },
   created() {
     const accountId = this.$route.params.itemId;
     this.accountId = accountId;
+    this.getAcount();
+    this.roleOptions = [
+      { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
+      { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
+      { label: 'Admin', value: '651636008cadea5f0570a27e' },
+      { label: 'Manager', value: '651636358cadea5f0570a27f' },
+    ];
+    
     // ทำสิ่งที่คุณต้องการกับ accountId ที่ได้รับ
   },
 }
