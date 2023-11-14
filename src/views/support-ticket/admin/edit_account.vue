@@ -9,8 +9,8 @@
 
           <CRow class="mb-2" >
             <CCol class="image-container" xs="3">
-              <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
-                <img v-else :src="user_man" />
+              <!-- <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
+                <img v-else :src="user_man" /> -->
             </CCol>
             <CCol xs="3">
               <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
@@ -262,6 +262,7 @@ export default {
         validatedCustom01: false,
       },
       user_man,
+      accountId:'',
       validate: {
         act_first_name_th: false,
         act_last_name_th: false,
@@ -384,8 +385,29 @@ export default {
                 p1.type = 'password';
                 p2.type = 'password';
             }
-        },
-  }
+    },
+    async getAcount() {
+      try {
+
+        
+        const userId = this.accountId
+        
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
+        this.acountIdFile = response.data.act_picture.filetype
+        this.acountIdImage = response.data.act_picture.image
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+  },
+  created() {
+    const accountId = this.$route.params.itemId;
+    this.accountId = accountId;
+    // ทำสิ่งที่คุณต้องการกับ accountId ที่ได้รับ
+  },
 }
 </script>
 <style>

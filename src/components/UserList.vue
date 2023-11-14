@@ -101,9 +101,10 @@ export default {
 
     methods: {
         async editAccount(item) {
-            const accountId = item._id.toString();
+            const itemId = item._id.toString();
+            console.log(itemId)
 
-            this.$router.push({ name: 'ST - edit_account', params: { accountId } });
+            this.$router.push({ name: 'ST - edit_account', params: { itemId } });
         },
         
         async buttonCancel(item) {

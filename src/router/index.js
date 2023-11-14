@@ -377,7 +377,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/admin_dashboard.vue'),
           },
           {
-            path: 'admin/edit_account',
+            path: 'admin/edit_account/:itemId',
             name: 'ST - edit_account',
             component: () => import('@/views/support-ticket/admin/edit_account.vue'),
           },
