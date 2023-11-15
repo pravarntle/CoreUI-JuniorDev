@@ -54,7 +54,7 @@
       <hr
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
-      <CNavItem href="/#/support-ticket/it/it_my_ticket" class="custom-nav-item">
+      <CNavItem href="/#/support-ticket/my_ticket" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
@@ -109,7 +109,7 @@
           class="dropdown-content"
         >
           <CNavItem
-            href="/#/support-ticket/it/it_book_mark"
+            href="/#/support-ticket/book_mark"
             style="padding-left: 52px"
             class="custom-nav-item"
           >

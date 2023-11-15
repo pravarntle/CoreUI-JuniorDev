@@ -543,6 +543,12 @@ export default {
         this.link = ''
         this.form.cmt_file = null;
         this.form.cmt_picture = null;
+
+
+        // this.$socket.sendObj({
+        // type: 'new-comment',
+        // comment: this.form,
+        // });
         
         
         // window.location.reload();
@@ -608,12 +614,14 @@ export default {
     },
   mounted(){
     const itemId = this.$route.params.itemId;
+    console.log(itemId)
     this.ticketId = itemId;
     this.getTicket();
     this.getComment(); 
     this.getAcount(); 
 
   },
+
 }
 </script>
 

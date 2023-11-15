@@ -377,7 +377,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/admin_dashboard.vue'),
           },
           {
-            path: 'admin/edit_account',
+            path: 'admin/edit_account/:itemId',
             name: 'ST - edit_account',
             component: () => import('@/views/support-ticket/admin/edit_account.vue'),
           },
@@ -397,9 +397,9 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/create_priority.vue'),
           },
           {
-            path: 'it/it_book_mark',
-            name: 'ST - it_book_mark',
-            component: () => import('@/views/support-ticket/it/it_book_mark.vue'),
+            path: 'book_mark',
+            name: 'ST - book_mark',
+            component: () => import('@/views/support-ticket/users/book_mark.vue'),
           },
           {
             path: 'it/it_dashboard',
@@ -417,14 +417,19 @@ const routes = [
             component: () => import('@/views/support-ticket/it/it_my_task.vue'),
           },
           {
-            path: 'it/it_my_ticket',
-            name: 'ST - it/it_my_ticket',
-            component: () => import('@/views/support-ticket/it/it_my_ticket.vue'),
+            path: 'my_ticket',
+            name: 'ST - my_ticket',
+            component: () => import('@/views/support-ticket/users/my_ticket.vue'),
           },
           {
             path: 'it/it_task_book',
             name: 'ST - it/it_task_book',
             component: () => import('@/views/support-ticket/it/it_task_book.vue'),
+          },
+          {
+            path: 'admin/user_list',
+            name: 'ST - admin/user_list',
+            component: () => import('@/views/support-ticket/admin/user_list.vue'),
           },
         ],
       },
