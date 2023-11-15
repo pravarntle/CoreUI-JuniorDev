@@ -39,7 +39,7 @@
         >
       </CNavItem> -->
       <!-- <li class="nav-title" style="color:black">Menu</li> -->
-      <ShareMenu/>
+      <MenuNewticket/>
       <CNavItem
         href="/#/support-ticket/it/it_dashboard"
         class="custom-nav-item"

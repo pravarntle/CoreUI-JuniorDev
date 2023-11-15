@@ -37,7 +37,7 @@
           ><b>New Ticket</b></font
         >
       </CNavItem> -->
-      <ShareMenu/>
+      <MenuNewticket/>
 
       <CNavItem href="/#/support-ticket/admin/admin_dashboard">
         <CImage
