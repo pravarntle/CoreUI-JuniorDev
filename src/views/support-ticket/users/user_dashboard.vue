@@ -12,7 +12,7 @@
 <script>
 import { CCol, CRow } from '@coreui/vue-pro'
 
-import my_tickets from '@/components/my_tickets.vue'
+import my_tickets from '@/components/MyTicket.vue'
 import count_ticket from '@/components/count_ticket.vue'
 import { CBadge } from '@coreui/vue-pro'
 export default {

@@ -283,13 +283,6 @@ export default {
   },
   
   methods: {
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.imageUrl = URL.createObjectURL(file);
-        this.imageFile = file;
-      }
-    },
     deleteImage() {
       this.form.act_picture = null; // Set act_picture to null to delete the image
       this.fileType = ""; // Clear the file type
@@ -367,6 +360,7 @@ export default {
       })
 
       this.form.act_picture = dataResponse.data._id
+      this.getPicture();
 
     },
     showPassword() {
@@ -398,10 +392,12 @@ export default {
         this.form.act_password = response.data.act_password
         this.fileType = response.data.act_picture.filetype
         this.fileImage = response.data.act_picture.image
+        this.form.act_picture = response.data.act_picture._id
 
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         console.log(response.data)
+
         
 
       } catch (error) {
@@ -409,8 +405,59 @@ export default {
       }
     },
     async cancel() {
-       this.$router.push({ name: 'ST - admin/user_list'});
-    }
+      this.$router.push({ name: 'ST - admin/user_list'});
+    },
+    async getPicture() {
+      const pictureId = this.form.act_picture;
+      try {
+        const data = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_files`, {
+          where: {
+            _id: pictureId
+          }
+        })
+        this.fileType = data.data.filetype
+        this.fileImage = data.data.image
+
+        console.log(data.data)
+      } catch (error) {
+        console.log(error)
+      }
+
+    },
+    async onSave() {
+      const userId = this.accountId
+      try {
+
+        await axios
+          .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`, {
+            data: this.form,
+          })
+          .then((result) => {
+            this.$router.push('/support-ticket/admin/user_list')
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    encryptPasswordBeforeSave() {
+
+      const password = this.form.act_password;
+      const saltRounds = 10;
+
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) {
+          console.error(err);
+          // จัดการข้อผิดพลาดที่เกิดขึ้น
+        } else {
+          this.form.act_password = hash; // กำหนดรหัสผ่านเข้าไปใน form ใหม่
+          this.onSave(); // เรียกฟังก์ชัน onSave เพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์
+        }
+      });
+    },
+
   },
   created() {
     const accountId = this.$route.params.itemId;

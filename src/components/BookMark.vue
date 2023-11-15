@@ -148,7 +148,7 @@
   import { CCol, CRow } from '@coreui/vue-pro'
   import axios from 'axios';
   export default {
-      name: 'book_mark',
+      name: 'BookMark',
       setup() {
           const columns = [
               // {
