@@ -15,7 +15,7 @@
                             <CDropdownToggle ><img :src="More_Priority"  /></CDropdownToggle>
                             <CDropdownMenu>
                                 <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
-                                <CDropdownItem @click="buttonCancel(item, index)" class="text-danger">Delete</CDropdownItem>
+                                <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
                             </CDropdownMenu>
                             </CDropdown>
                         </td>
@@ -107,14 +107,16 @@ export default {
             this.$router.push({ name: 'ST - edit_account', params: { itemId } });
         },
         
-        async buttonCancel(item) {
+        async DeleteButton(item) {
 
             try {
                 const itemId = item._id.toString();
                 // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-                await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+                await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${itemId}`, {
                     data: {
-                        tkt_status: "Cancel"
+                        act_status: "Delete",
+                        act_password:null,
+                        act_username:null,
 
                     }
                 });
@@ -136,7 +138,11 @@ export default {
         async getAccount() {
             try {
                 const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_accounts`, {
-                    "populate": "act_role"
+                    "populate": "act_role",
+                     where: {
+                        act_status: { $ne: 'Delete' }
+
+                    },
                 });
                 console.log(response.data)
                 // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items

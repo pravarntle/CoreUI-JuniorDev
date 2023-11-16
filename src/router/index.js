@@ -382,11 +382,6 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/edit_account.vue'),
           },
           {
-            path: 'admin/delete_account',
-            name: 'ST - delete_account',
-            component: () => import('@/views/support-ticket/admin/delete_account.vue'),
-          },
-          {
             path: 'admin/edit_priority',
             name: 'ST - edit_priority',
             component: () => import('@/views/support-ticket/admin/edit_priority.vue'),

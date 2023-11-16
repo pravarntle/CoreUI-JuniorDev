@@ -129,7 +129,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <CFormLabel for="Password"
-                >Password</CFormLabel
+                >New Password</CFormLabel
               >
               <div>
                 <CFormInput
@@ -139,7 +139,6 @@
                   v-model="form.act_password"
                   feedbackInvalid="Please input password."
                   :invalid="validate.act_password"
-                  autocomplete="current-password"
                   placeholder="•••••••"
                   required
                 />
@@ -150,15 +149,15 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <CFormLabel for="Password"
-                >Confirm Password</CFormLabel
+                >Confirm New Password</CFormLabel
               >
               <div>
                 <CFormInput
                   type="password"
                   id="Confirmpassword"
-                  v-model=form.act_password
+                  v-model=form.Confirmpassword
                   feedbackInvalid="Please confirm password."
-                  :invalid="validate.act_password"
+                  :invalid="validate.Confirmpassword"
                   autocomplete="current-password"
                   placeholder="•••••••"
                   required
@@ -334,18 +333,14 @@ export default {
         error = true;
         this.validate.act_username = true;
       }
-       if (this.form.act_password === '') {
-        error = true;
-        this.validate.act_password = true;
-       }
-       if (this.form.act_password === '') {
-        error = true;
-        this.validate.act_password = true;
-      }
       if (error) {
+        
+      }
+      if (this.form.act_password === '') {
+        this.onSave();
       }
       else {
-        this.onSave();
+        this.encryptPasswordBeforeSave();
       }
     },
     async onFileUpload(event) {
@@ -389,7 +384,6 @@ export default {
         this.form.act_role = response.data.act_role._id
         this.form.act_role_name = response.data.act_role.rol_name
         this.form.act_username = response.data.act_username
-        this.form.act_password = response.data.act_password
         this.fileType = response.data.act_picture.filetype
         this.fileImage = response.data.act_picture.image
         this.form.act_picture = response.data.act_picture._id
@@ -397,6 +391,7 @@ export default {
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         console.log(response.data)
+        console.log(this.form.act_password)
 
         
 
@@ -426,21 +421,43 @@ export default {
     },
     async onSave() {
       const userId = this.accountId
-      try {
+      if (this.form.act_password == '') {
+        try {
+          const requestData = { ...this.form };
+          delete requestData.act_password;
+          await axios
+            .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`, {
+              data: requestData,
+            })
+            .then((result) => {
+              this.$router.push('/support-ticket/admin/user_list')
+            })
+            .catch((err) => {
+              console.log(error)
+            })
+            console.log("1")
 
-        await axios
-          .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`, {
-            data: this.form,
-          })
-          .then((result) => {
-            this.$router.push('/support-ticket/admin/user_list')
-          })
-          .catch((err) => {
-            console.log(error)
-          })
-      } catch (error) {
-        console.log(error)
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        try {
+          await axios
+            .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`, {
+              data: this.form,
+            })
+            .then((result) => {
+              this.$router.push('/support-ticket/admin/user_list')
+            })
+            .catch((err) => {
+              console.log(error)
+            })
+            console.log("2")
+        } catch (error) {
+          console.log(error)
+        }
       }
+      
     },
     encryptPasswordBeforeSave() {
 
@@ -463,6 +480,7 @@ export default {
     const accountId = this.$route.params.itemId;
     this.accountId = accountId;
     this.getAcount();
+  
     this.roleOptions = [
       { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
       { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
