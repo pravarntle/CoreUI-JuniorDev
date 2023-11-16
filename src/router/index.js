@@ -431,6 +431,16 @@ const routes = [
             name: 'ST - admin/user_list',
             component: () => import('@/views/support-ticket/admin/user_list.vue'),
           },
+          {
+            path: 'it/it_accept_task',
+            name: 'ST - it/it_accept_task',
+            component: () => import('@/views/support-ticket/it/it_accept_task.vue'),
+          },
+          {
+            path: 'it/it_comment',
+            name: 'ST - it/it_comment',
+            component: () => import('@/views/support-ticket/it/it_comment.vue'),
+          },
         ],
       },
     ],
