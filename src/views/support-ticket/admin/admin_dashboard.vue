@@ -9,7 +9,7 @@
   
   <script>
    import { CCol, CRow } from '@coreui/vue-pro'
-   import count_ticket from '@/components/count_ticket.vue'
+   import count_ticket from '@/components/CountTicket.vue'
   export default {
     name: 'amin_dashboard',
   

@@ -120,7 +120,7 @@
 <script>
 import { ref } from 'vue'
 import { CCol, CRow } from '@coreui/vue-pro'
-import count_ticket from '@/components/count_ticket.vue'
+import count_ticket from '@/components/CountTicket.vue'
 import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
 import axios from 'axios';
