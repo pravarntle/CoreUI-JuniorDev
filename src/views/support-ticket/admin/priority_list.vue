@@ -68,27 +68,18 @@
             <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
           </td>
         </template>
-        <template #show_details="{ item }">
-          <td class="py-2">
-            
-            <CDropdown src="More_Priority">
-              
+        <template #show_details="{ item, index }">
+            <td class="py-2">
+                    
+              <CDropdown src="More_Priority">  
               <CDropdownToggle ><img :src="More_Priority"  /></CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem href="#">Edit</CDropdownItem>
-                <CDropdownItem href="#" class="text-danger">Delete</CDropdownItem>
+                <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
+                <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
               </CDropdownMenu>
-            </CDropdown>
-
-            <!-- <input type="image" :src="More_Priority" alt="button" /> -->
-
-            <!-- <CButton type="submit" :src = "More_Priority"></CButton> -->
-            <!-- <CImage :src = "More_Priority" type="button" class="dropbtn"/> -->
-
-            <!-- :src = "More_Priority" -->
-            <!-- @click="toggleDetails(item)" -->
-          </td>
-        </template>
+              </CDropdown>
+            </td>
+          </template>
       </CSmartTable>
       
       </div>
@@ -109,6 +100,9 @@ import { CIcon } from '@coreui/icons-vue'
 import * as icon from '@coreui/icons'
 import More_Priority from '@/assets/images/More_Priority.png'
 import { CAvatar, CButton, CCol, CImage, CRow } from '@coreui/vue-pro'
+import { ref } from 'vue'
+import axios from 'axios'
+
 
 
 export default {
@@ -119,87 +113,53 @@ export default {
     CCol,
     CAvatar,
     CButton,
+    ref,
   },
   setup() {
+    const items = ref([]);
+    const columns = [
+      {
+        key: 'number',
+        label: '#',
+        filter: false,
+        sorter: false,
+        _style: { width: '5%' },
+      },
+      {
+        key: 'status_eng',
+        label: 'NAME (ENG)',
+        _style: { width: '20%' },
+      },
+      {
+        key: 'status_th',
+        label: 'NAME (TH)',
+        _style: { width: '20%' },
+      },
+      {
+        key: 'level_of_priority',
+        label: 'LEVEL 0F PRIORITY',
+        _style: { width: '20%' },
+      },
+
+      {
+        key: 'show_details',
+        label: 'MORE',
+        _style: { width: '1%' },
+        filter: false,
+        sorter: false,
+      },
+    ];
     return {
       icon,
       More_Priority,
+      items,
+      columns,
     }
   },
 
   data() {
     return {
-      columns: [
-        {
-          key: 'number',
-          label: '#',
-          filter: false,
-          sorter: false,
-          _style: { width: '5%' },
-        },
-        {
-          key: 'status_eng',
-          label: 'NAME (ENG)',
-          _style: { width: '20%' },
-        },
-        {
-          key: 'status_th',
-          label: 'NAME (TH)',
-          _style: { width: '20%' },
-        },
-        {
-          key: 'level_of_priority',
-          label: 'LEVEL 0F PRIORITY',
-          _style: { width: '20%' },
-        },
-        
-        {
-          key: 'show_details',
-          label: 'MORE',
-          _style: { width: '1%' },
-          filter: false,
-          sorter: false,
-        },
-      ],
       details: [],
-      items: [
-        {
-          id: 1,
-          number: '1',
-          status_eng : 'High',
-          status_th : 'สำคัญมาก',
-          level_of_priority : '3',
-        },
-        {
-          id: 2,
-          number: '2',
-          status_eng : 'Medium',
-          status_th : 'สำคัญปานกลาง',
-          level_of_priority : '2',
-        },
-        {
-          id: 3,
-          number: '3',
-          status_eng : 'Low',
-          status_th : 'สำคัญเล็กน้อย',
-          level_of_priority : '1',
-          _selected: true,
-        },
-        {
-          id: 4,
-          number: '4',
-          status_eng : 'High',
-          status_th : 'สำคัญมาก',
-          level_of_priority : '3',
-        },
-        {
-          id: 5,
-          number: '5',
-          status_eng : 'Low',
-          status_th : 'สำคัญเล็กน้อย',
-          level_of_priority : '1',
-        },
-      ],
     }
   },
   methods: {
@@ -222,6 +182,64 @@ export default {
       }
       this.details.push(item._id)
     },
+    async getPriority() {
+      try {
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`, {
+          
+          where: {
+            pri_status: { $ne: 'Delete' }
+
+          },
+        });
+        console.log(response.data)
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.items = response.data.map((element, index) => ({
+          'number': index + 1, 
+          _id: element._id,
+          'status_eng': element.pri_name_eng, 
+          'status_th': element.pri_name_th, 
+          'level_of_priority': element.pri_level,
+          MORE: false, 
+        }));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async editAccount(item) {
+      const itemId = item._id.toString();
+      console.log(itemId)
+
+      this.$router.push({ name: 'ST - edit_priority', params: { itemId } });
+    },
+
+    async DeleteButton(item) {
+
+      try {
+        const itemId = item._id.toString();
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`, {
+          data: {
+            pri_status: "Delete",
+            
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('ลบ priority');
+        // รีเฟรชหน้า
+        window.location.reload();
+
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+    },
+  },
+  mounted() {
+    //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
+    this.getPriority();
+
+
   }
   
 }

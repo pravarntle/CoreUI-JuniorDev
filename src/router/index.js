@@ -382,7 +382,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/edit_account.vue'),
           },
           {
-            path: 'admin/edit_priority',
+            path: 'admin/edit_priority/:itemId',
             name: 'ST - edit_priority',
             component: () => import('@/views/support-ticket/admin/edit_priority.vue'),
           },

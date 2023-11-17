@@ -32,6 +32,7 @@
           >
           <CInputGroup>
             <CFormInput
+              v-model="form.pri_name_th"
               placeholder="สำคัญมากที่สุด"
               aria-label="priorityNameTha"
               required
@@ -45,6 +46,7 @@
           >
           <CInputGroup>
             <CFormInput 
+              v-model="form.pri_name_eng"
               placeholder="Very High" 
               aria-label="priorityNameEng"
               required
@@ -66,13 +68,9 @@
           <CRow class="justify-content-between">
             <CCol xs="4">
               <CFormSelect
+                v-model="form.pri_level"
                 aria-label="Default select example"
-                :options="[
-                  '1',
-                  { label: 'One', value: '1' },
-                  { label: 'Two', value: '2' },
-                  { label: 'Three', value: '3', disabled: true },
-                ]"
+                :options="levelOptions"
               >
               </CFormSelect>
             </CCol>
@@ -88,7 +86,7 @@
                 <div class="color-picker end-0" style="align-items: center">
                   <input
                     type="color"
-                    value="#1dbbce"
+                    v-model="form.pri_color"
                     id="colorPicker"
                     class="mt-2"
                     style="width: 150px"
@@ -106,7 +104,7 @@
           <CFormLabel for="desc"><h4>Description*</h4></CFormLabel>
           <CFormTextarea
             class="mb-3"
-            placeholder="รอดำเนินการภายใน 8 ชั่วโมง"
+            v-model="form.pri_description"
             required
           ></CFormTextarea>
         </CForm>
@@ -114,7 +112,7 @@
         <CRow class="d-flex justify-content-center">
           <CCol xs="4">
             <CButton color="secondary" shape="rounded-pill" size="xl"
-              >Cancel</CButton
+              @click="cancel">Cancel</CButton
             >
           </CCol>
           <CCol xs="4">
@@ -124,6 +122,7 @@
               shape="rounded-pill"
               size="xl"
               type="submit"
+              @click="onSave"
               >Submit</CButton
             >
           </CCol>
@@ -132,9 +131,7 @@
     </div>
   </CForm>
 </template>
-  <script >
-</script>
-  <style>
+<style>
 textButton {
   color: white;
 }
@@ -150,9 +147,19 @@ textButton {
 </style>
 
 <script>
+import axios from 'axios'
+
 export default {
   data: () => {
     return {
+      form:{
+        pri_name_eng: '',
+        pri_name_th: '',
+        pri_level: '',
+        pri_color:'',
+        pri_description:'',
+      },
+      priorityId:'',
       validatedCustom01: null,
     }
   },
@@ -165,6 +172,57 @@ export default {
       }
       this.validatedCustom01 = true
     },
+    async cancel() {
+      this.$router.push({ name: 'ST - priority_list Ticket' });
+    },
+    async getPriority() {
+      try {
+        const priorityId = this.priorityId
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_priorities/${priorityId}`);
+        this.form.pri_name_eng = response.data.pri_name_eng
+        this.form.pri_name_th = response.data.pri_name_th
+        this.form.pri_level = response.data.pri_level
+        this.form.pri_description = response.data.pri_description
+        this.form.pri_color = response.data.pri_color
+        console.log(response.data)
+
+
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async onSave() {
+      const priorityId = this.priorityId
+        try {
+          await axios
+            .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${priorityId}`, {
+              data: this.form,
+            })
+            .then((result) => {
+              this.$router.push('/support-ticket/admin/priority_list')
+            })
+            .catch((err) => {
+              console.log(error)
+            })
+          console.log("1")
+
+        } catch (error) {
+          console.log(error)
+        }
+      
+    },
   },
+  mounted() {
+    const priorityId = this.$route.params.itemId;
+    this.priorityId = priorityId;
+    this.getPriority();
+    console.log(this.priorityId)
+    this.levelOptions = [
+      { label: '1', value: '1' },
+      { label: '2', value: '2' },
+      { label: '3', value: '3'},
+    ];
+  }
 }
 </script> 
