@@ -16,30 +16,12 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <!-- <CNavItem
-        href="/#/support-ticket/ticket/create"
-        style="
-          background-color: #ea5252;
-          border-radius: 20px;
-          margin-top: 15px;
-          margin-bottom: 10px;
-          width: 200px;
-          margin-left: 10px;
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        "
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconnewTicket"
-          style="max-height: 20px; margin-left: 5px; margin-right: 5px"
-        />
-        <font style="padding-left: 9px; color: whitesmoke"
-          ><b>New Ticket</b></font
-        >
-      </CNavItem> -->
-      <MenuNewticket/>
+      <MenuNewticket />
 
-      <CNavItem href="/#/support-ticket/it/it_dashboard" class="custom-nav-item">
+      <CNavItem
+        href="/#/support-ticket/it/it_dashboard"
+        class="custom-nav-item"
+      >
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"
@@ -60,7 +42,7 @@
         <CImage
           customClassName="nav-icon"
           :src="IconmyTicket"
-          style="max-height: 23px; margin-left: 10px; margin-right: 12px;"
+          style="max-height: 23px; margin-left: 10px; margin-right: 12px"
         />
         <font style="color: black">My Ticket</font>
       </CNavItem>
@@ -87,12 +69,15 @@
       />
 
       <CNavItem href="#" class="position-absolute bottom-0 start-0">
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconlogout"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
-        <font color="red" @click="onLogoutClick()">logout</font>
+        <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
+        <div @click="onLogoutClick">
+          <CImage
+            customClassName="nav-icon"
+            :src="Iconlogout"
+            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
+          />
+          <font color="red">logout</font>
+        </div>
       </CNavItem>
     </CSidebarNav>
   </CSidebar>
@@ -147,7 +132,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.updateSidebarVisibility)
-    this.updateSidebarVisibility() 
+    this.updateSidebarVisibility()
   },
 
   beforeDestroy() {
@@ -159,7 +144,6 @@ export default {
         // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
         localStorage.removeItem('USER_DATA')
 
-      
         this.$router.push('/login')
       } catch (error) {
         console.log(error)
@@ -170,7 +154,7 @@ export default {
         // ขยาย sidebar
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
-        // ซ่อน sidebar 
+        // ซ่อน sidebar
       }
     },
   },
