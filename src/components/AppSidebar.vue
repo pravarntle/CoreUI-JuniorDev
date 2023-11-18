@@ -20,7 +20,7 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <MenuNewticket/>
+      <MenuNewticket />
       <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
         <CImage
           customClassName="nav-icon"
@@ -45,18 +45,17 @@
       />
 
       <CNavItem href="#" class="position-absolute bottom-0 start-0">
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconlogout"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
-        <font color="red" @click="onLogoutClick()">logout</font>
+        <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
+        <div @click="onLogoutClick">
+          <CImage
+            customClassName="nav-icon"
+            :src="Iconlogout"
+            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
+          />
+          <font color="red">logout</font>
+        </div>
       </CNavItem>
     </CSidebarNav>
-    <!-- <CSidebarToggler
-    class="d-none d-lg-flex"
-    @click="$store.commit('toggleUnfoldable')"
-  /> -->
   </CSidebar>
 </template>
 
@@ -100,7 +99,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.updateSidebarVisibility)
-    this.updateSidebarVisibility() 
+    this.updateSidebarVisibility()
   },
 
   beforeDestroy() {
@@ -112,8 +111,7 @@ export default {
         // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
         localStorage.removeItem('USER_DATA')
 
-      
-        this.$router.push('/login') 
+        this.$router.push('/login')
       } catch (error) {
         console.log(error)
       }
@@ -123,7 +121,7 @@ export default {
         // ขยาย sidebar
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
-        // ซ่อน sidebar 
+        // ซ่อน sidebar
         this.$store.commit('updateSidebarVisible', { value: false })
       }
     },
