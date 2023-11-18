@@ -8,7 +8,7 @@
           :src="LGlogo"
           
         />
-        <h2 class="d-inline align-middle">My Tickets</h2>
+        <h2 class="d-inline align-middle">My Bookmark Task</h2>
         <div
           style="
             width: 225px;
