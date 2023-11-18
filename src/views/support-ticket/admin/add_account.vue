@@ -539,7 +539,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .pic {
   background-color: #7f9ccb;
   padding: 5px 10px;
