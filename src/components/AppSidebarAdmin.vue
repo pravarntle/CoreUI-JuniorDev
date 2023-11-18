@@ -212,9 +212,11 @@
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
 
-      <CNavItem href="#" class="position-absolute bottom-0 start-0">
+      <CNavItem class="position-absolute bottom-0 start-0" 
+        style="padding-left: 15px; padding-bottom: 15px;"
+      >
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
-        <div @click="onLogoutClick">
+        <div @click="onLogoutClick" style=" cursor: pointer;">
           <CImage
             customClassName="nav-icon"
             :src="Iconlogout"
