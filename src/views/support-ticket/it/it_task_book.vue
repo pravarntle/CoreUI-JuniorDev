@@ -55,43 +55,18 @@
         
       </td>
       </template>
-
-      <template #BOOKMARK="{ item, index }" >
-        <td class="text-center">
-          <CButton
-            variant="outline"
-            square
-            size="xl"
-            @click="toggleDetails(item, index)"
-          >
-          {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
-          </CButton>
-        </td>
-      </template>
-      <template #MORE="{ item, index }" >
-        <td class="text-center">
-          <CButton
-            color="primary"
-            variant="outline"
-            square
-            size="xl"
-            @click="toggleButton(item, index)"
-          >
-          {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-          </CButton>
-        </td>
-      </template>
-      <template #details="{ item , index }">
-        <CCollapse :visible="Boolean(item.MORE)">
-          <CCardBody>
-            <h4>
-              {{ item.tkt_title }}
-            </h4>
-            <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
-            <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
-          </CCardBody>
-        </CCollapse>
-      </template>
+      <template #book_mark="{ item, index }" >
+              <td class="text-center">
+                <CButton
+                  variant="outline"
+                  square
+                  size="xl"
+                  @click="toggleDetails(item, index)"
+                >
+                {{ Boolean(item.book_mark) ? '👁️' : '🙈' }}
+                </CButton>
+              </td>
+            </template>
       </CSmartTable>
     </div>
   </CCard>
@@ -146,18 +121,49 @@ name: 'my_ticket',
   },
   setup() {
       const columns = [
-          
-          { key: '#',_style: { width: '5%' }},
-          { key: 'TicketID',_style: { width: '10%' }},            
-          { key: 'TITLE', _style: { width: '10%' } },
-          { key: 'START DATE(D/M/Y)', _style: { width: '11%' } },
-          { key: 'STATUS', _style: { width: '5%' } },
-          { key: 'TYPE', _style: { width: '4%' } },
-          { key: 'BOOKMARK', _style: { width: '5%' } },
-          { key: 'MORE',_style: { width: '5%' }},
-          
-   
-      ];
+
+      {
+        key: 'number',
+        label: '#',
+        _style: { width: '10%' },
+
+      },
+      {
+        key: 'ticket_id',
+        label: 'TICKET ID',
+        _style: { width: '10%' },
+      },
+      {
+        key: 'owner',
+        label: 'OWNER',
+        _style: { width: '15%' },
+      },
+      {
+        key: 'start_date',
+        label: 'START DATE(D/M/Y)',
+        _style: { width: '15%' },
+      },
+      {
+        key: 'status',
+        label: 'STATUS',
+        _style: { width: '10%' },
+      },
+      {
+        key: 'type',
+        label: 'TYPE',
+        _style: { width: '10%' },
+      },
+      {
+        key: 'book_mark',
+        label: 'BOOKMARK',
+        _style: { width: '10%' },
+        filter: false,
+        sorter: false,
+      },
+
+
+
+    ];
       const getBadge = (tkt_status) => {
         switch (tkt_status) {
           case 'Pending':
@@ -199,93 +205,66 @@ name: 'my_ticket',
   },
   
   methods:{
-    async contactIt(item){
-      const itemId = item._id.toString(); 
+    async toggleDetails(item) {
 
-      this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
-    
+      item.book_mark = !item.book_mark;
+      try {
+        const itemId = item._id.toString();
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+          data: {
+            tkt_book_task: item.book_mark
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        window.location.reload();
+      } catch (error) {
+        // this.toastProp.push({
+        //   content: 'บุคมาร์คไม่สำเร็จ'
+        // })
+
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
     },
-    async toggleDetails(item){
+    async getTicket() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
 
-    item.BOOKMARK = !item.BOOKMARK;
-    try {
-      const itemId = item._id.toString(); 
-      // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-      await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
-        data:{
-            tkt_book: item.BOOKMARK
+      try {
 
-        }
-      });
-
-      // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-      console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-    } catch (error) {
-        this.toastProp.push({
-        content: 'บุคมาร์คไม่สำเร็จ'
-      })
-    
-      console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
-    }
-    },
-
-    async buttonCancel(item) {
-
-    try {
-      const itemId = item._id.toString(); 
-      // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-      await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
-        data:{
-            tkt_status: "Cancel"
-
-        }
-      });
-
-      // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-      console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-      // รีเฟรชหน้า
-      window.location.reload();
-      
-    } catch (error) {
-      console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
-    }
-    },
-
-    async toggleButton(item) {
-      item.MORE = !item.MORE;
-      },
-
-    async getTicket(){
-          try {
-          const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-          const userId = userData.id.toString(); // ดึงค่า id จาก userData
-
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
-              where: {
-              tkt_act: userId,
-              tkt_status: { $ne: 'Cancel' }
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+          "populate": ["tkt_acc", "tkt_act",],
+          where: {
+                tkt_act: userId,
+                tkt_book_task:"true",
+                tkt_status: { $ne: 'Cancel' }
 
               },
-          });
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-          this.items = response.data.map((element, index) => ({
-              '#': index + 1, // หมายเลขแถว
-              _id:element._id,
-              TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
-              TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
-              // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
-              // ตามลำดับของ columns ในตัวแปร columns
-              // เพิ่มเติมตามความต้องการ
-              'START DATE(D/M/Y)': element.tkt_time,
-              STATUS:element.tkt_status  ,
-              TYPE: element.tkt_types,
-              BOOKMARK: element.tkt_book,
-              MORE: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
-          }));
-          } catch (error) {
-          console.error('Error fetching data:', error);
-          }
+
+        });
+        console.log(response.data);
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.items = response.data.map((element, index) => ({
+          number: index + 1, // หมายเลขแถว
+          _id: element._id,
+          ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
+          owner: `${element.tkt_act.act_first_name_eng} ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+          // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
+          // ตามลำดับของ columns ในตัวแปร columns
+          // เพิ่มเติมตามความต้องการ
+          start_date: element.tkt_time,
+          status: element.tkt_status,
+          type: element.tkt_types,
+          book_mark: element.tkt_book_task,
+        }));
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
+
+    },
 
   },
   mounted(){

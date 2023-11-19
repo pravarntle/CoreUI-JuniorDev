@@ -427,7 +427,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/user_list.vue'),
           },
           {
-            path: 'it/it_accept_task',
+            path: 'it/it_accept_task/:itemId',
             name: 'ST - it/it_accept_task',
             component: () => import('@/views/support-ticket/it/it_accept_task.vue'),
           },

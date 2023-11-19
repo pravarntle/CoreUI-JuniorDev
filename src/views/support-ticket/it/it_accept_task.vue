@@ -21,13 +21,13 @@
           style="padding: -4px" />
         <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
         <CCol style="padding: 4px">
-          <b> test</b>
-          <p class="small">example@gmail.com</p>
+          <b> {{firstname}}</b>
+          <p class="small">{{email}}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b> ตรงนี้วันที่คับ &nbsp; </b>
+          <b> {{date}} &nbsp; </b>
           <!-- <CBadge :color="getBadge(priorities)"><span > -->
-            <li>ตรงนี้ Priority</li>
+            <li>{{priorities}}</li>
           <!-- </span></CBadge> -->
         </CCol>
       </CRow>
@@ -35,7 +35,7 @@
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
       <div class="clearfix text-end" style="margin-right: 4%">
-       ตรงนี้รหัส Ticket นะ
+       <b>{{number}}</b>
 
         <CRow>
           <CCol xs="12">
@@ -43,16 +43,16 @@
               <CCardBody style="margin-left: 2%">
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Title : </b>
-                  <CCradText> </CCradText>
+                  <CCradText>{{ title }} </CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Type : </b>
-                  <CCradText>  </CCradText>
+                  <CCradText> {{ type }} </CCradText>
                 </CCol>
                 <CCol class="text-start" style="padding: -3px">
                   <b style="font-size: 20px"> Description : </b>
                   <CCradText>
-                    Test
+                    {{description}} 
                   </CCradText>
                 </CCol>
               </CCardBody>
@@ -63,16 +63,21 @@
                   <CCradText style="margin-left: 2%"> Attachment </CCradText>
                 </CCol>
               </Crow>
+              <Crow class="text-start">
+                  <CCol style="margin-left: 5%">
+                    <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
+                  
+                    <a v-if="picture">
+                      <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{ `${picture.filename}` }}</a>
+                    </a>
 
-
-
-
-
-
+                    <br />
+                  </CCol>
                   <br />
-                </CCol>
+                </Crow>
+          </CCol>
                 <br />
-              </Crow>
+        </Crow>
 
 
 
@@ -91,7 +96,7 @@
         color: white;
         border-radius: 20px;
       "
-      >Accept</CButton
+      @click="acceptButton">Accept</CButton
     >
         </div>
   </CCard>
@@ -103,6 +108,8 @@ import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
 import Icon_user_man from '@/assets/images/icon_user_man.jpg'
 import commit from '@/assets/images/commit.png'
+import axios from 'axios'
+import dayjs from 'dayjs'
 
 import { CBadge, CButton, CFormInput } from '@coreui/vue-pro'
 
@@ -154,10 +161,127 @@ export default {
         cmt_act: '',
         cmt_tkt: '',
       },
+      ticketId: '',
+      type: '',
+      description: '',
+      title: '',
+      priorities: '',
+      picture: '',
+      avatar: '',
+      acountFile: '',
+      acountImage: '',
+      firstname: '',
+      email: '',
+      date: '',
+      number: '',
+      accId:'',
 
 
     };
-  }}
+  },
+  methods: {
+    async getTicket() {
+      try {
+
+        const ticketId = this.ticketId;
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
+          {
+            populate: [
+              {
+                "path": "tkt_act",
+                "populate": "act_picture"
+              }
+              , "tkt_picture"
+            ]
+          });
+        this.type = response.data.tkt_types;
+        this.description = response.data.tkt_description;
+        this.title = response.data.tkt_title;
+        this.priorities = response.data.tkt_priorities;
+        this.picture = response.data.tkt_picture;
+        this.date = response.data.tkt_time;
+        this.acountFile = response.data.tkt_act.act_picture.filetype;
+        this.acountImage = response.data.tkt_act.act_picture.image;
+        this.email = response.data.tkt_act.act_email_address;
+        this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.number = response.data.tkt_number;
+        // this.email = response.data.tkt_act.act_email_address;
+        // this.firstname = response.data.tkt_act.act_first_name_eng;
+
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        // this.getAcount();
+        console.log(response.data)
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async acceptButton() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
+      const date = dayjs()
+      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+
+      console.log(ticket_date)
+      console.log(userId)
+      try {
+        const dataResponse =await axios
+          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`, {
+            data: {
+              acc_time:ticket_date,
+              acc_act: userId,
+              
+            },
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+        this.accId = dataResponse.data._id
+        this.updateTicket();  
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async updateTicket() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
+      try {
+        const ticketId = this.ticketId;
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
+          data: {
+            tkt_status:'Open',
+            tkt_acc: this.accId,
+            tkt_accept: userId,
+
+          }
+        })
+        .then((result) => {
+          this.$router.push('/support-ticket/it/it_my_task')
+        })
+        .catch((err) => {
+          console.log(error)
+        });
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+    }
+
+    
+  },
+  mounted() {
+    const ticketId = this.$route.params.itemId;
+    this.ticketId = ticketId;
+    this.getTicket();
+
+    
+  }
+}
 </script>
 <style>
 .avatar-round {
