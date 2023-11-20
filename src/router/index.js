@@ -437,7 +437,7 @@ const routes = [
             component: () => import('@/views/support-ticket/it/it_accept_task.vue'),
           },
           {
-            path: 'it/it_comment',
+            path: 'it/it_comment/:itemId',
             name: 'ST - it/it_comment',
             component: () => import('@/views/support-ticket/it/it_comment.vue'),
           },

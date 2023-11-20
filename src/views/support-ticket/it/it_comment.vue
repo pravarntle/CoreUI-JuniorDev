@@ -124,28 +124,28 @@
       </CCard>
     </CCol>
     <CCol class="col-md-2.5" style="padding: 10px">
-      <!-- Adjust width for smaller size -->
+        <!-- Adjust width for smaller size -->
 
-      <CCard>
-        <CCardBody>
-          <h2 class="text-center">Details</h2>
-          <h6><b>Ticket ID:</b></h6>
-          <p>ข้อมูลไอดีตรงนี้</p>
-          <h6><b>Date & Time:</b></h6>
-          <p>ข้อมูลวันเวลาตรงนี้</p>
+        <CCard>
+          <CCardBody>
+            <h2 class="text-center">Details</h2>
+            <h6><b>Ticket ID:</b></h6>
+            <p>{{number}}</p>
+            <h6><b>Date & Time:</b></h6>
+            <p>{{date}}</p>
 
-          <CCollapse :visible="visibleB">
-            <h6 style="color: red"><b>Title</b></h6>
-            <p>Hardware</p>
-            <h6 style="color: red"><b>Status</b></h6>
-            <p>ข้อมูลสถานะตรงนี้</p>
-            <h6 style="color: red"><b>Priority</b></h6>
-            <p>ข้อมูลลำดับความสำคัญตรงนี้</p>
-            <CRow>
-              <CCol class="mb-2 text-center">
-                <CButton
-                  class="btn-sec"
-                  style="
+            <CCollapse :visible="visibleB">
+              <h6 style="color: red"><b>Title</b></h6>
+              <p>{{title}}</p>
+              <h6 style="color: red"><b>Status</b></h6>
+              <p>{{stauts}}</p>
+              <h6 style="color: red"><b>Priority</b></h6>
+              <p>{{priorities}}</p>
+              <CRow>
+                <CCol class="mb-2 text-center">
+                  <CButton
+                    class="btn-sec"
+                    style="
                     font-weight: bold;
                     font-size: 22.5px;
                     width: 150px;
@@ -153,62 +153,60 @@
                     border-radius: 20px;
                     background-color: #d0293b;
                   "
-                  @click="
-                    () => {
-                      visibleVerticallyCenteredDemo = true
-                    }
-                  "
-                  >Resolve</CButton
-                >
-                <CModal
-                  alignment="center"
-                  :visible="visibleVerticallyCenteredDemo"
-                  @close="
-                    () => {
-                      visibleVerticallyCenteredDemo = false
-                    }
-                  "
-                >
-                  <CModalHeader>
-                    <CModalTitle>Resolve Status</CModalTitle>
-                  </CModalHeader>
-                  <CModalBody>
-                    <div style="margin-bottom: 20px">
-                      ตรงนี้แสดง Status ปัจจุบัน
-                    </div>
-                    <CDropdown color="secondary" togglerText="Dropdown button">
-                      <CDropdownToggle color="primary"
-                        >Status to edit</CDropdownToggle
-                      >
-
-                      <CDropdownMenu>
-                        <CDropdownItem>Closed</CDropdownItem>
-                        <CDropdownItem>Closed Bug</CDropdownItem>
-                        <CDropdownItem>Open</CDropdownItem>
-                        <CDropdownItem>อื่น ๆ เพิ่มเอาเลยคับพี่</CDropdownItem>
-                      </CDropdownMenu>
-                    </CDropdown>
-                  </CModalBody>
-                  <CModalFooter>
-                    <CButton
-                      color="secondary"
-                      @click="
-                        () => {
-                          visibleVerticallyCenteredDemo = false
-                        }
+                    @click="() => {
+                        visibleVerticallyCenteredDemo = true
+                      }
                       "
-                    >
-                      Close
-                    </CButton>
-                    <CButton color="primary">Save changes</CButton>
-                  </CModalFooter>
-                </CModal>
-              </CCol>
+                    >Resolve</CButton
+                  >
+                  <CModal
+                    alignment="center"
+                    :visible="visibleVerticallyCenteredDemo"
+                    @close="() => {
+                        visibleVerticallyCenteredDemo = false
+                      }
+                      "
+                  >
+                    <CModalHeader>
+                      <CModalTitle>Resolve Status</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                      <div style="margin-bottom: 20px">
+                        <b>{{stauts}}</b>
+                      </div>
+                      <CFormSelect
+                          aria-label="Default select example"
+                          color="secondary"
+                          v-model="edit"
+                          :options="[
+                            'Status to edit',
+                            { label: 'Closed', value: 'Closed' },
+                            { label: 'Closed Bug', value: 'Closed Bug' },
+                            { label: 'Open', value: 'Open'}
+                          ]">
+                      </CFormSelect>
+                    </CModalBody>
+                    <CModalFooter>
+                      <CButton
+                        color="secondary"
+                        @click="() => {
+                            visibleVerticallyCenteredDemo = false
+                          }
+                          "
+                        
+                      
+                      >
+                        Close
+                      </CButton>
+                      <CButton color="primary" @click="onSaveSatatus">Save changes</CButton>
+                    </CModalFooter>
+                  </CModal>
+                </CCol>
 
-              <CCol class="mb-2 text-center">
-                <CButton
-                  class="btn-sec"
-                  style="
+                <CCol class="mb-2 text-center">
+                  <CButton
+                    class="btn-sec"
+                    style="
                     font-weight: bold;
                     font-size: 22.5px;
                     width: 150px;
@@ -216,49 +214,46 @@
                     background-color: #f9a825;
                     border-radius: 20px;
                   "
-                  @click="
-                    () => {
-                      PopupAssign = true
-                    }
-                  "
-                  >Assign</CButton
-                >
-                <CModal
-                  alignment="center"
-                  :visible="PopupAssign"
-                  @close="
-                    () => {
-                      PopupAssign = false
-                    }
-                  "
-                >
-                  <CModalHeader>
-                    <CModalTitle>Assign to</CModalTitle>
-                  </CModalHeader>
-                  <CModalBody>
-                    <Ccard class="text-left"> All </Ccard>
-                  </CModalBody>
-
-                  <CModalFooter>
-                    <CButton
-                      color="secondary"
-                      @click="
-                        () => {
-                          PopupAssign = false
-                        }
+                    @click="() => {
+                        PopupAssign = true
+                      }
                       "
-                    >
-                      Close
-                    </CButton>
-                    <CButton color="primary">Save changes</CButton>
-                  </CModalFooter>
-                </CModal>
-              </CCol>
-            </CRow>
-          </CCollapse>
-        </CCardBody>
-      </CCard>
-    </CCol>
+                    >Assign</CButton
+                  >
+                  <CModal
+                    alignment="center"
+                    :visible="PopupAssign"
+                    @close="() => {
+                        PopupAssign = false
+                      }
+                      "
+                  >
+                    <CModalHeader>
+                      <CModalTitle>Assign to</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                      <Ccard class="text-left"> All </Ccard>
+                    </CModalBody>
+
+                    <CModalFooter>
+                      <CButton
+                        color="secondary"
+                        @click="() => {
+                            PopupAssign = false
+                          }
+                          "
+                      >
+                        Close
+                      </CButton>
+                      <CButton color="primary">Save changes</CButton>
+                    </CModalFooter>
+                  </CModal>
+                </CCol>
+              </CRow>
+            </CCollapse>
+          </CCardBody>
+        </CCard>
+      </CCol>
   </CRow>
 
   <div>
@@ -539,6 +534,10 @@ export default {
       comment: '',
       commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
+      number: '',
+      stauts: '',
+      edit:'',
+      
     }
   },
   setup() {
@@ -702,10 +701,13 @@ export default {
         this.acountImage = response.data.tkt_act.act_picture.image
         this.email = response.data.tkt_act.act_email_address
         this.firstname = response.data.tkt_act.act_first_name_eng
+        this.number = response.data.tkt_number
+        this.stauts = response.data.tkt_status
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        console.log(response.data)
         // this.getAcount();
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -842,11 +844,10 @@ export default {
           ],
         },
       )
-      console.log(ticketId)
-      console.log(comment.data)
+      
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
-      console.log(this.comments)
+      
     },
     async getAcountComment() {
       try {
@@ -882,6 +883,36 @@ export default {
           return 'ไฟล์อื่น ๆ'
       }
     },
+    async onSaveSatatus() {
+      try {
+        
+        const ticketId = this.ticketId;
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
+          data: {
+            tkt_status: this.edit
+
+          }
+        })
+        .then((result) => {
+          this.$router.push({ name: 'ST - it/it_comment' });
+          
+        })
+        .catch((err) => {
+          console.log(error)
+        });
+        this.stauts = this.edit
+        window.location.reload();
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต status และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        // รีเฟรชหน้า
+        
+
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+    }
   },
   mounted() {
     const itemId = this.$route.params.itemId
@@ -890,6 +921,7 @@ export default {
     this.getTicket()
     this.getComment()
     this.getAcount()
+    console.log(this.stauts);
   },
 }
 </script>
