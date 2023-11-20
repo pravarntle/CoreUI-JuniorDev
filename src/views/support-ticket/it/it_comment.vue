@@ -1,6 +1,6 @@
 <template>
   <CRow class="mr-md-3" style="padding: 2px">
-    <CCol xs class="col-md-9 mr-md-3 " style="padding: 10px" >
+    <CCol xs class="col-md-9 mr-md-3" style="padding: 10px">
       <CCard class="p-2">
         <CCardbody>
           <CRow>
@@ -66,9 +66,8 @@
               >Short
             </CButton>
 
-            <CRow >
-
-              <CCol >
+            <CRow>
+              <CCol>
                 <CCollapse :visible="visibleA">
                   <CCardBody style="margin-left: 2%">
                     <CCol class="text-start" style="padding: -3px">
@@ -86,7 +85,7 @@
                       </CCradText>
                     </CCol>
                   </CCardBody>
-                 <hr>
+                  <hr />
                   <Crow>
                     <CCol class="text-start" style="padding: -1px">
                       <output style="margin-left: 5%"> 1 </output>
@@ -124,10 +123,10 @@
         </CCardbody>
       </CCard>
     </CCol>
-    <CCol  class="col-md-2.5" style="padding: 10px" >
+    <CCol class="col-md-2.5" style="padding: 10px">
       <!-- Adjust width for smaller size -->
 
-      <CCard >
+      <CCard>
         <CCardBody>
           <h2 class="text-center">Details</h2>
           <h6><b>Ticket ID:</b></h6>
@@ -136,51 +135,96 @@
           <p>ข้อมูลวันเวลาตรงนี้</p>
 
           <CCollapse :visible="visibleB">
-          <h6 style="color: red;"><b>Title</b></h6>
-          <p>Hardware</p>
-          <h6 style="color: red;"><b>Status</b></h6>
-          <p>ข้อมูลสถานะตรงนี้</p>
-          <h6 style="color: red;"><b>Priority</b></h6>
-          <p>ข้อมูลลำดับความสำคัญตรงนี้</p>
-          <CRow>
-            <CCol class="mb-2 text-center">
-              <CButton
-                class="btn-sec"
-                style="
-                  font-weight: bold;
-                  font-size: 22.5px;
-                  width: 150px;
-                  color: white;
-                  border-radius: 20px;
-                  background-color: #d0293b;
-                "
-                >Resolve</CButton
-              >
-            </CCol>
+            <h6 style="color: red"><b>Title</b></h6>
+            <p>Hardware</p>
+            <h6 style="color: red"><b>Status</b></h6>
+            <p>ข้อมูลสถานะตรงนี้</p>
+            <h6 style="color: red"><b>Priority</b></h6>
+            <p>ข้อมูลลำดับความสำคัญตรงนี้</p>
+            <CRow>
+              <CCol class="mb-2 text-center">
+                <CButton
+                  class="btn-sec"
+                  style="
+                    font-weight: bold;
+                    font-size: 22.5px;
+                    width: 150px;
+                    color: white;
+                    border-radius: 20px;
+                    background-color: #d0293b;
+                  "
+                  @click="
+                    () => {
+                      visibleVerticallyCenteredDemo = true
+                    }
+                  "
+                  >Resolve</CButton
+                >
+                <CModal
+                  alignment="center"
+                  :visible="visibleVerticallyCenteredDemo"
+                  @close="
+                    () => {
+                      visibleVerticallyCenteredDemo = false
+                    }
+                  "
+                >
 
-            <CCol class="mb-2 text-center">
-              <CButton
-                class="btn-sec"
-                style="
-                  font-weight: bold;
-                  font-size: 22.5px;
-                  width: 150px;
-                  color: white;
-                  background-color: #f9a825;
-                  border-radius: 20px;
-                "
-                >Assign</CButton
-              >
-            </CCol>
-          </CRow>
-        </CCollapse>
+                  <CModalHeader>
+                    <CModalTitle>Resolve Status</CModalTitle>
+                  </CModalHeader>
+                  <CModalBody>
+                    <div style="margin-bottom: 20px;">ตรงนี้แสดง Status ปัจจุบัน</div>
+                    <CDropdown color="secondary" togglerText="Dropdown button">
+                      <CDropdownToggle color="primary"
+                        >Status to edit</CDropdownToggle
+                      >
+
+
+                      <CDropdownMenu>
+                        <CDropdownItem >Closed</CDropdownItem>
+                        <CDropdownItem >Closed Bug</CDropdownItem>
+                        <CDropdownItem >Open</CDropdownItem>
+                        <CDropdownItem >อื่น ๆ เพิ่มเอาเลยคับพี่</CDropdownItem>
+                      </CDropdownMenu>
+                    </CDropdown>
+                  </CModalBody>
+                  <CModalFooter>
+                    <CButton
+                      color="secondary"
+                      @click="
+                        () => {
+                          visibleVerticallyCenteredDemo = false
+                        }
+                      "
+                    >
+                      Close
+                    </CButton>
+                    <CButton color="primary">Save changes</CButton>
+                  </CModalFooter>
+                </CModal>
+              </CCol>
+
+              <CCol class="mb-2 text-center">
+                <CButton
+                  class="btn-sec"
+                  style="
+                    font-weight: bold;
+                    font-size: 22.5px;
+                    width: 150px;
+                    color: white;
+                    background-color: #f9a825;
+                    border-radius: 20px;
+                  "
+                  >Assign</CButton
+                >
+              </CCol>
+            </CRow>
+          </CCollapse>
         </CCardBody>
-
       </CCard>
-
     </CCol>
   </CRow>
-
 
 
   <div>
@@ -430,6 +474,7 @@ export default {
         cmt_act: '',
         cmt_tkt: '',
       },
+      visibleVerticallyCenteredDemo: false,
       visibleA: true,
       visibleB: true,
       Icon_user_man,
@@ -489,8 +534,6 @@ export default {
       } else {
         x.innerHTML = 'Expand'
       }
-
-
     },
 
     async countCharacters() {
@@ -916,6 +959,4 @@ a {
 a:hover {
   text-decoration: underline;
 }
-
-
 </style>
