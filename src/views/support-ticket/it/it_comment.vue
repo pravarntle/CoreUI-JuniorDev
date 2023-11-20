@@ -1,6 +1,6 @@
 <template>
-  <CRow>
-    <CCol xs class="col-md-9">
+  <CRow class="mr-md-3" style="padding: 2px">
+    <CCol xs class="col-md-9 mr-md-3 " style="padding: 10px" >
       <CCard class="p-2">
         <CCardbody>
           <CRow>
@@ -51,7 +51,7 @@
           <hr />
 
           <!-- <CImage align="end" class="Short" :src="Short" /> -->
-          <div class="clearfix text-end" style="margin-right: 4%">
+          <div class="clearfix text-end m-2" style="margin-right: 4%">
             <CButton
               class="btn btn-outline-info"
               style="font-weight: bold; font-size: x-small; width: 65px"
@@ -66,8 +66,9 @@
               >Short
             </CButton>
 
-            <CRow>
-              <CCol xs="12">
+            <CRow >
+
+              <CCol >
                 <CCollapse :visible="visibleA">
                   <CCardBody style="margin-left: 2%">
                     <CCol class="text-start" style="padding: -3px">
@@ -85,7 +86,7 @@
                       </CCradText>
                     </CCol>
                   </CCardBody>
-                  <hr />
+                 <hr>
                   <Crow>
                     <CCol class="text-start" style="padding: -1px">
                       <output style="margin-left: 5%"> 1 </output>
@@ -123,16 +124,18 @@
         </CCardbody>
       </CCard>
     </CCol>
-    <CCol xs class="col-md-3" >
+    <CCol  class="col-md-2.5" style="padding: 10px" >
       <!-- Adjust width for smaller size -->
+
       <CCard >
         <CCardBody>
           <h2 class="text-center">Details</h2>
-          <br />
           <h6><b>Ticket ID:</b></h6>
           <p>ข้อมูลไอดีตรงนี้</p>
           <h6><b>Date & Time:</b></h6>
           <p>ข้อมูลวันเวลาตรงนี้</p>
+
+          <CCollapse :visible="visibleB">
           <h6 style="color: red;"><b>Title</b></h6>
           <p>Hardware</p>
           <h6 style="color: red;"><b>Status</b></h6>
@@ -145,7 +148,7 @@
                 class="btn-sec"
                 style="
                   font-weight: bold;
-                  font-size: x-large;
+                  font-size: 22.5px;
                   width: 150px;
                   color: white;
                   border-radius: 20px;
@@ -160,7 +163,7 @@
                 class="btn-sec"
                 style="
                   font-weight: bold;
-                  font-size: x-large;
+                  font-size: 22.5px;
                   width: 150px;
                   color: white;
                   background-color: #f9a825;
@@ -170,6 +173,7 @@
               >
             </CCol>
           </CRow>
+        </CCollapse>
         </CCardBody>
 
       </CCard>
@@ -177,7 +181,7 @@
     </CCol>
   </CRow>
 
-  <br />
+
 
   <div>
     <CCard>
@@ -485,6 +489,8 @@ export default {
       } else {
         x.innerHTML = 'Expand'
       }
+
+
     },
 
     async countCharacters() {
@@ -910,4 +916,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
 </style>
