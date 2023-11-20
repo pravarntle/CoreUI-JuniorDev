@@ -169,23 +169,23 @@
                     }
                   "
                 >
-
                   <CModalHeader>
                     <CModalTitle>Resolve Status</CModalTitle>
                   </CModalHeader>
                   <CModalBody>
-                    <div style="margin-bottom: 20px;">ตรงนี้แสดง Status ปัจจุบัน</div>
+                    <div style="margin-bottom: 20px">
+                      ตรงนี้แสดง Status ปัจจุบัน
+                    </div>
                     <CDropdown color="secondary" togglerText="Dropdown button">
                       <CDropdownToggle color="primary"
                         >Status to edit</CDropdownToggle
                       >
 
-
                       <CDropdownMenu>
-                        <CDropdownItem >Closed</CDropdownItem>
-                        <CDropdownItem >Closed Bug</CDropdownItem>
-                        <CDropdownItem >Open</CDropdownItem>
-                        <CDropdownItem >อื่น ๆ เพิ่มเอาเลยคับพี่</CDropdownItem>
+                        <CDropdownItem>Closed</CDropdownItem>
+                        <CDropdownItem>Closed Bug</CDropdownItem>
+                        <CDropdownItem>Open</CDropdownItem>
+                        <CDropdownItem>อื่น ๆ เพิ่มเอาเลยคับพี่</CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
                   </CModalBody>
@@ -216,8 +216,43 @@
                     background-color: #f9a825;
                     border-radius: 20px;
                   "
+                  @click="
+                    () => {
+                      PopupAssign = true
+                    }
+                  "
                   >Assign</CButton
                 >
+                <CModal
+                  alignment="center"
+                  :visible="PopupAssign"
+                  @close="
+                    () => {
+                      PopupAssign = false
+                    }
+                  "
+                >
+                  <CModalHeader>
+                    <CModalTitle>Assign to</CModalTitle>
+                  </CModalHeader>
+                  <CModalBody>
+                    <Ccard class="text-left"> All </Ccard>
+                  </CModalBody>
+
+                  <CModalFooter>
+                    <CButton
+                      color="secondary"
+                      @click="
+                        () => {
+                          PopupAssign = false
+                        }
+                      "
+                    >
+                      Close
+                    </CButton>
+                    <CButton color="primary">Save changes</CButton>
+                  </CModalFooter>
+                </CModal>
               </CCol>
             </CRow>
           </CCollapse>
@@ -225,7 +260,6 @@
       </CCard>
     </CCol>
   </CRow>
-
 
   <div>
     <CCard>
@@ -474,6 +508,7 @@ export default {
         cmt_act: '',
         cmt_tkt: '',
       },
+      PopupAssign: false,
       visibleVerticallyCenteredDemo: false,
       visibleA: true,
       visibleB: true,
