@@ -382,12 +382,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/edit_account.vue'),
           },
           {
-            path: 'admin/delete_account',
-            name: 'ST - delete_account',
-            component: () => import('@/views/support-ticket/admin/delete_account.vue'),
-          },
-          {
-            path: 'admin/edit_priority',
+            path: 'admin/edit_priority/:itemId',
             name: 'ST - edit_priority',
             component: () => import('@/views/support-ticket/admin/edit_priority.vue'),
           },
@@ -432,7 +427,7 @@ const routes = [
             component: () => import('@/views/support-ticket/admin/user_list.vue'),
           },
           {
-            path: 'it/it_accept_task',
+            path: 'it/it_accept_task/:itemId',
             name: 'ST - it/it_accept_task',
             component: () => import('@/views/support-ticket/it/it_accept_task.vue'),
           },

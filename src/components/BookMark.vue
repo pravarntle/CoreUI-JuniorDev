@@ -257,7 +257,7 @@
               },
             });
             console.log(response.data);
-            console.log(userId)
+            console.log(userId);
             // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
             this.items = response.data.map((element, index) => ({
               '#': index + 1, // หมายเลขแถว
@@ -271,7 +271,7 @@
               STATUS:element.tkt_status  ,
               TYPE: element.tkt_types,
               BOOKMARK: element.tkt_book,
-              _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
+              // _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
             }));
           } catch (error) {
             console.error('Error fetching data:', error);

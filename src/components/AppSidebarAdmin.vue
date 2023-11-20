@@ -16,30 +16,12 @@
     </CSidebarBrand>
 
     <CSidebarNav>
-      <!-- <CNavItem
-        href="/#/support-ticket/ticket/create"
-        style="
-          background-color: #ea5252;
-          border-radius: 20px;
-          margin-top: 15px;
-          margin-bottom: 10px;
-          width: 200px;
-          margin-left: 10px;
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        "
+      <MenuNewticket />
+      <CNavItem
+        href="/#/support-ticket/admin/admin_dashboard"
+        style="position: relative"
+        class="custom-nav-item"
       >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconnewTicket"
-          style="max-height: 20px; margin-left: 5px; margin-right: 5px"
-        />
-        <font style="padding-left: 9px; color: whitesmoke"
-          ><b>New Ticket</b></font
-        >
-      </CNavItem> -->
-      <MenuNewticket/>
-
-      <CNavItem href="/#/support-ticket/admin/admin_dashboard">
         <CImage
           customClassName="nav-icon"
           :src="Icondashboard"
@@ -54,13 +36,13 @@
 
       <CNavItem style="position: relative">
         <CImage
-          customClassName="nav-icon"
+          customClassName="custom-nav-item"
           :src="IconmanageAccount"
           style="
             max-height: 20px;
             margin-left: 30px;
             margin-right: 12px;
-            max-width: 25px;
+            max-width: 24px;
           "
         />
         <font style="color: black">Manage Account</font>
@@ -68,19 +50,19 @@
         <!-- Dropdown Icon -->
         <CImage
           :src="Icondropdown"
-          @click="dropdownOpen = !dropdownOpen"
+          @click="dropdownOpenAccount = !dropdownOpenAccount"
           :style="{
             'max-height': '20px',
             cursor: 'pointer',
             marginLeft: '5px',
-            transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+            transform: dropdownOpenAccount ? 'rotate(180deg)' : 'none',
             transition: 'transform 0.3s',
           }"
         />
 
         <!-- Dropdown items -->
         <div
-          v-show="dropdownOpen"
+          v-show="dropdownOpenAccount"
           style="background-color: white; width: 100%; z-index: 100"
         >
           <CNavItem
@@ -124,21 +106,76 @@
         style="color: black; width: 70%; margin-left: 20px; margin-top: 15px"
       />
 
-      <CNavItem
-        href="/#/support-ticket/admin/priority_list"
-        style="position: relative"
-        class="custom-nav-item"
-      >
+      <CNavItem style="position: relative">
         <CImage
           customClassName="nav-icon"
           :src="IconmanagePriority"
-          style="max-height: 23px; margin-left: 10px; margin-right: 17px"
+          style="
+            max-height: 20px;
+            margin-left: 30px;
+            margin-right: 17px;
+            max-width: 25px;
+          "
         />
         <font style="color: black">Manage Priorites</font>
+
+        <!-- Dropdown Icon -->
+        <CImage
+          :src="Icondropdown"
+          @click="dropdownOpenPriority = !dropdownOpenPriority"
+          :style="{
+            'max-height': '20px',
+            cursor: 'pointer',
+            marginLeft: '5px',
+            transform: dropdownOpenPriority ? 'rotate(180deg)' : 'none',
+            transition: 'transform 0.3s',
+          }"
+        />
+
+        <!-- Dropdown items -->
+        <div
+          v-show="dropdownOpenPriority"
+          style="background-color: white; width: 100%; z-index: 100"
+        >
+          <CNavItem
+            href="/#/support-ticket/admin/create_priority"
+            style="padding-left: 52px"
+            class="custom-nav-item"
+          >
+            <font style="color: black">Add Priorites</font>
+          </CNavItem>
+
+          <hr
+            style="
+              color: black;
+              width: 50%;
+              margin-left: 65px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+            "
+          />
+
+          <CNavItem
+            href="/#/support-ticket/admin/priority_list"
+            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
+            class="custom-nav-item"
+          >
+            <font style="color: black">Priorites List</font>
+          </CNavItem>
+          <hr
+            style="
+              color: black;
+              width: 50%;
+              margin-left: 65px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+            "
+          />
+        </div>
       </CNavItem>
 
       <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
+        style="color: black; width: 70%; margin-left: 20px; margin-top: 15px"
       />
 
       <CNavItem
@@ -175,13 +212,18 @@
         style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
       />
 
-      <CNavItem href="#" class="position-absolute bottom-0 start-0">
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconlogout"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
-        <font color="red" @click="onLogoutClick()">logout</font>
+      <CNavItem class="position-absolute bottom-0 start-0" 
+        style="padding-left: 15px; padding-bottom: 15px;"
+      >
+        <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
+        <div @click="onLogoutClick" style=" cursor: pointer;">
+          <CImage
+            customClassName="nav-icon"
+            :src="Iconlogout"
+            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
+          />
+          <font color="red">logout</font>
+        </div>
       </CNavItem>
     </CSidebarNav>
   </CSidebar>
@@ -220,7 +262,8 @@ export default {
       Iconlogout: Iconlogout,
       IconmyTicket: IconmyTicket,
       Icondropdown: Icondropdown,
-      dropdownOpen: false,
+      dropdownOpenAccount: false,
+      dropdownOpenPriority: false,
       IconmanageAccount: IconmanageAccount,
       IconmanagePriority: IconmanagePriority,
     }
@@ -236,7 +279,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.updateSidebarVisibility)
-    this.updateSidebarVisibility() 
+    this.updateSidebarVisibility()
   },
 
   beforeDestroy() {
@@ -248,7 +291,7 @@ export default {
         // ทำการลบข้อมูลผู้ใช้ที่เก็บไว้ใน localStorage
         localStorage.removeItem('USER_DATA')
 
-        this.$router.push('/login') 
+        this.$router.push('/login')
       } catch (error) {
         console.log(error)
       }
@@ -258,8 +301,20 @@ export default {
         // ขยาย sidebar
         this.$store.commit('updateSidebarVisible', { value: true })
       } else {
-        // ซ่อน sidebar 
+        // ซ่อน sidebar
       }
+    },
+    toggleDropdownAccount() {
+      this.dropdownOpenAccount = !this.dropdownOpenAccount
+      // ปิด Dropdown ของ Manage Priorities
+      this.dropdownOpenPriority = false
+    },
+
+    // เพิ่ม method เพื่อเปิด/ปิด Dropdown ของ Manage Priorities
+    toggleDropdownPriority() {
+      this.dropdownOpenPriority = !this.dropdownOpenPriority
+      // ปิด Dropdown ของ Manage Account
+      this.dropdownOpenAccount = false
     },
   },
 }

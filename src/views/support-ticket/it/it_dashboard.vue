@@ -104,8 +104,7 @@
                 <h4>
                   {{ item.tkt_title }}
                 </h4>
-                <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> ติดต่อ It Suport </CButton>
-                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
+                <CButton size="sm" color="info" class="" @click="contactIt(item , index)"> Check Ticket </CButton>
               </CCardBody>
             </CCollapse>
           </template>
@@ -226,30 +225,30 @@ export default {
         async contactIt(item){
           const itemId = item._id.toString(); 
 
-          this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
+          this.$router.push({ name: 'ST - it/it_accept_task', params: { itemId } });
           console.log('Item ID:', itemId);
         },
-        async buttonCancel(item) {
+        // async buttonCancel(item) {
 
-          try {
-            const itemId = item._id.toString(); 
-            // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-            await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
-              data:{
-                  tkt_status: "Cancel"
+        //   try {
+        //     const itemId = item._id.toString(); 
+        //     // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        //     await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+        //       data:{
+        //           tkt_status: "Cancel"
 
-              }
-            });
+        //       }
+        //     });
 
-            // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-            console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-            // รีเฟรชหน้า
-            window.location.reload();
+        //     // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        //     console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        //     // รีเฟรชหน้า
+        //     window.location.reload();
             
-          } catch (error) {
-            console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
-          }
-        },
+        //   } catch (error) {
+        //     console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+        //   }
+        // },
         async toggleButton(item) {
           item.MORE = !item.MORE;
         },

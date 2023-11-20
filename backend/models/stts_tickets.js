@@ -48,10 +48,19 @@ const SchemaData = new schema({
         type: Boolean,
         required: true,
     },
+    tkt_book_task: {
+        type: Boolean,
+        required: true,
+    },
     tkt_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
         required: true
+    },
+    tkt_accept: {
+        type: schema.Types.ObjectId,
+        ref: "stts_accounts",
+        required: false
     },
     tkt_acc: {
         type: schema.Types.ObjectId,
