@@ -66,6 +66,30 @@
                 {{ Boolean(item.book_mark) ? '👁️' : '🙈' }}
                 </CButton>
               </td>
+      </template>
+      <template #MORE="{ item, index }" >
+              <td class="text-center">
+                <CButton
+                  color="primary"
+                  variant="outline"
+                  square
+                  size="xl"
+                  @click="toggleButton(item, index)"
+                >
+                {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+                </CButton>
+              </td>
+            </template>
+            <template #details="{ item, index }">
+              <CCollapse :visible="Boolean(item.MORE)">
+                <CCardBody>
+                  <h4>
+                    {{ item.tkt_title }}
+                  </h4>
+                  <CButton size="sm" color="info" class="" @click="contactIt(item, index)"> CheckTicket </CButton>
+                  <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
+                </CCardBody>
+              </CCollapse>
             </template>
       </CSmartTable>
     </div>
@@ -157,6 +181,13 @@ name: 'my_ticket',
         key: 'book_mark',
         label: 'BOOKMARK',
         _style: { width: '10%' },
+        filter: false,
+        sorter: false,
+      },
+      {
+        key: 'MORE',
+        label: 'MORE',
+        _style: { width: '5%' },
         filter: false,
         sorter: false,
       },
@@ -259,10 +290,41 @@ name: 'my_ticket',
           status: element.tkt_status,
           type: element.tkt_types,
           book_mark: element.tkt_book_task,
+          MORE:false,
         }));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+
+    },
+    async toggleButton(item) {
+      item.MORE = !item.MORE;
+    },
+    async buttonCancel(item) {
+
+      try {
+        const itemId = item._id.toString();
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+          data: {
+            tkt_status: "Cancel"
+
+          }
+        });
+
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        // รีเฟรชหน้า
+        window.location.reload();
+
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+    },
+    async contactIt(item) {
+      const itemId = item._id.toString();
+
+      this.$router.push({ name: 'ST - it/it_comment', params: { itemId } });
 
     },
 
