@@ -518,10 +518,10 @@ router.beforeEach(async (to, from, next) => {
   if (!user && to.name !== "Login") {
     return next({ name: "Login" })
   } else if (user && to.name === "Login") {
-    return next("/support-ticket/user/dashboard");
+    return next("/login");
   } else {
     if (restrict && user.role !== restrict) {
-      return next("/support-ticket/user/dashboard");
+      return next("/login");
     } else {
       return next();
     }
