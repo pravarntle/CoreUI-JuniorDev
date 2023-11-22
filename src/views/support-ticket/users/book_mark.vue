@@ -211,7 +211,7 @@ export default {
         const userId = userData.id.toString() // ดึงค่า id จาก userData
 
         const response = await axios.post(
-          'http://localhost:3000/mongoose/get/stts_tickets',
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
           {
             where: {
               tkt_act: userId,
