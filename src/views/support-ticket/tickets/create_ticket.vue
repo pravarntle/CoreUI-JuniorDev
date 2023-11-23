@@ -19,7 +19,7 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b> Title </b></h5>
+              <h5><b> Title<span style="color: red;">*</span> </b></h5>
               <CFormInput
                 type="text"
                 id="tkt_title"
@@ -35,7 +35,7 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Type</b></h5>
+              <h5><b>Type <span style="color: red;">*</span></b></h5>
               <CFormSelect
                 v-model="form.tkt_types"
                 :options="typeOptions"
@@ -52,7 +52,7 @@
             <div class="col-lg-7 col-md-12">
               <div class="d-flex align-items-center">
                 <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
-                <h5><b>Priority</b></h5>
+                <h5><b>Priority<span style="color: red;">*</span></b></h5>
                 <div class="popup" @click="togglePopup">
                   <CAvatar
                     class="popup_priority"
@@ -92,7 +92,7 @@
 
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Description</b></h5>
+              <h5><b>Description<span style="color: red;">*</span></b></h5>
               <CFormTextarea
                 v-model="form.tkt_description"
                 feedbackInvalid="ห้ามเว้นว่าง"
@@ -127,7 +127,7 @@
           <div class="col-lg-1"></div>
           <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
           <div class="col-lg-7 col-md-12">
-            <h5><b>Upload A File</b></h5>
+            <h5><b>Upload A File<span style="color: red;">*</span></b></h5>
             <CFormInput
               type="file"
               size="lg"
@@ -144,7 +144,7 @@
         <div class="clearfix text-end">
             <CButton
               color="secondary"
-              @click="vaildateBeforeSave, createToast"
+              @click="cancel"
               style="
                 font-weight: bold;
                 font-size: x-large;
@@ -152,7 +152,7 @@
                 color: white;
                 border-radius: 20px;
               "
-              >Cancle</CButton
+              >Cancel</CButton
             >
             <CButton
               class="btn-sec"
@@ -291,7 +291,7 @@ export default {
     (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
-      { label: 'Mediem', value: 'Medium' },
+      { label: 'Medium', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
     ]),
@@ -389,7 +389,8 @@ export default {
       this.form.tkt_status = ticket_status
       this.form.tkt_book = false
       console.log(this.form)
-
+      const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const roleName = roleData.role
       try {
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
@@ -422,7 +423,23 @@ export default {
           }
         })
         this.form.tkt_picture = dataResponse.data._id
-      },
+    },
+    async cancel() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+      if (userId == "Admin") {
+        this.$router.push('/support-ticket/admin/admin_dashboard')
+      }
+      else if (userId == "Employee") {
+        this.$router.push('/support-ticket/user/dashboard')
+      }
+      else if (userId == "ItSupport") {
+        this.$router.push('/support-ticket/it/it_dashboard')
+      }
+      else if (userId =="Manager") {
+        this.$router.push('/support-ticket/manager/manager_dashboard')
+      }
+    }
   },
   components: { CForm, CFormLabel },
 }

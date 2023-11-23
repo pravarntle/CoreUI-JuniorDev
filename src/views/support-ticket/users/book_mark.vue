@@ -67,7 +67,7 @@
               size="xl"
               @click="toggleDetails(item, index)"
             >
-              {{ Boolean(item._toggled) ? '👁️' : '🙈' }}
+              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
             </CButton>
           </td>
         </template>
@@ -172,7 +172,7 @@ export default {
       { key: 'STATUS', _style: { width: '10%' } },
       { key: 'TYPE', _style: { width: '10%' } },
       { key: 'BOOKMARK', _style: { width: '10%' } },
-    ]
+    ];
     const items = ref([])
     const getBadge = (status) => {
       switch (status) {
@@ -187,21 +187,38 @@ export default {
         default:
           'primary'
       }
-    }
+    };
+    const toggleDetails = async (item) => {
 
-    const toggleDetails = (item) => {
-      items.value[item.id] = {
-        ...item,
-        _toggled: !item._toggled,
+      item.BOOKMARK = !item.BOOKMARK;
+      console.log(item.BOOKMARK)
+      console.log(item)
+      try {
+        const itemId = item._id.toString();
+        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
+          data: {
+            tkt_book: item.BOOKMARK,
+
+          }
+        });
+        window.location.reload();
+        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
-    }
+    };
+    
+
+    
     return {
       columns,
       items,
       getBadge,
       toggleDetails,
       Icon_bookmark,
-    }
+    };
   },
   components: { CRow, CCol },
   methods: {
@@ -224,6 +241,7 @@ export default {
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         this.items = response.data.map((element, index) => ({
           '#': index + 1, // หมายเลขแถว
+          _id: element._id,
           TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
           TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
           // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
@@ -238,6 +256,10 @@ export default {
       } catch (error) {
         console.error('Error fetching data:', error)
       }
+    },
+    async toggleButton(item) {
+      item.MORE = !item.MORE;
+
     },
   },
   mounted() {
