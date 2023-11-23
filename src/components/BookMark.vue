@@ -1,14 +1,30 @@
 <template>
     <div class="box">
       <CCard class="p-2">
-        <CCardHeader>
-          <CRow>
-            <CCal>
-              <h2><CIcon icon="cilBookmark" id="book" size="xxl" color="drak"/> Bookmark</h2>
-            </CCal>
-          </CRow>
+        
+          <div>
+            <CRow>
+                <CCol xs="auto">
+                  <div Class="Bookmark">
+                    <CImage :src="Icon_bookmark" width="36" height="36" />
+                  </div>
+                </CCol>
+                <CCol xs="auto">
+                  <div class="ml-2">
+                    <h2 style="font-size: 36px; line-height: 1.2">
+                      <b>Bookmark</b>
+                    </h2>
+                  </div>
+                </CCol>
+            </CRow>
+          </div>
+        <h1 style="width: 220px;
+                border-bottom: 5px solid transparent;
+                border-image: linear-gradient(to right, #EA5252, #030303);
+                border-image-slice: 1;">
+              </h1>
           
-        </CCardHeader>
+        
         <div class="table-responsive table-borderless">
         <CSmartTable
           :active-page="1"
@@ -145,6 +161,7 @@
   
   <script>
   import { ref } from 'vue'
+  import Icon_bookmark from '@/assets/images/Icon_bookmark.png'
   import { CCol, CRow } from '@coreui/vue-pro'
   import axios from 'axios';
   export default {
@@ -204,6 +221,7 @@
           }
           };
           return {
+              Icon_bookmark,
               columns,
               items,
               getBadge,

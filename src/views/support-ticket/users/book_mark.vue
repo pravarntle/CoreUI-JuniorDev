@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <book_mark/>
 </template>
 <script>
@@ -7,9 +7,9 @@
         name: 'book',
         components: {book_mark },
       }
-</script> -->
+</script>
 <!------------------------------------------------ HTML ---------------------------------------------->
-<template>
+<!-- <template>
   <div class="box">
     <CCard class="p-2">
       <div>
@@ -70,7 +70,7 @@
               {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
             </CButton>
           </td>
-        </template>
+        </template> -->
 
         <!-- <template #status="{ item }">
             <td>
@@ -102,13 +102,13 @@
               </CCardBody>
             </CCollapse>
           </template> -->
-      </CSmartTable>
+      <!-- </CSmartTable>
     </CCard>
   </div>
-</template>
+</template> -->
 
 <!--------------------------------------------- CSS -------------------------------------------------->
-<style>
+<!-- <style>
 #all {
   font-size: 24px;
   color: #1a72b8;
@@ -140,11 +140,11 @@
   width: 20px;
   padding: 6px;
 }
-</style>
+</style> -->
 
 <!------------------------------------------- Javascript -------------------------------------------------->
 
-<script>
+<!-- <script>
 // import { CIcon } from '@coreui/icons-vue'
 // import * as icon from '@coreui/icons'
 
@@ -268,4 +268,4 @@ export default {
   },
 }
 </script>
-
+ -->
