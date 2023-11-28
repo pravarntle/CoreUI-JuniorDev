@@ -5,17 +5,21 @@
     </CRow>
 
     <CCard>
-      <CCard class="d-flex flex-row-reverse">
+      <!-- <CCard class="d-inline">
+          <h1>Category Chart</h1> 
+        </CCard> -->
+      <CCard class="d-inline " style="width: 100%;">
+        <h2 class="">Category Chart</h2>
         <CChart
-          class="ItCharetDoughnut w-25 d-inline"
+          style="width: 180%;"
+          class="ItCharetDoughnut"
           type="doughnut"
-          width="1000"
           :data="{
-            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+            labels: ['Software', 'Hardware', 'Typeone', 'Typetwo', 'Service Request'],
             datasets: [
               {
-                backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                data: [40, 20, 80, 10],
+                backgroundColor: ['#0071FF', '#EE5731', '#F860E9', '#62BB1E', '#F9A825'],
+                data: [40, 20, 50, 50, 10],
                 cutout: 70
               },
             ],
@@ -44,106 +48,7 @@
     </CCard>
 
     <!-- inbox -->
-    <CCard class="d-block mt-2">
-      <h1
-        class="d-block ms-2"
-        style="
-          width: 140px;
-          border-bottom: 2px solid transparent;
-          border-image: linear-gradient(to right, red, blue);
-          border-image-slice: 1;
-          lable: asd;
-        "
-      >
-        <CIcon :icon="icon.cilInbox" size="xxl" />Inbox
-      </h1>
-      <div class="table-responsive table-borderless">
-        <CSmartTable
-          clickableRows
-          :tableProps="{
-            striped: true,
-            hover: true,
-          }"
-          :activePage="2"
-          header
-          :items="items"
-          :columns="columns"
-          columnFilter
-          tableFilter
-          cleaner
-          itemsPerPageSelect
-          items-per-page-select
-          :itemsPerPage="5"
-          columnSorter
-          :sorterValue="{ column: 'status', state: 'asc' }"
-          pagination
-        >
-          <template #status="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.status)"
-                ><li>{{ item.status }}</li></CBadge
-              >
-            </td>
-          </template>
-          <template #type="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
-            </td>
-          </template>
-
-          <!-- <template #BOOKMARK="{ item, index }" >
-            <td class="text-center">
-              <CButton
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleDetails(item, index)"
-              >
-              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
-              </CButton>
-            </td>
-          </template> -->
-          <template #MORE="{ item, index }">
-            <td class="text-center">
-              <CButton
-                color="primary"
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleButton(item, index)"
-              >
-                {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-              </CButton>
-            </td>
-          </template>
-          <template #details="{ item, index }">
-            <CCollapse :visible="Boolean(item.MORE)">
-              <CCardBody>
-                <h4>
-                  {{ item.tkt_title }}
-                </h4>
-                <CButton
-                  size="sm"
-                  color="info"
-                  class=""
-                  @click="contactIt(item, index)"
-                >
-                  ติดต่อ It Suport
-                </CButton>
-                <CButton
-                  size="sm"
-                  color="danger"
-                  class="ml-3"
-                  @click="buttonCancel(item, index)"
-                >
-                  Cancel
-                </CButton>
-              </CCardBody>
-            </CCollapse>
-          </template>
-        </CSmartTable>
-      </div>
-    </CCard>
+    
   </div>
 </template>
 
