@@ -4,15 +4,16 @@
       <count_ticket />
     </CRow>
 
-    <CCard>
-      <!-- <CCard class="d-inline">
-          <h1>Category Chart</h1> 
-        </CCard> -->
-      <CCard class="d-inline " style="width: 100%;">
-        <h2 class="">Category Chart</h2>
+    <CCard class="d-flex docs-highlight" style="width: 66%; border-radius: 15px;">
+
+      <CCard class="ps-3 flex-fill docs-highlight" style="width: 30%;">
+        <h2 >Category Chart</h2>
+      </CCard>
+
+      <CCard class="d-inline w-50 h-75  " >
         <CChart
-          style="width: 180%;"
-          class="ItCharetDoughnut"
+          style="height: 50px;"
+          class="d-inline "
           type="doughnut"
           :data="{
             labels: ['Software', 'Hardware', 'Typeone', 'Typetwo', 'Service Request'],
@@ -20,7 +21,7 @@
               {
                 backgroundColor: ['#0071FF', '#EE5731', '#F860E9', '#62BB1E', '#F9A825'],
                 data: [40, 20, 50, 50, 10],
-                cutout: 70
+                cutout: 80
               },
             ],
             
@@ -31,7 +32,6 @@
               
               title: {
                 display: true,
-                text: 'ALL ticket',
               },
               legend: {
                 display: true,
@@ -46,6 +46,51 @@
         />
       </CCard>
     </CCard>
+
+    <CCard class="mt-3 ps-3 pb-3" style="width: 66%;">
+      <h2>Ticket Priority</h2>
+      <div class="d-inline border border-white">
+        <h5 class="d-inline ms-5">High</h5>
+        <input disabled class="w-50 d-inline mx-5" type="range" value="20" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
+        <output>20</output> %
+      </div>
+
+      <div class="d-inline border border-white">
+        <h5 class="d-inline ms-5">Normal</h5>
+        <input disabled class="w-50 d-inline ms-4 me-5 " type="range" value="10" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
+        <output>10</output> %
+      </div>
+
+      <div class="d-inline border border-0">
+        <h5 class="d-inline ms-5 me-2">Low</h5>
+        <input disabled class="w-50 d-inline mx-5" type="range" value="70" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
+        <output>70</output> %
+      </div>
+    </CCard>
+
+    <!-- <CCard class="" style="width: 34%;">
+      <CCard class="p-3" style="width: 60%;">
+        <h3>Support Tracker</h3>
+      </CCard>
+
+      <CCard class="px-3 bg-dark" style="width: 34%;">
+        <h1>164</h1>
+        <h5>Total Ticket</h5>
+      </CCard>
+
+      <CCard class="border border-danger d-inline" style="width: 70%; ">
+        <CCard class="d-inline">
+          <CIcon :icon="icon.cilCheckCircle" class="d-inline" size="xxl" style="color:#0ABB7C; background-color: #93F4D2;" />
+          <CCard class="d-inline bg-danger" >
+            <h5 class="d-inline ">New Ticket</h5>
+            <h6 class="d-block">146</h6>
+          </CCard>
+        </CCard>
+        <CCard class="bg-warning ">
+          a
+        </CCard>
+      </CCard>
+    </CCard> -->
 
     <!-- inbox -->
     
@@ -223,3 +268,27 @@ export default {
   },
 }
 </script>
+
+<style>
+:disabled{
+   overflow:hidden;
+  -moz-range-track: none;
+}
+
+#myrange{
+  -webkit-appearance: none;
+  outline:none;
+  border: 2px solid #ffffff;
+  border-radius: 20px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,1);
+ overflow:hidden;
+}
+
+#myrange::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      border-radius:50%; 
+      background:#000000;
+      box-shadow: -410px 0 0 400px #007bff;
+      cursor:pointer;
+}
+</style>
