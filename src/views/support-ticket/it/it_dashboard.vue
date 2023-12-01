@@ -4,76 +4,92 @@
       <count_ticket />
     </CRow>
 
-    <CCard class="d-flex docs-highlight" style="width: 66%; border-radius: 15px;">
+    <CRow>
+      <CCol sm="8">
+        <CCard>
+          <CCardBody>
+            <CCardTitle>Category Chart</CCardTitle>
+            <CChart style="display:contents; height: 100px; width: 100px;" class="d-inline " type="doughnut" :data="{
+              labels: ['Software', 'Hardware', 'Typeone', 'Typetwo', 'Service Request'],
+              datasets: [
+                {
+                  backgroundColor: ['#0071FF', '#EE5731', '#F860E9', '#62BB1E', '#F9A825'],
+                  data: [40, 20, 50, 50, 10],
 
-      <CCard class="ps-3 flex-fill docs-highlight" style="width: 30%;">
-        <h2 >Category Chart</h2>
-      </CCard>
-
-      <CCard class="d-inline w-50 h-75  " >
-        <CChart
-          style="height: 50px;"
-          class="d-inline "
-          type="doughnut"
-          :data="{
-            labels: ['Software', 'Hardware', 'Typeone', 'Typetwo', 'Service Request'],
-            datasets: [
-              {
-                backgroundColor: ['#0071FF', '#EE5731', '#F860E9', '#62BB1E', '#F9A825'],
-                data: [40, 20, 50, 50, 10],
-                cutout: 80
-              },
-            ],
-            
-          }"
-          :options="{
-            
-            plugins: {
-              
-              title: {
-                display: true,
-              },
-              legend: {
-                display: true,
-                position: 'left',
-                labels: {
-                  usePointStyle: true, // ใช้รูปจุดแทนข้อความ
+                cutot: '70%'
                 },
-              },
-              
-            },
-          }"
-        />
-      </CCard>
-    </CCard>
+              ],
 
-    
+            }" :options="{
+  plugins: {
+    title: {
+      display: true,
+      Text: 'all ticket',
+      position: 'absolute',
+      fontSize: 16,
+      color: '#000', // Customize the text color
+    },
+    legend: {
+      display: true,
+      position: 'left',
+      labels: {
+        usePointStyle: true, // ใช้รูปจุดแทนข้อความ
+      },
+    },
+  },
+}" />
+          </CCardBody>
+        </CCard>
+        <CCard style="margin-top: 10px;">
+          <CCardBody>
+            <CCardTitle>Ticket Priority</CCardTitle>
+            <div class="d-inline border border-white">
+              <h5 class="d-inline ms-5">High</h5>
+              <input disabled class="w-50 d-inline mx-5" type="range" value="20" min="1" max="100"
+                oninput="this.nextElementSibling.value = this.value">
+              <output>20</output> %
+            </div><br>
+            <div class="d-inline border border-white">
+              <h5 class="d-inline ms-5">Normal</h5>
+              <input disabled class="w-50 d-inline ms-4 me-5 " type="range" value="10" min="1" max="100"
+                oninput="this.nextElementSibling.value = this.value">
+              <output>10</output> %
+            </div><br>
+            <div class="d-inline border border-0">
+              <h5 class="d-inline ms-5 me-2">Low</h5>
+              <input disabled class="w-50 d-inline mx-5" type="range" value="70" min="1" max="100"
+                oninput="this.nextElementSibling.value = this.value">
+              <output>70</output> %
+            </div>
+          </CCardBody>
+        </CCard>
+      </CCol>
+      <CCol sm="4">
+        <CCard style="height:auto">
+          <CCardBody style="padding-top: 30px; padding-left: 20px;">
+            <CCardTitle style="font-size: 30px;  color: #5c5c67;">Support Tracker</CCardTitle>
+            <CCardText style="font-size: 20px;  color: #A8A7AE;">Last 7 Days</CCardText>
+            <h1 style="font-size: 50px; color: #5c5c67;">164</h1>
+            <h5 style="font-size: 20px; color: #7B7984;">Total Ticket</h5>
+            <CRow style="padding-top: 20px;">
+              <CCol sm="2" style="padding-top:20px; padding-left: 25px;"><CIcon icon="cil-sun" /></CCol>
+              <CCol sm="10">
+                <b style="font-size: 20px;">New Ticket</b><p style="color:#A7A6AD;">142</p></CCol>
+              <CCol sm="2" style="padding-top:20px; padding-left: 25px;"><CIcon icon="cil-sun" /></CCol>
+              <CCol sm="10">
+                <b style="font-size: 20px;">Open Ticket</b><p style="color:#A7A6AD;">28</p></CCol>
+              <CCol sm="2" style="padding-top:20px; padding-left: 25px;"><CIcon icon="cil-sun" /></CCol>
+              <CCol sm="10">
+                <b style="font-size: 20px;">Response Time</b><p style="color:#A7A6AD;">1</p></CCol>
+            </CRow>
+          </CCardBody>
 
-    <CCard class="mt-3 ps-3 pb-3" style="width: 66%;">
-      <h2>Ticket Priority</h2>
-      <div class="d-inline border border-white">
-        <h5 class="d-inline ms-5">High</h5>
-        <input disabled class="w-50 d-inline mx-5" type="range" value="20" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
-        <output>20</output> %
-      </div>
-
-      <div class="d-inline border border-white">
-        <h5 class="d-inline ms-5">Normal</h5>
-        <input disabled class="w-50 d-inline ms-4 me-5 " type="range" value="10" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
-        <output>10</output> %
-      </div>
-
-      <div class="d-inline border border-0">
-        <h5 class="d-inline ms-5 me-2">Low</h5>
-        <input disabled class="w-50 d-inline mx-5" type="range" value="70" min="1" max="100" oninput="this.nextElementSibling.value = this.value" >
-        <output>70</output> %
-      </div>
-    </CCard>
-
-    
+        </CCard>
+      </CCol>
+    </CRow>
 
     <!-- inbox -->
-    
+
   </div>
 </template>
 
@@ -84,7 +100,7 @@ import { CCol, CRow } from '@coreui/vue-pro'
 import count_ticket from '@/components/CountTicket.vue'
 import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
-import axios from 'axios'
+import axios, { all } from 'axios'
 import * as icon from '@coreui/icons'
 import Chart from 'chart.js/auto'
 
@@ -226,9 +242,8 @@ export default {
           number: index + 1, // หมายเลขแถว
           _id: element._id,
           ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
-          owner: `${
-            element.tkt_act.act_first_name_eng
-          } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+          owner: `${element.tkt_act.act_first_name_eng
+            } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
           // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
           // ตามลำดับของ columns ในตัวแปร columns
           // เพิ่มเติมตามความต้องการ
@@ -250,25 +265,24 @@ export default {
 </script>
 
 <style>
-:disabled{
-   overflow:hidden;
+:disabled {
+  overflow: hidden;
   -moz-range-track: none;
 }
 
-#myrange{
+#myrange {
   -webkit-appearance: none;
-  outline:none;
+  outline: none;
   border: 2px solid #ffffff;
   border-radius: 20px;
-  box-shadow: inset 0 0 5px rgba(0,0,0,1);
- overflow:hidden;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+  overflow: hidden;
 }
 
-#myrange::-webkit-slider-thumb{
-      -webkit-appearance: none;
-      border-radius:50%; 
-      background:#000000;
-      box-shadow: -410px 0 0 400px #007bff;
-      cursor:pointer;
-}
-</style>
+#myrange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 50%;
+  background: #000000;
+  box-shadow: -410px 0 0 400px #007bff;
+  cursor: pointer;
+}</style>
