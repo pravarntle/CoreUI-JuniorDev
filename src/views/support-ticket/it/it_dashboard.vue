@@ -47,6 +47,8 @@
       </CCard>
     </CCard>
 
+    
+
     <CCard class="mt-3 ps-3 pb-3" style="width: 66%;">
       <h2>Ticket Priority</h2>
       <div class="d-inline border border-white">
@@ -68,29 +70,7 @@
       </div>
     </CCard>
 
-    <!-- <CCard class="" style="width: 34%;">
-      <CCard class="p-3" style="width: 60%;">
-        <h3>Support Tracker</h3>
-      </CCard>
-
-      <CCard class="px-3 bg-dark" style="width: 34%;">
-        <h1>164</h1>
-        <h5>Total Ticket</h5>
-      </CCard>
-
-      <CCard class="border border-danger d-inline" style="width: 70%; ">
-        <CCard class="d-inline">
-          <CIcon :icon="icon.cilCheckCircle" class="d-inline" size="xxl" style="color:#0ABB7C; background-color: #93F4D2;" />
-          <CCard class="d-inline bg-danger" >
-            <h5 class="d-inline ">New Ticket</h5>
-            <h6 class="d-block">146</h6>
-          </CCard>
-        </CCard>
-        <CCard class="bg-warning ">
-          a
-        </CCard>
-      </CCard>
-    </CCard> -->
+    
 
     <!-- inbox -->
     
