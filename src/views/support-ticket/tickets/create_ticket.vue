@@ -144,7 +144,7 @@
         <div class="clearfix text-end">
             <CButton
               color="secondary"
-              @click="cancel"
+              @click="visibleVerticallyCenteredDemo = true"
               style="
                 font-weight: bold;
                 font-size: x-large;
@@ -154,10 +154,39 @@
               "
               >Cancel</CButton
             >
+            <CModal
+                    alignment="center"
+                    :visible="visibleVerticallyCenteredDemo"
+                    @close="() => {
+                        visibleVerticallyCenteredDemo = false
+                      }
+                      "
+                  >
+                  <CModalBody>
+                      <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Cancel</h2>
+                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #D0293B;">Cancel The Ticket ?</span></p><br>         
+                      <hr>
+                      <CButton 
+                        :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
+                        @click="() => {
+                          visibleVerticallyCenteredDemo = false
+                        }"
+                        >
+                        Cancel
+                      </CButton>
+                      <CButton 
+                        class="ms-2"
+                        :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
+                        @click="confirm"
+                        >
+                        Confirm
+                      </CButton>
+                  </CModalBody>
+            </CModal>
             <CButton
               class="btn-sec"
               color="success"
-              @click="vaildateBeforeSave"
+              @click="visibleSubmit = true"
               style="
                 font-weight: bold;
                 font-size: x-large;
@@ -165,8 +194,47 @@
                 color: white;
                 border-radius: 20px;
               "
-              >Submit</CButton
-            >
+              >Submit
+            </CButton>
+            <CModal
+                    alignment="center"
+                    :visible="visibleSubmit"
+                    @close="() => {
+                        visibleSubmit = false
+                      }
+                      "
+                  >
+                  <CModalBody>
+                      <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Submit</h2>
+                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #29B227;">Submit The Ticket ?</span></p><br>         
+                      <hr>
+                      <CButton 
+                        :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
+                        @click="() => {
+                          visibleSubmit = false
+                        }"
+                        >
+                        Cancel
+                      </CButton>
+                      <CButton 
+                        class="ms-2"
+                        :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
+                        @click="vaildateBeforeSave"
+                        :disabled="isLoading"
+                        >
+                        <CSpinner 
+                          v-if="isLoading" 
+                          component="span" 
+                          size="sm" 
+                          variant="grow" 
+                          aria-hidden="true"
+                        />
+                        {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                      </CButton>
+                      
+                  </CModalBody>
+
+            </CModal>
           </div>
         </CForm>
       </CCardBody>
@@ -284,6 +352,9 @@ export default {
         ticket: null,
       },
       toasts: [],
+      visibleVerticallyCenteredDemo: false,
+      visibleSubmit: false,
+      isLoading: false,
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -354,11 +425,22 @@ export default {
       }
 
       if (!error) {
-        this.onSave()
+        this.isLoading = true;
+
+      // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+      // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        setTimeout(() => {
+          // จบการโหลด
+          this.isLoading = false;
+
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          this.onSave()
+        }, 2000);
       } else {
-        
-        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        
+        console.log('1'),
+        this.form.validatedCustom01 = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleSubmit= false;
+
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -424,7 +506,7 @@ export default {
         })
         this.form.tkt_picture = dataResponse.data._id
     },
-    async cancel() {
+    async confirm() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
       if (userId == "Admin") {
