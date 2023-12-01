@@ -50,7 +50,7 @@ const SchemaData = new schema({
     tkt_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
-        required: true
+        required: false
     },
     tkt_acc: {
         type: schema.Types.ObjectId,
