@@ -127,16 +127,17 @@
                 <b style="font-size: 20px">New Ticket</b>
                 <p style="color: #a7a6ad">142</p></CCol
               >
-              <CCol sm="2" style="padding-top: 20px; padding-left: 25px"
-                ><CIcon icon="cil-sun"
-              /></CCol>
+              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px; background-color: #E5F7FB; width: 15%; height: 50%;"
+                >
+                <CIcon :icon="icon.cilCheckCircle" size="xxl" style="margin-bottom: 10px; color: #69CFE6;"/>
+              </CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">Open Ticket</b>
                 <p style="color: #a7a6ad">28</p></CCol
               >
-              <CCol sm="2" style="padding-top: 20px; padding-left: 25px"
-                ><CIcon icon="cil-sun"
-              /></CCol>
+              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px;background-color: #FDF0E4; width: 15%; height: 50%;"
+                >
+                <CIcon :icon="icon.cilClock" size="xxl" style="margin-bottom: 10px; color: #F2A356;"/></CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">Response Time</b>
                 <p style="color: #a7a6ad">1</p></CCol
