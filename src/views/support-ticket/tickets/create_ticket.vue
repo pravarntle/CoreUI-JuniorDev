@@ -176,7 +176,7 @@
                               style="text-align: center; height: 70px;">
                           </CImage>
                           <br>
-                          <h6 style="font-size: larger; color: #888787; ">Upload</h6>
+                          <h6 style="font-size: larger; color: #888787; ">{{ uploadedFileName || 'Upload' }}</h6>
                         </div>
                     </div> 
                   </label>
@@ -348,6 +348,7 @@ export default {
         ticket: null,
       },
       toasts: [],
+      uploadedFileName: '',
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -475,6 +476,7 @@ export default {
         },
       )
       this.form.tkt_picture = dataResponse.data._id
+      this.uploadedFileName = uploadFile.name
     },
     async cancel() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
