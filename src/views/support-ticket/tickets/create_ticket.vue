@@ -98,7 +98,6 @@
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
-
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
@@ -133,54 +132,58 @@
 
           <CRow
             class="mb-2"
-            v-on:dragover.prevent="onDragOver"
-            v-on:dragleave.prevent="onDragLeave"
-            v-on:drop.prevent="onFileDrop"
           >
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-            <h5 class="col-lg-7 col-md-12">
-              <b>Upload A File</b>
-            </h5>
-            <div
+            <div class="col-lg-7 col-md-12 mb-4">
+              <h5>
+                <b>Upload A File</b>
+              </h5>
+              
+                <CCard class="pt-4 pb-4 ps-5 pe-5" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);"  >
+                  <label for="formFileLg">
+                    <div
+                      class="custom-file-upload mt-3"
+                      style="
 
-              :class="{ 'drag-over': isDragOver }"
-              style="
+                        border: 2px dashed #8a8a8a;
+                        border-radius: 8px;
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        
+                      "
+                      
+                      
+                    >
+                      <input
+                        type="file"
+                        size="lg"
+                        id="formFileLg"
+                        required
+                        accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
+                        @change="onFileUpload"
+                        :invalid="validate.tkt_picture"
+                        style="display: none"
+                        feedbackInvalid="ห้ามเว้นว่าง"
+                      />
 
-                border: 2px dashed #3498db;
-                border-radius: 8px;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <input
-                type="file"
-                size="lg"
-                id="formFileLg"
-                required
-                accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
-                @change="onFileUpload"
-                :invalid="validate.tkt_picture"
-                v-on:dragover.prevent
-                v-on:drop.prevent="onFileDrop"
-                style="display: none"
-                feedbackInvalid="ห้ามเว้นว่าง"
-              />
-
-              <label for="formFileLg" class="custom-file-upload">
-                <CImage class="Cloud"
-                    :src="Cloud"
-                    style="
-                      text-align: center;
-                      height: 70px;
-                    ">
-                </CImage>
-                <br>
-                <span>Drop File or Upload</span>
-              </label>
+                        <div>
+                          <CImage class="Cloud"
+                              :src="Cloud"
+                              style="text-align: center; height: 70px;">
+                          </CImage>
+                          <br>
+                          <h6 style="font-size: larger; color: #888787; ">Upload</h6>
+                        </div>
+                    </div> 
+                  </label>
+                  
+                </CCard> 
             </div>
+                      
             <CElementCover :opacity="0.5" v-if="pageLoading" />
             <div style="text-align: center"></div>
           </CRow>
@@ -304,13 +307,6 @@
 .custom-file-upload:hover {
   background-color: #7ee4b3;
 }
-
-.drag-over {
-  border-color: #1e6fad; /* เปลี่ยนสีขอบเมื่อมีการลากไฟล์เข้ามา */
-  background-color: #f0f8ff; /* เปลี่ยนสีพื้นหลังเมื่อมีการลากไฟล์เข้ามา */
-  border-width: 4px; /* ปรับความกว้างของเส้น */
-  padding: 0.5px; /* ปรับความสูงของพื้นที่ภายใน */
-}
 </style>
 
 <script>
@@ -385,46 +381,7 @@ export default {
     //   });
 
     // },
-    onDragOver() {
-      this.isDragOver = true
-    },
-    onDragLeave() {
-      this.isDragOver = false
-    },
-    onFileDrop(event) {
-      this.isDragOver = false
-      const files = event.dataTransfer.files
-      // ดำเนินการต่อไป...
-    },
-    onFileUpload(event) {
-      // Handle file selection using the default file input
-    },
 
-    async onFileDrop(event) {
-      // ป้องกันพฤติกรรมเริ่มต้นของเหตุการณ์ drop
-      event.preventDefault()
-
-      // ดึงไฟล์ที่ลากมาจากเหตุการณ์
-      const droppedFiles = event.dataTransfer.files
-
-      // อัปเดตข้อมูลของคอมโพเนนต์ด้วยไฟล์ที่ถูกวาง
-      this.form.tkt_picture = droppedFiles[0] // ในกรณีที่คุณต้องการจัดการไฟล์เพียงไฟล์เดียว
-    },
-    async togglePopup() {
-      this.isPopupVisible = !this.isPopupVisible
-    },
-    async getType() {
-      const type = await axios.get(
-        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
-      )
-      const types = await axios.post(
-        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
-      ) //,{populate:['tkt_act']}
-      console.log(types)
-      type.data.forEach((element) => {
-        this.userOptions.push({ value: element._id, label: element.typ_name })
-      })
-    },
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
@@ -503,22 +460,22 @@ export default {
         content: 'สร้างสำเร็จ',
       })
     },
-    // async onFileUpload(event) {
-    //   const uploadFile = event.target.files[0]
-    //   const formData = new FormData()
-    //   formData.append('file', uploadFile)
+    async onFileUpload(event) {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
 
-    //   const dataResponse = await axios.post(
-    //     `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     },
-    //   )
-    //   this.form.tkt_picture = dataResponse.data._id
-    // },
+      const dataResponse = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      this.form.tkt_picture = dataResponse.data._id
+    },
     async cancel() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role

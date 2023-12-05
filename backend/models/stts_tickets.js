@@ -50,7 +50,7 @@ const SchemaData = new schema({
     },
     tkt_book_task: {
         type: Boolean,
-        required: true,
+        required: false,
     },
     tkt_act: {
         type: schema.Types.ObjectId,
