@@ -19,7 +19,9 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b> Title<span style="color: red;">*</span> </b></h5>
+              <h5>
+                <b> Title<span style="color: red">*</span> </b>
+              </h5>
               <CFormInput
                 type="text"
                 id="tkt_title"
@@ -35,7 +37,9 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Type <span style="color: red;">*</span></b></h5>
+              <h5>
+                <b>Type <span style="color: red">*</span></b>
+              </h5>
               <CFormSelect
                 v-model="form.tkt_types"
                 :options="typeOptions"
@@ -52,13 +56,18 @@
             <div class="col-lg-7 col-md-12">
               <div class="d-flex align-items-center">
                 <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
-                <h5><b>Priority<span style="color: red;">*</span></b></h5>
+                <h5>
+                  <b>Priority<span style="color: red">*</span></b>
+                </h5>
                 <div class="popup" @click="togglePopup">
                   <CAvatar
                     class="popup_priority"
                     :src="popup_priority"
-                    style="text-align: left; margin-left: 10px; margin-top: -5px;"
-
+                    style="
+                      text-align: left;
+                      margin-left: 10px;
+                      margin-top: -5px;
+                    "
                   />
                   <div class="popuptext" :class="{ show: isPopupVisible }">
                     <p>
@@ -92,7 +101,9 @@
 
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Description<span style="color: red;">*</span></b></h5>
+              <h5>
+                <b>Description<span style="color: red">*</span></b>
+              </h5>
               <CFormTextarea
                 v-model="form.tkt_description"
                 feedbackInvalid="ห้ามเว้นว่าง"
@@ -119,29 +130,61 @@
               />
             </div>
           </CRow> -->
-          
-          
-          
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-          <div class="col-lg-7 col-md-12">
-            <h5><b>Upload A File<span style="color: red;">*</span></b></h5>
-            <CFormInput
-              type="file"
-              size="lg"
-              id="formFileLg"
-              required
-              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
-              @change="onFileUpload"
-              :invalid="validate.tkt_picture"
-            />
-          </div>
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
-          <div style="text-align: center"></div>
-        </CRow>
-        <div class="clearfix text-end">
+
+          <CRow
+            class="mb-2"
+            v-on:dragover.prevent="onDragOver"
+            v-on:dragleave.prevent="onDragLeave"
+            v-on:drop.prevent="onFileDrop"
+          >
+            <div class="col-lg-1"></div>
+            <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
+            <h5 class="col-lg-7 col-md-12">
+              <b>Upload A File</b>
+            </h5>
+            <div
+
+              :class="{ 'drag-over': isDragOver }"
+              style="
+
+                border: 2px dashed #3498db;
+                border-radius: 8px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <input
+                type="file"
+                size="lg"
+                id="formFileLg"
+                required
+                accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
+                @change="onFileUpload"
+                :invalid="validate.tkt_picture"
+                v-on:dragover.prevent
+                v-on:drop.prevent="onFileDrop"
+                style="display: none"
+                feedbackInvalid="ห้ามเว้นว่าง"
+              />
+
+              <label for="formFileLg" class="custom-file-upload">
+                <CImage class="Cloud"
+                    :src="Cloud"
+                    style="
+                      text-align: center;
+                      height: 70px;
+                    ">
+                </CImage>
+                <br>
+                <span>Drop File or Upload</span>
+              </label>
+            </div>
+            <CElementCover :opacity="0.5" v-if="pageLoading" />
+            <div style="text-align: center"></div>
+          </CRow>
+          <div class="clearfix text-end">
             <CButton
               color="secondary"
               @click="cancel"
@@ -246,14 +289,37 @@
 .btn-sec {
   margin: 5px;
 }
+
+.custom-file-upload {
+  cursor: pointer;
+  background-color: #f2f5f7;
+  color: #000000;
+  border-radius: 5px;
+  padding: 15px 15px;
+
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #7ee4b3;
+}
+
+.drag-over {
+  border-color: #1e6fad; /* เปลี่ยนสีขอบเมื่อมีการลากไฟล์เข้ามา */
+  background-color: #f0f8ff; /* เปลี่ยนสีพื้นหลังเมื่อมีการลากไฟล์เข้ามา */
+  border-width: 4px; /* ปรับความกว้างของเส้น */
+  padding: 0.5px; /* ปรับความสูงของพื้นที่ภายใน */
+}
 </style>
 
 <script>
+import Cloud from '@/assets/images/Cloud.png'
 import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
-import { CForm, CFormLabel } from '@coreui/vue-pro'
+import { CForm, CFormLabel, CImage } from '@coreui/vue-pro'
 import axios from 'axios'
 
 export default {
@@ -272,8 +338,10 @@ export default {
         tkt_book: '',
         tkt_act: '',
         validatedCustom01: false,
+        isDragOver: false,
       },
       popup_priority,
+      Cloud,
       isPopupVisible: false,
       userOptions: [],
       userOptions: [],
@@ -288,7 +356,7 @@ export default {
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
   created() {
-    (this.piorityOptions = [
+    ;(this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
       { label: 'Medium', value: 'Medium' },
@@ -317,6 +385,31 @@ export default {
     //   });
 
     // },
+    onDragOver() {
+      this.isDragOver = true
+    },
+    onDragLeave() {
+      this.isDragOver = false
+    },
+    onFileDrop(event) {
+      this.isDragOver = false
+      const files = event.dataTransfer.files
+      // ดำเนินการต่อไป...
+    },
+    onFileUpload(event) {
+      // Handle file selection using the default file input
+    },
+
+    async onFileDrop(event) {
+      // ป้องกันพฤติกรรมเริ่มต้นของเหตุการณ์ drop
+      event.preventDefault()
+
+      // ดึงไฟล์ที่ลากมาจากเหตุการณ์
+      const droppedFiles = event.dataTransfer.files
+
+      // อัปเดตข้อมูลของคอมโพเนนต์ด้วยไฟล์ที่ถูกวาง
+      this.form.tkt_picture = droppedFiles[0] // ในกรณีที่คุณต้องการจัดการไฟล์เพียงไฟล์เดียว
+    },
     async togglePopup() {
       this.isPopupVisible = !this.isPopupVisible
     },
@@ -356,9 +449,7 @@ export default {
       if (!error) {
         this.onSave()
       } else {
-        
-        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        
+        this.form.validatedCustom01 = true // เปลี่ยนเป็น true เมื่อคลิก "Submit"
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -377,11 +468,11 @@ export default {
 
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()   
+      const date = dayjs()
       const ticket_status = `Pending`
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
-      this.form.tkt_picture = this.form.tkt_picture || null;
+      this.form.tkt_picture = this.form.tkt_picture || null
 
       this.form.tkt_time = ticket_date
       this.form.tkt_number = ticket_number
@@ -412,35 +503,36 @@ export default {
         content: 'สร้างสำเร็จ',
       })
     },
-    async onFileUpload(event) {
-        const uploadFile = event.target.files[0]
-        const formData = new FormData()
-        formData.append('file', uploadFile)
-      
-        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        this.form.tkt_picture = dataResponse.data._id
-    },
+    // async onFileUpload(event) {
+    //   const uploadFile = event.target.files[0]
+    //   const formData = new FormData()
+    //   formData.append('file', uploadFile)
+
+    //   const dataResponse = await axios.post(
+    //     `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+    //     formData,
+    //     {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     },
+    //   )
+    //   this.form.tkt_picture = dataResponse.data._id
+    // },
     async cancel() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
-      if (userId == "Admin") {
+      if (userId == 'Admin') {
         this.$router.push('/support-ticket/admin/admin_dashboard')
-      }
-      else if (userId == "Employee") {
+      } else if (userId == 'Employee') {
         this.$router.push('/support-ticket/user/dashboard')
-      }
-      else if (userId == "ItSupport") {
+      } else if (userId == 'ItSupport') {
         this.$router.push('/support-ticket/it/it_dashboard')
-      }
-      else if (userId =="Manager") {
+      } else if (userId == 'Manager') {
         this.$router.push('/support-ticket/manager/manager_dashboard')
       }
-    }
+    },
   },
-  components: { CForm, CFormLabel },
+  components: { CForm, CFormLabel, CImage },
 }
 </script>
