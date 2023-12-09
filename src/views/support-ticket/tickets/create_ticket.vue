@@ -27,7 +27,7 @@
                 id="tkt_title"
                 name="tkt_title"
                 v-model="form.tkt_title"
-                feedbackInvalid="ห้ามเว้นว่าง"
+                feedbackInvalid="Please input title."
                 :invalid="validate.tkt_title"
                 required
               />
@@ -43,7 +43,7 @@
               <CFormSelect
                 v-model="form.tkt_types"
                 :options="typeOptions"
-                feedbackInvalid="ห้ามเว้นว่าง"
+                feedbackInvalid="Please select type."
                 :invalid="validate.tkt_types"
                 required
                 @change="checktype"
@@ -89,7 +89,7 @@
               <CFormSelect
                 v-model="form.tkt_priorities"
                 :options="piorityOptions"
-                feedbackInvalid="ห้ามเว้นว่าง"
+                feedbackInvalid="Please select priority."
                 :invalid="validate.tkt_priorities"
                 required
                 @change="checkpiority"
@@ -105,7 +105,7 @@
               </h5>
               <CFormTextarea
                 v-model="form.tkt_description"
-                feedbackInvalid="ห้ามเว้นว่าง"
+                feedbackInvalid="Please input description."
                 :invalid="validate.tkt_description"
                 required
                 id="validationTextarea"
@@ -530,7 +530,7 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.$router.push('/support-ticket/user/dashboard')
+            this.confirm();
           })
           .catch((err) => {
             console.log(error)
