@@ -65,16 +65,15 @@
               <hr />
               <Crow>
                 <CCol class="text-start" style="padding: -1px">
-                  <output style="margin-left: 5%"> 1 </output>
-                  <CCradText style="margin-left: 2%"> Attachment </CCradText>
+                  <CCradText class="ms-5"> <b>Attachment</b> </CCradText>
                 </CCol>
               </Crow>
               <Crow class="text-start">
-                <CCol style="margin-left: 5%">
-                  <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  
+                <CCol style="margin-left: 5%">  
                   <a v-if="picture">
-                    <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${picture.filename}`}}</a>
+                    <br>
+                    <CImage :src="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" /><br><br>
+                    <a :href="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" ><u>Download</u></a>
                   </a>
 
                   <br />
@@ -310,7 +309,7 @@ export default {
     },
 
     async countCharacters() {
-      this.characterCount = this.comment.length;
+      this.characterCount = this.comment.trim().length;
     },
 
     async attachImage() {
@@ -609,9 +608,11 @@ export default {
           default:
             return 'ไฟล์อื่น ๆ';
         }
-        }
+      },
+      
 
     },
+      
   mounted(){
     const itemId = this.$route.params.itemId;
     console.log(itemId)

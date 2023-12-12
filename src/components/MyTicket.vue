@@ -17,25 +17,23 @@
               border-image-slice: 1;
               padding: 3px;
             "
-          ></div>
+          >
+          </div>
         </div>
       </CCardHeader>
       <div class="table-responsive table-borderless">
         <CSmartTable
           :active-page="1"
           header
-          cleaner
           :items="items"
           :columns="columns"
           columnFilter
           column-sorter
-          clickable-rows
-          table-filter
           :items-per-page="5"
           items-per-page-select
           pagination
           columnSorter
-          :sorterValue="{ column: 'status', state: 'asc' }"
+          :sorterValue="{ column: 'START DATE(Y/M/D)', state: 'desc', dateFormat: 'YYYY-MM-DD' }"
           :table-props="{
             striped: true,
             hover: true,
@@ -150,11 +148,11 @@ name: 'my_ticket',
             { key: '#',_style: { width: '5%' }},
             { key: 'TicketID',_style: { width: '10%' }},            
             { key: 'TITLE', _style: { width: '10%' } },
-            { key: 'START DATE(D/M/Y)', _style: { width: '11%' } },
+            { key: 'START DATE(Y/M/D)', _style: { width: '11%' } },
             { key: 'STATUS', _style: { width: '5%' } },
             { key: 'TYPE', _style: { width: '4%' } },
             { key: 'BOOKMARK', _style: { width: '5%' } },
-            { key: 'MORE',_style: { width: '5%' }},
+            { key: 'MORE',_style: { width: '5%' },filter: false,},
             
      
         ];
@@ -244,7 +242,7 @@ name: 'my_ticket',
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
         // รีเฟรชหน้า
-        window.location.reload();
+        this.getTicket();
         
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
@@ -268,20 +266,20 @@ name: 'my_ticket',
                 },
             });
             // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-            this.items = response.data.map((element, index) => ({
-                '#': index + 1, // หมายเลขแถว
-                _id:element._id,
-                TicketID: element.tkt_number, // ข้อมูล TicketID จาก response
-                TITLE: element.tkt_title, // ข้อมูล tkt_title จาก response
-                // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
-                // ตามลำดับของ columns ในตัวแปร columns
-                // เพิ่มเติมตามความต้องการ
-                'START DATE(D/M/Y)': element.tkt_time,
-                STATUS:element.tkt_status  ,
+            this.items = response.data.map((element, index) => {
+
+            return {
+                '#': index + 1,
+                _id: element._id,
+                TicketID: element.tkt_number,
+                TITLE: element.tkt_title,
+                'START DATE(Y/M/D)': element.tkt_time,
+                STATUS: element.tkt_status,
                 TYPE: element.tkt_types,
                 BOOKMARK: element.tkt_book,
-                MORE: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
-            }));
+                MORE: false,
+            };
+            });
             } catch (error) {
             console.error('Error fetching data:', error);
             }

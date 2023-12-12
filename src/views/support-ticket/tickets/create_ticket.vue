@@ -113,23 +113,6 @@
               />
             </div>
           </CRow>
-
-          <!-- <CRow class="mb-2">
-            <div class="col-lg-1"></div>
-            <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-            <div class="col-lg-7 col-md-12">
-              <h5><b>Upload A File</b></h5>
-              <CFormInput
-                type="file"
-                size="lg"
-                id="formFileLg"
-                v-model="form.tkt_picture"
-                :invalid="validate.tkt_picture"
-                required
-              />
-            </div>
-          </CRow> -->
-
           <CRow
             class="mb-2"
           >
@@ -346,17 +329,6 @@
   }
 }
 
-/* เพิ่ม CSS Media Query เพื่อปรับแต่งการ padding-left เมื่อหน้าจอเล็ก */
-/* @media (max-width: 768px) {
-  .col-lg-3.col-md-12 h5 {
-    padding-left: 0;
-  }
-} */
-
-/* .footer {
-  display: flex;
-  justify-content: end;
-} */
 .btn-sec {
   margin: 5px;
 }
@@ -455,6 +427,7 @@ export default {
     // },
 
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
+   
 
     vaildateBeforeSave() {
       let error
@@ -512,7 +485,7 @@ export default {
       const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
       const ticket_status = `Pending`
-      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
       this.form.tkt_picture = this.form.tkt_picture || null
 

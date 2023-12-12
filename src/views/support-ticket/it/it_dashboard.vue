@@ -170,7 +170,7 @@ export default {
         { key: 'MORE',
         _style: { width: '5%' },
         filter: false,
-          sorter: false,
+        sorter: false,
         },
           ];
           const items = ref([]);
