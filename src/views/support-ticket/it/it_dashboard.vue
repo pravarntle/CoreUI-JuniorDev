@@ -6,9 +6,11 @@
 
     <CRow>
       <CCol sm="8">
-        <CCard>
+        <CCard class="chart-container">
           <CCardBody>
-            <CCardTitle sm="6">Category Chart</CCardTitle>
+            <CCardTitle class="d-flex">Category Chart 
+              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex"><img :src="Close_fullscreen"/></CButton>
+            </CCardTitle>
             <CChart
               sm="6"
               style="height: auto; width: 50% ; margin-left: auto;"
@@ -18,8 +20,6 @@
                 labels: [
                   'Software',
                   'Hardware',
-                  'Typeone',
-                  'Typetwo',
                   'Service Request',
                 ],
                 datasets: [
@@ -28,12 +28,10 @@
                       '#0071FF',
                       '#EE5731',
                       '#F860E9',
-                      '#62BB1E',
-                      '#F9A825',
                     ],
-                    data: [40, 20, 50, 50, 10],
+                    data: [40, 20, 50,],
 
-                    cutot: '70%',
+                    cutout: '70%',
                   },
                 ],
               }"
@@ -42,22 +40,18 @@
                   title: {
                     display: true,
                     Text: 'all ticket',
-                    position: 'absolute',
-                    fontSize: 16,
-                    color: '#000', // Customize the text color
                   },
                   legend: {
                     display: true,
                     position: 'left',
                     labels: {
                       usePointStyle: true, // ใช้รูปจุดแทนข้อความ
-                      fontSize: 12,
-                      radius: 0,
                     },
                   },
                 },
               }"
             />
+             
           </CCardBody>
 
         <!-- Ticket Priority  -->
@@ -65,43 +59,43 @@
         <CCard style="margin-top: 10px">
           <CCardBody>
             <CCardTitle>Ticket Priority</CCardTitle>
-            <div class="d-inline border border-white">
-              <h5 class="d-inline ms-5">High</h5>
+            <div class="row d-flex align-items-center border border-white">
+              <div class="col-md-2 col-sm-12 ps-5 "><h5>High</h5></div>
               <input
-                class="w-50 d-inline mx-5"
+                class="w-50 col-md-6 col-sm-12"
                 type="range"
                 value="20"
                 min="1"
                 max="100"
                 oninput="this.nextElementSibling.value = this.value"
               />
-              <output >20</output> %
+              <output class="col-md-4 col-sm-12 ps-5">20%</output>
             </div>
             <br />
-            <div class="d-inline border border-white">
-              <h5 class="d-inline ms-5">Normal</h5>
+            <div class="row d-flex align-items-center border border-white">
+              <h5 class="col-2 ps-5">Normal</h5>
               <input
-                class="w-50 d-inline ms-4 me-5"
+                class="w-50 col-6"
                 type="range"
                 value="10"
                 min="1"
                 max="100"
                 oninput="this.nextElementSibling.value = this.value"
               />
-              <output>10</output> %
+              <output class="col-4 ps-5">10%</output>
             </div>
             <br />
-            <div class="d-inline border border-0">
-              <h5 class="d-inline ms-5 me-2">Low</h5>
+            <div class="row d-flex align-items-center border border-0">
+              <h5 class="col-2 ps-5 ">Low</h5>
               <input
-                class="w-50 d-inline mx-5"
+                class="w-50 col-6"
                 type="range"
                 value="70"
                 min="1"
                 max="100"
                 oninput="this.nextElementSibling.value = this.value"
               />
-              <output>70</output> %
+              <output class="col-4 ps-5">70%</output>
             </div>
           </CCardBody>
         </CCard>
@@ -120,9 +114,10 @@
             <h1 style="font-size: 50px; color: #5c5c67">164</h1>
             <h5 style="font-size: 20px; color: #7b7984">Total Ticket</h5>
             <CRow style="padding-top: 20px">
-              <CCol sm="2" style="padding-top: 20px; padding-left: 25px"
-                ><CIcon icon="cil-sun"
-              /></CCol>
+              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px; background-color: #E8E7FB; width: 15%; height: 50%;"
+                >
+                <CIcon :icon="icon.cilPlus" size="xxl" style="margin-bottom: 10px; color: #7167E8;"/>
+              </CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">New Ticket</b>
                 <p style="color: #a7a6ad">142</p></CCol
@@ -161,7 +156,9 @@ import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
 import axios, { all } from 'axios'
 import * as icon from '@coreui/icons'
-import Chart from 'chart.js/auto'
+import Open_in_full from '@/assets/images/open_in_full.png'
+import Close_fullscreen from '@/assets/images/close_fullscreen.png'
+
 
 
 export default {
@@ -248,6 +245,8 @@ export default {
       items,
       getBadge,
       toggleDetails,
+      Open_in_full,
+      Close_fullscreen,
       icon,
     }
   },
@@ -340,4 +339,18 @@ export default {
     pointer-events: none; /* ป้องกันการคลิก */
   }
 
+.chart-container {
+  position: relative;
+}
+
+.custom-text {
+  position: absolute;
+  top: 50%;
+   right: 0;
+  transform: translate(-50%);
+  text-align: right;
+  font-size: 16px;
+  color: black;
+  /* สไตล์เพิ่มเติมตามความต้องการ */
+}
 </style>
