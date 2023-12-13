@@ -10,13 +10,13 @@
               <h1 class="font-h">LOGIN</h1>
               <CFormLabel>Username</CFormLabel>
               <CInputGroup class="mb-3">
-                <CFormInput v-model="form.username" feedbackInvalid="ห้ามเว้นว่าง" :invalid="validate.username" size="lg"
+                <CFormInput v-model="form.username" feedbackInvalid="Can not be left blank." :invalid="validate.username" size="lg"
                   id="username" placeholder="Username"/>
               </CInputGroup>
               <CFormLabel>Password</CFormLabel>
               <CInputGroup class="mb-4">
                 <CFormInput id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password"
-                  feedbackInvalid="ห้ามเว้นว่าง" :invalid="validate.password" autocomplete="current-password" size="lg" placeholder="Password" />
+                  feedbackInvalid="Can not be left blank." :invalid="validate.password" autocomplete="current-password" size="lg" placeholder="Password" />
                 <CInputGroupText>
                   <CFormCheck type="radio" autocomplete="off" @click="showPassword = !showPassword">
                     <template #label>
@@ -74,6 +74,7 @@ body {
   right: 100px;
   top: 100px;
   padding: 100px;
+  font-size: 20px;
 
 }
 .font-h{
@@ -82,6 +83,7 @@ body {
   font-weight: bold;
   padding-bottom: 30px;
 }
+
 .b-login{
   font-weight: bold;
   font-size: 20px;
