@@ -4,17 +4,17 @@
       <CCardBody>
         <CRow>
           <CCol>
-            <CForm>
-              <h1 class="mt-5">LOGIN</h1>
+            <CForm class="c-form">
+              <h1 class="font-h">LOGIN</h1>
               <CFormLabel>Username</CFormLabel>
               <CInputGroup class="mb-3">
                 <CFormInput v-model="form.username" feedbackInvalid="ห้ามเว้นว่าง" :invalid="validate.username" size="lg"
-                  id="username" />
+                  id="username" placeholder="Username"/>
               </CInputGroup>
               <CFormLabel>Password</CFormLabel>
               <CInputGroup class="mb-4">
                 <CFormInput id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password"
-                  feedbackInvalid="ห้ามเว้นว่าง" :invalid="validate.password" autocomplete="current-password" size="lg" />
+                  feedbackInvalid="ห้ามเว้นว่าง" :invalid="validate.password" autocomplete="current-password" size="lg" placeholder="Password" />
                 <CInputGroupText>
                   <CFormCheck type="radio" autocomplete="off" @click="showPassword = !showPassword">
                     <template #label>
@@ -23,13 +23,15 @@
                   </CFormCheck>
                 </CInputGroupText>
               </CInputGroup>
-              <CFormCheck class="remember" id="rememberMe" label="Remember me" />
+              <CFormCheck id="flexCheckDefault" label="Remember me"/>
+              <!-- <CFormSwitch label="Remember me" id="formSwitchCheckDefault"/> -->
               <CRow>
                 <CCol :xs="6">
-                  <CButton color="dark" class="px-4" @click="onLoginClick"> Login </CButton>
+                  <CButton color="dark" class="b-login" @click="onLoginClick"> Login </CButton>
                 </CCol>
               </CRow>
             </CForm>
+            <hr>
           </CCol>
         </CRow>
       </CCardBody>
@@ -47,6 +49,7 @@
         </CToast>
     </CToaster> -->
 </template>
+
 <style >
 .c-image {
   border-radius: 15px 15px 15px 15px;
@@ -63,13 +66,37 @@ body {
 .Card {
   background-color: rgba(255, 255, 255, 0.5);
   /* สีขาวโปร่งใส 50% */
-  width: 680px;
-  height: 650px;
+  width: 700px;
+  height: 700px;
   position: absolute;
   right: 50px;
   top: 100px;
+  padding: 100px;
+
 }
+.font-h{
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  padding-bottom: 30px;
+}
+.b-login{
+  font-weight: bold;
+  font-size: 20px;
+  width: 210%;
+  height: auto;
+  display: flex;
+  padding: 10px 24px;
+  flex-direction: column;
+  background-color: #007AFF;
+  margin-top: 60px;
+}
+
+
+
 </style>
+
+
 <script>
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
@@ -145,7 +172,7 @@ export default {
             id: response.data.user.id,
             USERNAME: response.data.user.USERNAME,
             role: response.data.user.role,
-            // role: response.data.data.role,  
+            // role: response.data.data.role,
             token: response.data.user.token
 
           }
