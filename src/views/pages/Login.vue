@@ -1,5 +1,7 @@
 <template>
   <div>
+    <CImage :src ="Ticket" class="Img_Ticket"/>
+    <h1 class="HeadName">Support Trouble Ticket System</h1>
     <CCard class="Card">
       <CCardBody>
         <CRow>
@@ -69,7 +71,7 @@ body {
   width: 700px;
   height: 700px;
   position: absolute;
-  right: 50px;
+  right: 100px;
   top: 100px;
   padding: 100px;
 
@@ -93,7 +95,20 @@ body {
 }
 
 
+.Img_Ticket{
+  width: 700px;
+  height: auto;
+  position: absolute;
+  left: 250px;
+  top: 200px;
+}
 
+.HeadName{
+  color: white;
+  position: absolute;
+  left: 350px;
+  top: 720px;
+}
 </style>
 
 
@@ -101,7 +116,7 @@ body {
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import { cilToggleOff, cilToggleOn } from '@coreui/icons';
-import login from '@/assets/images/login.jpg'
+import Ticket from '@/assets/images/Ticket.png'
 import { CFormInput } from '@coreui/vue-pro';
 import Background from '@/assets/images/Background_Blue.png'
 export default {
@@ -111,7 +126,6 @@ export default {
       dataImageURL: '',
       cilToggleOff,
       cilToggleOn,
-      login: login,
       validatedCustom01: null,
       form: {
         username: '',
@@ -123,6 +137,7 @@ export default {
       },
       showPassword: false,
       Background,
+      Ticket,
       // toastProp: [],
     };
   },
