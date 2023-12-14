@@ -20,7 +20,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b> Title<span style="color: red">*</span> </b>
+                <b>Title <span style="color: red">*</span> </b>
               </h5>
               <CFormInput
                 type="text"
@@ -57,7 +57,7 @@
               <div class="d-flex align-items-center">
                 <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
                 <h5>
-                  <b>Priority<span style="color: red">*</span></b>
+                  <b>Priority <span style="color: red">*</span></b>
                 </h5>
                 <div class="popup" @click="togglePopup">
                   <CAvatar
@@ -101,7 +101,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b>Description<span style="color: red">*</span></b>
+                <b>Description <span style="color: red">*</span></b>
               </h5>
               <CFormTextarea
                 v-model="form.tkt_description"
@@ -120,9 +120,8 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12 mb-4">
               <h5>
-                <b>Upload A File</b>
+                <b>Upload File</b>
               </h5>
-              
                 <CCard class="pt-4 pb-4 ps-5 pe-5" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);"  >
                   <label for="formFileLg">
                     <div
@@ -138,8 +137,6 @@
                         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                         
                       "
-                      
-                      
                     >
                       <input
                         type="file"

@@ -1,8 +1,8 @@
 <template>
     <div class="box">
-      <CCard class="p-2">
+      <CCard class="ps-4 pt-5">
         
-          <div>
+          <div >
             <CRow>
                 <CCol xs="auto">
                   <div Class="Bookmark">
