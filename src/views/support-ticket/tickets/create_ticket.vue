@@ -119,7 +119,6 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12 mb-4">
-              <button @click="createToast">ssss</button>
               <h5>
                 <b>Upload File</b>
               </h5>
@@ -469,7 +468,6 @@ export default {
           this.onSave()
         }, 3000);
       } else {
-        console.log('1'),
         this.form.validatedCustom01 = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.visibleSubmit= false;
 
