@@ -119,6 +119,7 @@
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12 mb-4">
+              <button @click="createToast">ssss</button>
               <h5>
                 <b>Upload File</b>
               </h5>
@@ -268,6 +269,16 @@
   </div>
 
   <br />
+    <CToaster placement="top-end">
+        <CToast visible color="info" v-for="(toast) in toastProp">
+            <CToastHeader closeButton v-if="toast.title">
+                <span class="me-auto fw-bold">{{ toast.title }}</span>
+            </CToastHeader>
+            <CToastBody v-if="toast.content">
+                <span class="text-white">{{ toast.content }}</span>
+            </CToastBody>
+        </CToast>
+    </CToaster>
 </template>
 <style>
 .popup_priority {
@@ -384,7 +395,7 @@ export default {
       validate: {
         ticket: null,
       },
-      toasts: [],
+      toastProp: [],
       uploadedFileName: '',
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
@@ -456,7 +467,7 @@ export default {
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
           this.onSave()
-        }, 2000);
+        }, 3000);
       } else {
         console.log('1'),
         this.form.validatedCustom01 = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
@@ -509,12 +520,6 @@ export default {
         console.log(error)
       }
     },
-    createToast() {
-      this.toasts.push({
-        title: 'Create Ticket',
-        content: 'สร้างสำเร็จ',
-      })
-    },
     async onFileUpload(event) {
       const uploadFile = event.target.files[0]
       const formData = new FormData()
@@ -535,6 +540,10 @@ export default {
     async confirm() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
+      this.toastProp.push({
+        title: 'Create Ticket',
+        content: 'สร้างสำเร็จ',
+      })
       if (userId == 'Admin') {
         this.$router.push('/support-ticket/admin/admin_dashboard')
       } else if (userId == 'Employee') {
