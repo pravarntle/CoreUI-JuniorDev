@@ -20,7 +20,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b>Title <span style="color: red">*</span> </b>
+                <b >Title <span style="color: red">*</span> </b>
               </h5>
               <CFormInput
                 type="text"
