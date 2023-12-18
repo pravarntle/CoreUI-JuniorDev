@@ -59,7 +59,7 @@
                 <h5>
                   <b>Priority <span style="color: red">*</span></b>
                 </h5>
-                <div class="popup" @click="togglePopup">
+                <div class="popup" @mouseover="togglePopup">
                   <CAvatar
                     class="popup_priority"
                     :src="popup_priority"
@@ -69,7 +69,7 @@
                       margin-top: -5px;
                     "
                   />
-                  <div class="popuptext" :class="{ show: isPopupVisible }">
+                  <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup" >
                     <p>
                       <font style="color: #38a06c">
                         Low = ดำเนินการภายใน 72 ชม.
@@ -135,7 +135,7 @@
                         justify-content: center;
                         align-items: center;
                         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        
+
                       "
                     >
                       <input
@@ -158,12 +158,12 @@
                           <br>
                           <h6 style="font-size: larger; color: #888787; ">{{ uploadedFileName || 'Upload' }}</h6>
                         </div>
-                    </div> 
+                    </div>
                   </label>
-                  
-                </CCard> 
+
+                </CCard>
             </div>
-                      
+
             <CElementCover :opacity="0.5" v-if="pageLoading" />
             <div style="text-align: center"></div>
           </CRow>
@@ -190,9 +190,9 @@
                   >
                   <CModalBody>
                       <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Cancel</h2>
-                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #D0293B;">Cancel The Ticket ?</span></p><br>         
+                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #D0293B;">Cancel The Ticket ?</span></p><br>
                       <hr>
-                      <CButton 
+                      <CButton
                         :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
                         @click="() => {
                           visibleVerticallyCenteredDemo = false
@@ -200,7 +200,7 @@
                         >
                         Cancel
                       </CButton>
-                      <CButton 
+                      <CButton
                         class="ms-2"
                         :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
                         @click="confirm"
@@ -232,9 +232,9 @@
                   >
                   <CModalBody>
                       <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Submit</h2>
-                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #29B227;">Submit The Ticket ?</span></p><br>         
+                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #29B227;">Submit The Ticket ?</span></p><br>
                       <hr>
-                      <CButton 
+                      <CButton
                         :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
                         @click="() => {
                           visibleSubmit = false
@@ -242,22 +242,22 @@
                         >
                         Cancel
                       </CButton>
-                      <CButton 
+                      <CButton
                         class="ms-2"
                         :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
                         @click="vaildateBeforeSave"
                         :disabled="isLoading"
                         >
-                        <CSpinner 
-                          v-if="isLoading" 
-                          component="span" 
-                          size="sm" 
-                          variant="grow" 
+                        <CSpinner
+                          v-if="isLoading"
+                          component="span"
+                          size="sm"
+                          variant="grow"
                           aria-hidden="true"
                         />
                         {{ isLoading ? 'Confirm...' : 'Confirm' }}
                       </CButton>
-                      
+
                   </CModalBody>
 
             </CModal>
@@ -424,7 +424,7 @@ export default {
     // },
 
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
-   
+
 
     vaildateBeforeSave() {
       let error
@@ -544,7 +544,9 @@ export default {
       } else if (userId == 'Manager') {
         this.$router.push('/support-ticket/manager/manager_dashboard')
       }
-    },
+    },togglePopup() {
+    this.isPopupVisible = !this.isPopupVisible;
+  },
   },
   components: { CForm, CFormLabel, CImage },
 }
