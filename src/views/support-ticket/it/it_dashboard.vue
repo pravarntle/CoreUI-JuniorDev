@@ -8,94 +8,127 @@
       <CCol sm="8">
         <CCard class="chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex">Category Chart 
-              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex"><img :src="Close_fullscreen"/></CButton>
-            </CCardTitle>
-            <CChart
-              sm="6"
-              style="height: auto; width: 50% ; margin-left: auto;"
-              class="d-flex"
-              type="doughnut"
-              :data="{
-                labels: [
-                  'Software',
-                  'Hardware',
-                  'Service Request',
-                ],
-                datasets: [
-                  {
-                    backgroundColor: [
-                      '#0071FF',
-                      '#EE5731',
-                      '#F860E9',
-                    ],
-                    data: [40, 20, 50,],
+            <CCardTitle class="d-flex fs-4"
+                  ><b>Category Chart</b>
+                  <CButton
+                    variant="ghost"
+                    class="border border-0 bg-body ms-auto d-flex"
+                    ><img :src="Close_fullscreen"
+                  /></CButton>
+                </CCardTitle>
+            <CRow>
+              <CCol sm="6"
+                >
+                <CCardSubtitle class="text-muted fs-2"
+                  >ALL TICKET</CCardSubtitle
+                >
 
-                    cutout: '70%',
-                  },
-                ],
-              }"
-              :options="{
-                plugins: {
-                  title: {
-                    display: true,
-                    Text: 'all ticket',
-                  },
-                  legend: {
-                    display: true,
-                    position: 'left',
-                    labels: {
-                      usePointStyle: true, // ใช้รูปจุดแทนข้อความ
+                <CCardText class="fs-1"><b>500</b></CCardText>
+                <hr>
+                <CCol sm="6" class="d-flex align-items-center">
+                  <ul>
+                    <li style="color: #0071ff; font-size: 24px">
+                      <span style="color: black; font-size: 16px"
+                        >Software</span
+                      >
+                    </li>
+                    <li style="color: #f9a825; font-size: 24px">
+                      <span style="color: black; font-size: 16px"
+                        >Hardware</span
+                      >
+                    </li>
+                    <li style="color: #ee5731; font-size: 24px">
+                      <span style="color: black; font-size: 16px"
+                        >Service Request</span
+                      >
+                    </li>
+                  </ul>
+                </CCol></CCol
+              >
+              <CCol sm="6">
+                <CChart
+                  style=""
+                  type="pie"
+                  :data="{
+                    labels: ['Software', 'Hardware', 'Service Request'],
+                    datasets: [
+                      {
+                        backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
+                        data: [35, 10, 55],
+                      },
+                    ],
+                  }"
+                  :options="{
+                    plugins: {
+                      title: {
+                        display: true,
+                        Text: 'all ticket',
+                      },
+                      legend: {
+                        display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
+                      },
                     },
-                  },
-                },
-              }"
-            />
-             
+                  }"
+                />
+              </CCol>
+            </CRow>
           </CCardBody>
 
-        <!-- Ticket Priority  -->
-        </CCard> 
+          <!-- Ticket Priority  -->
+        </CCard>
         <CCard style="margin-top: 10px">
           <CCardBody>
-            <CCardTitle>Ticket Priority</CCardTitle>
-            <div class="row d-flex align-items-center border border-white">
-              <div class="col-md-2 col-sm-12 ps-5 "><h5>High</h5></div>
-              <input
-                class="w-50 col-md-6 col-sm-12"
-                type="range"
-                value="20"
-                min="1"
-                max="100"
-                oninput="this.nextElementSibling.value = this.value"
-              />
-              <output class="col-md-4 col-sm-12 ps-5">20%</output>
+            <CCardTitle class="d-flex fs-4"
+                  ><b>Ticket Priority</b>
+                  <CButton
+                    variant="ghost"
+                    class="border border-0 bg-body ms-auto d-flex"
+                    ><img :src="Close_fullscreen"
+                  /></CButton>
+                </CCardTitle>
+            <div class="row align-items-center border border-white">
+              <div class="col-md-2 col-sm-12 ps-5"><h5>High</h5></div>
+              <div class="col-md-7 col-sm-12 ps-5">
+                <input
+                  class="w-100"
+                  type="range"
+                  value="20"
+                  min="1"
+                  max="100"
+                  oninput="this.nextElementSibling.value = this.value"
+                />
+              </div>
+              <output class="col-md-3 col-sm-12 ps-5">20%</output>
             </div>
             <br />
-            <div class="row d-flex align-items-center border border-white">
-              <h5 class="col-2 ps-5">Normal</h5>
-              <input
-                class="w-50 col-6"
-                type="range"
-                value="10"
-                min="1"
-                max="100"
-                oninput="this.nextElementSibling.value = this.value"
-              />
-              <output class="col-4 ps-5">10%</output>
+            <div class="row align-items-center border border-white">
+              <div class="col-md-2 col-sm-12 ps-5"><h5>Nomal</h5></div>
+              <div class="col-md-7 col-sm-12 ps-5">
+                <input
+                  class="w-100"
+                  type="range"
+                  value="10"
+                  min="1"
+                  max="100"
+                  oninput="this.nextElementSibling.value = this.value"
+                />
+              </div>
+              <output class="col-md-3 col-sm-12 ps-5">10%</output>
             </div>
             <br />
-            <div class="row d-flex align-items-center border border-0">
-              <h5 class="col-2 ps-5 ">Low</h5>
-              <input
-                class="w-50 col-6"
-                type="range"
-                value="70"
-                min="1"
-                max="100"
-                oninput="this.nextElementSibling.value = this.value"
-              />
-              <output class="col-4 ps-5">70%</output>
+            <div class="row align-items-center border border-white">
+              <div class="col-md-2 col-sm-12 ps-5"><h5>Low</h5></div>
+              <div class="col-md-7 col-sm-12 ps-5">
+                <input
+                  class="w-100"
+                  type="range"
+                  value="70"
+                  min="1"
+                  max="100"
+                  oninput="this.nextElementSibling.value = this.value"
+                />
+              </div>
+              <output class="col-md-3 col-sm-12 ps-5">70%</output>
             </div>
           </CCardBody>
         </CCard>
@@ -105,34 +138,75 @@
       <CCol sm="4">
         <CCard style="height: auto">
           <CCardBody style="padding-top: 30px; padding-left: 20px">
-            <CCardTitle style="font-size: 30px; color: #5c5c67"
-              >Support Tracker</CCardTitle
-            >
+            <CCardTitle class="d-flex fs-4"
+                  ><b>Support Tracker</b>
+                  <CButton
+                    variant="ghost"
+                    class="border border-0 bg-body ms-auto d-flex"
+                    ><img :src="Close_fullscreen"
+                  /></CButton>
+                </CCardTitle>
             <CCardText style="font-size: 20px; color: #a8a7ae"
               >Last 7 Days</CCardText
             >
-            <h1 style="font-size: 50px; color: #5c5c67">164</h1>
+            <h1 style="font-size: 50px; color: #5c5c67" class="mt-5">164</h1>
             <h5 style="font-size: 20px; color: #7b7984">Total Ticket</h5>
             <CRow style="padding-top: 20px">
-              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px; background-color: #E8E7FB; width: 15%; height: 50%;"
-                >
-                <CIcon :icon="icon.cilPlus" size="xxl" style="margin-bottom: 10px; color: #7167E8;"/>
+              <CCol
+                sm="2"
+                class="rounded-3 ms-1"
+                style="
+                  padding-top: 10px;
+                  background-color: #e8e7fb;
+                  width: 15%;
+                  height: 50%;
+                "
+              >
+                <CIcon
+                  :icon="icon.cilPlus"
+                  size="xxl"
+                  style="margin-bottom: 10px; color: #7167e8"
+                />
               </CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">New Ticket</b>
                 <p style="color: #a7a6ad">142</p></CCol
               >
-              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px; background-color: #E5F7FB; width: 15%; height: 50%;"
-                >
-                <CIcon :icon="icon.cilCheckCircle" size="xxl" style="margin-bottom: 10px; color: #69CFE6;"/>
+              <CCol
+                sm="2"
+                class="rounded-3 ms-1"
+                style="
+                  padding-top: 10px;
+                  background-color: #e5f7fb;
+                  width: 15%;
+                  height: 50%;
+                "
+              >
+                <CIcon
+                  :icon="icon.cilCheckCircle"
+                  size="xxl"
+                  style="margin-bottom: 10px; color: #69cfe6"
+                />
               </CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">Open Ticket</b>
                 <p style="color: #a7a6ad">28</p></CCol
               >
-              <CCol sm="2" class="rounded-3 ms-1" style="padding-top: 10px;background-color: #FDF0E4; width: 15%; height: 50%;"
-                >
-                <CIcon :icon="icon.cilClock" size="xxl" style="margin-bottom: 10px; color: #F2A356;"/></CCol>
+              <CCol
+                sm="2"
+                class="rounded-3 ms-1"
+                style="
+                  padding-top: 10px;
+                  background-color: #fdf0e4;
+                  width: 15%;
+                  height: 50%;
+                "
+              >
+                <CIcon
+                  :icon="icon.cilClock"
+                  size="xxl"
+                  style="margin-bottom: 10px; color: #f2a356"
+              /></CCol>
               <CCol sm="10">
                 <b style="font-size: 20px">Response Time</b>
                 <p style="color: #a7a6ad">1</p></CCol
@@ -144,6 +218,106 @@
     </CRow>
 
     <!-- inbox -->
+    <CCard class="d-block mt-2">
+      <h1
+        class="d-block ms-2"
+        style="
+          width: 140px;
+          border-bottom: 2px solid transparent;
+          border-image: linear-gradient(to right, red, blue);
+          border-image-slice: 1;
+          lable: asd;
+        "
+      >
+        <CIcon :icon="icon.cilInbox" size="xxl" />Inbox
+      </h1>
+      <div class="table-responsive table-borderless">
+        <CSmartTable
+          clickableRows
+          :tableProps="{
+            striped: true,
+            hover: true,
+          }"
+          :activePage="2"
+          header
+          :items="items"
+          :columns="columns"
+          columnFilter
+          tableFilter
+          cleaner
+          itemsPerPageSelect
+          items-per-page-select
+          :itemsPerPage="5"
+          columnSorter
+          :sorterValue="{ column: 'status', state: 'asc' }"
+          pagination
+        >
+          <template #status="{ item }">
+            <td>
+              <CBadge :color="getBadge(item.status)"
+                ><li>{{ item.status }}</li></CBadge
+              >
+            </td>
+          </template>
+          <template #type="{ item }">
+            <td>
+              <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
+            </td>
+          </template>
+
+          <!-- <template #BOOKMARK="{ item, index }" >
+            <td class="text-center">
+              <CButton
+                variant="outline"
+                square
+                size="xl"
+                @click="toggleDetails(item, index)"
+              >
+              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+              </CButton>
+            </td>
+          </template> -->
+          <template #MORE="{ item, index }">
+            <td class="text-center">
+              <CButton
+                color="primary"
+                variant="outline"
+                square
+                size="xl"
+                @click="toggleButton(item, index)"
+              >
+                {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+              </CButton>
+            </td>
+          </template>
+          <template #details="{ item, index }">
+            <CCollapse :visible="Boolean(item.MORE)">
+              <CCardBody>
+                <h4>
+                  {{ item.tkt_title }}
+                </h4>
+                <CButton
+                  size="sm"
+                  color="info"
+                  class=""
+                  @click="contactIt(item, index)"
+                >
+                  ติดต่อ It Suport
+                </CButton>
+                <CButton
+                  size="sm"
+                  color="danger"
+                  class="ml-3"
+                  @click="buttonCancel(item, index)"
+                >
+                  Cancel
+                </CButton>
+              </CCardBody>
+            </CCollapse>
+          </template>
+        </CSmartTable>
+      </div>
+    </CCard>
   </div>
 </template>
 
@@ -158,8 +332,6 @@ import axios, { all } from 'axios'
 import * as icon from '@coreui/icons'
 import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
-
-
 
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon },
@@ -325,19 +497,19 @@ export default {
 </script>
 
 <style>
- input[type="range"] {
-    height: 8px;
-    pointer-events: none; /* ป้องกันการเลื่อน */
-    opacity: 0.7; /* ความโปร่งใส */
-    -webkit-transition: 0.2s;
-    transition: opacity 0.2s;
-    overflow: hidden;
-    -moz-range-track: none;
-  }
+input[type='range'] {
+  height: 8px;
+  pointer-events: none; /* ป้องกันการเลื่อน */
+  opacity: 0.7; /* ความโปร่งใส */
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  overflow: hidden;
+  -moz-range-track: none;
+}
 
-  output {
-    pointer-events: none; /* ป้องกันการคลิก */
-  }
+output {
+  pointer-events: none; /* ป้องกันการคลิก */
+}
 
 .chart-container {
   position: relative;
@@ -346,7 +518,7 @@ export default {
 .custom-text {
   position: absolute;
   top: 50%;
-   right: 0;
+  right: 0;
   transform: translate(-50%);
   text-align: right;
   font-size: 16px;
