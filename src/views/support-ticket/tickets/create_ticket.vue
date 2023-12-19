@@ -13,15 +13,8 @@
               <h5>
                 <b>Title <span id="required">*</span> </b>
               </h5>
-              <CFormInput
-                type="text"
-                id="tkt_title"
-                name="tkt_title"
-                v-model="form.tkt_title"
-                feedbackInvalid="Please input title."
-                :invalid="validate.tkt_title"
-                required
-              />
+              <CFormInput type="text" id="tkt_title" name="tkt_title" v-model="form.tkt_title"
+                feedbackInvalid="Please input title." :invalid="validate.tkt_title" required />
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -31,14 +24,8 @@
               <h5>
                 <b>Type <span id="required">*</span></b>
               </h5>
-              <CFormSelect
-                v-model="form.tkt_types"
-                :options="typeOptions"
-                feedbackInvalid="Please select type."
-                :invalid="validate.tkt_types"
-                required
-                @change="checktype"
-              />
+              <CFormSelect v-model="form.tkt_types" :options="typeOptions" feedbackInvalid="Please select type."
+                :invalid="validate.tkt_types" required @change="checktype" />
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -51,44 +38,21 @@
                   <b>Priority <span id="required">*</span></b>
                 </h5>
                 <div class="popup" @mouseover="togglePopup">
-                  <CAvatar
-                    class="popup_priority"
-                    :src="popup_priority"
-                    style="
-                      text-align: left;
-                      margin-left: 10px;
-                      margin-top: -5px;
-                    "
-                  />
-                  <div
-                    class="popuptext"
-                    :class="{ show: isPopupVisible }"
-                    @mouseover="togglePopup"
-                  >
+                  <CAvatar class="popup_priority" :src="popup_priority" />
+                  <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup">
                     <p>
-                      <font id="low-priority"
-                        >Low = ดำเนินการภายใน 72 ชม.</font
-                      >
+                      <font id="low-priority">Low = ดำเนินการภายใน 72 ชม.</font>
                       <br />
-                      <font id="medium-priority"
-                        >Medium = ดำเนินการภายใน 48 ชม.</font
-                      >
+                      <font id="medium-priority">Medium = ดำเนินการภายใน 48 ชม.</font>
                       <br />
-                      <font id="high-priority"
-                        >High = ดำเนินการภายใน 24 ชม.</font
-                      >
+                      <font id="high-priority">High = ดำเนินการภายใน 24 ชม.</font>
                     </p>
                   </div>
                 </div>
               </div>
-              <CFormSelect
-                v-model="form.tkt_priorities"
-                :options="piorityOptions"
-                feedbackInvalid="Please select priority."
-                :invalid="validate.tkt_priorities"
-                required
-                @change="checkpiority"
-              />
+              <CFormSelect v-model="form.tkt_priorities" :options="piorityOptions"
+                feedbackInvalid="Please select priority." :invalid="validate.tkt_priorities" required
+                @change="checkpiority" />
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -98,14 +62,8 @@
               <h5>
                 <b>Description <span id="required">*</span></b>
               </h5>
-              <CFormTextarea
-                v-model="form.tkt_description"
-                feedbackInvalid="Please input description."
-                :invalid="validate.tkt_description"
-                required
-                id="validationTextarea"
-                rows="4"
-              />
+              <CFormTextarea v-model="form.tkt_description" feedbackInvalid="Please input description."
+                :invalid="validate.tkt_description" required id="validationTextarea" rows="4" />
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -115,39 +73,15 @@
               <h5>
                 <b>Upload File</b>
               </h5>
-              <CCard id="custom-card"
-              >
+              <CCard id="custom-card">
                 <label for="formFileLg">
-                  <div
-                    class="custom-file-upload mt-3"
-                    style="
-                      border: 2px dashed #8a8a8a;
-                      border-radius: 8px;
-                      text-align: center;
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    "
-                  >
-                    <input
-                      type="file"
-                      size="lg"
-                      id="formFileLg"
-                      required
-                      accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
-                      @change="onFileUpload"
-                      :invalid="validate.tkt_picture"
-                      style="display: none"
-                      feedbackInvalid="ห้ามเว้นว่าง"
-                    />
+                  <div class="custom-file-upload mt-3">
+                    <input type="file" size="lg" id="formFileLg" required
+                      accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx" @change="onFileUpload"
+                      :invalid="validate.tkt_picture" feedbackInvalid="ห้ามเว้นว่าง" />
 
                     <div>
-                      <CImage
-                        class="Cloud"
-                        :src="Cloud"
-                        style="text-align: center; height: 70px"
-                      >
+                      <CImage class="Cloud" :src="Cloud">
                       </CImage>
                       <br />
                       <h6 id="uploaded-file">
@@ -160,141 +94,51 @@
             </div>
 
             <CElementCover :opacity="0.5" v-if="pageLoading" />
-            <div style="text-align: center"></div>
           </CRow>
           <div class="clearfix text-end">
-            <CButton
-              color="secondary"
-              @click="cancel"
-              id="cancel-button"
-          >Cancel</CButton>
-            <CModal
-              alignment="center"
-              :visible="visibleVerticallyCenteredDemo"
-              @close="
-                () => {
-                  visibleVerticallyCenteredDemo = false
-                }
-              "
-            >
+            <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
+            <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
+              visibleVerticallyCenteredDemo = false
+            }
+              ">
               <CModalBody>
-                <h2 class="cancel-heading">Cancel</h2>
-                <p
-                  class="ms-2"
-                  style="
-                    font-size: larger;
-                    font-weight: 600;
-                    text-align: left;
-                    color: #000;
-                  "
-                >
+                <h2 class="cancel-heading" id="button_head">Cancel</h2>
+                <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span style="color: #d0293b">Cancel The Ticket ?</span>
+                  <span id="detail-for-cancel">Cancel The Ticket ?</span>
                 </p>
                 <br />
                 <hr />
-                <CButton
-                  :style="{
-                    color: '#7B7B7B',
-                    backgroundColor: '#ffffff',
-                    borderColor: 'secondary',
-                  }"
-                  @click="
-                    () => {
-                      visibleVerticallyCenteredDemo = false
-                    }
-                  "
-                >
+                <CButton id="cancel-btn-in-detail" @click="() => { visibleVerticallyCenteredDemo = false }">
                   Cancel
                 </CButton>
-                <CButton
-                  class="ms-2"
-                  :style="{
-                    color: '#ffffff',
-                    backgroundColor: '#51ADED',
-                    borderColor: 'secondary',
-                  }"
-                  @click="confirm"
-                >
+                <CButton class="ms-2" id="confirm-btn-in-detail" @click="confirm">
                   Confirm
                 </CButton>
               </CModalBody>
             </CModal>
-            <CButton
-              class="btn-sec"
-              color="success"
-              @click="visibleSubmit = true"
-              style="
-                font-weight: bold;
-                font-size: x-large;
-                width: 150px;
-                color: white;
-                border-radius: 20px;
-              "
-              >Submit
+            <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
+              Submit
             </CButton>
-            <CModal
-              alignment="center"
-              :visible="visibleSubmit"
-              @close="
-                () => {
-                  visibleSubmit = false
-                }
-              "
-            >
+            <CModal alignment="center" :visible="visibleSubmit" @close="() => {
+              visibleSubmit = false
+            }
+              ">
               <CModalBody>
-                <h2
-                  class="ms-3"
-                  style="text-align: left; color: #000"
-                  color="#000"
-                >
+                <h2 class="ms-3" id="button_head">
                   Submit
                 </h2>
-                <p
-                  class="ms-2"
-                  style="
-                    font-size: larger;
-                    font-weight: 600;
-                    text-align: left;
-                    color: #000;
-                  "
-                >
+                <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span style="color: #29b227">Submit The Ticket ?</span>
+                  <span id="detail-for-submit">Submit The Ticket ?</span>
                 </p>
                 <br />
                 <hr />
-                <CButton
-                  :style="{
-                    color: '#7B7B7B',
-                    backgroundColor: '#ffffff',
-                    borderColor: 'secondary',
-                  }"
-                  @click="
-                    () => {
-                      visibleSubmit = false
-                    }
-                  "
-                >
+                <CButton id="cancel-btn-in-detail" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>
-                <CButton
-                  class="ms-2"
-                  :style="{
-                    color: '#ffffff',
-                    backgroundColor: '#51ADED',
-                    borderColor: 'secondary',
-                  }"
-                  @click="vaildateBeforeSave"
-                  :disabled="isLoading"
-                >
-                  <CSpinner
-                    v-if="isLoading"
-                    component="span"
-                    size="sm"
-                    variant="grow"
-                    aria-hidden="true"
-                  />
+                <CButton class="ms-2" id="confirm-btn-in-detail"  @click="vaildateBeforeSave" :disabled="isLoading">
+                  <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                 </CButton>
               </CModalBody>
@@ -306,17 +150,18 @@
   </div>
 
   <br />
-    <CToaster placement="top-end">
-        <CToast visible color="info" v-for="(toast) in toastProp">
-            <CToastHeader closeButton v-if="toast.title">
-                <span class="me-auto fw-bold">{{ toast.title }}</span>
-            </CToastHeader>
-            <CToastBody v-if="toast.content">
-                <span class="text-white">{{ toast.content }}</span>
-            </CToastBody>
-        </CToast>
-    </CToaster>
+  <CToaster placement="top-end">
+    <CToast visible color="info" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
+
 <style>
 #ticket-header {
   width: 225px;
@@ -330,6 +175,7 @@
 .popup_priority {
   width: 16px;
 }
+
 /* Popup container - can be anything you want */
 .popup {
   position: relative;
@@ -378,6 +224,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -391,11 +238,15 @@
   cursor: pointer;
   background-color: #f2f5f7;
   color: #000000;
-  border-radius: 5px;
   padding: 15px 15px;
-
-  display: inline-block;
   transition: background-color 0.3s ease;
+  border: 2px dashed #8a8a8a;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -446,6 +297,61 @@
   color: #000;
 }
 
+.popup_priority {
+  text-align: left;
+  margin-left: 10px;
+  margin-top: -5px;
+
+}
+
+#formFileLg {
+  display: none;
+}
+
+.Cloud {
+  text-align: center;
+  height: 70px;
+}
+
+#button_head {
+  text-align: left;
+  color: #000;
+}
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+}
+
+#cancel-btn-in-detail {
+  color: #7B7B7B;
+  background-color: #ffffff;
+  border-color: secondary;
+}
+
+#detail-for-cancel {
+  color: #d0293b;
+}
+
+#confirm-btn-in-detail {
+  color: #ffffff;
+  background-color: #51ADED;
+  border-color: secondary;
+}
+
+#submit-button {
+  font-weight: bold;
+  font-size: x-large;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
+}
+
+#detail-for-submit {
+  color: #29b227;
+}
 </style>
 
 <script>
@@ -502,14 +408,14 @@ export default {
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
     ])
-    ,
-    (this.typeOptions = [
+      ,
+      (this.typeOptions = [
         { label: 'Select type', value: '' },
         { label: 'Software', value: 'Software' },
         { label: 'Hardware', value: 'Hardware' },
         { label: 'Service Request', value: 'Service' },
         { label: 'ไม่ระบุ', value: 'none', disabled: true },
-    ])
+      ])
     // this.getUser()
   },
 
@@ -550,8 +456,8 @@ export default {
       if (!error) {
         this.isLoading = true
 
-      // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-      // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
         this.toastProp.push({
           title: 'Create Ticket',
           content: 'สร้างสำเร็จ',
@@ -598,7 +504,7 @@ export default {
       console.log(this.form)
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
-    
+
       try {
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
@@ -651,7 +557,7 @@ export default {
     async confirm() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
-      
+
       if (userId == 'Admin') {
         this.$router.push('/support-ticket/admin/admin_dashboard')
       } else if (userId == 'Employee') {
@@ -661,7 +567,7 @@ export default {
       } else if (userId == 'Manager') {
         this.$router.push('/support-ticket/manager/manager_dashboard')
       }
-    }, 
+    },
     togglePopup() {
       this.isPopupVisible = !this.isPopupVisible;
     },
