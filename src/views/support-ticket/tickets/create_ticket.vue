@@ -1,16 +1,7 @@
 <template>
   <div>
     <CCard>
-      <div
-        style="
-          width: 225px;
-          border-bottom: 5px solid transparent;
-          border-image: linear-gradient(to right, red, blue);
-          border-image-slice: 1;
-          padding: 3px;
-          margin: 30px;
-        "
-      >
+      <div id="ticket-header">
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
@@ -20,7 +11,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b >Title <span style="color: red">*</span> </b>
+                <b>Title <span id="required">*</span> </b>
               </h5>
               <CFormInput
                 type="text"
@@ -38,7 +29,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b>Type <span style="color: red">*</span></b>
+                <b>Type <span id="required">*</span></b>
               </h5>
               <CFormSelect
                 v-model="form.tkt_types"
@@ -57,7 +48,7 @@
               <div class="d-flex align-items-center">
                 <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
                 <h5>
-                  <b>Priority <span style="color: red">*</span></b>
+                  <b>Priority <span id="required">*</span></b>
                 </h5>
                 <div class="popup" @mouseover="togglePopup">
                   <CAvatar
@@ -69,19 +60,23 @@
                       margin-top: -5px;
                     "
                   />
-                  <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup" >
+                  <div
+                    class="popuptext"
+                    :class="{ show: isPopupVisible }"
+                    @mouseover="togglePopup"
+                  >
                     <p>
-                      <font style="color: #38a06c">
-                        Low = ดำเนินการภายใน 72 ชม.
-                      </font>
+                      <font id="low-priority"
+                        >Low = ดำเนินการภายใน 72 ชม.</font
+                      >
                       <br />
-                      <font style="color: #c97a20">
-                        Medium = ดำเนินการภายใน 48 ชม.
-                      </font>
+                      <font id="medium-priority"
+                        >Medium = ดำเนินการภายใน 48 ชม.</font
+                      >
                       <br />
-                      <font style="color: #ef5466"
-                        >High = ดำเนินการภายใน 24 ชม.
-                      </font>
+                      <font id="high-priority"
+                        >High = ดำเนินการภายใน 24 ชม.</font
+                      >
                     </p>
                   </div>
                 </div>
@@ -101,7 +96,7 @@
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
-                <b>Description <span style="color: red">*</span></b>
+                <b>Description <span id="required">*</span></b>
               </h5>
               <CFormTextarea
                 v-model="form.tkt_description"
@@ -113,55 +108,55 @@
               />
             </div>
           </CRow>
-          <CRow
-            class="mb-2"
-          >
+          <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12 mb-4">
               <h5>
                 <b>Upload File</b>
               </h5>
-                <CCard class="pt-4 pb-4 ps-5 pe-5" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);"  >
-                  <label for="formFileLg">
-                    <div
-                      class="custom-file-upload mt-3"
-                      style="
+              <CCard id="custom-card"
+              >
+                <label for="formFileLg">
+                  <div
+                    class="custom-file-upload mt-3"
+                    style="
+                      border: 2px dashed #8a8a8a;
+                      border-radius: 8px;
+                      text-align: center;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    "
+                  >
+                    <input
+                      type="file"
+                      size="lg"
+                      id="formFileLg"
+                      required
+                      accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
+                      @change="onFileUpload"
+                      :invalid="validate.tkt_picture"
+                      style="display: none"
+                      feedbackInvalid="ห้ามเว้นว่าง"
+                    />
 
-                        border: 2px dashed #8a8a8a;
-                        border-radius: 8px;
-                        text-align: center;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-                      "
-                    >
-                      <input
-                        type="file"
-                        size="lg"
-                        id="formFileLg"
-                        required
-                        accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx"
-                        @change="onFileUpload"
-                        :invalid="validate.tkt_picture"
-                        style="display: none"
-                        feedbackInvalid="ห้ามเว้นว่าง"
-                      />
-
-                        <div>
-                          <CImage class="Cloud"
-                              :src="Cloud"
-                              style="text-align: center; height: 70px;">
-                          </CImage>
-                          <br>
-                          <h6 style="font-size: larger; color: #888787; ">{{ uploadedFileName || 'Upload' }}</h6>
-                        </div>
+                    <div>
+                      <CImage
+                        class="Cloud"
+                        :src="Cloud"
+                        style="text-align: center; height: 70px"
+                      >
+                      </CImage>
+                      <br />
+                      <h6 id="uploaded-file">
+                        {{ uploadedFileName || 'Upload' }}
+                      </h6>
                     </div>
-                  </label>
-
-                </CCard>
+                  </div>
+                </label>
+              </CCard>
             </div>
 
             <CElementCover :opacity="0.5" v-if="pageLoading" />
@@ -171,44 +166,59 @@
             <CButton
               color="secondary"
               @click="cancel"
-              style="
-                font-weight: bold;
-                font-size: x-large;
-                width: 150px;
-                color: white;
-                border-radius: 20px;
+              id="cancel-button"
+          >Cancel</CButton>
+            <CModal
+              alignment="center"
+              :visible="visibleVerticallyCenteredDemo"
+              @close="
+                () => {
+                  visibleVerticallyCenteredDemo = false
+                }
               "
             >
-              Cancel
-            </CButton>
-            <CModal
-                    alignment="center"
-                    :visible="visibleVerticallyCenteredDemo"
-                    @close="() => {
-                        visibleVerticallyCenteredDemo = false
-                      }
-                      "
-                  >
-                  <CModalBody>
-                      <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Cancel</h2>
-                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #D0293B;">Cancel The Ticket ?</span></p><br>
-                      <hr>
-                      <CButton
-                        :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
-                        @click="() => {
-                          visibleVerticallyCenteredDemo = false
-                        }"
-                        >
-                        Cancel
-                      </CButton>
-                      <CButton
-                        class="ms-2"
-                        :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
-                        @click="confirm"
-                        >
-                        Confirm
-                      </CButton>
-                  </CModalBody>
+              <CModalBody>
+                <h2 class="cancel-heading">Cancel</h2>
+                <p
+                  class="ms-2"
+                  style="
+                    font-size: larger;
+                    font-weight: 600;
+                    text-align: left;
+                    color: #000;
+                  "
+                >
+                  Are you sure you want to
+                  <span style="color: #d0293b">Cancel The Ticket ?</span>
+                </p>
+                <br />
+                <hr />
+                <CButton
+                  :style="{
+                    color: '#7B7B7B',
+                    backgroundColor: '#ffffff',
+                    borderColor: 'secondary',
+                  }"
+                  @click="
+                    () => {
+                      visibleVerticallyCenteredDemo = false
+                    }
+                  "
+                >
+                  Cancel
+                </CButton>
+                <CButton
+                  class="ms-2"
+                  :style="{
+                    color: '#ffffff',
+                    backgroundColor: '#51ADED',
+                    borderColor: 'secondary',
+                  }"
+                  @click="confirm"
+                >
+                  Confirm
+                </CButton>
+              </CModalBody>
             </CModal>
             <CButton
               class="btn-sec"
@@ -224,43 +234,70 @@
               >Submit
             </CButton>
             <CModal
-                    alignment="center"
-                    :visible="visibleSubmit"
-                    @close="() => {
-                        visibleSubmit = false
-                      }
-                      "
-                  >
-                  <CModalBody>
-                      <h2 class="ms-3" style="text-align: left; color: #000;" color="#000">Submit</h2>
-                      <p class="ms-2" style="font-size: larger;font-weight: 600;text-align: left; color: #000;">Are you sure you want to <span style="color: #29B227;">Submit The Ticket ?</span></p><br>
-                      <hr>
-                      <CButton
-                        :style="{ color: '#7B7B7B', backgroundColor: '#ffffff', borderColor: 'secondary' }"
-                        @click="() => {
-                          visibleSubmit = false
-                        }"
-                        >
-                        Cancel
-                      </CButton>
-                      <CButton
-                        class="ms-2"
-                        :style="{color: '#ffffff', backgroundColor: '#51ADED', borderColor: 'secondary' }"
-                        @click="vaildateBeforeSave"
-                        :disabled="isLoading"
-                        >
-                        <CSpinner
-                          v-if="isLoading"
-                          component="span"
-                          size="sm"
-                          variant="grow"
-                          aria-hidden="true"
-                        />
-                        {{ isLoading ? 'Confirm...' : 'Confirm' }}
-                      </CButton>
-
-                  </CModalBody>
-
+              alignment="center"
+              :visible="visibleSubmit"
+              @close="
+                () => {
+                  visibleSubmit = false
+                }
+              "
+            >
+              <CModalBody>
+                <h2
+                  class="ms-3"
+                  style="text-align: left; color: #000"
+                  color="#000"
+                >
+                  Submit
+                </h2>
+                <p
+                  class="ms-2"
+                  style="
+                    font-size: larger;
+                    font-weight: 600;
+                    text-align: left;
+                    color: #000;
+                  "
+                >
+                  Are you sure you want to
+                  <span style="color: #29b227">Submit The Ticket ?</span>
+                </p>
+                <br />
+                <hr />
+                <CButton
+                  :style="{
+                    color: '#7B7B7B',
+                    backgroundColor: '#ffffff',
+                    borderColor: 'secondary',
+                  }"
+                  @click="
+                    () => {
+                      visibleSubmit = false
+                    }
+                  "
+                >
+                  Cancel
+                </CButton>
+                <CButton
+                  class="ms-2"
+                  :style="{
+                    color: '#ffffff',
+                    backgroundColor: '#51ADED',
+                    borderColor: 'secondary',
+                  }"
+                  @click="vaildateBeforeSave"
+                  :disabled="isLoading"
+                >
+                  <CSpinner
+                    v-if="isLoading"
+                    component="span"
+                    size="sm"
+                    variant="grow"
+                    aria-hidden="true"
+                  />
+                  {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                </CButton>
+              </CModalBody>
             </CModal>
           </div>
         </CForm>
@@ -281,6 +318,15 @@
     </CToaster>
 </template>
 <style>
+#ticket-header {
+  width: 225px;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, red, blue);
+  border-image-slice: 1;
+  padding: 3px;
+  margin: 30px;
+}
+
 .popup_priority {
   width: 16px;
 }
@@ -352,9 +398,54 @@
   transition: background-color 0.3s ease;
 }
 
+
 .custom-file-upload:hover {
   background-color: #7ee4b3;
 }
+
+#required {
+  color: red;
+}
+
+#uploaded-file {
+  font-size: larger;
+  color: #888787;
+}
+
+#low-priority {
+  color: #38a06c;
+}
+
+#medium-priority {
+  color: #c97a20;
+}
+
+#high-priority {
+  color: #ef5466;
+}
+
+#custom-card {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#cancel-button {
+  font-weight: bold;
+  font-size: x-large;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
+}
+
+#cancel-heading {
+  margin-left: 3px;
+  text-align: left;
+  color: #000;
+}
+
 </style>
 
 <script>
@@ -437,7 +528,6 @@ export default {
 
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
-
     vaildateBeforeSave() {
       let error
       if (this.form.tkt_title === '') {
@@ -458,7 +548,7 @@ export default {
       }
 
       if (!error) {
-        this.isLoading = true;
+        this.isLoading = true
 
       // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
       // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
@@ -468,15 +558,14 @@ export default {
         })
         setTimeout(() => {
           // จบการโหลด
-          this.isLoading = false;
+          this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
           this.onSave()
-        }, 3000);
+        }, 2000)
       } else {
-        this.form.validatedCustom01 = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.visibleSubmit= false;
-
+        console.log('1'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleSubmit = false
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -516,7 +605,7 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.confirm();
+            this.confirm()
           })
           .catch((err) => {
             console.log(error)
