@@ -11,7 +11,8 @@
     <div class="table-responsive table-borderless">
       <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter
         :items-per-page="5" items-per-page-select pagination columnSorter
-        :sorterValue="{ column: 'START DATE(Y/M/D)', state: 'desc', dateFormat: 'YYYY-MM-DD' }" :table-props="{
+        :sorterValue="{ column: 'START DATE(Y/M/D)', state: 'desc', dateFormat: 'YYYY-MM-DD'}"  
+        :table-props="{
           striped: true,
           hover: true,
         }">
@@ -78,7 +79,7 @@
 .LineHeadCard {
   width: 225px;
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, red, blue);
+  border-image: linear-gradient(to right, danger, primary);
   border-image-slice: 1;
   padding: 3px;
 }
@@ -129,7 +130,7 @@ export default {
       { key: 'START DATE(Y/M/D)', _style: { width: '11%' } },
       { key: 'STATUS', _style: { width: '5%' } },
       { key: 'TYPE', _style: { width: '4%' } },
-      { key: 'BOOKMARK', _style: { width: '5%' } },
+      { key: 'BOOKMARK', _style: { width: '5%' }, filter: false, },
       { key: 'MORE', _style: { width: '5%' }, filter: false, },
 
 

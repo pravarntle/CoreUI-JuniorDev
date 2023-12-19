@@ -125,8 +125,8 @@ export default {
       { key: 'START DATE(Y/M/D)', _style: { width: '11%' } },
       { key: 'STATUS', _style: { width: '5%' } },
       { key: 'TYPE', _style: { width: '4%' } },
-      { key: 'BOOKMARK', _style: { width: '5%' } },
-      { key: 'MORE', _style: { width: '5%' } },
+      { key: 'BOOKMARK', _style: { width: '5%' }, filter: false, },
+      { key: 'MORE', _style: { width: '5%' }, filter: false, },
     ];
     const items = ref([]);
     const getBadge = (tkt_status) => {
@@ -156,7 +156,7 @@ export default {
 
           }
         });
-        window.location.reload();
+        this.getTicket();
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
