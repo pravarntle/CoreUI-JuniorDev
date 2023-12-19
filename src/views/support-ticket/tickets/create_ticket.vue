@@ -102,17 +102,17 @@
             }
               ">
               <CModalBody>
-                <h2 class="cancel-heading" id="button_head">Cancel</h2>
+                <h2 class="cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
                   <span id="detail-for-cancel">Cancel The Ticket ?</span>
                 </p>
                 <br />
                 <hr />
-                <CButton id="cancel-btn-in-detail" @click="() => { visibleVerticallyCenteredDemo = false }">
+                <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" id="confirm-btn-in-detail" @click="confirm">
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
                   Confirm
                 </CButton>
               </CModalBody>
@@ -125,7 +125,7 @@
             }
               ">
               <CModalBody>
-                <h2 class="ms-3" id="button_head">
+                <h2 class="ms-3" id="button-head">
                   Submit
                 </h2>
                 <p class="ms-2" id="popup-detail">
@@ -134,10 +134,10 @@
                 </p>
                 <br />
                 <hr />
-                <CButton id="cancel-btn-in-detail" @click="() => { visibleSubmit = false }">
+                <CButton color="light" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" id="confirm-btn-in-detail"  @click="vaildateBeforeSave" :disabled="isLoading">
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave" :disabled="isLoading">
                   <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                 </CButton>
@@ -313,7 +313,7 @@
   height: 70px;
 }
 
-#button_head {
+#button-head {
   text-align: left;
   color: #000;
 }
@@ -325,20 +325,12 @@
   color: #000;
 }
 
-#cancel-btn-in-detail {
-  color: #7B7B7B;
-  background-color: #ffffff;
-  border-color: secondary;
-}
-
 #detail-for-cancel {
   color: #d0293b;
 }
 
 #confirm-btn-in-detail {
   color: #ffffff;
-  background-color: #51ADED;
-  border-color: secondary;
 }
 
 #submit-button {
