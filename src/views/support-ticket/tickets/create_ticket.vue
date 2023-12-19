@@ -549,14 +549,9 @@ export default {
         this.form.tkt_title.trim(),
         this.form.tkt_priorities.trim(),
         this.form.tkt_types.trim(),
-      ].some(value => value === '');
+        this.form.tkt_picture.trim(),
+      ].every(value => value === '');
 
-            console.log(isFormEmpty);
-            console.log(this.form.tkt_description.trim(), this.form.tkt_description.trim().length);
-            console.log(this.form.tkt_title.trim(), this.form.tkt_title.trim().length);
-            console.log(this.form.tkt_priorities.trim(), this.form.tkt_priorities.trim().length);
-            console.log(this.form.tkt_types.trim(), this.form.tkt_types.trim().length);
-      // If the form is not empty, prompt for confirmation
       if (!isFormEmpty) {
         this.visibleVerticallyCenteredDemo = true;
       } else {
