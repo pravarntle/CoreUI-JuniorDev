@@ -220,10 +220,10 @@ name: 'my_ticket',
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
           this.toastProp.push({
-          content: 'บุคมาร์คไม่สำเร็จ'
-        })
+            content: 'บุคมาร์คไม่สำเร็จ'
+          })
       
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+          console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
       },
 

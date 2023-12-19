@@ -306,6 +306,16 @@
   </div>
 
   <br />
+    <CToaster placement="top-end">
+        <CToast visible color="info" v-for="(toast) in toastProp">
+            <CToastHeader closeButton v-if="toast.title">
+                <span class="me-auto fw-bold">{{ toast.title }}</span>
+            </CToastHeader>
+            <CToastBody v-if="toast.content">
+                <span class="text-white">{{ toast.content }}</span>
+            </CToastBody>
+        </CToast>
+    </CToaster>
 </template>
 <style>
 #ticket-header {
@@ -431,7 +441,7 @@
 }
 
 #cancel-heading {
-  margin-left: 3px; 
+  margin-left: 3px;
   text-align: left;
   color: #000;
 }
@@ -476,7 +486,7 @@ export default {
       validate: {
         ticket: null,
       },
-      toasts: [],
+      toastProp: [],
       uploadedFileName: '',
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
@@ -598,12 +608,6 @@ export default {
         console.log(error)
       }
     },
-    createToast() {
-      this.toasts.push({
-        title: 'Create Ticket',
-        content: 'สร้างสำเร็จ',
-      })
-    },
     async onFileUpload(event) {
       const uploadFile = event.target.files[0]
       const formData = new FormData()
@@ -624,6 +628,10 @@ export default {
     async confirm() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
+      this.toastProp.push({
+        title: 'Create Ticket',
+        content: 'สร้างสำเร็จ',
+      })
       if (userId == 'Admin') {
         this.$router.push('/support-ticket/admin/admin_dashboard')
       } else if (userId == 'Employee') {
