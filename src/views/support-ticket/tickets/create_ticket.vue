@@ -170,7 +170,7 @@
           <div class="clearfix text-end">
             <CButton
               color="secondary"
-              @click="visibleVerticallyCenteredDemo = true"
+              @click="cancel"
               style="
                 font-weight: bold;
                 font-size: x-large;
@@ -178,8 +178,9 @@
                 color: white;
                 border-radius: 20px;
               "
-              >Cancel</CButton
             >
+              Cancel
+            </CButton>
             <CModal
                     alignment="center"
                     :visible="visibleVerticallyCenteredDemo"
@@ -403,20 +404,21 @@ export default {
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
   created() {
-    ;(this.piorityOptions = [
+    (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
       { label: 'Medium', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
-    ]),
-      (this.typeOptions = [
+    ])
+    ,
+    (this.typeOptions = [
         { label: 'Select type', value: '' },
         { label: 'Software', value: 'Software' },
         { label: 'Hardware', value: 'Hardware' },
         { label: 'Service Request', value: 'Service' },
         { label: 'ไม่ระบุ', value: 'none', disabled: true },
-      ])
+    ])
     // this.getUser()
   },
 
@@ -460,6 +462,10 @@ export default {
 
       // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
       // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        this.toastProp.push({
+          title: 'Create Ticket',
+          content: 'สร้างสำเร็จ',
+        })
         setTimeout(() => {
           // จบการโหลด
           this.isLoading = false;
@@ -503,6 +509,7 @@ export default {
       console.log(this.form)
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
+    
       try {
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
@@ -535,13 +542,32 @@ export default {
       this.form.tkt_picture = dataResponse.data._id
       this.uploadedFileName = uploadFile.name
     },
+    cancel() {
+      // Check if there is any data in the form
+      const isFormEmpty = [
+        this.form.tkt_description.trim(),
+        this.form.tkt_title.trim(),
+        this.form.tkt_priorities.trim(),
+        this.form.tkt_types.trim(),
+      ].some(value => value === '');
+
+            console.log(isFormEmpty);
+            console.log(this.form.tkt_description.trim(), this.form.tkt_description.trim().length);
+            console.log(this.form.tkt_title.trim(), this.form.tkt_title.trim().length);
+            console.log(this.form.tkt_priorities.trim(), this.form.tkt_priorities.trim().length);
+            console.log(this.form.tkt_types.trim(), this.form.tkt_types.trim().length);
+      // If the form is not empty, prompt for confirmation
+      if (!isFormEmpty) {
+        this.visibleVerticallyCenteredDemo = true;
+      } else {
+        // If the form is empty, navigate away without confirmation
+        this.confirm();
+      }
+    },
     async confirm() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.role
-      this.toastProp.push({
-        title: 'Create Ticket',
-        content: 'สร้างสำเร็จ',
-      })
+      
       if (userId == 'Admin') {
         this.$router.push('/support-ticket/admin/admin_dashboard')
       } else if (userId == 'Employee') {
@@ -551,9 +577,10 @@ export default {
       } else if (userId == 'Manager') {
         this.$router.push('/support-ticket/manager/manager_dashboard')
       }
-    },togglePopup() {
-    this.isPopupVisible = !this.isPopupVisible;
-  },
+    }, 
+    togglePopup() {
+      this.isPopupVisible = !this.isPopupVisible;
+    },
   },
   components: { CForm, CFormLabel, CImage },
 }
