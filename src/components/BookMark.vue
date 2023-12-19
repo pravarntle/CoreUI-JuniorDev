@@ -50,7 +50,7 @@
                 <h4>
                   {{ item.tkt_title }}
                 </h4>
-                <CButton size="sm" color="info" class="" @click="contactIt(item, index)"> ติดต่อ It Suport </CButton>
+                <CButton size="sm" color="info"  @click="contactIt(item, index)"> ติดต่อ It Suport </CButton>
                 <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
               </CCardBody>
             </CCollapse>
