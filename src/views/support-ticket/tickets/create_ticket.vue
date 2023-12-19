@@ -14,7 +14,7 @@
         <h2><b>New Ticket</b></h2>
       </div>
       <CCardBody>
-        <CForm :validated="form.validatedCustom01">
+        <CForm>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
@@ -439,23 +439,40 @@ export default {
 
 
     vaildateBeforeSave() {
-      let error
-      if (this.form.tkt_title === '') {
-        error = true
-        this.validate.tkt_title = false
+      let error = false;
+
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+
+      // Check for empty values and display validation messages
+      if (this.form.tkt_title.trim() === '' || specialCharRegex.test(this.form.tkt_title)) {
+        this.validate.tkt_title = true; // Show validation message
+        error = true;
+      } else {
+        this.validate.tkt_title = false; // Hide validation message
       }
-      if (this.form.tkt_types === '') {
-        error = true
-        this.validate.tkt_types = false
+
+      if (this.form.tkt_types.trim() === '' || specialCharRegex.test(this.form.tkt_types)) {
+        this.validate.tkt_types = true;
+        error = true;
+      } else {
+        this.validate.tkt_types = false;
       }
-      if (this.form.tkt_priorities === '') {
-        error = true
-        this.validate.tkt_priorities = false
+
+      if (this.form.tkt_priorities.trim() === '' || specialCharRegex.test(this.form.tkt_priorities)) {
+        this.validate.tkt_priorities = true;
+        error = true;
+      } else {
+        this.validate.tkt_priorities = false;
       }
-      if (this.form.tkt_description === '') {
-        error = true
-        this.validate.tkt_description = false
+
+      if (this.form.tkt_description.trim() === '' || specialCharRegex.test(this.form.tkt_description)) {
+        this.validate.tkt_description = true;
+        error = true;
+      } else {
+        this.validate.tkt_description = false;
       }
+
 
       if (!error) {
         this.isLoading = true;
