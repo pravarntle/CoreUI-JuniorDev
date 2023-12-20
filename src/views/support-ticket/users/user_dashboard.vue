@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <CRow>
-      <count_ticket/>
+        <count_ticket/>
     </CRow>
       <my_tickets/>
     
