@@ -1,141 +1,75 @@
 <template>
-  <CSidebar
-    position="fixed"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
-    @visible-change="
-      (event) =>
-        $store.commit({
-          type: 'updateSidebarVisible',
-          value: event,
-        })
-    "
-  >
+  <CSidebar position="fixed" :unfoldable="sidebarUnfoldable" :visible="sidebarVisible" @visible-change="(event) =>
+      $store.commit({
+        type: 'updateSidebarVisible',
+        value: event,
+      })
+    ">
     <CSidebarBrand>
       <CImage :src="logo" fluid />
     </CSidebarBrand>
 
     <CSidebarNav>
       <MenuNewticket />
-      <CNavItem
-        href="/#/support-ticket/it/it_dashboard"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="Icondashboard"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
+      <CNavItem href="/#/support-ticket/it/it_dashboard" id="custom-nav-item">
+        <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Icondashboard" style="padding-right: 5px;" />
         <font style="color: black">Dashboard</font>
       </CNavItem>
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
       <CNavItem href="/#/support-ticket/my_ticket" class="custom-nav-item">
-        <CImage
-          customClassName="nav-icon"
-          :src="IconmyTicket"
-          style="max-height: 23px; margin-left: 10px; margin-right: 12px"
-        />
+        <CImage customClassName="nav-icon" :src="IconmyTicket"
+          id="custom-icon-sidebar" />
         <font style="color: black">My Ticket</font>
       </CNavItem>
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
       <CNavItem href="/#/support-ticket/it/it_my_task" class="custom-nav-item">
-        <CImage
-          customClassName="nav-icon"
-          :src="IconmyTicket"
-          style="max-height: 23px; margin-left: 10px; margin-right: 12px"
-        />
+        <CImage customClassName="nav-icon" :src="IconmyTicket"
+        id="custom-icon-sidebar" />
         <font style="color: black">My Task</font>
       </CNavItem>
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
       <CNavItem style="position: relative">
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconbookmark"
-          style="
-            max-height: 20px;
-            margin-left: 30px;
-            margin-right: 18px;
-            max-width: 25px;
-          "
-        />
+        <CImage customClassName="nav-icon" :src="Iconbookmark" id="custom-icon-sidebar" style="padding-left: 18px; padding-right: 3px;" />
         <font style="color: black">Bookmark</font>
 
         <!-- Dropdown Icon -->
-        <CImage
-          :src="Icondropdown"
-          @click="dropdownOpen = !dropdownOpen"
-          :style="{
-            'max-height': '20px',
-            cursor: 'pointer',
-            marginLeft: '5px',
-            transform: dropdownOpen ? 'rotate(180deg)' : 'none',
-            transition: 'transform 0.3s',
-          }"
-        />
+        <CImage :src="Icondropdown" @click="dropdownOpen = !dropdownOpen" :style="{
+          'max-height': '20px',
+          cursor: 'pointer',
+          marginLeft: '5px',
+          transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+          transition: 'transform 0.3s',
+        }" />
 
         <!-- Dropdown items -->
-        <div
-          v-show="dropdownOpen"
-          style="background-color: white; width: 100%; z-index: 100"
-          class="dropdown-content"
-        >
-          <CNavItem
-            href="/#/support-ticket/book_mark"
-            style="padding-left: 52px"
-            class="custom-nav-item"
-          >
+        <div v-show="dropdownOpen" style="background-color: white; width: 100%; z-index: 100" class="dropdown-content">
+          <CNavItem href="/#/support-ticket/book_mark" style="padding-left: 52px" class="custom-nav-item">
             <font style="color: black">Bookmark tickets</font>
           </CNavItem>
 
-          <hr
-            style="
-              color: black;
+          <hr id="custom-underline" style="
               width: 50%;
               margin-left: 65px;
-              margin-top: 0px;
-              margin-bottom: 0px;
-            "
-          />
+            " />
 
-          <CNavItem
-            href="/#/support-ticket/it/it_task_book"
-            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px"
-            class="custom-nav-item"
-          >
+          <CNavItem href="/#/support-ticket/it/it_task_book"
+            style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px" class="custom-nav-item">
             <font style="color: black">Bookmark tasks</font>
           </CNavItem>
-          <hr
-            style="
-              color: black;
+          <hr id="custom-underline" style="
               width: 50%;
               margin-left: 65px;
-              margin-top: 0px;
-              margin-bottom: 0px;
-            "
-          />
+            " />
         </div>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 15px"
-      />
+      <hr id="custom-underline" style="margin-left: 20px; margin-top: 15px" />
 
-      <CNavItem class="position-absolute bottom-0 start-0" 
-        style="padding-left: 15px; padding-bottom: 15px;"
-      >
+      <CNavItem class="position-absolute bottom-0 start-0" style="padding-left: 15px; padding-bottom: 15px;">
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
         <div @click="onLogoutClick" style=" cursor: pointer;">
-          <CImage
-            customClassName="nav-icon"
-            :src="Iconlogout"
-            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-          />
+          <CImage customClassName="nav-icon" :src="Iconlogout"
+            style="max-height: 20px; margin-left: 15px; margin-right: 15px" />
           <font color="red">logout</font>
         </div>
       </CNavItem>
@@ -217,7 +151,7 @@ export default {
 }
 </script>
 <style scoped>
-.custom-nav-item:hover {
+#custom-nav-item:hover {
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
   background-color: rgba(230, 230, 230, 1) !important;
   transition: background-color 0.3s, border 0.3s !important;

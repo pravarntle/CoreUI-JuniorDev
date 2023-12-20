@@ -13,7 +13,8 @@ export default createStore({
       state.asideVisible = !state.asideVisible
     },
     toggleSidebar(state) {
-      state.sidebarVisible = !state.sidebarVisible
+      state.sidebarVisible = !state.sidebarVisible;
+      state.isSidebarOpen = !state.isSidebarOpen;
     },
     toggleTheme(state, payload) {
       state.theme = payload.value
@@ -24,9 +25,6 @@ export default createStore({
     updateSidebarVisible(state, payload) {
       state.sidebarVisible = payload.value
     },
-    toggleSidebar(state) {
-      state.isSidebarOpen = !state.isSidebarOpen;
-    }
   },
   actions: {},
   modules: {},

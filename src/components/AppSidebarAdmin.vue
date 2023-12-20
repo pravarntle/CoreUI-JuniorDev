@@ -1,128 +1,55 @@
 <template>
-  <CSidebar
-    position="fixed"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
-    class="custom-sidebar"
-    @visible-change="
-      (event) =>
-        $store.commit({
-          type: 'updateSidebarVisible',
-          value: event,
-        })
-    "
-  >
+  <CSidebar position="fixed" :unfoldable="sidebarUnfoldable" :visible="sidebarVisible" class="custom-sidebar"
+    @visible-change="(event) =>
+      $store.commit({
+        type: 'updateSidebarVisible',
+        value: event,
+      })
+      ">
     <CSidebarBrand>
       <CImage :src="logo" fluid />
     </CSidebarBrand>
     <CSidebarNav>
       <MenuNewticket />
-      <CNavItem
-        href="/#/support-ticket/admin/admin_dashboard"
-        style="position: relative"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="Icondashboard"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
+      <CNavItem href="/#/support-ticket/admin/admin_dashboard" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Icondashboard" />
         <font style="color: black">Dashboard</font>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem
-        href="/#/support-ticket/my_ticket"
-        style="position: relative"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconmyTicket"
-          style="max-height: 23px; margin-left: 10px; margin-right: 12px"
-        />
+      <CNavItem href="/#/support-ticket/my_ticket" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;"/>
         <font style="color: black">My Ticket</font>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem
-        href="/#/support-ticket/book_mark"
-        style="position: relative"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconbookmark"
-          style="max-height: 23px; margin-left: 10px; margin-right: 18px"
-        />
+      <CNavItem href="/#/support-ticket/book_mark" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" :src="Iconbookmark" id="custom-icon-sidebar" />
         <font style="color: black">Bookmark</font>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem
-        href="/#/support-ticket/admin/user_list"
-        style="position: relative"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconmanageAccount"
-          style="
-            max-height: 20px;
-            margin-left: 13px;
-            margin-right: 15px;
-            max-width: 24px;
-          "
-        />
+      <CNavItem href="/#/support-ticket/admin/user_list" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" :src="IconmanageAccount" id="custom-icon-sidebar" style="margin-right: 10px; width: 25px;" />
         <font style="color: black">Manage Account</font>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem
-        href="/#/support-ticket/admin/priority_list"
-        style="position: relative"
-        class="custom-nav-item"
-      >
-        <CImage
-          customClassName="nav-icon"
-          :src="IconmanagePriority"
-          style="
-            max-height: 20px;
-            margin-left: 13px;
-            margin-right: 18px;
-            max-width: 24px;
-          "
-        />
+      <CNavItem href="/#/support-ticket/admin/priority_list" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" :src="IconmanagePriority" id="custom-icon-sidebar" />
         <font style="color: black">Manage Priority</font>
       </CNavItem>
 
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem
-        class="position-absolute bottom-0 start-0"
-        style="padding-left: 15px; padding-bottom: 15px"
-      >
+      <CNavItem class="position-absolute bottom-0 start-0" style="padding-left: 15px; padding-bottom: 15px">
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
         <div @click="onLogoutClick" style="cursor: pointer">
-          <CImage
-            customClassName="nav-icon"
-            :src="Iconlogout"
-            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-          />
+          <CImage customClassName="nav-icon" :src="Iconlogout" id="custom-icon-sidebar" />
           <font color="red">logout</font>
         </div>
       </CNavItem>
@@ -221,11 +148,12 @@ export default {
 }
 </script>
 <style scoped>
-.custom-nav-item:hover {
+#custom-nav-item:hover {
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
   background-color: rgba(230, 230, 230, 1) !important;
   transition: background-color 0.3s, border 0.3s !important;
 }
+
 .custom-sidebar .c-sidebar {
   border-radius: 10px !important;
   margin-left: 10px !important;
