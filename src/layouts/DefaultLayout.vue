@@ -7,7 +7,7 @@
     class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent"
   >
     <AppHeader />
-    <div class="body flex-grow-1 px-3">
+    <div class="body flex-grow-1 px-3 mt-3">
       <CContainer lg>
         <router-view />
       </CContainer>
