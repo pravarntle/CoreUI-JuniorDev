@@ -85,7 +85,7 @@
                       </CImage>
                       <br />
                       <h6 id="uploaded-file">
-                        {{ uploadedFileName || 'Upload' }}
+                        {{ uploadedFileName || 'Upload File' }}
                       </h6>
                     </div>
                   </div>
