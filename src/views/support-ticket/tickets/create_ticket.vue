@@ -2,7 +2,7 @@
   <div>
     <CCard class="p-4 rounded-4">
       <div class="d-inline ms-2">
-        <div class="ticket-header">
+        <div id="ticket-header">
           <CImage id="Icon_my_ticket" :src="Ticketlogo" />
         <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
         </div>
@@ -171,7 +171,7 @@
   border-bottom: 5px solid transparent;
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
-  
+  padding: 3px;
 }
 
 .popup_priority {
