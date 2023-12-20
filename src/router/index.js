@@ -370,6 +370,9 @@ const routes = [
             path: 'admin/add_account',
             name: 'ST - add_account',
             component: () => import('@/views/support-ticket/admin/add_account.vue'),
+            meta: {
+              restriction: ["Admin","Employee"]
+            },
           },
           {
             path: 'admin/admin_dashboard',
@@ -515,13 +518,18 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const user = JSON.parse(localStorage.getItem('USER_DATA'))
   const restrict = to.meta.restriction
+  // console.log(!restrict.includes(user.role) || user.role !== restrict )
+  // console.log( user.role !== restrict)
+  // console.log(restrict.includes(user.role))
   if (!user && to.name !== "Login") {
     return next({ name: "Login" })
-  } else if (user && to.name === "Login") {
-    return next("/login");
   } else {
-    if (restrict && user.role !== restrict) {
-      return next("/login");
+    // if (restrict && !user && to.name !== "Login") {
+    if (restrict && (!restrict.includes(user.role) && user.role !== restrict )){
+        
+      // console.log("มึงไม่ใช่แอด")
+      // console.log(restrict.includes(user.role))
+      return next({ name: "Login" });
     } else {
       return next();
     }
