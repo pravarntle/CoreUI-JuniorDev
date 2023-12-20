@@ -1,9 +1,9 @@
 <template>
   <CSidebar position="fixed" :unfoldable="sidebarUnfoldable" :visible="sidebarVisible" @visible-change="(event) =>
-      $store.commit({
-        type: 'updateSidebarVisible',
-        value: event,
-      })
+    $store.commit({
+      type: 'updateSidebarVisible',
+      value: event,
+    })
     ">
     <CSidebarBrand>
       <CImage :src="logo" fluid />
@@ -14,31 +14,30 @@
 
       <CNavItem href="/#/support-ticket/it/it_dashboard" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="Icondashboard" id="custom-icon-sidebar" />
-        <font style="color: black">Dashboard</font>
+        <font id="font-sidebar">Dashboard</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/my_ticket" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;" />
-        <font style="color: black">My Ticket</font>
+        <font id="font-sidebar">My Ticket</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/book_mark" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="Iconbookmark" id="custom-icon-sidebar" />
-        <font style="color: black">Bookmark</font>
+        <font id="font-sidebar">Bookmark</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
-      <CNavItem class="position-absolute bottom-0 start-0" style="padding-left: 15px; padding-bottom: 15px;">
+      <CNavItem class="position-absolute bottom-0 start-0" id="position-logout">
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
         <div @click="onLogoutClick" style=" cursor: pointer;">
-          <CImage customClassName="nav-icon" :src="Iconlogout"
-            style="max-height: 20px; margin-left: 15px; margin-right: 15px" />
-          <font color="red">logout</font>
+          <CImage customClassName="nav-icon" :src="Iconlogout" id="custom-icon-sidebar" />
+          <font id="font-logout">logout</font>
         </div>
       </CNavItem>
     </CSidebarNav>

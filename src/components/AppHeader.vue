@@ -1,5 +1,5 @@
 <template>
-  <CHeader position="sticky" class="mb-1">
+  <CHeader position="sticky" class="mb-3">
     <CContainer>
       <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
         <CIcon icon="cil-menu" size="lg" />
