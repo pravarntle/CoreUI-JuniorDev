@@ -34,7 +34,10 @@
         <template #BOOKMARK="{ item, index }">
           <td class="text-center">
             <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)">
-              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+              {{ Boolean(item.BOOKMARK) ? '' : '' }}
+              <CIcon v-if="Boolean(item.BOOKMARK)" :icon="icon.cilBook" size="xxl" />
+              <CIcon v-if="!Boolean(item.BOOKMARK)" :icon="icon.cilBookmark" size="xxl"/>
+
             </CButton>
           </td>
         </template>
@@ -93,6 +96,8 @@
 import { ref } from 'vue'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
+import { CIcon } from '@coreui/icons-vue';
+import * as icon from '@coreui/icons';
 import { CBadge } from '@coreui/vue-pro'
 
 export default {
@@ -173,6 +178,7 @@ export default {
       getBadge,
       activePage,
       getData,
+      icon,
     };
   },
 
@@ -197,10 +203,9 @@ export default {
         });
 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
         this.toastProp.push({
-          content: 'บุคมาร์คไม่สำเร็จ'
+          content: 'BookMark Fail'
         })
 
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
@@ -220,11 +225,17 @@ export default {
         });
 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        
+        this.toastProp.push({
+          content: 'Cancel Success'
+        })
         // รีเฟรชหน้า
         this.getTicket();
 
       } catch (error) {
+        this.toastProp.push({
+          content: 'Cancellation failed.'
+        })
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
     },
@@ -271,7 +282,10 @@ export default {
     this.getTicket();
 
 
-  }
+  },
+  components: {
+    CIcon
+  },
 
 }
 </script>

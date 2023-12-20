@@ -467,10 +467,6 @@ export default {
 
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        this.toastProp.push({
-          title: 'Create Ticket',
-          content: 'สร้างสำเร็จ',
-        })
         setTimeout(() => {
           // จบการโหลด
           this.isLoading = false
@@ -520,12 +516,20 @@ export default {
             data: this.form,
           })
           .then((result) => {
+            this.toastProp.push({
+              title: 'Create Ticket',
+              content: 'Create Success',
+            })
             this.confirm()
           })
           .catch((err) => {
             console.log(error)
           })
       } catch (error) {
+        this.toastProp.push({
+            title: 'Create Ticket',
+            content: 'Create Fail',
+          })
         console.log(error)
       }
     },

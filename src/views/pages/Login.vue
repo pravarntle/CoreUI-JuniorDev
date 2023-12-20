@@ -63,7 +63,7 @@
       </CContainer>
     </div>
 
-    <!-- <CToaster placement="top-end">
+    <CToaster placement="top-end">
         <CToast visible color="primary" v-for="(toast) in toastProp">
             <CToastHeader closeButton v-if="toast.title">
                 <span class="me-auto fw-bold">{{ toast.title }}</span>
@@ -72,7 +72,7 @@
                 <span class="text-white">{{ toast.content }}</span>
             </CToastBody>
         </CToast>
-    </CToaster> -->
+    </CToaster>
 </template>
 <style>
 .c-image {
@@ -103,6 +103,7 @@ export default {
           password: null,
         },
         showPassword:false,
+        toastProp: [],
 
         // toastProp: [],
       };
@@ -159,7 +160,11 @@ export default {
             }
 
             localStorage.setItem('USER_DATA', JSON.stringify(user))
-            console.log(user.role)
+            
+            this.toastProp.push({
+              
+              content: 'Login Success',
+            })
             setTimeout(function() {
               if (user.role === 'Employee') {
                 this.$router.push('/support-ticket/user/dashboard');
@@ -176,10 +181,17 @@ export default {
           } catch (error) {
             console.log(error)
             if (error.response.status === 401) {
-              alert('รหัสผ่านไม่ถูกต้อง หรือ ไม่พบผู้ใช้'); // แสดง Alert ถ้ามีค่าสถานะ 401
+              this.toastProp.push({
+              
+                content: 'Incorrect password or user not found',
+              })
+             // แสดง toast ถ้ามีค่าสถานะ 401
             }
             if (error.response.status === 500) {
-              alert('เซิฟเวอร์มีปัญหา'); // แสดง Alert ถ้ามีค่าสถานะ 401
+              this.toastProp.push({
+              
+                content: 'The server has a problem.',
+              }) // แสดง Alert ถ้ามีค่าสถานะ 401
             }
           }
         }

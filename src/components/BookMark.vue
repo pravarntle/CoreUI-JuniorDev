@@ -33,10 +33,13 @@
           <template #BOOKMARK="{ item, index }">
             <td class="text-center">
               <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)">
-                {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+                {{ Boolean(item.BOOKMARK) ? '' : '' }}
+                <CIcon v-if="Boolean(item.BOOKMARK)" :icon="icon.cilBook" size="xxl" />
+                <CIcon v-if="!Boolean(item.BOOKMARK)" :icon="icon.cilBookmark" size="xxl"/>
+
               </CButton>
             </td>
-          </template>
+          </template> 
           <template #MORE="{ item, index }">
             <td class="text-center">
               <CButton color="primary" variant="outline" square size="xl" @click="toggleButton(item, index)">
@@ -107,6 +110,8 @@ import { ref } from 'vue'
 import Icon_bookmark from '@/assets/images/Icon_bookmark.png'
 import { CCol, CRow } from '@coreui/vue-pro'
 import axios from 'axios';
+import { CIcon } from '@coreui/icons-vue';
+import * as icon from '@coreui/icons';
 export default {
   name: 'BookMark',
   setup() {
@@ -169,6 +174,7 @@ export default {
       items,
       getBadge,
       toggleDetails,
+      icon,
     };
   },
   components: { CRow, CCol },
