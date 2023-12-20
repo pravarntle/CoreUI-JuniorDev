@@ -484,6 +484,7 @@ export default {
           this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
           this.onSave()
         }, 2000)
       } else {
@@ -518,9 +519,9 @@ export default {
       this.form.tkt_act = userId
       this.form.tkt_status = ticket_status
       this.form.tkt_book = false
-      console.log(this.form)
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
+
 
       try {
         await axios
@@ -528,13 +529,13 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.toastProp.push({
-              title: 'Create Ticket',
-              content: 'Create Success',
-            })
-            this.confirm()
+            this.confirm();
           })
           .catch((err) => {
+            this.toastProp.push({
+              title: 'Create Ticket',
+              content: 'Create Fail',
+            }),
             console.log(error)
           })
       } catch (error) {
