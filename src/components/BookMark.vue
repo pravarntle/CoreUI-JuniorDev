@@ -147,28 +147,27 @@ export default {
           return 'secondary'; // Return a default color if none of the cases match.
       }
     };
+    
 
     const toggleDetails = async (item) => {
-
       item.BOOKMARK = !item.BOOKMARK;
-      console.log(item.BOOKMARK)
-      console.log(item)
+      console.log(item.BOOKMARK);
+      console.log(item);
       try {
         const itemId = item._id.toString();
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data: {
             tkt_book: item.BOOKMARK,
-
           }
         });
-        this.getTicket();
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+        // เรียกใช้เมธอด getTicket ที่ถูกสร้างใน setup()
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
     };
+
     return {
       Icon_bookmark,
       columns,
