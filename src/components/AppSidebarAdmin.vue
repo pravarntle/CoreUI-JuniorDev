@@ -13,44 +13,45 @@
       <MenuNewticket />
       <CNavItem href="/#/support-ticket/admin/admin_dashboard" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Icondashboard" />
-        <font style="color: black">Dashboard</font>
+        <font id="font-sidebar">Dashboard</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/my_ticket" style="position: relative" id="custom-nav-item">
-        <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;"/>
-        <font style="color: black">My Ticket</font>
+        <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;" />
+        <font id="font-sidebar">My Ticket</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/book_mark" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="Iconbookmark" id="custom-icon-sidebar" />
-        <font style="color: black">Bookmark</font>
+        <font id="font-sidebar">Bookmark</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/admin/user_list" style="position: relative" id="custom-nav-item">
-        <CImage customClassName="nav-icon" :src="IconmanageAccount" id="custom-icon-sidebar" style="margin-right: 10px; width: 25px;" />
-        <font style="color: black">Manage Account</font>
+        <CImage customClassName="nav-icon" :src="IconmanageAccount" id="custom-icon-sidebar"
+          style="margin-right: 10px; width: 25px;" />
+        <font id="font-sidebar">Manage Account</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
       <CNavItem href="/#/support-ticket/admin/priority_list" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="IconmanagePriority" id="custom-icon-sidebar" />
-        <font style="color: black">Manage Priority</font>
+        <font id="font-sidebar">Manage Priority</font>
       </CNavItem>
 
       <hr id="custom-underline" />
 
-      <CNavItem class="position-absolute bottom-0 start-0" style="padding-left: 15px; padding-bottom: 15px">
+      <CNavItem class="position-absolute bottom-0 start-0" id="position-logout">
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
         <div @click="onLogoutClick" style="cursor: pointer">
           <CImage customClassName="nav-icon" :src="Iconlogout" id="custom-icon-sidebar" />
-          <font color="red">logout</font>
+          <font id="font-logout">logout</font>
         </div>
       </CNavItem>
     </CSidebarNav>
