@@ -3,9 +3,10 @@
     <CCard class="p-2 rounded-4">
       <CCardHeader class="bg-white border-white">
         <div class="d-inline ms-2">
-          <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
-          <h2 class="d-inline align-middle">My Bookmark Ticket</h2>
-          <div id="underline_header"></div>
+          <div id="underline_header">
+            <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
+            <h2 class="d-inline align-middle">My Bookmark</h2>
+          </div>
         </div>
       </CCardHeader>
       <div class="table-responsive table-borderless">
@@ -92,16 +93,16 @@
 }
 
 #underline_header {
-  width: 370px;
+  display: inline-block;
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, red, blue);
+  border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
   padding: 3px;
 }
 
 #custom_icon_header {
-  width: 50px;
-  height: 44px;
+  width: auto;
+  height: 30px;
 }
 </style>
   

@@ -1,8 +1,9 @@
 <template>
   <Ccrad>
     <CCardHeader>
-      <h1 class="LineHeadCard">
-        Dashboard
+      <h1 id="LineHeadCard">
+        <CImage id="Icondashboard" :src="Icondashboard"  />
+        <b>Dashboard</b>
       </h1>
     </CCardHeader>
     <CRow class="RowCard">
@@ -92,8 +93,8 @@
   border-radius: 15px;
 }
 
-.LineHeadCard {
-  width: 180px;
+#LineHeadCard {
+  display: inline-block;
   border-bottom: 5px solid transparent;
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
@@ -102,9 +103,18 @@
 .RowCard{
   height: auto;
 }
+
+#Icondashboard{
+  width: auto;
+  max-height: 30px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
 </style>
   
 <script>
+import Icondashboard from '@/assets/images/Icon_dashboard.png'
 import LGblue from '@/assets/images/blueTick.png'
 import LGred from '@/assets/images/redTick.png'
 import LGgreen from '@/assets/images/greenTick.png'
@@ -146,6 +156,7 @@ export default {
       LGred,
       LGlogo,
       getData,
+      Icondashboard,
     };
   },
 

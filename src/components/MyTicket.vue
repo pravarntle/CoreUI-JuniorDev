@@ -2,9 +2,9 @@
   <CCard class="p-2 rounded-4">
     <CCardHeader class="bg-white border-white">
       <div class="d-inline ms-2">
-        <CImage class="me-2 align-middle"  :src="LGlogo" />
-        <h2 class="d-inline align-middle">My Tickets</h2>
-        <div class="LineHeadCard">
+        <div id="ticket-header">
+          <CImage id="Icon_my_ticket" :src="Ticketlogo" />
+        <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
         </div>
       </div>
     </CCardHeader>
@@ -79,10 +79,10 @@
   max-width: 100%;
 }
 
-.LineHeadCard {
-  width: 225px;
+#ticket-header {
+  display: inline-block;
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, danger, primary);
+  border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
   padding: 3px;
 }
@@ -91,10 +91,18 @@
   height: 36px;
 }
 
+#Icon_my_ticket{
+  width: auto;
+  max-height: 25px;
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-right: 5px;
+}
+
 </style>
 <script>
 import { ref } from 'vue'
-import LGlogo from '@/assets/images/blackTick.png'
+import Ticketlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
@@ -172,7 +180,7 @@ export default {
     }
     const activePage = ref(1)
     return {
-      LGlogo,
+      Ticketlogo,
       columns,
       items,
       getBadge,
