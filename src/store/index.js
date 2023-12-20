@@ -6,6 +6,7 @@ export default createStore({
     sidebarVisible: true,
     sidebarUnfoldable: false,
     theme: 'default',
+      isSidebarOpen: false,
   },
   mutations: {
     toggleAside(state) {
@@ -23,6 +24,9 @@ export default createStore({
     updateSidebarVisible(state, payload) {
       state.sidebarVisible = payload.value
     },
+    toggleSidebar(state) {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    }
   },
   actions: {},
   modules: {},
