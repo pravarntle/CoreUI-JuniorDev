@@ -6,48 +6,41 @@
 
     <CRow>
       <CCol sm="8">
-        <CCard class="chart-container">
+        <CCard class="mt-3 chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex fs-4"
-                  ><b>Category Chart</b>
-                  <CButton
-                    variant="ghost"
-                    class="border border-0 bg-body ms-auto d-flex"
-                    ><img :src="Close_fullscreen"
-                  /></CButton>
-                </CCardTitle>
+            <CCardTitle class="d-flex fs-2"
+              ><b>Category Chart</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                ><img :src="Close_fullscreen"
+              /></CButton>
+            </CCardTitle>
             <CRow>
-              <CCol sm="6"
-                >
-                <CCardSubtitle class="text-muted fs-2"
+              <CCol sm="6">
+                <CCardSubtitle class="text-muted fs-1"
                   >ALL TICKET</CCardSubtitle
                 >
 
                 <CCardText class="fs-1"><b>500</b></CCardText>
-                <hr>
+                <hr />
                 <CCol sm="6" class="d-flex align-items-center">
                   <ul>
-                    <li style="color: #0071ff; font-size: 24px">
-                      <span style="color: black; font-size: 16px"
-                        >Software</span
-                      >
+                    <li id="software">
+                      <span>Software</span>
                     </li>
-                    <li style="color: #f9a825; font-size: 24px">
-                      <span style="color: black; font-size: 16px"
-                        >Hardware</span
-                      >
+                    <li id="hardware">
+                      <span>Hardware</span>
                     </li>
-                    <li style="color: #ee5731; font-size: 24px">
-                      <span style="color: black; font-size: 16px"
-                        >Service Request</span
-                      >
+                    <li id="ServiceRequest">
+                      <span>Service Request</span>
                     </li>
                   </ul>
                 </CCol></CCol
               >
               <CCol sm="6">
                 <CChart
-                  style=""
+                  class="pie_chart"
                   type="pie"
                   :data="{
                     labels: ['Software', 'Hardware', 'Service Request'],
@@ -76,16 +69,16 @@
 
           <!-- Ticket Priority  -->
         </CCard>
-        <CCard style="margin-top: 10px">
+        <CCard class="mt-3">
           <CCardBody>
-            <CCardTitle class="d-flex fs-4"
-                  ><b>Ticket Priority</b>
-                  <CButton
-                    variant="ghost"
-                    class="border border-0 bg-body ms-auto d-flex"
-                    ><img :src="Close_fullscreen"
-                  /></CButton>
-                </CCardTitle>
+            <CCardTitle class="d-flex fs-2"
+              ><b>Ticket Priority</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                ><img :src="Close_fullscreen"
+              /></CButton>
+            </CCardTitle>
             <div class="row align-items-center border border-white">
               <div class="col-md-2 col-sm-12 ps-5"><h5>High</h5></div>
               <div class="col-md-7 col-sm-12 ps-5">
@@ -136,80 +129,52 @@
         <!-- Support Tracker  -->
       </CCol>
       <CCol sm="4">
-        <CCard style="height: auto">
-          <CCardBody style="padding-top: 30px; padding-left: 20px">
-            <CCardTitle class="d-flex fs-4"
-                  ><b>Support Tracker</b>
-                  <CButton
-                    variant="ghost"
-                    class="border border-0 bg-body ms-auto d-flex"
-                    ><img :src="Close_fullscreen"
-                  /></CButton>
-                </CCardTitle>
-            <CCardText style="font-size: 20px; color: #a8a7ae"
-              >Last 7 Days</CCardText
-            >
-            <h1 style="font-size: 50px; color: #5c5c67" class="mt-5">164</h1>
-            <h5 style="font-size: 20px; color: #7b7984">Total Ticket</h5>
-            <CRow style="padding-top: 20px">
-              <CCol
-                sm="2"
-                class="rounded-3 ms-1"
-                style="
-                  padding-top: 10px;
-                  background-color: #e8e7fb;
-                  width: 15%;
-                  height: 50%;
-                "
-              >
+        <CCard class="mt-3" >
+          <CCardBody class="ps-4">
+            <CCardTitle class="d-flex fs-2"
+              ><b>Support Tracker</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                ><img :src="Close_fullscreen"
+              /></CButton>
+            </CCardTitle>
+            <CCardText class="fs-5 text-secondary">Last 7 Days</CCardText>
+            <h1 id="support_tracker" class="text-body-secondary mt-5">164</h1>
+            <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
+            <CRow class="pt-5">
+              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
                 <CIcon
                   :icon="icon.cilPlus"
                   size="xxl"
-                  style="margin-bottom: 10px; color: #7167e8"
+                  class="icon_new_ticket"
                 />
               </CCol>
               <CCol sm="10">
-                <b style="font-size: 20px">New Ticket</b>
-                <p style="color: #a7a6ad">142</p></CCol
+                <b class="fs-5">New Ticket</b>
+                <p class="text-body-secondary">142</p></CCol
               >
-              <CCol
-                sm="2"
-                class="rounded-3 ms-1"
-                style="
-                  padding-top: 10px;
-                  background-color: #e5f7fb;
-                  width: 15%;
-                  height: 50%;
-                "
-              >
+            </CRow>
+            <CRow class="pt-3">
+              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
                 <CIcon
                   :icon="icon.cilCheckCircle"
                   size="xxl"
-                  style="margin-bottom: 10px; color: #69cfe6"
+                  class="icon_open_ticket"
                 />
               </CCol>
               <CCol sm="10">
-                <b style="font-size: 20px">Open Ticket</b>
-                <p style="color: #a7a6ad">28</p></CCol
+                <b class="fs-5">Open Ticket</b>
+                <p class="text-body-secondary">28</p></CCol
               >
-              <CCol
-                sm="2"
-                class="rounded-3 ms-1"
-                style="
-                  padding-top: 10px;
-                  background-color: #fdf0e4;
-                  width: 15%;
-                  height: 50%;
-                "
-              >
-                <CIcon
-                  :icon="icon.cilClock"
-                  size="xxl"
-                  style="margin-bottom: 10px; color: #f2a356"
+            </CRow>
+            <CRow class="pt-3 mb-5">
+              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
+                <CIcon :icon="icon.cilClock" size="xxl" class="response_time"
               /></CCol>
               <CCol sm="10">
-                <b style="font-size: 20px">Response Time</b>
-                <p style="color: #a7a6ad">1</p></CCol
+                <b class="fs-5">Response Time</b>
+                <p class="text-body-secondary">1</p></CCol
               >
             </CRow>
           </CCardBody>
@@ -525,4 +490,67 @@ output {
   color: black;
   /* สไตล์เพิ่มเติมตามความต้องการ */
 }
+
+.pie_chart{
+  height: 300px;
+  width: 300px;
+}
+
+#software {
+  color: #0071ff;
+  font-size: 24px;
+}
+
+#hardware {
+  color: #f9a825;
+  font-size: 24px;
+}
+
+#ServiceRequest {
+  color: #ee5731;
+  font-size: 24px;
+}
+
+#support_tracker {
+  font-size: 50px;
+}
+
+#new_ticket {
+  background-color: #e8e7fb;
+  width: 15%;
+  height: 50%;
+}
+
+#open_ticket {
+  background-color: #e5f7fb;
+  width: 15%;
+  height: 50%;
+}
+
+#response_time {
+  background-color: #fdf0e4;
+  width: 15%;
+  height: 50%;
+}
+
+.icon_new_ticket {
+  margin-bottom: 10px;
+  color: #7167e8;
+}
+
+.icon_open_ticket {
+  margin-bottom: 10px;
+  color: #69cfe6;
+}
+
+.response_time {
+  margin-bottom: 10px;
+  color: #f2a356;
+}
+
+span {
+  color: black;
+  font-size: 16px;
+}
+
 </style>
