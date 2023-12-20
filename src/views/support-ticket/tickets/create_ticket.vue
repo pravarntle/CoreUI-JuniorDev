@@ -4,7 +4,7 @@
       <div class="d-inline ms-2">
         <div id="ticket-header">
           <CImage id="Icon_my_ticket" :src="Ticketlogo" />
-        <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
+        <h2 class="d-inline align-middle"><b>New Ticket</b></h2>
         </div>
       </div>
       <CCardBody>
