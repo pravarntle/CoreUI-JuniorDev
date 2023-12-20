@@ -1,8 +1,11 @@
 <template>
   <div>
-    <CCard>
-      <div id="ticket-header">
-        <h2><b>New Ticket</b></h2>
+    <CCard class="p-4 rounded-4">
+      <div class="d-inline ms-2">
+        <div class="ticket-header">
+          <CImage id="Icon_my_ticket" :src="Ticketlogo" />
+        <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
+        </div>
       </div>
       <CCardBody>
         <CForm>
@@ -164,12 +167,11 @@
 
 <style>
 #ticket-header {
-  width: 225px;
+  display: inline-block;
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, red, blue);
+  border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
-  padding: 3px;
-  margin: 30px;
+  
 }
 
 .popup_priority {
@@ -344,9 +346,18 @@
 #detail-for-submit {
   color: #29b227;
 }
+
+#Icon_my_ticket{
+  width: auto;
+  max-height: 25px;
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-right: 5px;
+}
 </style>
 
 <script>
+import Ticketlogo from '@/assets/images/blackTick.png'
 import Cloud from '@/assets/images/Cloud.png'
 import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
@@ -389,6 +400,7 @@ export default {
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
       isLoading: false,
+      Ticketlogo,
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
