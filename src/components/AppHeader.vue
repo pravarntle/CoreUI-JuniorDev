@@ -1,6 +1,6 @@
 <template>
   <CHeader position="sticky" class="mb-3">
-    <CContainer>
+    <CContainer fluid>
       <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
@@ -40,6 +40,8 @@ import AppHeaderDropdownMssgs from './AppHeaderDropdownMssgs'
 import AppHeaderDropdownNotif from './AppHeaderDropdownNotif'
 import AppHeaderDropdownTasks from './AppHeaderDropdownTasks'
 import { logo } from '@/assets/brand/logo'
+import { CContainer, CHeaderToggler } from '@coreui/vue-pro'
+import CIcon from '@coreui/icons-vue'
 
 export default {
   name: 'AppHeader',
@@ -49,6 +51,9 @@ export default {
     AppHeaderDropdownMssgs,
     AppHeaderDropdownNotif,
     AppHeaderDropdownTasks,
+    CContainer,
+    CHeaderToggler,
+    CIcon,
   },
   setup() {
     return {
