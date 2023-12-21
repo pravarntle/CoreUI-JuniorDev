@@ -466,7 +466,7 @@ export default {
         this.validate.tkt_priorities = false;
       }
 
-      if (this.form.tkt_description.trim() === '' || specialCharRegex.test(this.form.tkt_description)) {
+      if (this.form.tkt_description.trim() === '' ) {
         this.validate.tkt_description = true;
         error = true;
       } else {
