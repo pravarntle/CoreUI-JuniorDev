@@ -6,8 +6,8 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+            <div class="text-start" id="head_description">
+              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
@@ -725,5 +725,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* --------FIGHT---------- */
+#head_description{
+  padding: 1px;  
+  margin-top: 1%;
 }
 </style>
