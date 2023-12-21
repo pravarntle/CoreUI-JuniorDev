@@ -322,7 +322,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .mb-3 {
   width: 943px;
   height: 691px;
