@@ -1,20 +1,11 @@
 <template>
-  <CSidebar
-    position="fixed"
-    top="0"
-    left="0"
-    height="100vh"
-    overflow-y="auto"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
-    @visible-change="
-      (event) =>
-        $store.commit({
-          type: 'updateSidebarVisible',
-          value: event,
-        })
-    "
-  >
+  <CSidebar position="fixed" top="0" left="0" height="100vh" overflow-y="auto" :unfoldable="sidebarUnfoldable"
+    :visible="sidebarVisible" @visible-change="(event) =>
+      $store.commit({
+        type: 'updateSidebarVisible',
+        value: event,
+      })
+      ">
     <CSidebarBrand>
       <CImage :src="logo" fluid />
     </CSidebarBrand>
@@ -22,39 +13,21 @@
     <CSidebarNav>
       <MenuNewticket />
       <CNavItem href="/#/support-ticket/user/dashboard" class="custom-nav-item">
-        <CImage
-          customClassName="nav-icon"
-          :src="Icondashboard"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
-        <font style="color: black">Dashboard</font>
+        <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Icondashboard" />
+        <font id="font-sidebar">Dashboard</font>
       </CNavItem>
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
       <CNavItem href="/#/support-ticket/ticket/book" class="custom-nav-item">
-        <CImage
-          customClassName="nav-icon"
-          :src="Iconbookmark"
-          style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-        />
-        <font style="color: black">Bookmark</font>
+        <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Iconbookmark" />
+        <font id="font-sidebar">Bookmark</font>
       </CNavItem>
-      <hr
-        style="color: black; width: 70%; margin-left: 20px; margin-top: 0px"
-      />
+      <hr id="custom-underline" />
 
-      <CNavItem class="position-absolute bottom-0 start-0" 
-        style="padding-left: 15px; padding-bottom: 15px;"
-      >
+      <CNavItem class="position-absolute bottom-0 start-0" id="position-logout">
         <!-- ให้กลุ่ม element ทั้งหมดมีการเรียกใช้งาน onLogoutClick() เมื่อมีการคลิก -->
         <div @click="onLogoutClick" style=" cursor: pointer;">
-          <CImage
-            customClassName="nav-icon"
-            :src="Iconlogout"
-            style="max-height: 20px; margin-left: 15px; margin-right: 15px"
-          />
-          <font color="red">logout</font>
+          <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Iconlogout" />
+          <font id="font-logout">logout</font>
         </div>
       </CNavItem>
     </CSidebarNav>
@@ -147,6 +120,8 @@ export default {
     background-color: rgba(230, 230, 230, 1) !important;
   }
 }
+
+
 
 .custom-nav-item:hover {
   border: 1px solid rgba(0, 0, 0, 0.15) !important;

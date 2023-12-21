@@ -1,49 +1,34 @@
 <template>
   <div>
-    <CCard>
-      <div
-        style="
-          width: 225px;
-          border-bottom: 5px solid transparent;
-          border-image: linear-gradient(to right, red, blue);
-          border-image-slice: 1;
-          padding: 3px;
-          margin: 30px;
-        "
-      >
-        <h2><b>New Ticket</b></h2>
+    <CCard class="p-4 rounded-4">
+      <div class="d-inline ms-2">
+        <div id="ticket-header">
+          <CImage id="Icon_my_ticket" :src="Ticketlogo" />
+        <h2 class="d-inline align-middle"><b>New Ticket</b></h2>
+        </div>
       </div>
       <CCardBody>
-        <CForm :validated="form.validatedCustom01">
+        <CForm>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b> Title </b></h5>
-              <CFormInput
-                type="text"
-                id="tkt_title"
-                name="tkt_title"
-                v-model="form.tkt_title"
-                feedbackInvalid="ห้ามเว้นว่าง"
-                :invalid="validate.tkt_title"
-                required
-              />
+              <h5>
+                <b>Title <span id="required">*</span> </b>
+              </h5>
+              <CFormInput type="text" id="tkt_title" name="tkt_title" v-model="form.tkt_title"
+                feedbackInvalid="Please input title." :invalid="validate.tkt_title" required />
             </div>
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Type</b></h5>
-              <CFormSelect
-                v-model="form.tkt_types"
-                :options="typeOptions"
-                feedbackInvalid="ห้ามเว้นว่าง"
-                :invalid="validate.tkt_types"
-                required
-                @change="checktype"
-              />
+              <h5>
+                <b>Type <span id="required">*</span></b>
+              </h5>
+              <CFormSelect v-model="form.tkt_types" :options="typeOptions" feedbackInvalid="Please select type."
+                :invalid="validate.tkt_types" required @change="checktype" />
             </div>
           </CRow>
           <CRow class="mb-2">
@@ -52,121 +37,115 @@
             <div class="col-lg-7 col-md-12">
               <div class="d-flex align-items-center">
                 <!-- ใช้ d-flex จัดให้ Priority และ popup_priority อยู่ในบรรทัดเดียวกัน -->
-                <h5><b>Priority</b></h5>
-                <div class="popup" @click="togglePopup">
-                  <CAvatar
-                    class="popup_priority"
-                    :src="popup_priority"
-                    style="text-align: left; margin-left: 10px; margin-top: -5px;"
-
-                  />
-                  <div class="popuptext" :class="{ show: isPopupVisible }">
+                <h5>
+                  <b>Priority <span id="required">*</span></b>
+                </h5>
+                <div class="popup" @mouseover="togglePopup">
+                  <CAvatar class="popup_priority" :src="popup_priority" />
+                  <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup">
                     <p>
-                      <font style="color: #38a06c">
-                        Low = ดำเนินการภายใน 72 ชม.
-                      </font>
+                      <font id="low-priority">Low = ดำเนินการภายใน 72 ชม.</font>
                       <br />
-                      <font style="color: #c97a20">
-                        Medium = ดำเนินการภายใน 48 ชม.
-                      </font>
+                      <font id="medium-priority">Medium = ดำเนินการภายใน 48 ชม.</font>
                       <br />
-                      <font style="color: #ef5466"
-                        >High = ดำเนินการภายใน 24 ชม.
-                      </font>
+                      <font id="high-priority">High = ดำเนินการภายใน 24 ชม.</font>
                     </p>
                   </div>
                 </div>
               </div>
-              <CFormSelect
-                v-model="form.tkt_priorities"
-                :options="piorityOptions"
-                feedbackInvalid="ห้ามเว้นว่าง"
-                :invalid="validate.tkt_priorities"
-                required
-                @change="checkpiority"
-              />
+              <CFormSelect v-model="form.tkt_priorities" :options="piorityOptions"
+                feedbackInvalid="Please select priority." :invalid="validate.tkt_priorities" required
+                @change="checkpiority" />
             </div>
           </CRow>
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
-
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
-              <h5><b>Description</b></h5>
-              <CFormTextarea
-                v-model="form.tkt_description"
-                feedbackInvalid="ห้ามเว้นว่าง"
-                :invalid="validate.tkt_description"
-                required
-                id="validationTextarea"
-                rows="4"
-              />
+              <h5>
+                <b>Description <span id="required">*</span></b>
+              </h5>
+              <CFormTextarea v-model="form.tkt_description" feedbackInvalid="Please input description."
+                :invalid="validate.tkt_description" required id="validationTextarea" rows="4" />
             </div>
           </CRow>
-
-          <!-- <CRow class="mb-2">
+          <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-            <div class="col-lg-7 col-md-12">
-              <h5><b>Upload A File</b></h5>
-              <CFormInput
-                type="file"
-                size="lg"
-                id="formFileLg"
-                v-model="form.tkt_picture"
-                :invalid="validate.tkt_picture"
-                required
-              />
+            <div class="col-lg-7 col-md-12 mb-4">
+              <h5>
+                <b>Upload File</b>
+              </h5>
+              <CCard id="custom-card">
+                <label for="formFileLg">
+                  <div class="custom-file-upload mt-3">
+                    <input type="file" size="lg" id="formFileLg" required
+                      accept=".png, .jpg, .jpeg, .txt, .pdf, .docx, .xlsx" @change="onFileUpload"
+                      :invalid="validate.tkt_picture" feedbackInvalid="ห้ามเว้นว่าง" />
+
+                    <div>
+                      <CImage class="Cloud" :src="Cloud">
+                      </CImage>
+                      <br />
+                      <h6 id="uploaded-file">
+                        {{ uploadedFileName || 'Upload File' }}
+                      </h6>
+                    </div>
+                  </div>
+                </label>
+              </CCard>
             </div>
-          </CRow> -->
-          
-          
-          
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
-          <div class="col-lg-7 col-md-12">
-            <h5><b>Upload A File</b></h5>
-            <CFormInput
-              type="file"
-              size="lg"
-              id="formFileLg"
-              required
-              accept=".png, .jpg, .jpeg , .txt, .pdf, .docx ,.xlsx"
-              @change="onFileUpload"
-              :invalid="validate.tkt_picture"
-            />
-          </div>
-          <CElementCover :opacity="0.5" v-if="pageLoading" />
-          <div style="text-align: center"></div>
-        </CRow>
-        <div class="clearfix text-end">
-            <CButton
-              color="secondary"
-              @click="vaildateBeforeSave, createToast"
-              style="
-                font-weight: bold;
-                font-size: x-large;
-                width: 150px;
-                color: white;
-                border-radius: 20px;
-              "
-              >Cancle</CButton
-            >
-            <CButton
-              class="btn-sec"
-              color="success"
-              @click="vaildateBeforeSave"
-              style="
-                font-weight: bold;
-                font-size: x-large;
-                width: 150px;
-                color: white;
-                border-radius: 20px;
-              "
-              >Submit</CButton
-            >
+
+            <CElementCover :opacity="0.5" v-if="pageLoading" />
+          </CRow>
+          <div class="clearfix text-end">
+            <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
+            <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
+              visibleVerticallyCenteredDemo = false
+            }
+              ">
+              <CModalBody>
+                <h2 class="cancel-heading"  id="button-head">Cancel</h2>
+                <p class="ms-2" id="popup-detail">
+                  Are you sure you want to
+                  <span id="detail-for-cancel">Cancel The Ticket ?</span>
+                </p>
+                <br />
+                <hr />
+                <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
+                  Cancel
+                </CButton>
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                  Confirm
+                </CButton>
+              </CModalBody>
+            </CModal>
+            <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
+              Submit
+            </CButton>
+            <CModal alignment="center" :visible="visibleSubmit" @close="() => {
+              visibleSubmit = false
+            }
+              ">
+              <CModalBody>
+                <h2 class="ms-3" id="button-head">
+                  Submit
+                </h2>
+                <p class="ms-2" id="popup-detail">
+                  Are you sure you want to
+                  <span id="detail-for-submit">Submit The Ticket ?</span>
+                </p>
+                <br />
+                <hr />
+                <CButton color="light" @click="() => { visibleSubmit = false }">
+                  Cancel
+                </CButton>
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave" :disabled="isLoading">
+                  <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                  {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                </CButton>
+              </CModalBody>
+            </CModal>
           </div>
         </CForm>
       </CCardBody>
@@ -174,11 +153,31 @@
   </div>
 
   <br />
+  <CToaster placement="top-end">
+    <CToast visible color="info" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
+
 <style>
+#ticket-header {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+  padding: 3px;
+}
+
 .popup_priority {
   width: 16px;
 }
+
 /* Popup container - can be anything you want */
 .popup {
   position: relative;
@@ -227,33 +226,144 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
-/* เพิ่ม CSS Media Query เพื่อปรับแต่งการ padding-left เมื่อหน้าจอเล็ก */
-/* @media (max-width: 768px) {
-  .col-lg-3.col-md-12 h5 {
-    padding-left: 0;
-  }
-} */
-
-/* .footer {
-  display: flex;
-  justify-content: end;
-} */
 .btn-sec {
   margin: 5px;
+}
+
+.custom-file-upload {
+  cursor: pointer;
+  background-color: #f2f5f7;
+  color: #000000;
+  padding: 15px 15px;
+  transition: background-color 0.3s ease;
+  border: 2px dashed #8a8a8a;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.custom-file-upload:hover {
+  background-color: #7ee4b3;
+}
+
+#required {
+  color: red;
+}
+
+#uploaded-file {
+  font-size: larger;
+  color: #888787;
+}
+
+#low-priority {
+  color: #38a06c;
+}
+
+#medium-priority {
+  color: #c97a20;
+}
+
+#high-priority {
+  color: #ef5466;
+}
+
+#custom-card {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#cancel-button {
+  font-weight: bold;
+  font-size: x-large;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
+}
+
+#cancel-heading {
+  margin-left: 3px;
+  text-align: left;
+  color: #000;
+}
+
+.popup_priority {
+  text-align: left;
+  margin-left: 10px;
+  margin-top: -5px;
+
+}
+
+#formFileLg {
+  display: none;
+}
+
+.Cloud {
+  text-align: center;
+  height: 70px;
+}
+
+#button-head {
+  text-align: left;
+  color: #000;
+}
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+}
+
+#detail-for-cancel {
+  color: #d0293b;
+}
+
+#confirm-btn-in-detail {
+  color: #ffffff;
+}
+
+#submit-button {
+  font-weight: bold;
+  font-size: x-large;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
+}
+
+#detail-for-submit {
+  color: #29b227;
+}
+
+#Icon_my_ticket{
+  width: auto;
+  max-height: 25px;
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-right: 5px;
 }
 </style>
 
 <script>
+import Ticketlogo from '@/assets/images/blackTick.png'
+import Cloud from '@/assets/images/Cloud.png'
 import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
-import { CForm, CFormLabel } from '@coreui/vue-pro'
+import { CForm, CFormLabel, CImage } from '@coreui/vue-pro'
 import axios from 'axios'
 
 export default {
@@ -272,8 +382,10 @@ export default {
         tkt_book: '',
         tkt_act: '',
         validatedCustom01: false,
+        isDragOver: false,
       },
       popup_priority,
+      Cloud,
       isPopupVisible: false,
       userOptions: [],
       userOptions: [],
@@ -283,7 +395,12 @@ export default {
       validate: {
         ticket: null,
       },
-      toasts: [],
+      toastProp: [],
+      uploadedFileName: '',
+      visibleVerticallyCenteredDemo: false,
+      visibleSubmit: false,
+      isLoading: false,
+      Ticketlogo,
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -291,10 +408,11 @@ export default {
     (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
-      { label: 'Mediem', value: 'Medium' },
+      { label: 'Medium', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
-    ]),
+    ])
+      ,
       (this.typeOptions = [
         { label: 'Select type', value: '' },
         { label: 'Software', value: 'Software' },
@@ -317,48 +435,65 @@ export default {
     //   });
 
     // },
-    async togglePopup() {
-      this.isPopupVisible = !this.isPopupVisible
-    },
-    async getType() {
-      const type = await axios.get(
-        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
-      )
-      const types = await axios.post(
-        `${process.env.VUE_APP_URL}/mongoose/get/stts_types`,
-      ) //,{populate:['tkt_act']}
-      console.log(types)
-      type.data.forEach((element) => {
-        this.userOptions.push({ value: element._id, label: element.typ_name })
-      })
-    },
+
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error
-      if (this.form.tkt_title === '') {
-        error = true
-        this.validate.tkt_title = false
-      }
-      if (this.form.tkt_types === '') {
-        error = true
-        this.validate.tkt_types = false
-      }
-      if (this.form.tkt_priorities === '') {
-        error = true
-        this.validate.tkt_priorities = false
-      }
-      if (this.form.tkt_description === '') {
-        error = true
-        this.validate.tkt_description = false
+      let error = false;
+
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+
+      // Check for empty values and display validation messages
+      if (this.form.tkt_title.trim() === '' || specialCharRegex.test(this.form.tkt_title)) {
+        this.validate.tkt_title = true; // Show validation message
+        error = true;
+      } else {
+        this.validate.tkt_title = false; // Hide validation message
       }
 
-      if (!error) {
-        this.onSave()
+      if (this.form.tkt_types.trim() === '' || specialCharRegex.test(this.form.tkt_types)) {
+        this.validate.tkt_types = true;
+        error = true;
       } else {
-        
-        this.form.validatedCustom01 = true; // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        
+        this.validate.tkt_types = false;
+      }
+
+      if (this.form.tkt_priorities.trim() === '' || specialCharRegex.test(this.form.tkt_priorities)) {
+        this.validate.tkt_priorities = true;
+        error = true;
+      } else {
+        this.validate.tkt_priorities = false;
+      }
+
+      if (this.form.tkt_description.trim() === '' ) {
+        this.validate.tkt_description = true;
+        error = true;
+      } else {
+        this.validate.tkt_description = false;
+      }
+
+
+      if (!error) {
+        this.isLoading = true
+        this.toastProp.push({
+          title: 'Create Ticket',
+          content: 'Create Success  ',
+        })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        setTimeout(() => {
+          
+          // จบการโหลด
+          this.isLoading = false
+
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
+          this.onSave()
+        }, 2000)
+      } else {
+        console.log('1'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleSubmit = false
       }
     },
     //แสดงค่าทุกครั้งที่กดเปลี่ยนข้อมูลในselectชั่น
@@ -377,18 +512,20 @@ export default {
 
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()   
+      const date = dayjs()
       const ticket_status = `Pending`
-      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
-      this.form.tkt_picture = this.form.tkt_picture || null;
+      this.form.tkt_picture = this.form.tkt_picture || null
 
       this.form.tkt_time = ticket_date
       this.form.tkt_number = ticket_number
       this.form.tkt_act = userId
       this.form.tkt_status = ticket_status
       this.form.tkt_book = false
-      console.log(this.form)
+      const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const roleName = roleData.role
+
 
       try {
         await axios
@@ -396,34 +533,75 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.$router.push('/support-ticket/user/dashboard')
+            this.confirm();
           })
           .catch((err) => {
+            this.toastProp.push({
+              title: 'Create Ticket',
+              content: 'Create Fail',
+            });
             console.log(error)
           })
       } catch (error) {
+        this.toastProp.push({
+            title: 'Create Ticket',
+            content: 'Create Fail',
+          })
         console.log(error)
       }
     },
-    createToast() {
-      this.toasts.push({
-        title: 'Create Ticket',
-        content: 'สร้างสำเร็จ',
-      })
-    },
     async onFileUpload(event) {
-        const uploadFile = event.target.files[0]
-        const formData = new FormData()
-        formData.append('file', uploadFile)
-      
-        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+        formData,
+        {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        this.form.tkt_picture = dataResponse.data._id
-      },
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      this.form.tkt_picture = dataResponse.data._id
+      this.uploadedFileName = uploadFile.name
+    },
+    cancel() {
+      // Check if there is any data in the form
+      const isFormEmpty = [
+        this.form.tkt_description.trim(),
+        this.form.tkt_title.trim(),
+        this.form.tkt_priorities.trim(),
+        this.form.tkt_types.trim(),
+        this.form.tkt_picture.trim(),
+      ].every(value => value === '');
+
+      if (!isFormEmpty) {
+        this.visibleVerticallyCenteredDemo = true;
+      } else {
+        // If the form is empty, navigate away without confirmation
+        this.confirm();
+      }
+    },
+    async confirm() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+
+      if (userId == 'Admin') {
+        this.$router.push('/support-ticket/admin/admin_dashboard')
+      } else if (userId == 'Employee') {
+        this.$router.push('/support-ticket/user/dashboard')
+      } else if (userId == 'ItSupport') {
+        this.$router.push('/support-ticket/it/it_dashboard')
+      } else if (userId == 'Manager') {
+        this.$router.push('/support-ticket/manager/manager_dashboard')
+      }
+    },
+    togglePopup() {
+      this.isPopupVisible = !this.isPopupVisible;
+    },
   },
-  components: { CForm, CFormLabel },
+  components: { CForm, CFormLabel, CImage },
 }
 </script>

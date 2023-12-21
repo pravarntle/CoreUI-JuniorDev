@@ -63,7 +63,7 @@
       </CContainer>
     </div>
 
-    <!-- <CToaster placement="top-end">
+    <CToaster placement="top-end">
         <CToast visible color="primary" v-for="(toast) in toastProp">
             <CToastHeader closeButton v-if="toast.title">
                 <span class="me-auto fw-bold">{{ toast.title }}</span>
@@ -72,7 +72,7 @@
                 <span class="text-white">{{ toast.content }}</span>
             </CToastBody>
         </CToast>
-    </CToaster> -->
+    </CToaster>
 </template>
 <style>
 .c-image {
@@ -103,6 +103,7 @@ export default {
           password: null,
         },
         showPassword:false,
+        toastProp: [],
 
         // toastProp: [],
       };
@@ -116,7 +117,7 @@ export default {
     methods: {
       async getImage() {
         try {
-          const dataResponse = await axios.post('http://localhost:3000/mongoose/getOne/stts_files/652c0247d44e6b62f7b1f65f')
+          const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_files/652c0247d44e6b62f7b1f65f`)
           this.dataImageURL = `data:${dataResponse.data.filetype};base64,${dataResponse.data.image}`
         } catch (error) {
           
@@ -147,7 +148,7 @@ export default {
 
         } else {
           try {
-            const response = await axios.post('http://localhost:3000/auth/login', { username: this.form.username, password: this.form.password })
+            const response = await axios.post(`${process.env.VUE_APP_URL}/auth/login`, { username: this.form.username, password: this.form.password })
             console.log(response);
             const user = {
               id: response.data.user.id, 
@@ -159,7 +160,11 @@ export default {
             }
 
             localStorage.setItem('USER_DATA', JSON.stringify(user))
-            console.log(user.role)
+            
+            this.toastProp.push({
+              
+              content: 'Login Success',
+            })
             setTimeout(function() {
               if (user.role === 'Employee') {
                 this.$router.push('/support-ticket/user/dashboard');
@@ -176,10 +181,17 @@ export default {
           } catch (error) {
             console.log(error)
             if (error.response.status === 401) {
-              alert('รหัสผ่านไม่ถูกต้อง หรือ ไม่พบผู้ใช้'); // แสดง Alert ถ้ามีค่าสถานะ 401
+              this.toastProp.push({
+              
+                content: 'Incorrect password or user not found',
+              })
+             // แสดง toast ถ้ามีค่าสถานะ 401
             }
             if (error.response.status === 500) {
-              alert('เซิฟเวอร์มีปัญหา'); // แสดง Alert ถ้ามีค่าสถานะ 401
+              this.toastProp.push({
+              
+                content: 'The server has a problem.',
+              }) // แสดง Alert ถ้ามีค่าสถานะ 401
             }
           }
         }

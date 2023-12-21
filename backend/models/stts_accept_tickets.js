@@ -3,10 +3,6 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const SchemaData = new schema({
-    acc_status_accept: {
-        type: String,
-        required: true,
-    },
     acc_time: {
         type: String,
         required: true,

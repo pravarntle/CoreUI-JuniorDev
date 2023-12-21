@@ -122,7 +122,7 @@ module.exports = {
             })
 
             
-
+            console.log(base64)
             res.send(result)
         } catch (error) {
             next(error);
