@@ -476,10 +476,14 @@ export default {
 
       if (!error) {
         this.isLoading = true
-
+        this.toastProp.push({
+          title: 'Create Ticket',
+          content: 'Create Success  ',
+        })
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
         setTimeout(() => {
+          
           // จบการโหลด
           this.isLoading = false
 
@@ -535,7 +539,7 @@ export default {
             this.toastProp.push({
               title: 'Create Ticket',
               content: 'Create Fail',
-            }),
+            });
             console.log(error)
           })
       } catch (error) {
