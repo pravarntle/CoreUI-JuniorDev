@@ -1,96 +1,103 @@
 <template>
-  <Ccrad>
-    <CCardHeader>
-      <h1 id="LineHeadCard">
-        <CImage id="Icondashboard" :src="Icondashboard"  />
+  <CCard class="p-2 mb-2 rounded-4 mx-auto">
+  <CCardHeader class="bg-white border-white mb-4">
+    <div id="LineHeadCard">
+      <h1 class="d-inline align-middle">
+        <CImage id="Icondashboard" :src="Icondashboard" />
         <b>Dashboard</b>
       </h1>
-    </CCardHeader>
-    <CRow class="RowCard">
+    </div>
+  </CCardHeader>
+    <CRow class="mx-auto mb-4">
       <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
+        <CCard class="p-2 mb-2 rounded-5"  id="count_all">
           <CCardbody>
-            <b id="all">All Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_all }}</p>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+                <CImage class="LG" :src="LGall" />
               </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGblue" fluid block />
+              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+                <p id="font">{{ count_all }}</p>
+                <p id="all">All Tickets</p>
+              </CCol>
+            </CRow>
+          </CCardbody>
+        </CCard>
+      </CCol>
+      <CCol :sm="4" >
+        <CCard class="p-2 mb-2 rounded-5" id="count_open" >
+          <CCardbody>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+                <CImage class="LG" :src="LGopen"  />
+              </CCol>
+              <CCol :xs="{ span: 12 }" :md="{ span: 6 }" >
+                <p  id="font">{{ count_open }}</p>
+                <p id="open">Open Tickets</p>
               </CCol>
             </CRow>
           </CCardbody>
         </CCard>
       </CCol>
       <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
+        <CCard class="p-2 mb-2 rounded-5 " id="count_close" >
           <CCardbody>
-            <b id="open">Open Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_open }}</p>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }" >
+                <CImage class="LG" id="LGclose" :src="LGclose"  />
               </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGgreen" fluid block />
-              </CCol>
-            </CRow>
-          </CCardbody>
-        </CCard>
-      </CCol>
-      <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
-          <CCardbody>
-            <b id="closed">Closed Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_closed }}</p>
-              </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGred" fluid block />
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
+                <p id="font">{{ count_closed }}</p>
+                <p id="closed">Closed Tickets</p>
               </CCol>
             </CRow>
           </CCardbody>
         </CCard>
       </CCol>
     </CRow>
-  </Ccrad>
+  </CCard>
 </template>
-<style>
-.text-right-header {
-  text-align: right;
+<style scoped>
+
+#font {
+  margin-top: 50px;
+  font-weight: bold;
+  text-align:start;
+  font-size: 70px;
+  color: #fff;
+  line-height: 0.2;
 }
 
 #all {
+  margin: 0%;
   font-size: 24px;
-  color: #1a72b8;
+  color: #fff;
+  line-height: 2;
 }
 
 #open {
   font-size: 24px;
-  color: #147a2a;
+  color: #fff;
+  line-height: 2;
 }
 
 #closed {
   font-size: 24px;
-  color: #b22424;
+  color: #fff;
+  line-height: 2;
 }
 
-#font {
-  font-weight: 700;
-  align-items: center;
-  font-size: 100px;
-  color: #000;
-}
 
 .LG {
-  width: 100px;
-  max-height: 100px;
-
+  width: 150px;
+  padding-left: 10px;
+  padding-top: 30px;
 }
 
-#border {
-  height: 220px;
-  border-radius: 15px;
+#LGclose{
+  width: 130px;
+  margin-left: 10px;
+  padding-top: 20px;
 }
 
 #LineHeadCard {
@@ -100,24 +107,38 @@
   border-image-slice: 1;
 }
 
-.RowCard{
-  height: auto;
-}
-
-#Icondashboard{
+#Icondashboard {
   width: auto;
   max-height: 30px;
   padding-left: 5px;
   padding-bottom: 5px;
   padding-right: 5px;
 }
+
+#count_all{
+  background-color: #787878;
+  height: 170px;
+  width: 380px;
+}
+
+#count_open{
+  background-color: #45AA91;
+  height: 170px;
+  width: 380px;
+}
+
+#count_close{
+  background-color: #FF6464;
+  height: 170px;
+  width: 380px;
+}
 </style>
   
 <script>
 import Icondashboard from '@/assets/images/Icon_dashboard.png'
-import LGblue from '@/assets/images/blueTick.png'
-import LGred from '@/assets/images/redTick.png'
-import LGgreen from '@/assets/images/greenTick.png'
+import LGall from '@/assets/images/all_ticket.png'
+import LGclose from '@/assets/images/close_ticket.png'
+import LGopen from '@/assets/images/open_ticket.png'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
@@ -151,9 +172,9 @@ export default {
     }
 
     return {
-      LGblue,
-      LGgreen,
-      LGred,
+      LGall,
+      LGclose,
+      LGopen,
       LGlogo,
       getData,
       Icondashboard,
