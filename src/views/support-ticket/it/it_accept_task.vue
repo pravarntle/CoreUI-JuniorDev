@@ -175,6 +175,12 @@ export default {
       date: '',
       number: '',
       accId:'',
+      allUpdate:{
+        mod_act:'',
+        mod_date:'',
+        mod_status:'',
+        mod_tkt:'',
+      },
 
 
     };
@@ -261,7 +267,10 @@ export default {
           }
         })
         .then((result) => {
-          this.$router.push('/support-ticket/it/it_my_task')
+          console.log('222')
+          this.allUpdate.mod_status = result.data.tkt_status;
+          this.allUpdate.mod_tkt = result.data._id;
+          this.updateStatus();
         })
         .catch((err) => {
           console.log(error)
@@ -269,6 +278,36 @@ export default {
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+      }
+    },
+    async updateStatus(){
+      const userData = JSON.parse(localStorage.getItem('USER_DATA'))
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'));
+      dayjs.extend(require('dayjs/plugin/customParseFormat'));
+      dayjs.extend(require('dayjs/plugin/localizedFormat'));
+      const accept_date = `${date.format('D MMM YYYY, h:mm A')}`
+      const userId = userData.id
+      this.allUpdate.mod_date = accept_date;
+      this.allUpdate.mod_act = userId;
+
+      console.log(this.allUpdate)
+      try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+            data: this.allUpdate,
+            
+          })
+          .then((result) => {
+            this.$router.push('/support-ticket/it/it_my_task')
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
       }
     }
 

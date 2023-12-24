@@ -401,6 +401,12 @@ export default {
       visibleSubmit: false,
       isLoading: false,
       Ticketlogo,
+      allUpdate:{
+        mod_act:'',
+        mod_date:'',
+        mod_status:'',
+        mod_tkt:'',
+      },
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -509,10 +515,10 @@ export default {
       dayjs.locale('th')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
-
+      const date = dayjs()
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()
+      
       const ticket_status = `Pending`
       const ticket_date = `${date.format('YYYY-MM-DD')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
@@ -528,12 +534,14 @@ export default {
 
 
       try {
-        await axios
+          await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
+            
           })
           .then((result) => {
-            this.confirm();
+            this.allUpdate.mod_tkt = result.data._id;
+            this.updateStatus();
           })
           .catch((err) => {
             this.toastProp.push({
@@ -542,6 +550,7 @@ export default {
             });
             console.log(error)
           })
+          
       } catch (error) {
         this.toastProp.push({
             title: 'Create Ticket',
@@ -601,6 +610,32 @@ export default {
     togglePopup() {
       this.isPopupVisible = !this.isPopupVisible;
     },
+    async updateStatus(){
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const update_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.allUpdate.mod_status = this.form.tkt_status;
+      this.allUpdate.mod_date = update_date;
+      this.allUpdate.mod_act = this.form.tkt_act;
+      
+      console.log(this.allUpdate)
+      try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+            data: this.allUpdate,
+            
+          })
+          .then((result) => {
+            this.confirm();
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   components: { CForm, CFormLabel, CImage },
 }
