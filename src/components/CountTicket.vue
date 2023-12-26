@@ -9,7 +9,7 @@
     </div>
   </CCardHeader>
     <CRow class="mx-auto mb-4">
-      <CCol :sm="4">
+      <CCol :sm="4" :md="4" :lg="4">
         <CCard class="p-2 mb-2 rounded-5"  id="count_all">
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
@@ -24,7 +24,7 @@
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4" >
+      <CCol :sm="4" :md="4" :lg="4">
         <CCard class="p-2 mb-2 rounded-5" id="count_open" >
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
@@ -39,7 +39,7 @@
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4">
+      <CCol :sm="4" :md="4" :lg="4">
         <CCard class="p-2 mb-2 rounded-5 " id="count_close" >
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
@@ -59,6 +59,12 @@
 </template>
 <style scoped>
 
+#all, #open, #closed {
+  font-size: 24px;
+  color: #fff;
+  line-height: 2;
+}
+
 #font {
   margin-top: 50px;
   font-weight: bold;
@@ -67,34 +73,15 @@
   color: #fff;
   line-height: 0.2;
 }
-
-#all {
-  margin: 0%;
-  font-size: 24px;
-  color: #fff;
-  line-height: 2;
-}
-
-#open {
-  font-size: 24px;
-  color: #fff;
-  line-height: 2;
-}
-
-#closed {
-  font-size: 24px;
-  color: #fff;
-  line-height: 2;
-}
-
-
 .LG {
+  max-width: 150px;
   width: 150px;
   padding-left: 10px;
   padding-top: 30px;
 }
 
 #LGclose{
+  max-width: 130px;
   width: 130px;
   margin-left: 10px;
   padding-top: 20px;
@@ -117,21 +104,58 @@
 
 #count_all{
   background-color: #787878;
+  max-height: 170px;
   height: 170px;
+  max-width: 380px;
   width: 380px;
 }
 
 #count_open{
   background-color: #45AA91;
+  max-height: 170px;
   height: 170px;
+  max-width: 380px;
   width: 380px;
 }
 
 #count_close{
   background-color: #FF6464;
+  max-height: 170px;
   height: 170px;
+  max-width: 380px;
   width: 380px;
 }
+
+
+
+
+@media (max-width: 768px) {
+  #elementToHideOnMobile {
+    display: none;
+  }
+  /* หรือ ตัวอย่างการใช้ Grid Layout */
+#count_all, #count_open, #count_close {
+  display:grid;
+  grid-template-columns:max-content;
+  gap: 20px; /* หรือค่าที่ต้องการ */
+  width: 100%; /* ให้เต็ม width ของ parent container */
+  max-width: none; /* ยกเลิกการใช้ max-width */
+}
+#all, #open, #closed {
+    font-size: 16px; /* ปรับตามต้องการ */
+    line-height: 1.5;
+  }
+
+  #font {
+    margin-top: 10px;
+    font-size: 30px;
+  }
+
+  .LG, #LGclose {
+    width: 80px; /* ปรับตามต้องการ */
+  }
+}
+
 </style>
   
 <script>
