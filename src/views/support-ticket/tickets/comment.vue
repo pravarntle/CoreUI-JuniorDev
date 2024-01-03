@@ -106,7 +106,7 @@
 
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
-                aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
+                aria-label="comments_box" id="comments_box" ref="comments_box" @input="checkCharacterLimit"
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
@@ -122,7 +122,7 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
+              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
@@ -275,6 +275,11 @@ export default {
 
     };
   },
+  computed: {
+    characterCount() {
+      return this.comment.length;
+    },
+  },
   setup(){
     const getBadge = (priorities) => {
         
@@ -308,8 +313,31 @@ export default {
       }
     },
 
-    async countCharacters() {
-      this.characterCount = this.comment.trim().length;
+    async countCharacters(event) {
+      // Get the input element
+      var inputElement = event.target;
+
+      // Get the span element to display the character count
+      var charCountElement = document.getElementById("charCount");
+
+      // Get the value of the input and calculate the character count
+      var charCount = inputElement.value.length;
+
+      // Update the span element with the character count
+      charCountElement.innerText = charCount;
+
+      // Optionally, update the data property to use in the template
+      this.characterCount = charCount;
+      
+      // Your async logic here (if needed)
+      // await someAsyncFunction();
+    },
+
+    checkCharacterLimit() {
+      const maxCharacters = 200;
+      if (this.comment.length > maxCharacters) {
+        this.comment = this.comment.substring(0, maxCharacters);
+      }
     },
 
     async attachImage() {
