@@ -36,9 +36,10 @@
                       <span>Service Request</span>
                     </li>
                   </ul>
-                </CCol></CCol
-              >
+                </CCol>
+              </CCol>
               <CCol sm="6">
+                
                 <CChart
                   class="pie_chart"
                   type="pie"
@@ -47,7 +48,7 @@
                     datasets: [
                       {
                         backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
-                        data: [35, 10, 55],
+                        data: [55,35, 10 ],
                       },
                     ],
                   }"
@@ -63,6 +64,7 @@
                     },
                   }"
                 />
+                
               </CCol>
             </CRow>
           </CCardBody>
