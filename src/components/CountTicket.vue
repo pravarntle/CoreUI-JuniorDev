@@ -13,10 +13,10 @@
         <CCard class="p-2 mb-2 rounded-5"  id="count_all">
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
-              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
                 <CImage class="LG" :src="LGall" />
               </CCol>
-              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
                 <p id="font">{{ count_all }}</p>
                 <p id="all">All Tickets</p>
               </CCol>
@@ -28,10 +28,10 @@
         <CCard class="p-2 mb-2 rounded-5" id="count_open" >
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
-              <CCol :xs="{ span: 12 }" :md="{ span: 6 }">
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
                 <CImage class="LG" :src="LGopen"  />
               </CCol>
-              <CCol :xs="{ span: 12 }" :md="{ span: 6 }" >
+              <CCol :xs="{ span: 6 }" :md="{ span: 6 }" >
                 <p  id="font">{{ count_open }}</p>
                 <p id="open">Open Tickets</p>
               </CCol>
@@ -129,31 +129,38 @@
 
 
 
-@media (max-width: 768px) {
-  #elementToHideOnMobile {
-    display: none;
-  }
-  /* หรือ ตัวอย่างการใช้ Grid Layout */
-#count_all, #count_open, #count_close {
-  display:grid;
-  grid-template-columns:max-content;
-  gap: 20px; /* หรือค่าที่ต้องการ */
-  width: 100%; /* ให้เต็ม width ของ parent container */
-  max-width: none; /* ยกเลิกการใช้ max-width */
-}
-#all, #open, #closed {
-    font-size: 16px; /* ปรับตามต้องการ */
-    line-height: 1.5;
+@media (max-width: 1440px) {
+  #count_all, #count_open, #count_close {
+    width: 100%;
+    max-width: none;
   }
 
   #font {
-    margin-top: 10px;
+    padding-top: 10px;
+    padding-left: 5px; 
     font-size: 30px;
+    line-height: 0;
   }
 
-  .LG, #LGclose {
-    width: 80px; /* ปรับตามต้องการ */
+  #all, #open, #closed {
+    padding-left: 5px; 
   }
+  .LG {
+    max-width: 100px; 
+    width: 100%; 
+    height: auto;
+    margin-left: 5px; 
+    padding-top: 45px; 
+  }
+
+  #LGclose{
+    max-width: 80px; 
+    width: 100%; 
+    height: auto; 
+    margin-left: 0px; 
+    padding-top: 35px; 
+  }
+
 }
 
 </style>
