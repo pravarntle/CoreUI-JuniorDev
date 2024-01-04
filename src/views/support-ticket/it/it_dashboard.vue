@@ -22,7 +22,7 @@
                   >ALL TICKET</CCardSubtitle
                 >
 
-                <CCardText class="fs-1"><b>500</b></CCardText>
+                <CCardText class="fs-1"><b>{{countAll}}</b></CCardText>
                 <hr />
                 <CCol sm="6" class="d-flex align-items-center">
                   <ul>
@@ -45,18 +45,19 @@
                   type="pie"
                   :data="{
                     labels: ['Software', 'Hardware', 'Service Request'],
-                    datasets: [
-                      {
+                    datasets: [{
                         backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
-                        data: [55,35, 10 ],
+                        data:[countSoftware,countHardware,countServiceRequest],
                       },
-                    ],
+                    ]
+                    
                   }"
+                  
                   :options="{
                     plugins: {
                       title: {
                         display: true,
-                        Text: 'all ticket',
+                        text: 'all ticket',
                       },
                       legend: {
                         display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
@@ -87,28 +88,28 @@
                 <input
                   class="w-100"
                   type="range"
-                  value="20"
+                  :value="percentHigh"
                   min="1"
                   max="100"
                   oninput="this.nextElementSibling.value = this.value"
                 />
               </div>
-              <output class="col-md-3 col-sm-12 ps-5">20%</output>
+              <output class="col-md-3 col-sm-12 ps-5">{{percentHigh}}%</output>
             </div>
             <br />
             <div class="row align-items-center border border-white">
-              <div class="col-md-2 col-sm-12 ps-5"><h5>Nomal</h5></div>
+              <div class="col-md-2 col-sm-12 ps-5"><h5>Medium</h5></div>
               <div class="col-md-7 col-sm-12 ps-5">
                 <input
                   class="w-100"
                   type="range"
-                  value="10"
+                  :value="percentMedium"
                   min="1"
                   max="100"
                   oninput="this.nextElementSibling.value = this.value"
                 />
               </div>
-              <output class="col-md-3 col-sm-12 ps-5">10%</output>
+              <output class="col-md-3 col-sm-12 ps-5">{{percentMedium}}%</output>
             </div>
             <br />
             <div class="row align-items-center border border-white">
@@ -117,13 +118,13 @@
                 <input
                   class="w-100"
                   type="range"
-                  value="70"
+                  :value="percentLow"
                   min="1"
                   max="100"
                   oninput="this.nextElementSibling.value = this.value"
                 />
               </div>
-              <output class="col-md-3 col-sm-12 ps-5">70%</output>
+              <output class="col-md-3 col-sm-12 ps-5">{{ percentLow }}%</output>
             </div>
           </CCardBody>
         </CCard>
@@ -142,7 +143,7 @@
               /></CButton>
             </CCardTitle>
             <CCardText class="fs-5 text-secondary">Last 7 Days</CCardText>
-            <h1 id="support_tracker" class="text-body-secondary mt-5">164</h1>
+            <h1 id="support_tracker" class="text-body-secondary mt-5">{{ countAllWeek }}</h1>
             <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
             <CRow class="pt-5">
               <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
@@ -154,8 +155,10 @@
               </CCol>
               <CCol sm="10">
                 <b class="fs-5">New Ticket</b>
-                <p class="text-body-secondary">142</p></CCol
-              >
+                <p class="text-body-secondary">
+                  {{ countPendingWeek || 0 }}
+                </p>
+                </CCol>
             </CRow>
             <CRow class="pt-3">
               <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
@@ -167,17 +170,22 @@
               </CCol>
               <CCol sm="10">
                 <b class="fs-5">Open Ticket</b>
-                <p class="text-body-secondary">28</p></CCol
-              >
+                <p class="text-body-secondary">
+                  {{ countOpenWeek || 0 }}
+                </p>
+              </CCol>
             </CRow>
             <CRow class="pt-3 mb-5">
               <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
                 <CIcon :icon="icon.cilClock" size="xxl" class="response_time"
-              /></CCol>
+              />
+              </CCol>
               <CCol sm="10">
-                <b class="fs-5">Response Time</b>
-                <p class="text-body-secondary">1</p></CCol
-              >
+                <b class="fs-5">Close Ticke</b>
+                <p class="text-body-secondary">
+                  {{ countCloseWeek || 0 }}
+                </p>
+              </CCol>
             </CRow>
           </CCardBody>
         </CCard>
@@ -299,6 +307,7 @@ import axios, { all } from 'axios'
 import * as icon from '@coreui/icons'
 import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
+import moment from 'moment';
 
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon },
@@ -390,7 +399,23 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      countAll: '',
+      countSoftware: '',
+      countHardware: '',
+      countServiceRequest: '',
+      countHigh: '',
+      countMedium: '',
+      countLow: '',
+      percentLow: '',
+      percentHigh: '',
+      percentMedium: '',
+      countAllWeek:'',
+      countOpenWeek:'',
+      countPendingWeek:'',
+      countCloseWeek:'',
+      
+    }
   },
   methods: {
     async contactIt(item) {
@@ -423,7 +448,7 @@ export default {
     async toggleButton(item) {
       item.MORE = !item.MORE
     },
-    async getTicket() {
+    async getTicketPending() {
       try {
         const response = await axios.post(
           `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
@@ -440,9 +465,7 @@ export default {
           number: index + 1, // หมายเลขแถว
           _id: element._id,
           ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
-          owner: `${
-            element.tkt_act.act_first_name_eng
-          } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+          owner: `${element.tkt_act.act_first_name_eng} ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
           // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
           // ตามลำดับของ columns ในตัวแปร columns
           // เพิ่มเติมตามความต้องการ
@@ -451,14 +474,94 @@ export default {
           type: element.tkt_types,
           _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
         }))
+
       } catch (error) {
         console.error('Error fetching data:', error)
       }
     },
+    async getAllTicket(){
+      try {
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
+          {
+            where: {
+              tkt_status: { $ne: 'Cancel' },
+            },
+            populate: 'tkt_act',
+          },
+        )
+
+
+        response.data.forEach(element => {
+        this.countAll++;
+        if (element.tkt_types == 'Software') {
+          this.countSoftware++;
+        } else if (element.tkt_types == 'Hardware') {
+          this.countHardware++;
+        }else if (element.tkt_types == 'Service') {
+          this.countServiceRequest++;
+        }
+        if (element.tkt_priorities == 'High') {
+          this.countHigh++;
+        } else if (element.tkt_priorities == 'Medium') {
+          this.countMedium++;
+        }else if (element.tkt_priorities == 'Low') {
+          this.countLow++;
+        }
+        this.percentHigh = Math.round((this.countHigh / this.countAll) * 100);
+        this.percentMedium = Math.round((this.countMedium / this.countAll) * 100);
+        this.percentLow = Math.round((this.countLow / this.countAll) * 100);
+        
+
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    },
+    async getTicketOnWeek() {
+      try {
+        const currentDate = moment(); // Get the current date
+        const sevenDaysAgo = currentDate.clone().subtract(7, 'days'); // Calculate 7 days ago
+
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
+          {
+            where: {
+              tkt_status: { $ne: 'Cancel' },
+              tkt_time: { $gte: sevenDaysAgo.toISOString() }, // Filter by date within the last 7 days
+            },
+            populate: 'tkt_act',
+          },
+        );
+
+        response.data.forEach(element => {
+        this.countAllWeek++;
+        
+        if (element.tkt_status == 'Open') {
+          this.countOpenWeek++;
+        }else if(element.tkt_status == 'Pending'){
+          this.countPendingWeek++;
+        }else if(element.tkt_status == 'Close'||element.tkt_status == 'Close Bug'){
+          this.countCloseWeek++;
+        }
+        
+        
+
+        });
+
+        console.log(response.data);
+        // Handle the retrieved data as needed
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+
+    },
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
-    this.getTicket()
+    this.getTicketPending();
+    this.getAllTicket();
+    this.getTicketOnWeek();
   },
 }
 </script>
