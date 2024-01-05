@@ -26,8 +26,7 @@
                   <h1 stype="Bold">Type Chart</h1>
                 </CCol>
                 <CCol>
-                  <CChartDoughnut :data="defaultData"
-                  style="height: 300px; max-height: 300px; margin-top: 40px"/>
+                  
                 </CCol>
               </CRow>
             </CCardBody>
@@ -59,7 +58,8 @@ export default {
     CRow,
     CCol,
     CChartDoughnut,
-    count_ticket },
+    count_ticket 
+  },
   computed: {
     defaultData() {
       return {
