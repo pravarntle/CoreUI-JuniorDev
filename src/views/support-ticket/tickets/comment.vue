@@ -128,7 +128,7 @@
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
+                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
                     alt="Commit Icon" /></CButton>
               </div>
             </div>
@@ -149,15 +149,19 @@
                 <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
                 <div class="comments_box" style="width: fit-content; padding: 10px;">
                   {{ item.cmt_message }}
+                  <br v-if="item.cmt_message">
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                     {{ item.cmt_link }}
                   </a>
+                  <br v-if="item.link">
                   <a v-if="item.cmt_picture">
                     <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
+                  <br v-if="item.cmt_picture">
                   <a v-if="item.cmt_file">
                     <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${item.cmt_file.filename}`}}</a>
                   </a>
+                  <br v-if="item.cmt_file">
                   <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
                       {{ item.cmt_link }}
                   </a>
@@ -316,36 +320,27 @@ export default {
     },
 
     vaildateBeforeSave() {
-      let error = false;
 
       // Regular expression to check for special characters
       const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
 
       // Check for empty values and display validation messages
-      if (this.form.comment.trim() === '' || specialCharRegex.test(this.form.comment)) {
-        this.validate.comment = true; // Show validation message
-        error = true;
-      } else {
-        this.validate.comment = false; // Hide validation message
-      }
-
-      if (!error) {
-        this.isLoading = true;
-
-      // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-      // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        setTimeout(() => {
-          // จบการโหลด
-          this.isLoading = false;
-
-          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+      if (this.comment.trim() === '' || specialCharRegex.test(this.comment)) {
+        if(this.form.cmt_file){
           this.onSave()
-        }, 2000);
+        }else if(this.form.cmt_picture){
+          this.onSave()
+        }else if(this.link){
+          this.onSave()
+        }else{
+          
+          console.error('Invalid comment');
+        }
+        
       } else {
-        console.log('1'),
-        this.form.commit = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.commit = false;
+        this.onSave()
       }
+
     },
 
     async countCharacters(event) {
