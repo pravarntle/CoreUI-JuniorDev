@@ -1,5 +1,5 @@
 <template>
-  <CCard class="p-2 mb-2 rounded-4 mx-auto">
+  <CCard class="p-3 mb-2 rounded-4 mx-auto">
   <CCardHeader class="bg-white border-white mb-4">
     <div id="LineHeadCard">
       <h1 class="d-inline align-middle">
@@ -8,15 +8,15 @@
       </h1>
     </div>
   </CCardHeader>
-    <CRow class="mx-auto mb-4">
-      <CCol :sm="4" :md="4" :lg="4">
-        <CCard class="p-2 mb-2 rounded-5"  id="count_all">
+    <CRow class=" mb-2 justify-content-center" >
+      <CCol :xs="12" :sm="6" :md="4" :lg="4" >
+        <CCard class="p-3 mb-2 rounded-5 "  id="count_all">
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
                 <CImage class="LG" :src="LGall" />
               </CCol>
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
+              <CCol :xs="6" :md="6" class="center_Text">
                 <p id="font">{{ count_all }}</p>
                 <p id="all">All Tickets</p>
               </CCol>
@@ -24,14 +24,14 @@
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4" :md="4" :lg="4">
-        <CCard class="p-2 mb-2 rounded-5" id="count_open" >
+      <CCol :xs="12" :sm="6" :md="4" :lg="4">
+        <CCard class="p-3 mb-2 rounded-5" id="count_open" >
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
                 <CImage class="LG" :src="LGopen"  />
               </CCol>
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }" >
+              <CCol :xs="6" :md="6"  >
                 <p  id="font">{{ count_open }}</p>
                 <p id="open">Open Tickets</p>
               </CCol>
@@ -39,14 +39,14 @@
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4" :md="4" :lg="4">
-        <CCard class="p-2 mb-2 rounded-5 " id="count_close" >
+      <CCol :xs="12" :sm="6" :md="4" :lg="4">
+        <CCard class="p-3 mb-2 rounded-5 " id="count_close" >
           <CCardbody>
             <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }" >
-                <CImage class="LG" id="LGclose" :src="LGclose"  />
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
+                <CImage class="LG " id="LGclose" :src="LGclose"  />
               </CCol>
-              <CCol :xs="{ span: 6 }" :md="{ span: 6 }">
+              <CCol :xs="6" :md="6">
                 <p id="font">{{ count_closed }}</p>
                 <p id="closed">Closed Tickets</p>
               </CCol>
@@ -60,9 +60,11 @@
 <style scoped>
 
 #all, #open, #closed {
-  font-size: 24px;
+  font-size: 20px;
   color: #fff;
   line-height: 2;
+  margin-left: 10px;
+
 }
 
 #font {
@@ -72,19 +74,21 @@
   font-size: 70px;
   color: #fff;
   line-height: 0.2;
+  margin-left: 10px;
 }
 .LG {
-  max-width: 150px;
+  max-width: 100%; 
   width: 150px;
-  padding-left: 10px;
-  padding-top: 30px;
+  height: auto;
+  max-height: 150px;
 }
 
 #LGclose{
-  max-width: 130px;
-  width: 130px;
-  margin-left: 10px;
-  padding-top: 20px;
+  max-width: 100%; 
+  width: 130px; 
+  height: auto;
+  max-height: 150px;
+
 }
 
 #LineHeadCard {
@@ -105,63 +109,75 @@
 #count_all{
   background-color: #787878;
   max-height: 170px;
-  height: 170px;
-  max-width: 380px;
-  width: 380px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
+  
 }
 
 #count_open{
   background-color: #45AA91;
   max-height: 170px;
-  height: 170px;
-  max-width: 380px;
-  width: 380px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
 }
 
 #count_close{
   background-color: #FF6464;
   max-height: 170px;
-  height: 170px;
-  max-width: 380px;
-  width: 380px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
 }
 
 
 
-
-@media (max-width: 1440px) {
-  #count_all, #count_open, #count_close {
-    width: 100%;
-    max-width: none;
-  }
-
+/* สำหรับหน้าจอขนาดเล็ก (เช่น 600px หรือน้อยกว่า) */
+@media only screen and (max-width: 600px) {
   #font {
-    padding-top: 10px;
-    padding-left: 5px; 
     font-size: 30px;
-    line-height: 0;
+
+    white-space: nowrap; 
   }
 
   #all, #open, #closed {
-    padding-left: 5px; 
+    font-size: 14px; 
+    white-space: nowrap; 
   }
-  .LG {
-    max-width: 100px; 
-    width: 100%; 
-    height: auto;
-    margin-left: 5px; 
-    padding-top: 45px; 
-  }
-
-  #LGclose{
-    max-width: 80px; 
-    width: 100%; 
-    height: auto; 
-    margin-left: 0px; 
-    padding-top: 35px; 
-  }
-
 }
+
+/* สำหรับหน้าจอขนาดกลาง (เช่น 601px ถึง 1024px) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  #font {
+    font-size: 30px; 
+    white-space: nowrap;
+  }
+
+  #all, #open, #closed {
+    font-size: 13px; 
+    white-space: nowrap; 
+    
+  }
+}
+
+/* สำหรับหน้าจอขนาดใหญ่ (เช่น 1025px ขึ้นไป) */
+@media only screen and (min-width: 1025px) {
+  #font {
+  font-size: 70px;
+  white-space: nowrap;
+  }
+
+  #all, #open, #closed {
+    font-size: 20px;
+    white-space: nowrap;
+  }
+}
+
+
 
 </style>
   
