@@ -6,8 +6,8 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+            <div class="text-start" id="head_description">
+              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
@@ -106,7 +106,7 @@
 
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
-                aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
+                aria-label="comments_box" id="comments_box" ref="comments_box" @input="checkCharacterLimit"
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
@@ -122,7 +122,7 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
+              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
@@ -277,6 +277,11 @@ export default {
 
     };
   },
+  computed: {
+    characterCount() {
+      return this.comment.length;
+    },
+  },
   setup(){
     const getBadge = (priorities) => {
         
@@ -310,8 +315,64 @@ export default {
       }
     },
 
-    async countCharacters() {
-      this.characterCount = this.comment.trim().length;
+    vaildateBeforeSave() {
+      let error = false;
+
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+
+      // Check for empty values and display validation messages
+      if (this.form.comment.trim() === '' || specialCharRegex.test(this.form.comment)) {
+        this.validate.comment = true; // Show validation message
+        error = true;
+      } else {
+        this.validate.comment = false; // Hide validation message
+      }
+
+      if (!error) {
+        this.isLoading = true;
+
+      // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+      // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        setTimeout(() => {
+          // จบการโหลด
+          this.isLoading = false;
+
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          this.onSave()
+        }, 2000);
+      } else {
+        console.log('1'),
+        this.form.commit = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.commit = false;
+      }
+    },
+
+    async countCharacters(event) {
+      // Get the input element
+      var inputElement = event.target;
+
+      // Get the span element to display the character count
+      var charCountElement = document.getElementById("charCount");
+
+      // Get the value of the input and calculate the character count
+      var charCount = inputElement.value.length;
+
+      // Update the span element with the character count
+      charCountElement.innerText = charCount;
+
+      // Optionally, update the data property to use in the template
+      this.characterCount = charCount;
+      
+      // Your async logic here (if needed)
+      // await someAsyncFunction();
+    },
+
+    checkCharacterLimit() {
+      const maxCharacters = 200;
+      if (this.comment.length > maxCharacters) {
+        this.comment = this.comment.substring(0, maxCharacters);
+      }
     },
 
     async attachImage() {
@@ -727,5 +788,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* --------FIGHT---------- */
+#head_description{
+  padding: 1px;  
+  margin-top: 1%;
 }
 </style>
