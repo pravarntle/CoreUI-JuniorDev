@@ -313,6 +313,39 @@ export default {
       }
     },
 
+    vaildateBeforeSave() {
+      let error = false;
+
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+
+      // Check for empty values and display validation messages
+      if (this.form.comment.trim() === '' || specialCharRegex.test(this.form.comment)) {
+        this.validate.comment = true; // Show validation message
+        error = true;
+      } else {
+        this.validate.comment = false; // Hide validation message
+      }
+
+      if (!error) {
+        this.isLoading = true;
+
+      // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+      // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        setTimeout(() => {
+          // จบการโหลด
+          this.isLoading = false;
+
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          this.onSave()
+        }, 2000);
+      } else {
+        console.log('1'),
+        this.form.commit = true;// เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.commit = false;
+      }
+    },
+
     async countCharacters(event) {
       // Get the input element
       var inputElement = event.target;
