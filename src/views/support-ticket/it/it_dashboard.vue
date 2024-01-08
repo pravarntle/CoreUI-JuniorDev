@@ -1,7 +1,10 @@
 <template>
   <div class="box">
-    <CRow>
-      <count_ticket />
+
+    <CRow class="mb-2">
+      <CCol sm="12">
+        <count_ticket />
+      </CCol>
     </CRow>
 
     <CRow>
@@ -188,15 +191,14 @@
                   <CImage
                     :src="newticketicon"
                     alt="New Ticket Icon"
-                    width="48"
-                    height="48"
+                    width="55"
+                    height="55"
                     class="icon_new_ticket"
-                    
                   />
                 </CCol>
 
-                <CCol sm="10">
-                  <b class="fs-5">New Ticket</b>
+                <CCol>
+                  <b class="fs-5">New Tickets</b>
                   <p class="text-body-secondary">
                     {{ countPendingWeek || 0 }}
                   </p>
@@ -204,29 +206,33 @@
               </CRow>
               <CRow class="pt-3">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
-                  <CIcon
-                    :icon="icon.cilCheckCircle"
-                    size="xxl"
-                    class="icon_open_ticket"
+                  <CImage
+                    :src="OpenTickets"
+                    alt="Open Ticket Icon"
+                    width="55"
+                    height="55"
+                    class="icon_Open_ticket"
                   />
                 </CCol>
-                <CCol sm="10">
-                  <b class="fs-5">Open Ticket</b>
+                <CCol >
+                  <b class="fs-5">Open Tickets</b>
                   <p class="text-body-secondary">
                     {{ countOpenWeek || 0 }}
                   </p>
                 </CCol>
               </CRow>
               <CRow class="pt-3 mb-5">
-                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
-                  <CIcon
-                    :icon="icon.cilClock"
-                    size="xxl"
-                    class="response_time"
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="closed_ticket">
+                  <CImage
+                    :src="ClosedTicket"
+                    alt="Closed Ticket Icon"
+                    width="55"
+                    height="55"
+                    class="icon_Close_ticket"
                   />
                 </CCol>
-                <CCol sm="10">
-                  <b class="fs-5">Close Ticket</b>
+                <CCol >
+                  <b class="fs-5">Closed Tickets</b>
                   <p class="text-body-secondary">
                     {{ countCloseWeek || 0 }}
                   </p>
@@ -354,6 +360,8 @@ import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
 import moment from 'moment'
 import newticketicon from '@/assets/images/newticketicon.png'
+import OpenTickets from '@/assets/images/OpenTickets.png'
+import ClosedTicket from '@/assets/images/ClosedTicket.png'
 
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon },
@@ -443,6 +451,8 @@ export default {
       Close_fullscreen,
       icon,
       newticketicon,
+      OpenTickets,
+      ClosedTicket,
     }
   },
   data() {
@@ -668,14 +678,14 @@ output {
   font-size: 50px;
 }
 
-#new_ticket {
-  background-color: #e8e7fb;
+/* #new_ticket {
+
   width: 15%;
   height: 50%;
 }
 
 #open_ticket {
-  background-color: #e5f7fb;
+
   width: 15%;
   height: 50%;
 }
@@ -684,14 +694,9 @@ output {
   background-color: #fdf0e4;
   width: 15%;
   height: 50%;
-}
+} */
 
-.icon_new_ticket {
-  margin-bottom: 10px;
-
-}
-
-.icon_open_ticket {
+/* .icon_open_ticket {
   margin-bottom: 10px;
   color: #69cfe6;
 }
@@ -699,7 +704,7 @@ output {
 .response_time {
   margin-bottom: 10px;
   color: #f2a356;
-}
+} */
 
 span {
   color: black;
