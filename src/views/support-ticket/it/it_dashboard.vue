@@ -179,7 +179,7 @@
             <h1 id="support_tracker" class="text-body-secondary mt-0">
               {{ countAllWeek }}
             </h1>
-<CCollapse :visible="visibleA">
+          <CCollapse :visible="visibleA">
             <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
 
             <CRow class="pt-5">
@@ -224,7 +224,7 @@
                 </p>
               </CCol>
             </CRow>
-</CCollapse>
+          </CCollapse>
           </CCardBody>
         </CCard>
       </CCol>
