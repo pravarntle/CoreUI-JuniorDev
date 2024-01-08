@@ -6,8 +6,8 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+            <div class="text-start" id="head_description">
+              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
@@ -106,7 +106,7 @@
 
 
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
-                aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
+                aria-label="comments_box" id="comments_box" ref="comments_box" @input="checkCharacterLimit"
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
               <br>
@@ -122,13 +122,13 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
+              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
+                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
                     alt="Commit Icon" /></CButton>
               </div>
             </div>
@@ -149,15 +149,19 @@
                 <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
                 <div class="comments_box" style="width: fit-content; padding: 10px;">
                   {{ item.cmt_message }}
+                  <br v-if="item.cmt_message">
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                     {{ item.cmt_link }}
                   </a>
+                  <br v-if="item.link">
                   <a v-if="item.cmt_picture">
                     <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
                   </a>
+                  <br v-if="item.cmt_picture">
                   <a v-if="item.cmt_file">
                     <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${item.cmt_file.filename}`}}</a>
                   </a>
+                  <br v-if="item.cmt_file">
                   <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
                       {{ item.cmt_link }}
                   </a>
@@ -277,6 +281,11 @@ export default {
 
     };
   },
+  computed: {
+    characterCount() {
+      return this.comment.length;
+    },
+  },
   setup(){
     const getBadge = (priorities) => {
         
@@ -310,8 +319,55 @@ export default {
       }
     },
 
-    async countCharacters() {
-      this.characterCount = this.comment.trim().length;
+    vaildateBeforeSave() {
+
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+
+      // Check for empty values and display validation messages
+      if (this.comment.trim() === '' || specialCharRegex.test(this.comment)) {
+        if(this.form.cmt_file){
+          this.onSave()
+        }else if(this.form.cmt_picture){
+          this.onSave()
+        }else if(this.link){
+          this.onSave()
+        }else{
+          
+          console.error('Invalid comment');
+        }
+        
+      } else {
+        this.onSave()
+      }
+
+    },
+
+    async countCharacters(event) {
+      // Get the input element
+      var inputElement = event.target;
+
+      // Get the span element to display the character count
+      var charCountElement = document.getElementById("charCount");
+
+      // Get the value of the input and calculate the character count
+      var charCount = inputElement.value.length;
+
+      // Update the span element with the character count
+      charCountElement.innerText = charCount;
+
+      // Optionally, update the data property to use in the template
+      this.characterCount = charCount;
+      
+      // Your async logic here (if needed)
+      // await someAsyncFunction();
+    },
+
+    checkCharacterLimit() {
+      const maxCharacters = 200;
+      if (this.comment.length > maxCharacters) {
+        this.comment = this.comment.substring(0, maxCharacters);
+      }
     },
 
     async attachImage() {
@@ -727,5 +783,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* --------FIGHT---------- */
+#head_description{
+  padding: 1px;  
+  margin-top: 1%;
 }
 </style>
