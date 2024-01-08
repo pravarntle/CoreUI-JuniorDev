@@ -103,7 +103,7 @@
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>High</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>High</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -121,7 +121,7 @@
 
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>Medium</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>Medium</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -138,7 +138,7 @@
               </div>
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>Low</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>Low</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -177,14 +177,13 @@
               /></CButton>
             </CCardTitle>
 
-            <CCardText class="fs-5 text-secondary">Last 7 Days</CCardText>
+            <CCardText class=" text-secondary">Last 7 Days</CCardText>
 
-            <p id="support_tracker" class="text-body-secondary mt-0">
+            <CCardText id="support_tracker" class=" mt-0">
               {{ countAllWeek }}
-            </p>
+            </CCardText>
             <CCollapse :visible="visibleA">
-              <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
-
+            <CCardText class="pt-3 text-body-secondary">Total Ticket</CCardText>
               <CRow class="pt-5">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
                   <!-- เปลี่ยนจาก CIcon เป็น CImage -->
@@ -233,9 +232,9 @@
                 </CCol>
                 <CCol >
                   <b class="fs-5">Closed Tickets</b>
-                  <p class="text-body-secondary">
+                  <CCardText class="text-body-secondary">
                     {{ countCloseWeek || 0 }}
-                  </p>
+                  </CCardText>
                 </CCol>
               </CRow>
             </CCollapse>
@@ -350,7 +349,7 @@
 
 <script>
 import { ref } from 'vue'
-import { CCol, CRow } from '@coreui/vue-pro'
+import { CCardText, CCol, CRow } from '@coreui/vue-pro'
 import count_ticket from '@/components/CountTicket.vue'
 import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
@@ -364,7 +363,7 @@ import OpenTickets from '@/assets/images/OpenTickets.png'
 import ClosedTicket from '@/assets/images/ClosedTicket.png'
 
 export default {
-  components: { CRow, CCol, CChart, count_ticket, CIcon },
+  components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
     const columns = [
       {
