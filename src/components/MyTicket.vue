@@ -1,5 +1,5 @@
 <template>
-  <CCard class="p-2 rounded-4">
+  <CCard class="p-2 rounded-4 mx-auto">
     <CCardHeader class="bg-white border-white">
       <div class="d-inline ms-2">
         <div id="ticket-header">
@@ -73,11 +73,13 @@
     </CToast>
   </CToaster>
 </template>
-<style>
+<style scoped>
 .table-responsive {
   overflow-x: auto;
   max-width: 100%;
 }
+
+
 
 #ticket-header {
   display: inline-block;
@@ -98,6 +100,7 @@
   padding-top: 3px;
   padding-right: 5px;
 }
+
 
 </style>
 <script>
