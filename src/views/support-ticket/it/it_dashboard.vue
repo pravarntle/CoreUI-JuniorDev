@@ -178,11 +178,11 @@
             </CCardTitle>
 
             <CCardText class=" text-secondary">Last 7 Days</CCardText>
-
+  <CCollapse :visible="visibleA">
             <CCardText id="support_tracker" class=" mt-0">
               {{ countAllWeek }}
             </CCardText>
-            <CCollapse :visible="visibleA">
+
             <CCardText class="pt-3 text-body-secondary">Total Ticket</CCardText>
               <CRow class="pt-5">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
