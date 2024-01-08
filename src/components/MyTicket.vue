@@ -42,11 +42,32 @@
           </td>
         </template>
         <template #MORE="{ item, index }">
-          <td class="text-center">
-            <CButton color="primary" variant="outline" square size="xl" @click="toggleButton(item, index)">
-              {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-            </CButton>
+          <td class="text-center ps-0">
+              <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="visibleShow = true">
+                <span>Show</span>
+              </CButton>
+              <CModal alignment="center" :visible="visibleShow" @close="() => { visibleShow = false }" :backdrop="false" :keyboard="false" >
+                <CModalHeader>
+                  <CModalTitle>Detail</CModalTitle> 
+                </CModalHeader>
+                <CModalBody>
+                  asd
+                  <hr>
+                  asd
+                </CModalBody>
+
+                
+
+                <CModalFooter>
+                  
+                  <CButton color="info" @click="contactIt(item, index)">ติดต่อ</CButton>
+                </CModalFooter>
+              </CModal>
+              <CButton color="danger"  square size="sm" @click="buttonCancel(item, index)" >
+                <CIcon :icon="icon.cilTrash" size="xl"/>
+              </CButton>
           </td>
+          
         </template>
         <template #details="{ item, index }">
           <CCollapse :visible="Boolean(item.MORE)">
@@ -59,6 +80,7 @@
             </CCardBody>
           </CCollapse>
         </template>
+        
       </CSmartTable>
     </div>
   </CCard>
@@ -132,6 +154,7 @@ export default {
       count_open: '',
       count_closed: '',
       toastProp: [],
+      visibleShow:false,
       
 
 
@@ -148,7 +171,7 @@ export default {
       { key: 'STATUS', _style: { width: '5%' } },
       { key: 'TYPE', _style: { width: '4%' } },
       { key: 'BOOKMARK', _style: { width: '5%' }, filter: false, },
-      { key: 'MORE', _style: { width: '5%' }, filter: false, },
+      { label:"ACTION", key: 'MORE', _style: { width: '5%' }, filter: false, },
 
 
     ];
