@@ -174,9 +174,10 @@ import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
 import UserList from '@/components/UserList.vue'
 import moment from 'moment'
+import PriorityChart from '@/components/PriorityBar.vue'
 
 export default {
-  components: { CRow, CCol, CChart, count_ticket, CIcon },
+  components: { CRow, CCol, CChart, count_ticket, CIcon , PriorityChart},
   setup() {
     const columns = [
       {
