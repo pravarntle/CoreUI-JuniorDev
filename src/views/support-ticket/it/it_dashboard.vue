@@ -26,7 +26,7 @@
               <CRow>
                 <CCol>
                   <CCardSubtitle class="text-muted fs-1"
-                    >ALL TICKET</CCardSubtitle
+                    >All Ticket</CCardSubtitle
                   >
                   <CCardText class="fs-1"
                     ><b>{{ countAll }}</b></CCardText
@@ -67,7 +67,7 @@
                       plugins: {
                         title: {
                           display: true,
-                          text: 'all ticket',
+                          text: 'All ticket',
                         },
                         legend: {
                           display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
@@ -82,7 +82,7 @@
           <!-- Ticket Priority  -->
         </CCard>
 
-        <CCard class="mt-3">
+        <CCard class="mt-3 chart-container">
           <CCardBody>
             <CCardTitle class="d-flex fs-2"
               ><b>Ticket Priority</b>
@@ -157,12 +157,12 @@
         <!-- Support Tracker  -->
       </CCol>
       <CCol sm="4">
-        <CCard class="mt-3">
+        <CCard class="mt-3 chart-container">
           <CCardBody class="ps-4">
             <CCardTitle class="d-flex fs-2"
               ><b>Support Tracker</b>
               <CButton
-               variant="ghost"
+                variant="ghost"
                 class="border border-0 bg-body ms-auto d-flex"
                 @click="
                   () => {
@@ -176,55 +176,63 @@
 
             <CCardText class="fs-5 text-secondary">Last 7 Days</CCardText>
 
-            <h1 id="support_tracker" class="text-body-secondary mt-0">
+            <p id="support_tracker" class="text-body-secondary mt-0">
               {{ countAllWeek }}
-            </h1>
-<CCollapse :visible="visibleA">
-            <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
+            </p>
+            <CCollapse :visible="visibleA">
+              <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
 
-            <CRow class="pt-5">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
-                <CIcon
-                  :icon="icon.cilPlus"
-                  size="xxl"
-                  class="icon_new_ticket"
-                />
-              </CCol>
+              <CRow class="pt-5">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
+                  <!-- เปลี่ยนจาก CIcon เป็น CImage -->
+                  <CImage
+                    :src="newticketicon"
+                    alt="New Ticket Icon"
+                    width="48"
+                    height="48"
+                    class="icon_new_ticket"
+                    
+                  />
+                </CCol>
 
-              <CCol sm="10">
-                <b class="fs-5">New Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countPendingWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-            <CRow class="pt-3">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
-                <CIcon
-                  :icon="icon.cilCheckCircle"
-                  size="xxl"
-                  class="icon_open_ticket"
-                />
-              </CCol>
-              <CCol sm="10">
-                <b class="fs-5">Open Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countOpenWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-            <CRow class="pt-3 mb-5">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
-                <CIcon :icon="icon.cilClock" size="xxl" class="response_time" />
-              </CCol>
-              <CCol sm="10">
-                <b class="fs-5">Close Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countCloseWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-</CCollapse>
+                <CCol sm="10">
+                  <b class="fs-5">New Ticket</b>
+                  <p class="text-body-secondary">
+                    {{ countPendingWeek || 0 }}
+                  </p>
+                </CCol>
+              </CRow>
+              <CRow class="pt-3">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
+                  <CIcon
+                    :icon="icon.cilCheckCircle"
+                    size="xxl"
+                    class="icon_open_ticket"
+                  />
+                </CCol>
+                <CCol sm="10">
+                  <b class="fs-5">Open Ticket</b>
+                  <p class="text-body-secondary">
+                    {{ countOpenWeek || 0 }}
+                  </p>
+                </CCol>
+              </CRow>
+              <CRow class="pt-3 mb-5">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
+                  <CIcon
+                    :icon="icon.cilClock"
+                    size="xxl"
+                    class="response_time"
+                  />
+                </CCol>
+                <CCol sm="10">
+                  <b class="fs-5">Close Ticket</b>
+                  <p class="text-body-secondary">
+                    {{ countCloseWeek || 0 }}
+                  </p>
+                </CCol>
+              </CRow>
+            </CCollapse>
           </CCardBody>
         </CCard>
       </CCol>
@@ -345,6 +353,7 @@ import * as icon from '@coreui/icons'
 import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
 import moment from 'moment'
+import newticketicon from '@/assets/images/newticketicon.png'
 
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon },
@@ -433,6 +442,7 @@ export default {
       Open_in_full,
       Close_fullscreen,
       icon,
+      newticketicon,
     }
   },
   data() {
@@ -620,6 +630,7 @@ output {
 
 .chart-container {
   position: relative;
+  border-radius: 18px;
 }
 
 .custom-text {
@@ -677,7 +688,7 @@ output {
 
 .icon_new_ticket {
   margin-bottom: 10px;
-  color: #7167e8;
+
 }
 
 .icon_open_ticket {
@@ -693,5 +704,9 @@ output {
 span {
   color: black;
   font-size: 16px;
+}
+
+#support_tracker {
+  font-size: 80px;
 }
 </style>
