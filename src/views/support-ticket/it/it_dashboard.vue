@@ -313,7 +313,7 @@
                   size="sm"
                   color="info"
                   class=""
-                  @click="contactIt(item, index)"
+                  @click="acceptTicket(item, index)"
                 >
                   ติดต่อ It Suport
                 </CButton>
@@ -456,10 +456,10 @@ export default {
     }
   },
   methods: {
-    async contactIt(item) {
+    async acceptTicket(item) {
       const itemId = item._id.toString()
 
-      this.$router.push({ name: 'ST - comment Ticket', params: { itemId } })
+      this.$router.push({ name: 'ST - it/it_accept_task', params: { itemId } })
       console.log('Item ID:', itemId)
     },
     async buttonCancel(item) {
