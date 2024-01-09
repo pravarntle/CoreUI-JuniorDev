@@ -1,6 +1,5 @@
 <template>
   <div class="box">
-
     <CRow class="mb-2">
       <CCol sm="12">
         <count_ticket />
@@ -177,30 +176,33 @@
               /></CButton>
             </CCardTitle>
 
-            <CCardText class=" text-secondary">Last 7 Days</CCardText>
-  <CCollapse :visible="visibleA">
-            <CCardText id="support_tracker" class=" mt-0">
-              {{ countAllWeek }}
-            </CCardText>
-
-            <CCardText class="pt-3 text-body-secondary">Total Ticket</CCardText>
+            <CCardText class="text-secondary">Last 7 Days</CCardText>
+            <CCollapse :visible="visibleA">
+              <CCardText id="support_tracker" class="mt-0">
+                {{ countAllWeek }}
+                 <CCardText class="pt-3 text-body-secondary fs-5"
+                >Total Ticket</CCardText
+              >
+              </CCardText>
               <CRow class="pt-5">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
                   <!-- เปลี่ยนจาก CIcon เป็น CImage -->
                   <CImage
                     :src="newticketicon"
                     alt="New Ticket Icon"
-                    width="55"
-                    height="55"
+                    width="54"
+                    height="54"
                     class="icon_new_ticket"
                   />
                 </CCol>
 
                 <CCol>
-                  <b class="fs-5">New Tickets</b>
-                  <p class="text-body-secondary">
+                  <CCardText class="fs-5">New Tickets
+                      <CCardText class="text-body-secondary">
                     {{ countPendingWeek || 0 }}
-                  </p>
+                  </CCardText>
+                  </CCardText>
+
                 </CCol>
               </CRow>
               <CRow class="pt-3">
@@ -208,16 +210,18 @@
                   <CImage
                     :src="OpenTickets"
                     alt="Open Ticket Icon"
-                    width="55"
-                    height="55"
+                    width="54"
+                    height="54"
                     class="icon_Open_ticket"
                   />
                 </CCol>
-                <CCol >
-                  <b class="fs-5">Open Tickets</b>
-                  <p class="text-body-secondary">
-                    {{ countOpenWeek || 0 }}
-                  </p>
+                <CCol>
+                  <CCardText class="fs-5"
+                    >Open Tickets
+                    <CCardText class="text-body-secondary">
+                      {{ countOpenWeek || 0 }}
+                    </CCardText>
+                  </CCardText>
                 </CCol>
               </CRow>
               <CRow class="pt-3 mb-5">
@@ -225,15 +229,17 @@
                   <CImage
                     :src="ClosedTicket"
                     alt="Closed Ticket Icon"
-                    width="55"
-                    height="55"
+                    width="54"
+                    height="54"
                     class="icon_Close_ticket"
                   />
                 </CCol>
-                <CCol >
-                  <b class="fs-5">Closed Tickets</b>
-                  <CCardText class="text-body-secondary">
-                    {{ countCloseWeek || 0 }}
+                <CCol>
+                  <CCardText class="fs-5"
+                    >Closed Tickets
+                    <CCardText class="text-body-secondary">
+                      {{ countCloseWeek || 0 }}
+                    </CCardText>
                   </CCardText>
                 </CCol>
               </CRow>
@@ -712,5 +718,8 @@ span {
 
 #support_tracker {
   font-size: 80px;
+}
+.fs-5 {
+  color: grey;
 }
 </style>
