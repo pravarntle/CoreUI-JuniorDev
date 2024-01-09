@@ -10,16 +10,16 @@
           </CCol>
           <CCol xs="auto">
             <div Class="text-end p-2">
-              <CCardTitle>  <b>
+              <CCardTitle>  <h3><b>
                 My Bookmark tasks
-              </b></CCardTitle>
+              </b></h3></CCardTitle>
 
             </div>
           </CCol>
           <div Class="line">
-            <svg xmlns="http://www.w3.org/2000/svg" width="300" height="3" viewBox="0 0 300 3" fill="none" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="345" height="3" viewBox="0 0 345 3" fill="none" >
               <rect y="0.259277" width="219.682" height="2.2588" fill="#EA5252" />
-              <path d="M69.4795 0.259277H275V2.51807H69.4795V0.259277Z" fill="#030303" />
+              <path d="M69.4795 0.259277H345V2.51807H69.4795V0.259277Z" fill="#030303" />
             </svg>
           </div>
         </CRow>
