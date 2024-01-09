@@ -16,11 +16,12 @@
           </CCol>
           <div Class="line">
             <svg xmlns="http://www.w3.org/2000/svg" width="219" height="3" viewBox="0 0 219 3" fill="none">
-              <rect y="0.259277" width="215.682" height="2.2588" fill="#EA5252" />
-              <path d="M69.4795 0.259277H219V2.51807H69.4795V0.259277Z" fill="#030303" />
+              <rect y="0.259277" width="175" height="2.2588" fill="#EA5252" />
+              <path d="M69.4795 0.259277H175V2.51807H69.4795V0.259277Z" fill="#030303" />
             </svg>
           </div>
         </CRow>
+        
         <div>
           <CSmartTable clickableRows :tableProps="{
             striped: true,

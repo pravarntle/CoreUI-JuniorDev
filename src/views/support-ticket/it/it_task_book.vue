@@ -1,76 +1,161 @@
 <template>
-  <CCard class="p-2 rounded-4">
-    <CCardHeader class="bg-white border-white">
-      <div class="d-inline ms-2">
-        <CImage class="me-2 align-middle" id="custom_icon_header" :src="LGlogo" />
-        <h2 class="d-inline align-middle">My Bookmark Tasks</h2>
-        <div id="underline_header"></div>
-      </div>
-    </CCardHeader>
-    <div class="table-responsive table-borderless">
-      <CSmartTable :active-page="1" header cleaner :items="items" :columns="columns" columnFilter column-sorter
-        clickable-rows table-filter :items-per-page="5" items-per-page-select pagination columnSorter
-        :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
-          striped: true,
-          hover: true,
-        }">
-        <template #STATUS="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-          </td>
-        </template>
-        <template #TYPE="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.TYPE)">{{ item.TYPE }}</CBadge>
-          </td>
-        </template>
-        <template #book_mark="{ item, index }">
-          <td class="text-center">
-            <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)">
-              {{ Boolean(item.book_mark) ? '👁️' : '🙈' }}
-            </CButton>
-          </td>
-        </template>
-        <template #MORE="{ item, index }">
-          <td class="text-center">
-            <CButton color="primary" variant="outline" square size="xl" @click="toggleButton(item, index)">
-              {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-            </CButton>
-          </td>
-        </template>
-        <template #details="{ item, index }">
-          <CCollapse :visible="Boolean(item.MORE)">
-            <CCardBody>
-              <h4>
-                {{ item.tkt_title }}
-              </h4>
-              <CButton size="sm" color="info" class="" @click="contactIt(item, index)">
-                CheckTicket
-              </CButton>
-              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)">
-                Cancel
-              </CButton>
-            </CCardBody>
-          </CCollapse>
-        </template>
-      </CSmartTable>
-    </div>
-  </CCard>
-  <CToaster placement="top-end">
-    <CToast visible color="info" v-for="toast in toastProp">
-      <CToastHeader closeButton v-if="toast.title">
-        <span class="me-auto fw-bold">{{ toast.title }}</span>
-      </CToastHeader>
-      <CToastBody v-if="toast.content">
-        <span class="text-white">{{ toast.content }}</span>
-      </CToastBody>
-    </CToast>
-  </CToaster>
+  <div>
+    <CCard class="p-2 rounded-4">
+      <CCardBody>
+        <CRow style="margin-bottom: 22px; " >
+          <CCol xs="auto">
+            <div Class="clearfix">
+              <CImage Class="images_Ticket" :src="LGlogo" width="55" height="40" />
+            </div>
+          </CCol>
+          <CCol xs="auto">
+            <div Class="text-end p-2">
+              <CCardTitle>  <b>
+                My Bookmark tasks
+              </b></CCardTitle>
+
+            </div>
+          </CCol>
+          <div Class="line">
+            <svg xmlns="http://www.w3.org/2000/svg" width="300" height="3" viewBox="0 0 300 3" fill="none" >
+              <rect y="0.259277" width="219.682" height="2.2588" fill="#EA5252" />
+              <path d="M69.4795 0.259277H275V2.51807H69.4795V0.259277Z" fill="#030303" />
+            </svg>
+          </div>
+        </CRow>
+
+        <div >
+          <CSmartTable clickableRows :tableProps="{
+            striped: true,
+            hover: true,
+          }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+            class="table-hover table-bordered table-alternate-background table-responsive" cleaner itemsPerPageSelect
+            :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
+
+            <template #ticket_id="{ item }">
+              <td class="style-ticket-id">{{ item.ticket_id }}</td>
+            </template>
+            <template #owner="{ item }">
+              <td>{{ item.owner }}</td>
+            </template>
+
+            <template #status="{ item }">
+              <td>
+                <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
+              </td>
+            </template>
+            <template #TYPE="{ item }">
+              <td>
+                <CBadge :color="getBadgeTicketType(item.TYPE)">{{ item.TYPE }}</CBadge>
+              </td>
+            </template>
+            <template #book_mark="{ item, index }">
+              <td class="text-center">
+                <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)" class="style-bookmark">
+                  <img :src="getBookmarkIcon(item.book_mark)" class="style-button" alt="Bookmark Icon" />
+                </CButton>
+              </td>
+            </template>
+            <template #MORE="{ item, index }">
+              <td class="text-center">
+                <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
+                  @click="contactIt(item, index)">
+                  <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
+                  alt="Bookmark Icon" /> -->
+                  Show
+                </CButton>
+                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)">
+                  <img :src="IconcancelTicket" class="style-button" alt="Bookmark Icon" />
+                </CButton>
+              </td>
+            </template>
+          </CSmartTable>
+        </div>
+      </CcardBody>
+    </CCard>
+    <CToaster placement="top-end">
+      <CToast visible color="info" v-for="toast in toastProp">
+        <CToastHeader closeButton v-if="toast.title">
+          <span class="me-auto fw-bold">{{ toast.title }}</span>
+        </CToastHeader>
+        <CToastBody v-if="toast.content">
+          <span class="text-white">{{ toast.content }}</span>
+        </CToastBody>
+      </CToast>
+    </CToaster>
+  </div>
 </template>
 <style scoped>
-.table-responsive {
-  overflow-x: auto;
+.mb-3 {
+  width: 943px;
+  height: 691px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: #fff;
   max-width: 100%;
+  display: flex;
+}
+
+.mb-1 {
+  border-radius: 18px;
+  background: #fff;
+  max-width: 100%;
+  display: flex;
+}
+
+.table-responsive {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* .table-hover .table-bordered .table-alternate-background td:nth-child(1) {
+  background-color: #feffde;
+}
+
+.table-hover .table-bordered .table-alternate-background td:nth-child(2) {
+  background-color: #d9edf7;
+}
+
+.table-hover .table-bordered .table-alternate-background td:nth-child(3) {
+  color: black;
+  font-size: 16px;
+} */
+
+
+.style-ticket-id {
+  color: #5E5ADB;
+}
+
+.style-bookmark {
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+
+.style-action {
+  margin-right: 10px;
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+
+
+.clearfix {
+  flex-shrink: 0;
+}
+
+.text-end {
+  padding-left: 0px;
+  flex-shrink: 0;
+  color: #000;
+  padding-left: 0%;
+  margin-left: 0px;
+}
+
+.line {
+  margin-top: auto;
 }
 
 #underline_header {
@@ -85,12 +170,26 @@
   width: 50px;
   height: 44px;
 }
+
+.underline_header {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+  padding: 3px;
+}
+
+
 </style>
 <script>
 import { ref } from 'vue'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
+import Iconnotbookmarked from '@/assets/images/Icon_Not_Bookmarked.png'
+import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
+import IconshowTicket from '@/assets/images/Icon_ShowTicket.png'
+import IconcancelTicket from '@/assets/images/Icon_CancelTicket.png'
 
 export default {
   name: 'my_ticket',
@@ -113,55 +212,65 @@ export default {
       count_open: '',
       count_closed: '',
       toastProp: [],
+      Iconnotbookmarked: Iconnotbookmarked,
+      Iconhavebookmarked: Iconhavebookmarked,
+      IconshowTicket: IconshowTicket,
+      IconcancelTicket: IconcancelTicket,
+      
     }
   },
   setup() {
     const columns = [
-      {
+    {
         key: 'number',
         label: '#',
-        _style: { width: '10%' },
+        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
+
       },
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '10%' },
+        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'start_date',
-        label: 'START DATE(D/M/Y)',
-        _style: { width: '15%' },
+        _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'status',
         label: 'STATUS',
-        _style: { width: '10%' },
+        _style: { width: '1%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '10%' },
+        _style: { width: '7%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'start_date',
+        label: 'START DATE ',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'book_mark',
         label: 'BOOKMARK',
-        _style: { width: '10%' },
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
         filter: false,
         sorter: false,
       },
       {
         key: 'MORE',
-        label: 'MORE',
-        _style: { width: '5%' },
+        label: 'ACTION',
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px' },
         filter: false,
         sorter: false,
       },
-    ]
+
+
+    ];
     const getBadge = (tkt_status) => {
       switch (tkt_status) {
         case 'Pending':
@@ -174,6 +283,16 @@ export default {
           return 'secondary' // Return a default color if none of the cases match.
       }
     }
+
+    const getBadgeTicketType = (tkt_types) => {
+      switch (tkt_types) {
+        case 'Software':
+          return 'primary'
+        default: 'secendary'
+      }
+    } 
+
+
 
     const items = ref([])
 
@@ -237,13 +356,15 @@ export default {
           {
             populate: ['tkt_acc', 'tkt_act'],
             where: {
-              tkt_act: userId,
+              // tkt_acc: userId,
               tkt_book_task: 'true',
               tkt_status: { $ne: 'Cancel' },
             },
           },
         )
         console.log(response.data)
+        console.log('1')
+        console.log(userId)
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         this.items = response.data.map((element, index) => ({
           number: index + 1, // หมายเลขแถว
@@ -292,6 +413,9 @@ export default {
       const itemId = item._id.toString()
 
       this.$router.push({ name: 'ST - it/it_comment', params: { itemId } })
+    },
+    getBookmarkIcon(booked) {
+      return booked ? this.Iconhavebookmarked : this.Iconnotbookmarked;
     },
   },
   mounted() {
