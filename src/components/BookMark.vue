@@ -1,63 +1,46 @@
 <template>
   <div class="box">
     <CCard class="p-2 rounded-4">
-      <CCardHeader class="bg-white border-white">
+      <CCardHeader class="bg-white border-white mb-5 ">
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
-            <h2 class="d-inline align-middle"><b>My Bookmark</b></h2>
+            <h2 class="d-inline align-middle"><b>My Bookmark Task</b></h2>
           </div>
         </div>
       </CCardHeader>
-      <div class="table-responsive table-borderless">
-        <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter clickable-rows
-          :items-per-page="5" items-per-page-select pagination columnSorter
-          :sorterValue="{ column: 'START DATE(Y/M/D)', state: 'desc', dateFormat: 'YYYY-MM-DD' }" :table-props="{
+      <div>
+        <CSmartTable clickableRows :tableProps="{
             striped: true,
             hover: true,
-          }">
+          }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+            class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
+            :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
+
+          <template #TicketID="{ item }">
+            <td class="style-ticket-id">{{ item.TicketID }}</td>
+          </template>
           <template #STATUS="{ item }">
             <td>
-
               <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-
             </td>
           </template>
-          <template #TYPE="{ item }">
-            <td>
-
-              <CBadge :color="getBadge(item.TYPE)">{{ item.TYPE }}</CBadge>
-
-            </td>
+          <template #type="{ item }">
+            <td>{{ item.type }}</td>
           </template>
 
           <template #BOOKMARK="{ item, index }">
             <td class="text-center">
-              <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)">
-                {{ Boolean(item.BOOKMARK) ? '' : '' }}
-                <CIcon v-if="Boolean(item.BOOKMARK)" :icon="icon.cilBook" size="xxl" />
-                <CIcon v-if="!Boolean(item.BOOKMARK)" :icon="icon.cilBookmark" size="xxl"/>
-
-              </CButton>
-            </td>
-          </template> 
-          <template #MORE="{ item, index }">
-            <td class="text-center">
-              <CButton color="primary" variant="outline" square size="xl" @click="toggleButton(item, index)">
-                {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
+              <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)" class="style-bookmark">
+                <img :src="getBookmarkIcon(item.BOOKMARK)" class="style-button" alt="Bookmark Icon" />
               </CButton>
             </td>
           </template>
-          <template #details="{ item, index }">
-            <CCollapse :visible="Boolean(item.MORE)">
-              <CCardBody>
-                <h4>
-                  {{ item.tkt_title }}
-                </h4>
-                <CButton size="sm" color="info"  @click="contactIt(item, index)"> ติดต่อ It Suport </CButton>
-                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
-              </CCardBody>
-            </CCollapse>
+          <template #MORE="{ item, index }">
+            <td class="text-center">
+              <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
+                @click="contactIt(item, index)">Show</CButton>
+            </td>
           </template>
         </CSmartTable>
       </div>
@@ -104,6 +87,30 @@
   width: auto;
   height: 30px;
 }
+
+.style-ticket-id {
+  color: #5E5ADB;
+}
+
+.style-bookmark {
+  padding-bottom: 10px;
+  margin-right: 20px;
+}
+
+.style-action {
+  margin-right: 10px;
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.table-responsive {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 </style>
   
 <script>
@@ -111,6 +118,8 @@ import { ref } from 'vue'
 import Icon_bookmark from '@/assets/images/Icon_bookmark.png'
 import { CCol, CRow } from '@coreui/vue-pro'
 import axios from 'axios';
+import Iconnotbookmarked from '@/assets/images/Icon_Not_Bookmarked.png'
+import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
 export default {
@@ -125,14 +134,48 @@ export default {
       //   key:'TicketID',
       //   _style: { width: '20%' },
       // },
-      { key: '#', _style: { width: '5%' } },
-      { key: 'TicketID', _style: { width: '10%' } },
-      { key: 'TITLE', _style: { width: '10%' } },
-      { key: 'START DATE(Y/M/D)', _style: { width: '11%' } },
-      { key: 'STATUS', _style: { width: '5%' } },
-      { key: 'TYPE', _style: { width: '4%' } },
-      { key: 'BOOKMARK', _style: { width: '5%' }, filter: false, },
-      { key: 'MORE', _style: { width: '5%' }, filter: false, },
+      {
+        key: '#', label: '#',
+        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
+      },
+      {
+        key: 'TicketID', label: 'TICKET ID',
+        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'TITLE', label: 'TITLE',
+        _style: { width: '20%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'STATUS', label: 'STATUS',
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'TYPE',
+        label: 'TYPE',
+        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'START DATE(Y/M/D)',
+        label: 'START DATE ',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'BOOKMARK',
+        label: 'BOOKMARK',
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
+      },
+      {
+        key: 'MORE',
+        label: 'ACTION',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '47px' },
+        filter: false,
+        sorter: false,
+      },
     ];
     const items = ref([]);
     const getBadge = (tkt_status) => {
@@ -147,7 +190,7 @@ export default {
           return 'secondary'; // Return a default color if none of the cases match.
       }
     };
-    
+
 
     const toggleDetails = async (item) => {
       item.BOOKMARK = !item.BOOKMARK;
@@ -175,6 +218,8 @@ export default {
       getBadge,
       toggleDetails,
       icon,
+      Iconnotbookmarked: Iconnotbookmarked,
+      Iconhavebookmarked: Iconhavebookmarked,
     };
   },
   components: { CRow, CCol },
@@ -244,6 +289,9 @@ export default {
         console.error('Error fetching data:', error);
       }
 
+    },
+    getBookmarkIcon(booked) {
+      return booked ? this.Iconhavebookmarked : this.Iconnotbookmarked;
     },
 
   },
