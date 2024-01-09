@@ -43,17 +43,31 @@
         </template>
         <template #MORE="{ item, index }">
           <td class="text-center ps-0">
-              <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="visibleShow = true">
+              <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
-              <CModal alignment="center" :visible="visibleShow" @close="() => { visibleShow = false }" :backdrop="false" :keyboard="false" >
+              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShow = false }" :backdrop="false" :keyboard="false" >
                 <CModalHeader>
                   <CModalTitle>Detail</CModalTitle> 
                 </CModalHeader>
                 <CModalBody>
-                  asd
+                   <CRow>
+                    <CImage v-if="item.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                    <CImage v-if="item.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                    <CImage v-if="item.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
+                    <CImage v-if="item.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />
+                   </CRow>
+
                   <hr>
-                  asd
+                  <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex">
+                    
+                    <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> สร้าง Ticket เมื่อวันที่  {{ historyItem.mod_date }} </p>
+                    <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center"><CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>  พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) รับเรื่อง Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ได้ปิด Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ไม่สามารถแก้ไข Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
+                  </div>
+                  <div></div>
+                  <div></div>
                 </CModalBody>
 
                 
@@ -128,6 +142,11 @@
 <script>
 import { ref } from 'vue'
 import Ticketlogo from '@/assets/images/blackTick.png'
+import ModalClosedBug from '@/assets/images/modal_closedBug.png'
+import ModalOpen from '@/assets/images/modal_open.png'
+import ModalPending from '@/assets/images/modal_pending.png'
+import ModalClosed from '@/assets/images/modal_closed.png'
+
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
@@ -155,6 +174,7 @@ export default {
       count_closed: '',
       toastProp: [],
       visibleShow:false,
+      historyArray:[],
       
 
 
@@ -214,6 +234,10 @@ export default {
       activePage,
       getData,
       icon,
+      ModalClosedBug,
+      ModalClosed,
+      ModalOpen,
+      ModalPending,
     };
   },
 
@@ -306,6 +330,25 @@ export default {
             MORE: false,
           };
         });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async getHistoryStatus(item , index){
+      try {
+        this.visibleShow =true; 
+        const itemTicket = item._id.toString();
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_modifications`,{
+          where:{
+            mod_tkt:itemTicket,
+          },
+          populate:'mod_act',
+        });
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.historyArray = response.data;
+        console.log(this.historyArray)
+        console.log(response)
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
