@@ -6,11 +6,10 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px; margin-top: 1%">
+            <div class="text-start p-1 mt-1" >
               <CAvatar
-                class="Arrow_Left"
+                class="Arrow_Left text-left"
                 :src="Arrow_Left"
-                style="text-align: left"
               />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
@@ -23,12 +22,11 @@
 
         <CAvatar
           v-if="acountFile"
-          class="Icon_user_man avatar-round ps-5"
+          class="Icon_user_man avatar-round ps-1"
           :src="`data:${acountFile};base64,${acountImage}`"
-          style="padding: -4px"
         />
         <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" />
-        <CCol style="padding: 4px">
+        <CCol class="p-3">
           <b> {{ firstname }}</b>
           <p class="small">{{ email }}</p>
         </CCol>
@@ -44,22 +42,22 @@
       <hr />
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
-      <div class="clearfix text-end" style="margin-right: 4%">
+      <div class="clearfix text-end me-5">
         <b>{{ number }}</b>
 
         <CRow>
           <CCol xs="12">
-            <CCardBody style="margin-left: 2%">
-              <CCol class="text-start" style="padding: -3px">
-                <b style="font-size: 20px"> Title : </b>
+            <CCardBody class="ms-3">
+              <CCol class="text-start">
+                <b class="fs-5"> Title : </b>
                 <CCradText>{{ title }} </CCradText>
               </CCol>
-              <CCol class="text-start" style="padding: -3px">
-                <b style="font-size: 20px"> Type : </b>
+              <CCol class="text-start">
+                <b class="fs-5"> Type : </b>
                 <CCradText> {{ type }} </CCradText>
               </CCol>
-              <CCol class="text-start" style="padding: -3px">
-                <b style="font-size: 20px"> Description : </b>
+              <CCol class="text-start pt-4">
+                <b class="fs-5"> Description : </b>
                 <CCradText>
                   {{ description }}
                 </CCradText>
@@ -72,21 +70,21 @@
     </CCardbody>
     <CCardFooter class="bg-white">
       <Crow>
-        <CCol class="d-flex text-start" style="padding: -1px">
-          <output style="margin-left: 1%"><h5>1</h5> </output>
-          <CCradText style="margin-left: 2%"><h5>Attachment</h5> </CCradText>
+        <CCol class="d-flex text-start">
+          <output class="ms-1"><h5>1</h5> </output>
+          <CCradText class="ms-3"><h5>Attachment</h5> </CCradText>
         </CCol>
       </Crow>
 
       <Crow class="text-start">
-        <CCol style="margin-left: 5%">
-          <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
+        <CCol class="ps-3 ms-5">
+          <CCardImage class="File_test" :src="File_test"/>
 
           <a v-if="picture">
             <a
               :href="`data:${picture.filetype};base64,${picture.image}`"
               alt="Comment Image"
-              style="max-width: auto; height: 300px"
+              class="mw-auto"
               download
               >{{ `${picture.filename}` }}</a
             >
@@ -97,17 +95,10 @@
         <br />
       </Crow>
       <hr />
-      <div class="text-end">
+      <div class="text-end ">
         <CButton
-          class="btn-sec"
+          class="btn-sec fw-bolder fs-4 text-white rounded-5 custom-btn"
           color="success"
-          style="
-            font-weight: bold;
-            font-size: x-large;
-            width: 150px;
-            color: white;
-            border-radius: 20px;
-          "
           @click="acceptButton"
           >Accept</CButton
         >
@@ -148,7 +139,7 @@ export default {
             return 'danger bg-opacity-50 text-danger'
           case 'Medium':
             return 'warning bg-opacity-50 text-warning'
-          case 'Closed':
+          case 'Low':
             return 'success bg-opacity-50 text-success'
           default:
             return 'secondary'
@@ -398,6 +389,11 @@ export default {
 
 .vh-55 {
   height: 55vh;
+}
+
+.custom-btn {
+  width: 150px;
+  /* และคุณสามารถเพิ่มสไตล์อื่น ๆ ตามต้องการ */
 }
 
 </style>
