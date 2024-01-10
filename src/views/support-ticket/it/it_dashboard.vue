@@ -10,29 +10,18 @@
       <CCol sm="8">
         <CCard class="mt-3 chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex fs-2"
-              ><b>Category Chart</b>
-              <CButton
-                variant="ghost"
-                class="border border-0 bg-body ms-auto d-flex"
-                @click="
-                  () => {
-                    visibleA = !visibleA
-                    visibleB = !visibleB
-                  }
-                "
-                ><img :src="Close_fullscreen"
-              /></CButton>
+            <CCardTitle class="d-flex fs-2"><b>Category Chart</b>
+              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
+                  visibleA = !visibleA
+                  visibleB = !visibleB
+                }
+                "><img :src="Close_fullscreen" /></CButton>
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <CRow>
                 <CCol>
-                  <CCardSubtitle class="text-muted fs-1"
-                    >All Ticket</CCardSubtitle
-                  >
-                  <CCardText class="fs-1"
-                    ><b>{{ countAll }}</b></CCardText
-                  >
+                  <CCardSubtitle class="text-muted fs-1">All Ticket</CCardSubtitle>
+                  <CCardText class="fs-1"><b>{{ countAll }}</b></CCardText>
                   <hr />
                   <CCol class="d-flex align-items-center">
                     <ul>
@@ -49,34 +38,29 @@
                   </CCol>
                 </CCol>
                 <CCol>
-                  <CChart
-                    class="pie_chart"
-                    type="pie"
-                    :data="{
-                      labels: ['Software', 'Hardware', 'Service Request'],
-                      datasets: [
-                        {
-                          backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
-                          data: [
-                            countSoftware,
-                            countHardware,
-                            countServiceRequest,
-                          ],
-                        },
-                      ],
-                    }"
-                    :options="{
-                      plugins: {
-                        title: {
-                          display: true,
-                          text: 'All ticket',
-                        },
-                        legend: {
-                          display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
-                        },
+                  <CChart class="pie_chart" type="pie" :data="{
+                    labels: ['Software', 'Hardware', 'Service Request'],
+                    datasets: [
+                      {
+                        backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
+                        data: [
+                          countSoftware,
+                          countHardware,
+                          countServiceRequest,
+                        ],
                       },
-                    }"
-                  />
+                    ],
+                  }" :options="{
+  plugins: {
+    title: {
+      display: true,
+      text: 'All ticket',
+    },
+    legend: {
+      display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
+    },
+  },
+}" />
                 </CCol>
               </CRow>
             </CCollapse>
@@ -86,71 +70,46 @@
 
         <CCard class="mt-3 chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex fs-2"
-              ><b>Ticket Priority</b>
-              <CButton
-                variant="ghost"
-                class="border border-0 bg-body ms-auto d-flex"
-                @click="
-                  () => {
-                    visibleA = !visibleA
-                    visibleB = !visibleB
-                  }
-                "
-                ><img :src="Close_fullscreen"
-              /></CButton>
+            <CCardTitle class="d-flex fs-2"><b>Ticket Priority</b>
+              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
+                  visibleA = !visibleA
+                  visibleB = !visibleB
+                }
+                "><img :src="Close_fullscreen" /></CButton>
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h6>High</h6></div>
-                <div class="col-md-7 col-sm-12 ps-5">
-                  <input
-                    class="w-100"
-                    type="range"
-                    :value="percentHigh"
-                    min="1"
-                    max="100"
-                    oninput="this.nextElementSibling.value = this.value"
-                  />
+                <div class="col-md-2 col-sm-12 ps-5">
+                  <h6>High</h6>
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5"
-                  >{{ percentHigh }}%</output
-                >
+                <div class="col-md-7 col-sm-12 ps-5">
+                  <input class="w-100" type="range" :value="percentHigh" min="1" max="100"
+                    oninput="this.nextElementSibling.value = this.value" />
+                </div>
+                <output class="col-md-3 col-sm-12 ps-5">{{ percentHigh }}%</output>
               </div>
 
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h6>Medium</h6></div>
-                <div class="col-md-7 col-sm-12 ps-5">
-                  <input
-                    class="w-100"
-                    type="range"
-                    :value="percentMedium"
-                    min="1"
-                    max="100"
-                    oninput="this.nextElementSibling.value = this.value"
-                  />
+                <div class="col-md-2 col-sm-12 ps-5">
+                  <h6>Medium</h6>
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5"
-                  >{{ percentMedium }}%</output
-                >
+                <div class="col-md-7 col-sm-12 ps-5">
+                  <input class="w-100" type="range" :value="percentMedium" min="1" max="100"
+                    oninput="this.nextElementSibling.value = this.value" />
+                </div>
+                <output class="col-md-3 col-sm-12 ps-5">{{ percentMedium }}%</output>
               </div>
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h6>Low</h6></div>
-                <div class="col-md-7 col-sm-12 ps-5">
-                  <input
-                    class="w-100"
-                    type="range"
-                    :value="percentLow"
-                    min="1"
-                    max="100"
-                    oninput="this.nextElementSibling.value = this.value"
-                  />
+                <div class="col-md-2 col-sm-12 ps-5">
+                  <h6>Low</h6>
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5"
-                  >{{ percentLow }}%</output
-                >
+                <div class="col-md-7 col-sm-12 ps-5">
+                  <input class="w-100" type="range" :value="percentLow" min="1" max="100"
+                    oninput="this.nextElementSibling.value = this.value" />
+                </div>
+                <output class="col-md-3 col-sm-12 ps-5">{{ percentLow }}%</output>
               </div>
             </CCollapse>
           </CCardBody>
@@ -161,63 +120,41 @@
       <CCol sm="4">
         <CCard class="mt-3 chart-container">
           <CCardBody class="ps-4">
-            <CCardTitle class="d-flex fs-2"
-              ><b>Support Tracker</b>
-              <CButton
-                variant="ghost"
-                class="border border-0 bg-body ms-auto d-flex"
-                @click="
-                  () => {
-                    visibleA = !visibleA
-                    visibleB = !visibleB
-                  }
-                "
-                ><img :src="Close_fullscreen"
-              /></CButton>
+            <CCardTitle class="d-flex fs-2"><b>Support Tracker</b>
+              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
+                  visibleA = !visibleA
+                  visibleB = !visibleB
+                }
+                "><img :src="Close_fullscreen" /></CButton>
             </CCardTitle>
 
             <CCardText class="text-secondary">Last 7 Days</CCardText>
             <CCollapse :visible="visibleA">
               <CCardText id="support_tracker" class="mt-0">
                 {{ countAllWeek }}
-                 <CCardText class="pt-3 text-body-secondary fs-5"
-                >Total Ticket</CCardText
-              >
+                <CCardText class="pt-3 text-body-secondary fs-5">Total Ticket</CCardText>
               </CCardText>
               <CRow class="pt-5">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
                   <!-- เปลี่ยนจาก CIcon เป็น CImage -->
-                  <CImage
-                    :src="newticketicon"
-                    alt="New Ticket Icon"
-                    width="54"
-                    height="54"
-                    class="icon_new_ticket"
-                  />
+                  <CImage :src="newticketicon" alt="New Ticket Icon" width="54" height="54" class="icon_new_ticket" />
                 </CCol>
 
                 <CCol>
                   <CCardText class="fs-5">New Tickets
-                      <CCardText class="text-body-secondary">
-                    {{ countPendingWeek || 0 }}
-                  </CCardText>
+                    <CCardText class="text-body-secondary">
+                      {{ countPendingWeek || 0 }}
+                    </CCardText>
                   </CCardText>
 
                 </CCol>
               </CRow>
               <CRow class="pt-3">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
-                  <CImage
-                    :src="OpenTickets"
-                    alt="Open Ticket Icon"
-                    width="54"
-                    height="54"
-                    class="icon_Open_ticket"
-                  />
+                  <CImage :src="OpenTickets" alt="Open Ticket Icon" width="54" height="54" class="icon_Open_ticket" />
                 </CCol>
                 <CCol>
-                  <CCardText class="fs-5"
-                    >Open Tickets
+                  <CCardText class="fs-5">Open Tickets
                     <CCardText class="text-body-secondary">
                       {{ countOpenWeek || 0 }}
                     </CCardText>
@@ -226,17 +163,10 @@
               </CRow>
               <CRow class="pt-3 mb-5">
                 <CCol sm="2" class="rounded-3 ms-1 pt-2" id="closed_ticket">
-                  <CImage
-                    :src="ClosedTicket"
-                    alt="Closed Ticket Icon"
-                    width="54"
-                    height="54"
-                    class="icon_Close_ticket"
-                  />
+                  <CImage :src="ClosedTicket" alt="Closed Ticket Icon" width="54" height="54" class="icon_Close_ticket" />
                 </CCol>
                 <CCol>
-                  <CCardText class="fs-5"
-                    >Closed Tickets
+                  <CCardText class="fs-5">Closed Tickets
                     <CCardText class="text-body-secondary">
                       {{ countCloseWeek || 0 }}
                     </CCardText>
@@ -250,45 +180,33 @@
     </CRow>
 
     <!-- inbox -->
-    <CCard class="d-block mt-2">
-      <h1
-        class="d-block ms-2"
-        style="
-          width: 140px;
-          border-bottom: 2px solid transparent;
-          border-image: linear-gradient(to right, red, blue);
-          border-image-slice: 1;
-          lable: asd;
-        "
-      >
-        <CIcon :icon="icon.cilInbox" size="xxl" />Inbox
-      </h1>
+
+
+    <CCard class="p-2 rounded-4 d-block mt-4">
+      <CCardHeader class="bg-white border-white mb-2 ">
+        <div class="d-inline ms-2">
+          <div id="underline_header">
+            <CImage class="me-2 align-middle" id="custom_icon_header" :src="Iconinbox" />
+            <h2 class="d-inline align-middle"><b>Inbox</b></h2>
+          </div>
+        </div>
+      </CCardHeader>
+
       <div class="table-responsive table-borderless">
-        <CSmartTable
-          clickableRows
-          :tableProps="{
-            striped: true,
-            hover: true,
-          }"
-          :activePage="2"
-          header
-          :items="items"
-          :columns="columns"
-          columnFilter
-          tableFilter
-          cleaner
-          itemsPerPageSelect
-          items-per-page-select
-          :itemsPerPage="5"
-          columnSorter
-          :sorterValue="{ column: 'status', state: 'asc' }"
-          pagination
-        >
+        <CSmartTable clickableRows :tableProps="{
+          striped: true,
+          hover: true,
+        }" :activePage="2" header :items="items" :columns="columns" columnFilter itemsPerPageSelect
+          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'asc' }"
+          pagination>
+          <template #ticket_id="{ item }">
+              <td id="style-ticket-id" @click="acceptTicket(item, index)">{{ item.ticket_id }}</td>
+          </template>
           <template #status="{ item }">
             <td>
-              <CBadge :color="getBadge(item.status)"
-                ><li>{{ item.status }}</li></CBadge
-              >
+              <CBadge :color="getBadge(item.status)">
+                <li>{{ item.status }}</li>
+              </CBadge>
             </td>
           </template>
           <template #type="{ item }">
@@ -296,56 +214,12 @@
               <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
             </td>
           </template>
-
-          <!-- <template #BOOKMARK="{ item, index }" >
+          <template #action="{ item, index }">
             <td class="text-center">
-              <CButton
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleDetails(item, index)"
-              >
-              {{ Boolean(item.BOOKMARK) ? '👁️' : '🙈' }}
+              <CButton color="primary" variant="outline" square size="xl" @click="acceptTicket(item, index)">
+                Detail
               </CButton>
             </td>
-          </template> -->
-          <template #MORE="{ item, index }">
-            <td class="text-center">
-              <CButton
-                color="primary"
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleButton(item, index)"
-              >
-                {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-              </CButton>
-            </td>
-          </template>
-          <template #details="{ item, index }">
-            <CCollapse :visible="Boolean(item.MORE)">
-              <CCardBody>
-                <h4>
-                  {{ item.tkt_title }}
-                </h4>
-                <CButton
-                  size="sm"
-                  color="info"
-                  class=""
-                  @click="acceptTicket(item, index)"
-                >
-                  ติดต่อ It Suport
-                </CButton>
-                <CButton
-                  size="sm"
-                  color="danger"
-                  class="ml-3"
-                  @click="buttonCancel(item, index)"
-                >
-                  Cancel
-                </CButton>
-              </CCardBody>
-            </CCollapse>
           </template>
         </CSmartTable>
       </div>
@@ -367,49 +241,50 @@ import moment from 'moment'
 import newticketicon from '@/assets/images/newticketicon.png'
 import OpenTickets from '@/assets/images/OpenTickets.png'
 import ClosedTicket from '@/assets/images/ClosedTicket.png'
+import Iconinbox from '@/assets/images/Icon_Inbox.png'
 
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
     const columns = [
-      {
+    {
         key: 'number',
         label: '#',
-        _style: { width: '10%' },
+        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
+
       },
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '10%' },
+        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
+        key: 'title',
+        label: 'TITLE',
+        _style: { width: '30%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'start_date',
-        label: 'START DATE(D/M/Y)',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'status',
-        label: 'STATUS',
-        _style: { width: '10%' },
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '10%' },
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
-      // {
-      //   key: 'book_mark',
-      //   label: 'BOOKMARK',
-      //   _style: { width: '10%' },
-      //   filter: false,
-      //   sorter: false,
-      // },
-      { key: 'MORE', _style: { width: '5%' }, filter: false, sorter: false },
+      {
+        key: 'start_date',
+        label: 'START DATE',
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      { key: 'action',
+        label: 'ACTION',
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '35px'  },
+        filter: false,
+      },
     ]
     const items = ref([])
     const getBadge = (tkt_status) => {
@@ -478,6 +353,7 @@ export default {
       countCloseWeek: '',
       visibleA: true,
       visibleB: true,
+      Iconinbox: Iconinbox,
     }
   },
   methods: {
@@ -528,15 +404,16 @@ export default {
           number: index + 1, // หมายเลขแถว
           _id: element._id,
           ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
-          owner: `${
-            element.tkt_act.act_first_name_eng
-          } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+          owner: `${element.tkt_act.act_first_name_eng
+            } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
           // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
           // ตามลำดับของ columns ในตัวแปร columns
           // เพิ่มเติมตามความต้องการ
           start_date: element.tkt_time,
           status: element.tkt_status,
           type: element.tkt_types,
+          title: element.tkt_title,
+          priorities: element.tkt_priorities,
           _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
         }))
       } catch (error) {
@@ -631,8 +508,10 @@ export default {
 <style>
 input[type='range'] {
   height: 8px;
-  pointer-events: none; /* ป้องกันการเลื่อน */
-  opacity: 0.7; /* ความโปร่งใส */
+  pointer-events: none;
+  /* ป้องกันการเลื่อน */
+  opacity: 0.7;
+  /* ความโปร่งใส */
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
   overflow: hidden;
@@ -640,12 +519,65 @@ input[type='range'] {
 }
 
 output {
-  pointer-events: none; /* ป้องกันการคลิก */
+  pointer-events: none;
+  /* ป้องกันการคลิก */
 }
 
 .chart-container {
   position: relative;
   border-radius: 18px;
+}
+
+.table-responsive {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+
+#style-ticket-id {
+  color: #5E5ADB;
+}
+
+.style-bookmark {
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+
+.style-action {
+  margin-right: 10px;
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+#style-underline {
+  width: 140px;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(to right, red, blue);
+  border-image-slice: 1;
+}
+
+.clearfix {
+  flex-shrink: 0;
+}
+
+.text-end {
+  padding-left: 0px;
+  flex-shrink: 0;
+  color: #000;
+  padding-left: 0%;
+  margin-left: 0px;
+}
+
+.line {
+  margin-top: auto;
 }
 
 .custom-text {
@@ -681,6 +613,20 @@ output {
 
 #support_tracker {
   font-size: 50px;
+}
+
+
+#custom_icon_header {
+  width: auto;
+  height: 30px;
+}
+
+#underline_header {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+  padding: 3px;
 }
 
 /* #new_ticket {
@@ -719,7 +665,10 @@ span {
 #support_tracker {
   font-size: 80px;
 }
+
 .fs-5 {
   color: grey;
 }
+
+
 </style>
