@@ -51,16 +51,16 @@
                       },
                     ],
                   }" :options="{
-  plugins: {
-    title: {
-      display: true,
-      text: 'All ticket',
-    },
-    legend: {
-      display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
-    },
-  },
-}" />
+                    plugins: {
+                      title: {
+                        display: true,
+                        text: 'All ticket',
+                      },
+                      legend: {
+                        display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
+                      },
+                      },
+                    }" />
                 </CCol>
               </CRow>
             </CCollapse>
