@@ -180,13 +180,16 @@
             <CCollapse :visible="visibleA">
               <CCardText id="support_tracker" class="mt-0">
                 {{ countAllWeek }}
-                 <CCardText class="pt-3 text-body-secondary fs-5"
-                >Total Ticket</CCardText
-              >
+                <CCardText class="pt-3 text-body-secondary fs-5"
+                  >Total Ticket</CCardText
+                >
               </CCardText>
-              <CRow class="pt-5">
-                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
-                  <!-- เปลี่ยนจาก CIcon เป็น CImage -->
+              <CRow class="d-flex align-items-center mb-3">
+                <CCol
+                  class="rounded-3 ms-1 pt-2"
+                  id="new_ticket"
+                  style="display: flex; align-items: center"
+                >
                   <CImage
                     :src="newticketicon"
                     alt="New Ticket Icon"
@@ -194,19 +197,18 @@
                     height="54"
                     class="icon_new_ticket"
                   />
-                </CCol>
-
-                <CCol>
-                  <CCardText class="fs-5">New Tickets
-                      <CCardText class="text-body-secondary">
-                    {{ countPendingWeek || 0 }}
-                  </CCardText>
-                  </CCardText>
-
+                  <CCol class="with-margin-left">
+                    <CCardText class="fs-5 mb-1"
+                    >New Tickets</CCardText>
+                    <CCardText class="text-body-secondary">{{
+                      countPendingWeek || 0
+                    }}</CCardText>
+                  </CCol>
                 </CCol>
               </CRow>
-              <CRow class="pt-3">
-                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
+
+              <CRow class="d-flex align-items-center mb-3">
+                <CCol  class="rounded-3 ms-1 pt-2" id="open_ticket"   style="display: flex; align-items: center">
                   <CImage
                     :src="OpenTickets"
                     alt="Open Ticket Icon"
@@ -214,18 +216,19 @@
                     height="54"
                     class="icon_Open_ticket"
                   />
-                </CCol>
-                <CCol>
-                  <CCardText class="fs-5"
+                  <CCol class="with-margin-left">
+                  <CCardText class="fs-5 mb-1"
                     >Open Tickets
                     <CCardText class="text-body-secondary">
                       {{ countOpenWeek || 0 }}
                     </CCardText>
                   </CCardText>
                 </CCol>
+                </CCol>
+
               </CRow>
-              <CRow class="pt-3 mb-5">
-                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="closed_ticket">
+              <CRow class="d-flex align-items-center mb-3">
+                <CCol class="rounded-3 ms-1 pt-2" id="closed_ticket"  style="display: flex; align-items: center">
                   <CImage
                     :src="ClosedTicket"
                     alt="Closed Ticket Icon"
@@ -233,16 +236,18 @@
                     height="54"
                     class="icon_Close_ticket"
                   />
-                </CCol>
-                <CCol>
-                  <CCardText class="fs-5"
+                  <CCol class="with-margin-left">
+                  <CCardText class="fs-5 mb-1"
                     >Closed Tickets
                     <CCardText class="text-body-secondary">
                       {{ countCloseWeek || 0 }}
                     </CCardText>
                   </CCardText>
                 </CCol>
+                </CCol>
+
               </CRow>
+              <br>
             </CCollapse>
           </CCardBody>
         </CCard>
@@ -721,5 +726,9 @@ span {
 }
 .fs-5 {
   color: grey;
+}
+
+.with-margin-left {
+  margin-left: 10px;
 }
 </style>
