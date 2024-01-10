@@ -5,17 +5,17 @@
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
-            <h2 class="d-inline align-middle"><b>My Bookmark Task</b></h2>
+            <h2 class="d-inline align-middle"><b>My Bookmark Ticket</b></h2>
           </div>
         </div>
       </CCardHeader>
-      <div>
+      <div class="table-responsive table-borderless">
         <CSmartTable clickableRows :tableProps="{
-            striped: true,
-            hover: true,
-          }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
-            class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
-            :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
+          striped: true,
+          hover: true,
+        }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          itemsPerPageSelect :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }"
+          pagination="true">
 
           <template #TicketID="{ item }">
             <td class="style-ticket-id">{{ item.TicketID }}</td>
@@ -107,10 +107,9 @@
 }
 
 .table-responsive {
-  overflow-x: hidden;
+  overflow-x: auto;
   max-width: 100%;
 }
-
 </style>
   
 <script>
