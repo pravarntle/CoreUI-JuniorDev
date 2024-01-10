@@ -1,7 +1,9 @@
 <template>
   <div class="box">
-    <CRow>
-      <count_ticket />
+    <CRow class="mb-2">
+      <CCol sm="12">
+        <count_ticket />
+      </CCol>
     </CRow>
 
     <CRow>
@@ -26,7 +28,7 @@
               <CRow>
                 <CCol>
                   <CCardSubtitle class="text-muted fs-1"
-                    >ALL TICKET</CCardSubtitle
+                    >All Ticket</CCardSubtitle
                   >
                   <CCardText class="fs-1"
                     ><b>{{ countAll }}</b></CCardText
@@ -67,7 +69,7 @@
                       plugins: {
                         title: {
                           display: true,
-                          text: 'all ticket',
+                          text: 'All ticket',
                         },
                         legend: {
                           display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
@@ -82,7 +84,7 @@
           <!-- Ticket Priority  -->
         </CCard>
 
-        <CCard class="mt-3">
+        <CCard class="mt-3 chart-container">
           <CCardBody>
             <CCardTitle class="d-flex fs-2"
               ><b>Ticket Priority</b>
@@ -100,7 +102,7 @@
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>High</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>High</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -118,7 +120,7 @@
 
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>Medium</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>Medium</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -135,7 +137,7 @@
               </div>
               <br />
               <div class="row align-items-center border border-white">
-                <div class="col-md-2 col-sm-12 ps-5"><h5>Low</h5></div>
+                <div class="col-md-2 col-sm-12 ps-5"><h6>Low</h6></div>
                 <div class="col-md-7 col-sm-12 ps-5">
                   <input
                     class="w-100"
@@ -157,12 +159,12 @@
         <!-- Support Tracker  -->
       </CCol>
       <CCol sm="4">
-        <CCard class="mt-3">
+        <CCard class="mt-3 chart-container">
           <CCardBody class="ps-4">
             <CCardTitle class="d-flex fs-2"
               ><b>Support Tracker</b>
               <CButton
-               variant="ghost"
+                variant="ghost"
                 class="border border-0 bg-body ms-auto d-flex"
                 @click="
                   () => {
@@ -174,57 +176,74 @@
               /></CButton>
             </CCardTitle>
 
-            <CCardText class="fs-5 text-secondary">Last 7 Days</CCardText>
+            <CCardText class="text-secondary">Last 7 Days</CCardText>
+            <CCollapse :visible="visibleA">
+              <CCardText id="support_tracker" class="mt-0">
+                {{ countAllWeek }}
+                 <CCardText class="pt-3 text-body-secondary fs-5"
+                >Total Ticket</CCardText
+              >
+              </CCardText>
+              <CRow class="pt-5">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
+                  <!-- เปลี่ยนจาก CIcon เป็น CImage -->
+                  <CImage
+                    :src="newticketicon"
+                    alt="New Ticket Icon"
+                    width="54"
+                    height="54"
+                    class="icon_new_ticket"
+                  />
+                </CCol>
 
-            <h1 id="support_tracker" class="text-body-secondary mt-0">
-              {{ countAllWeek }}
-            </h1>
-          <CCollapse :visible="visibleA">
-            <h5 class="pt-3 text-body-secondary">Total Ticket</h5>
+                <CCol>
+                  <CCardText class="fs-5">New Tickets
+                      <CCardText class="text-body-secondary">
+                    {{ countPendingWeek || 0 }}
+                  </CCardText>
+                  </CCardText>
 
-            <CRow class="pt-5">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="new_ticket">
-                <CIcon
-                  :icon="icon.cilPlus"
-                  size="xxl"
-                  class="icon_new_ticket"
-                />
-              </CCol>
-
-              <CCol sm="10">
-                <b class="fs-5">New Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countPendingWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-            <CRow class="pt-3">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
-                <CIcon
-                  :icon="icon.cilCheckCircle"
-                  size="xxl"
-                  class="icon_open_ticket"
-                />
-              </CCol>
-              <CCol sm="10">
-                <b class="fs-5">Open Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countOpenWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-            <CRow class="pt-3 mb-5">
-              <CCol sm="2" class="rounded-3 ms-1 pt-2" id="response_time">
-                <CIcon :icon="icon.cilClock" size="xxl" class="response_time" />
-              </CCol>
-              <CCol sm="10">
-                <b class="fs-5">Close Ticket</b>
-                <p class="text-body-secondary">
-                  {{ countCloseWeek || 0 }}
-                </p>
-              </CCol>
-            </CRow>
-          </CCollapse>
+                </CCol>
+              </CRow>
+              <CRow class="pt-3">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="open_ticket">
+                  <CImage
+                    :src="OpenTickets"
+                    alt="Open Ticket Icon"
+                    width="54"
+                    height="54"
+                    class="icon_Open_ticket"
+                  />
+                </CCol>
+                <CCol>
+                  <CCardText class="fs-5"
+                    >Open Tickets
+                    <CCardText class="text-body-secondary">
+                      {{ countOpenWeek || 0 }}
+                    </CCardText>
+                  </CCardText>
+                </CCol>
+              </CRow>
+              <CRow class="pt-3 mb-5">
+                <CCol sm="2" class="rounded-3 ms-1 pt-2" id="closed_ticket">
+                  <CImage
+                    :src="ClosedTicket"
+                    alt="Closed Ticket Icon"
+                    width="54"
+                    height="54"
+                    class="icon_Close_ticket"
+                  />
+                </CCol>
+                <CCol>
+                  <CCardText class="fs-5"
+                    >Closed Tickets
+                    <CCardText class="text-body-secondary">
+                      {{ countCloseWeek || 0 }}
+                    </CCardText>
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCollapse>
           </CCardBody>
         </CCard>
       </CCol>
@@ -336,7 +355,7 @@
 
 <script>
 import { ref } from 'vue'
-import { CCol, CRow } from '@coreui/vue-pro'
+import { CCardText, CCol, CRow } from '@coreui/vue-pro'
 import count_ticket from '@/components/CountTicket.vue'
 import { CChart } from '@coreui/vue-chartjs'
 import { CIcon } from '@coreui/icons-vue'
@@ -345,9 +364,12 @@ import * as icon from '@coreui/icons'
 import Open_in_full from '@/assets/images/open_in_full.png'
 import Close_fullscreen from '@/assets/images/close_fullscreen.png'
 import moment from 'moment'
+import newticketicon from '@/assets/images/newticketicon.png'
+import OpenTickets from '@/assets/images/OpenTickets.png'
+import ClosedTicket from '@/assets/images/ClosedTicket.png'
 
 export default {
-  components: { CRow, CCol, CChart, count_ticket, CIcon },
+  components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
     const columns = [
       {
@@ -433,6 +455,9 @@ export default {
       Open_in_full,
       Close_fullscreen,
       icon,
+      newticketicon,
+      OpenTickets,
+      ClosedTicket,
     }
   },
   data() {
@@ -620,6 +645,7 @@ output {
 
 .chart-container {
   position: relative;
+  border-radius: 18px;
 }
 
 .custom-text {
@@ -657,14 +683,14 @@ output {
   font-size: 50px;
 }
 
-#new_ticket {
-  background-color: #e8e7fb;
+/* #new_ticket {
+
   width: 15%;
   height: 50%;
 }
 
 #open_ticket {
-  background-color: #e5f7fb;
+
   width: 15%;
   height: 50%;
 }
@@ -673,14 +699,9 @@ output {
   background-color: #fdf0e4;
   width: 15%;
   height: 50%;
-}
+} */
 
-.icon_new_ticket {
-  margin-bottom: 10px;
-  color: #7167e8;
-}
-
-.icon_open_ticket {
+/* .icon_open_ticket {
   margin-bottom: 10px;
   color: #69cfe6;
 }
@@ -688,10 +709,17 @@ output {
 .response_time {
   margin-bottom: 10px;
   color: #f2a356;
-}
+} */
 
 span {
   color: black;
   font-size: 16px;
+}
+
+#support_tracker {
+  font-size: 80px;
+}
+.fs-5 {
+  color: grey;
 }
 </style>
