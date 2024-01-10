@@ -50,9 +50,9 @@
                   alt="Bookmark Icon" /> -->
                   Show
                 </CButton>
-                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)">
+                <!-- <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)">
                   <img :src="IconcancelTicket" class="style-button" alt="Bookmark Icon" />
-                </CButton>
+                </CButton> -->
               </td>
             </template>
           </CSmartTable>
