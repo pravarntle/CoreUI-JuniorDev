@@ -148,7 +148,7 @@ export default {
             return 'danger bg-opacity-50 text-danger'
           case 'Medium':
             return 'warning bg-opacity-50 text-warning'
-          case 'Closed':
+          case 'Low':
             return 'success bg-opacity-50 text-success'
           default:
             return 'secondary'
