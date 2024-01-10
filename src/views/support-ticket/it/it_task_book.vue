@@ -15,6 +15,7 @@
           striped: true,
           hover: true,
         }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          class="table-hover table-bordered table-alternate-background table-responsive"
           itemsPerPageSelect :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }"
           pagination="true">
 
@@ -207,7 +208,7 @@ export default {
       {
         key: 'status',
         label: 'STATUS',
-        _style: { width: '1%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'type',

@@ -9,11 +9,13 @@
           </div>
         </div>
       </CCardHeader>
+    <CCardBody>
       <div class="table-responsive table-borderless">
         <CSmartTable clickableRows :tableProps="{
           striped: true,
           hover: true,
         }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          class="table-hover table-bordered table-alternate-background table-responsive"
           itemsPerPageSelect :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }"
           pagination="true">
 
@@ -47,7 +49,7 @@
           </template>
         </CSmartTable>
       </div>
-
+    </CCardBody>
     </CCard>
   </div>
 </template>
@@ -193,11 +195,13 @@ export default {
         case 'Open':
           return 'primary';
         case 'Closed':
-          return 'danger';
+          return 'danger';  
         default:
           return 'secondary'; // Return a default color if none of the cases match.
       }
     };
+
+
 
 
     const toggleDetails = async (item) => {

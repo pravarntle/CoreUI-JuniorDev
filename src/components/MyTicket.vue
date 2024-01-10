@@ -1,4 +1,5 @@
 <template>
+  <div>
   <CCard class="p-2 rounded-4 mx-auto">
     <CCardHeader class="bg-white border-white mb-5">
       <div class="d-inline ms-2">
@@ -8,8 +9,10 @@
         </div>
       </div>
     </CCardHeader>
+    <CCardBody>
     <div class="table-responsive table-borderless">
       <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter
+        class="table-hover table-bordered table-alternate-background table-responsive"
         :items-per-page="5" items-per-page-select pagination columnSorter
         :sorterValue="{ column: 'START DATE(Y/M/D)', state: 'desc', dateFormat: 'YYYY-MM-DD'}"  
         :table-props="{
@@ -73,6 +76,7 @@
         
       </CSmartTable>
     </div>
+  </CCardBody>
   </CCard>
   <CToaster placement="top-end">
     <CToast visible color="info" v-for="(toast) in toastProp">
@@ -84,6 +88,7 @@
       </CToastBody>
     </CToast>
   </CToaster>
+</div>
 </template>
 <style scoped>
 .table-responsive {

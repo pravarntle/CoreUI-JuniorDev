@@ -6,7 +6,7 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
+            <div class="text-start div-arrow-back" >
               <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
@@ -41,16 +41,16 @@
           <CCol xs="12">
 
               <CCardBody style="margin-left: 2%">
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Title : </b>
+                <CCol class="text-start">
+                  <b class="detail-title"> Title : </b>
                   <CCradText>{{ title }} </CCradText>
                 </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Type : </b>
+                <CCol class="text-start">
+                  <b class="detail-title"> Type : </b>
                   <CCradText> {{ type }} </CCradText>
                 </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Description : </b>
+                <CCol class="text-start">
+                  <b class="detail-title"> Description : </b>
                   <CCradText>
                     {{description}} 
                   </CCradText>
@@ -58,17 +58,16 @@
               </CCardBody>
               <hr/>
               <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <output style="margin-left: 5%"> 1 </output>
+                <CCol class="text-start" >
+                  <output class="output-number"> 1 </output>
                   <CCradText style="margin-left: 2%"> Attachment </CCradText>
                 </CCol>
               </Crow>
               <Crow class="text-start">
-                  <CCol style="margin-left: 5%">
+                  <CCol class="output-number">
                     <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  
                     <a v-if="picture">
-                      <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{ `${picture.filename}` }}</a>
+                      <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" class="ticket-file-images" download>{{ `${picture.filename}` }}</a>
                     </a>
 
                     <br />
@@ -86,16 +85,8 @@
     <hr />
     <div class="text-end">
     <CButton
-      class="btn-sec"
+      class="btn-sec btn-accept"
       color="success"
-
-      style="
-        font-weight: bold;
-        font-size: x-large;
-        width: 150px;
-        color: white;
-        border-radius: 20px;
-      "
       @click="acceptButton">Accept</CButton
     >
         </div>
@@ -364,6 +355,37 @@ export default {
 .Dis_Between {
   display: flex;
   justify-content: space-between;
+}
+
+.div-arrow-back{
+  padding: 1px;  
+  margin-top: 1%
+}
+
+.detail-col {
+  padding: -3px
+}
+
+.detail-title {
+  font-size: 20px;
+}
+
+.output-number {
+  margin-left: 5%;
+}
+
+.ticket-file-images {
+  max-width: auto; 
+  height: 300px; 
+  margin-left: 1.5%
+}
+
+.btn-accept {
+  font-weight: bold;
+  font-size: x-large;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
 }
 
 </style>
