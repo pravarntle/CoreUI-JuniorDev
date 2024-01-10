@@ -6,8 +6,11 @@
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+            <div class="text-start p-1 mt-1" >
+              <CAvatar
+                class="Arrow_Left text-left"
+                :src="Arrow_Left"
+              />
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
@@ -44,66 +47,63 @@
 
         <CRow>
           <CCol xs="12">
-
-              <CCardBody style="margin-left: 2%">
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Title : </b>
-                  <CCradText>{{ title }} </CCradText>
-                </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Type : </b>
-                  <CCradText> {{ type }} </CCradText>
-                </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Description : </b>
-                  <CCradText>
-                    {{description}} 
-                  </CCradText>
-                </CCol>
-              </CCardBody>
-              <hr/>
-              <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <output style="margin-left: 5%"> 1 </output>
-                  <CCradText style="margin-left: 2%"> Attachment </CCradText>
-                </CCol>
-              </Crow>
-              <Crow class="text-start">
-                  <CCol style="margin-left: 5%">
-                    <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  
-                    <a v-if="picture">
-                      <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{ `${picture.filename}` }}</a>
-                    </a>
-
-                    <br />
-                  </CCol>
-                  <br />
-                </Crow>
+            <CCardBody class="ms-3">
+              <CCol class="text-start">
+                <b class="fs-5"> Title : </b>
+                <CCradText>{{ title }} </CCradText>
+              </CCol>
+              <CCol class="text-start">
+                <b class="fs-5"> Type : </b>
+                <CCradText> {{ type }} </CCradText>
+              </CCol>
+              <CCol class="text-start pt-4">
+                <b class="fs-5"> Description : </b>
+                <CCradText>
+                  {{ description }}
+                </CCradText>
+              </CCol>
+            </CCardBody>
           </CCol>
-                <br />
-        </Crow>
-
-
-
+          <br />
+        </CRow>
       </div>
     </CCardbody>
-    <hr />
-    <div class="text-end">
-    <CButton
-      class="btn-sec"
-      color="success"
+    <CCardFooter class="bg-white">
+      <Crow>
+        <CCol class="d-flex text-start">
+          <output class="ms-1"><h5>1</h5> </output>
+          <CCradText class="ms-3"><h5>Attachment</h5> </CCradText>
+        </CCol>
+      </Crow>
 
-      style="
-        font-weight: bold;
-        font-size: x-large;
-        width: 150px;
-        color: white;
-        border-radius: 20px;
-      "
-      @click="acceptButton">Accept</CButton
-    >
-        </div>
+      <Crow class="text-start">
+        <CCol class="ps-3 ms-5">
+          <CCardImage class="File_test" :src="File_test"/>
+
+          <a v-if="picture">
+            <a
+              :href="`data:${picture.filetype};base64,${picture.image}`"
+              alt="Comment Image"
+              class="mw-auto"
+              download
+              >{{ `${picture.filename}` }}</a
+            >
+          </a>
+
+          <br />
+        </CCol>
+        <br />
+      </Crow>
+      <hr />
+      <div class="text-end ">
+        <CButton
+          class="btn-sec fw-bolder fs-4 text-white rounded-5 custom-btn"
+          color="success"
+          @click="acceptButton"
+          >Accept</CButton
+        >
+      </div>
+    </CCardFooter>
   </CCard>
 </template>
 
@@ -385,6 +385,15 @@ export default {
 .Dis_Between {
   display: flex;
   justify-content: space-between;
+}
+
+.vh-55 {
+  height: 55vh;
+}
+
+.custom-btn {
+  width: 150px;
+  /* และคุณสามารถเพิ่มสไตล์อื่น ๆ ตามต้องการ */
 }
 
 </style>
