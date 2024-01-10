@@ -46,7 +46,7 @@
               <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
-              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShow = false }" :backdrop="false" :keyboard="false" >
+              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShows = false }" :backdrop="false" :keyboard="false" >
                 <CModalHeader>
                   <CModalTitle>Detail</CModalTitle> 
                 </CModalHeader>
@@ -66,15 +66,9 @@
                     <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ได้ปิด Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
                     <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ไม่สามารถแก้ไข Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
                   </div>
-                  <div></div>
-                  <div></div>
                 </CModalBody>
-
-                
-
-                <CModalFooter>
-                  
-                  <CButton color="info" @click="contactIt(item, index)">ติดต่อ</CButton>
+                <CModalFooter>                 
+                  <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex">contact</CButton>
                 </CModalFooter>
               </CModal>
               <CButton color="danger"  square size="sm" @click="buttonCancel(item, index)" >
@@ -83,17 +77,7 @@
           </td>
           
         </template>
-        <template #details="{ item, index }">
-          <CCollapse :visible="Boolean(item.MORE)">
-            <CCardBody>
-              <h4>
-                {{ item.tkt_title }}
-              </h4>
-              <CButton size="sm" color="info" class="" @click="contactIt(item, index)"> ติดต่อ It Suport </CButton>
-              <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
-            </CCardBody>
-          </CCollapse>
-        </template>
+        
         
       </CSmartTable>
     </div>
@@ -175,6 +159,8 @@ export default {
       toastProp: [],
       visibleShow:false,
       historyArray:[],
+      contactItItem:[],
+      
       
 
 
@@ -242,8 +228,10 @@ export default {
   },
 
   methods: {
-    async contactIt(item) {
+    async contactIt(item,index) {
+      
       const itemId = item._id.toString();
+      
 
       this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
 
@@ -337,6 +325,9 @@ export default {
     async getHistoryStatus(item , index){
       try {
         this.visibleShow =true; 
+        console.log('asdasd',item)
+        this.contactItItem = item;
+        console.log('assssssssss',this.contactItItem)
         const itemTicket = item._id.toString();
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_modifications`,{
           where:{
@@ -346,13 +337,15 @@ export default {
         });
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         this.historyArray = response.data;
-        console.log(this.historyArray)
-        console.log(response)
+        
         
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    }
+    },
+    closeModal() {
+      this.visibleShow = false;
+    },
 
   },
   mounted() {
