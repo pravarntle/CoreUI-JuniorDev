@@ -40,16 +40,16 @@
               <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
-              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShows = false }" :backdrop="false" :keyboard="false" >
+              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShowss = false }" :backdrop="false" :keyboard="false" >
                 <CModalHeader>
                   <CModalTitle>Detail</CModalTitle> 
                 </CModalHeader>
                 <CModalBody>
                    <CRow>
-                    <CImage v-if="item.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
-                    <CImage v-if="item.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
-                    <CImage v-if="item.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
-                    <CImage v-if="item.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />
+                      <CImage v-if="contactItItem.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                      <CImage v-if="contactItItem.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                      <CImage v-if="contactItItem.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
+                      <CImage v-if="contactItItem.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />                 
                    </CRow>
                   <hr>
                   <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex">
@@ -385,7 +385,7 @@ export default {
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
     this.getTicket();
-
+    
 
   },
   components: {
