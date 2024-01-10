@@ -184,11 +184,11 @@
                   >Total Ticket</CCardText
                 >
               </CCardText>
-              <CRow class="d-flex align-items-center mb-3">
+              <CRow class="d-flex align-items-center mb-4">
                 <CCol
-                  class="rounded-3 ms-1 pt-2"
+                  class="rounded-3 ms-1 pt-2 with-flex"
                   id="new_ticket"
-                  style="display: flex; align-items: center"
+
                 >
                   <CImage
                     :src="newticketicon"
@@ -207,8 +207,8 @@
                 </CCol>
               </CRow>
 
-              <CRow class="d-flex align-items-center mb-3">
-                <CCol  class="rounded-3 ms-1 pt-2" id="open_ticket"   style="display: flex; align-items: center">
+              <CRow class="d-flex align-items-center mb-4">
+                <CCol  class="rounded-3 ms-1 pt-2  with-flex" id="open_ticket">
                   <CImage
                     :src="OpenTickets"
                     alt="Open Ticket Icon"
@@ -227,8 +227,8 @@
                 </CCol>
 
               </CRow>
-              <CRow class="d-flex align-items-center mb-3">
-                <CCol class="rounded-3 ms-1 pt-2" id="closed_ticket"  style="display: flex; align-items: center">
+              <CRow class="d-flex align-items-center mb-4">
+                <CCol class="rounded-3 ms-1 pt-2  with-flex" id="closed_ticket" >
                   <CImage
                     :src="ClosedTicket"
                     alt="Closed Ticket Icon"
@@ -731,4 +731,9 @@ span {
 .with-margin-left {
   margin-left: 10px;
 }
+
+.with-flex {
+        display: flex;
+        align-items: center;
+      }
 </style>
