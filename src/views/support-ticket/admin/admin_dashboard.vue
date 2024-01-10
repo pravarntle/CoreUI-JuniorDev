@@ -37,21 +37,25 @@
                           <li id="admin">
                             <span>Admin</span>
                           </li>
+                          <li id="manager">
+                            <span>Manager</span>
+                          </li>
                         </ul>
                       </CCol>
                       <CCol>
                         <CChart
                           type="pie"
                           :data="{
-                            labels: ['Employee', 'IT Support', 'Admin'],
+                            labels: ['Employee', 'IT Support', 'Admin', 'Manager'],
                             datasets: [
                               {
                                 backgroundColor: [
                                   '#52EAE1',
                                   '#281AC8',
                                   '#F9A825',
+                                  '#25F993'
                                 ],
-                                data: [60, 30, 10],
+                                data: [55, 30, 10,5],
                               },
                             ],
                           }"
@@ -68,6 +72,7 @@
                         />
                       </CCol>
 
+                      <CCol class="vl"></CCol>
                       <!-- Chart User status -->
                       <CCol>
                         <CCardText class="mt-4 fs-3"
@@ -76,13 +81,10 @@
                         <label>&nbsp;| now update</label>
                         <ul>
                           <li id="employee">
-                            <span>OPEN</span>
+                            <span>Active</span>
                           </li>
                           <li id="it_support">
-                            <span>OFF</span>
-                          </li>
-                          <li id="admin">
-                            <span>EDIT</span>
+                            <span>Inactive</span>
                           </li>
                         </ul>
                       </CCol>
@@ -90,15 +92,14 @@
                         <CChart
                           type="pie"
                           :data="{
-                            labels: ['OPEN', 'OFF', 'EDIT'],
+                            labels: ['Active', 'Inactive'],
                             datasets: [
                               {
                                 backgroundColor: [
                                   '#A2F860',
                                   '#EE5731',
-                                  '#F9A825',
                                 ],
-                                data: [60, 30, 10],
+                                data: [90, 10],
                               },
                             ],
                           }"
@@ -141,7 +142,7 @@
     </CRow>
 
     <!-- inbox -->
-    <CCard class="d-block mt-2">
+    <!-- <CCard class="d-block mt-2">
       <h1
         class="d-block ms-2"
         style="
@@ -157,10 +158,16 @@
       <div class="table-responsive table-borderless">
         <UserList/>
       </div>
-    </CCard>
+    </CCard> -->
   </div>
 </template>
-
+<style>
+.vl {
+  margin-left: 5%;
+  border-left: 3px solid rgba(194, 197, 204, .5);
+  height: auto;
+}
+</style>
 
 <script>
 import { ref } from 'vue'

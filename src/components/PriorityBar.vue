@@ -16,17 +16,17 @@ export default {
           {
             label: 'High',
             backgroundColor: '#165BAA',
-            data: [40, 20, 12, 39, 10],
+            data: [40, 20, 12, 39, 10, 40, 20, 12, 39, 10,40,20],
           },
           {
             label: 'Medium',
             backgroundColor: '#A155B9',
-            data: [15, 25, 18, 30, 15],
+            data: [15, 25, 18, 30, 15, 15, 25, 18, 30, 15,15,25],
           },
           {
             label: 'Low',
             backgroundColor: '#F765A3',
-            data: [15, 25, 18, 30, 17],
+            data: [15, 25, 18, 30, 17, 15, 25, 18, 30, 17,15,25],
           },
           // Add more datasets for additional priorities
         ],
