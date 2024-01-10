@@ -40,7 +40,7 @@
               <CButton size="sm" color="primary" variant="outline" class="ml-3 style-action" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
-              <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShowss = false }" :backdrop="false" :keyboard="false" >
+              <CModal size="lg" alignment="center" :visible="visibleShow" :backdrop="false" :keyboard="false" >
                 <CModalHeader>
                   <CModalTitle>Detail</CModalTitle> 
                 </CModalHeader>
@@ -53,10 +53,10 @@
                    </CRow>
                   <hr>
                   <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex">
-                    <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> สร้าง Ticket เมื่อวันที่  {{ historyItem.mod_date }} </p>
-                    <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center"><CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>  พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) รับเรื่อง Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
-                    <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ได้ปิด Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
-                    <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ไม่สามารถแก้ไข Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
+                    <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> Ticket created on {{ historyItem.mod_date }} </p>
+                    <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center"><CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>  IT Support ({{ historyItem.mod_act.act_first_name_eng}}) accepted a ticket on {{ historyItem.mod_date }}</p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}</p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unbale to edit the ticket on {{ historyItem.mod_date }}</p>
                   </div>
                 </CModalBody>
                 <CModalFooter>                 
@@ -358,7 +358,8 @@ export default {
     },
     async getHistoryStatus(item , index){
       try {
-        this.visibleShow =true; 
+        
+        this.visibleShow = true; 
         console.log('asdasd',item)
         this.contactItItem = item;
         console.log('assssssssss',this.contactItItem)
