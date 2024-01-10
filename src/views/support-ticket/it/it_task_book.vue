@@ -1,40 +1,26 @@
 <template>
   <div>
     <CCard class="p-2 rounded-4">
-      <CCardBody>
-        <CRow style="margin-bottom: 22px; " >
-          <CCol xs="auto">
-            <div Class="clearfix">
-              <CImage Class="images_Ticket" :src="LGlogo" width="55" height="40" />
-            </div>
-          </CCol>
-          <CCol xs="auto">
-            <div Class="text-end p-2">
-              <CCardTitle>  <h3><b>
-                My Bookmark tasks
-              </b></h3></CCardTitle>
-
-            </div>
-          </CCol>
-          <div Class="line">
-            <svg xmlns="http://www.w3.org/2000/svg" width="345" height="3" viewBox="0 0 345 3" fill="none" >
-              <rect y="0.259277" width="219.682" height="2.2588" fill="#EA5252" />
-              <path d="M69.4795 0.259277H345V2.51807H69.4795V0.259277Z" fill="#030303" />
-            </svg>
+      <CCardHeader class="bg-white border-white mb-5 ">
+        <div class="d-inline ms-2">
+          <div id="underline_header">
+            <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
+            <h2 class="d-inline align-middle"><b>My Bookmark Task</b></h2>
           </div>
-        </CRow>
+        </div>
+      </CCardHeader>
+      <CCardBody>
+        <div class="table-responsive table-borderless">
+        <CSmartTable clickableRows :tableProps="{
+          striped: true,
+          hover: true,
+        }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          itemsPerPageSelect :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }"
+          pagination="true">
 
-        <div >
-          <CSmartTable clickableRows :tableProps="{
-            striped: true,
-            hover: true,
-          }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
-            class="table-hover table-bordered table-alternate-background table-responsive"  itemsPerPageSelect
-            :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
-
-            <template #ticket_id="{ item }">
-              <td class="style-ticket-id">{{ item.ticket_id }}</td>
-            </template>
+          <template #ticket_id="{ item }">
+              <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.ticket_id }}</td>
+          </template>
             <template #owner="{ item }">
               <td>{{ item.owner }}</td>
             </template>
@@ -104,8 +90,14 @@
 }
 
 .table-responsive {
-  overflow-x: hidden;
   max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
 }
 
 /* .table-hover .table-bordered .table-alternate-background td:nth-child(1) {
@@ -141,45 +133,18 @@
 }
 
 
-
-.clearfix {
-  flex-shrink: 0;
-}
-
-.text-end {
-  padding-left: 0px;
-  flex-shrink: 0;
-  color: #000;
-  padding-left: 0%;
-  margin-left: 0px;
-}
-
-.line {
-  margin-top: auto;
+#custom_icon_header {
+  width: auto;
+  height: 30px;
 }
 
 #underline_header {
-  width: 370px;
-  border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, red, blue);
-  border-image-slice: 1;
-  padding: 3px;
-}
-
-#custom_icon_header {
-  width: 50px;
-  height: 44px;
-}
-
-.underline_header {
   display: inline-block;
   border-bottom: 5px solid transparent;
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
   padding: 3px;
 }
-
-
 </style>
 <script>
 import { ref } from 'vue'
@@ -190,7 +155,7 @@ import Iconnotbookmarked from '@/assets/images/Icon_Not_Bookmarked.png'
 import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
 import IconshowTicket from '@/assets/images/Icon_ShowTicket.png'
 import IconcancelTicket from '@/assets/images/Icon_CancelTicket.png'
-
+import Icon_bookmark from '@/assets/images/Icon_bookmark.png'
 export default {
   name: 'my_ticket',
   data() {
@@ -216,12 +181,12 @@ export default {
       Iconhavebookmarked: Iconhavebookmarked,
       IconshowTicket: IconshowTicket,
       IconcancelTicket: IconcancelTicket,
-      
+      Icon_bookmark,
     }
   },
   setup() {
     const columns = [
-    {
+      {
         key: 'number',
         label: '#',
         _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
@@ -290,7 +255,7 @@ export default {
           return 'primary'
         default: 'secendary'
       }
-    } 
+    }
 
 
 

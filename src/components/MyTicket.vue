@@ -1,6 +1,6 @@
 <template>
   <CCard class="p-2 rounded-4 mx-auto">
-    <CCardHeader class="bg-white border-white">
+    <CCardHeader class="bg-white border-white mb-5">
       <div class="d-inline ms-2">
         <div id="ticket-header">
           <CImage id="Icon_my_ticket" :src="Ticketlogo" />
@@ -16,33 +16,27 @@
           striped: true,
           hover: true,
         }">
-        <template #STATUS="{ item }">
-          <td>
-
-            <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
-
-          </td>
-        </template>
-        <template #TYPE="{ item }">
-          <td>
-
-            <CBadge :color="getBadge(item.TYPE)">{{ item.TYPE }}</CBadge>
-
-          </td>
-        </template>
-
+        <template #TicketID="{ item }">
+            <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.TicketID }}</td>
+          </template>
+          <template #STATUS="{ item }">
+            <td>
+              <CBadge :color="getBadge(item.STATUS)">{{ item.STATUS }}</CBadge>
+            </td>
+          </template>
+          <template #type="{ item }">
+            <td>{{ item.type }}</td>
+          </template>
         <template #BOOKMARK="{ item, index }">
-          <td class="text-center">
-            <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)">
-              {{ Boolean(item.BOOKMARK) ? '' : '' }}
-              <CIcon v-if="Boolean(item.BOOKMARK)" :icon="icon.cilBook" size="xxl" />
-              <CIcon v-if="!Boolean(item.BOOKMARK)" :icon="icon.cilBookmark" size="xxl"/>
-
-            </CButton>
-          </td>
-        </template>
+            <td class="text-center">
+              <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)" class="style-bookmark">
+                <img :src="getBookmarkIcon(item.BOOKMARK)" class="style-button" alt="Bookmark Icon" />
+              </CButton>
+            </td>
+          </template>
         <template #MORE="{ item, index }">
-          <td class="text-center ps-0">
+          <td class="text-center ps-0 ">
+            <div class="style-action">
               <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
@@ -57,10 +51,8 @@
                     <CImage v-if="item.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
                     <CImage v-if="item.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />
                    </CRow>
-
                   <hr>
                   <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex">
-                    
                     <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> สร้าง Ticket เมื่อวันที่  {{ historyItem.mod_date }} </p>
                     <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center"><CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>  พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) รับเรื่อง Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
                     <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> พนักงานไอที({{ historyItem.mod_act.act_first_name_eng}}) ได้ปิด Ticket เมื่อวันที่่ {{ historyItem.mod_date }}</p>
@@ -73,9 +65,9 @@
               </CModal>
               <CButton color="danger"  square size="sm" @click="buttonCancel(item, index)" >
                 <CIcon :icon="icon.cilTrash" size="xl"/>
-              </CButton>
+              </CButton></div>
           </td>
-          
+        
         </template>
         
         
@@ -95,11 +87,15 @@
 </template>
 <style scoped>
 .table-responsive {
-  overflow-x: auto;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
-
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
 
 #ticket-header {
   display: inline-block;
@@ -121,6 +117,25 @@
   padding-right: 5px;
 }
 
+.style-ticket-id {
+  color: #5E5ADB;
+}
+
+.style-bookmark {
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+
+.style-action {
+  margin-right: 40px;
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+
 
 </style>
 <script>
@@ -130,7 +145,8 @@ import ModalClosedBug from '@/assets/images/modal_closedBug.png'
 import ModalOpen from '@/assets/images/modal_open.png'
 import ModalPending from '@/assets/images/modal_pending.png'
 import ModalClosed from '@/assets/images/modal_closed.png'
-
+import Iconnotbookmarked from '@/assets/images/Icon_Not_Bookmarked.png'
+import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
@@ -160,8 +176,8 @@ export default {
       visibleShow:false,
       historyArray:[],
       contactItItem:[],
-      
-      
+      Iconnotbookmarked: Iconnotbookmarked,
+      Iconhavebookmarked: Iconhavebookmarked,
 
 
     };
@@ -170,14 +186,32 @@ export default {
   setup() {
     const columns = [
 
-      { key: '#', _style: { width: '5%' } },
-      { key: 'TicketID', _style: { width: '10%' } },
-      { key: 'TITLE', _style: { width: '10%' } },
-      { key: 'START DATE(Y/M/D)', _style: { width: '11%' } },
-      { key: 'STATUS', _style: { width: '5%' } },
-      { key: 'TYPE', _style: { width: '4%' } },
-      { key: 'BOOKMARK', _style: { width: '5%' }, filter: false, },
-      { label:"ACTION", key: 'MORE', _style: { width: '5%' }, filter: false, },
+      { key: '#', label: '#',
+        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false, },
+      {  key: 'TicketID', label: 'TICKET ID',
+        _style: { width: '12%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+      { key: 'TITLE', label: 'TITLE',
+        _style: { width: '12%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },},
+      { key: 'STATUS', label: 'STATUS',
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' }, },
+      {  key: 'TYPE',
+        label: 'TYPE',
+        _style: { width: '4%', fontWeight: 'bold', color: 'gray', fontSize: '13px' }, },
+        { key: 'START DATE(Y/M/D)',
+        label: 'START DATE ',
+        _style: { width: '11%', fontWeight: 'bold', color: 'gray', fontSize: '13px' }, },
+      {  key: 'BOOKMARK',
+        label: 'BOOKMARK',
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false, },
+      { key: 'MORE',
+        label: 'ACTION',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '47px' },
+        filter: false,
+        sorter: false, },
 
 
     ];
@@ -343,8 +377,8 @@ export default {
         console.error('Error fetching data:', error);
       }
     },
-    closeModal() {
-      this.visibleShow = false;
+    getBookmarkIcon(booked) {
+      return booked ? this.Iconhavebookmarked : this.Iconnotbookmarked;
     },
 
   },
