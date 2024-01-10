@@ -3,7 +3,7 @@
     <CCardHeader class="bg-white border-white mb-5">
       <div class="d-inline ms-2">
         <div id="ticket-header">
-          <CImage id="Icon_my_ticket" :src="Ticketlogo" />
+          <CImage class="me-2 align-middle" id="Icon_my_ticket" :src="Ticketlogo" />
         <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <template #MORE="{ item, index }">
           <td class="text-center ps-0 ">
             <div class="style-action">
-              <CButton size="sm" color="primary" variant="outline" class="ml-3 style-action" @click="getHistoryStatus(item, index)">
+              <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
               <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShowss = false }" :backdrop="false" :keyboard="false" >
@@ -111,10 +111,7 @@
 
 #Icon_my_ticket{
   width: auto;
-  max-height: 25px;
-  padding-left: 5px;
-  padding-top: 3px;
-  padding-right: 5px;
+  height: 30px;
 }
 
 .style-ticket-id {

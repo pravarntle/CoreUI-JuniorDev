@@ -23,7 +23,7 @@
       <hr id="custom-underline" />
       <CNavItem href="/#/support-ticket/it/it_my_task" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" />
-        <font id="font-sidebar">My Task</font>
+        <font id="font-sidebar">My Tasks</font>
       </CNavItem>
       <hr id="custom-underline" />
       <CNavItem style="position: relative">
@@ -43,14 +43,14 @@
         <!-- Dropdown items -->
         <div v-show="dropdownOpen" style="background-color: white; width: 100%; z-index: 100" class="dropdown-content">
           <CNavItem href="/#/support-ticket/book_mark" style="padding-left: 52px" id="custom-nav-item">
-            <font id="font-sidebar">Bookmark tickets</font>
+            <font id="font-sidebar">Bookmark Tickets</font>
           </CNavItem>
 
           <hr id="custom-underline-dropdown-item" />
 
           <CNavItem href="/#/support-ticket/it/it_task_book"
             style="padding-left: 52px; margin-top: 0px; margin-bottom: 0px" id="custom-nav-item">
-            <font id="font-sidebar">Bookmark tasks</font>
+            <font id="font-sidebar">Bookmark Tasks</font>
           </CNavItem>
           <hr id="custom-underline-dropdown-item" />
         </div>

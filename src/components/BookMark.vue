@@ -158,7 +158,7 @@ export default {
       },
       {
         key: 'STATUS', label: 'STATUS',
-        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'TYPE',

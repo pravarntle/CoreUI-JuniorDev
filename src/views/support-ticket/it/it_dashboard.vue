@@ -656,6 +656,11 @@ output {
   padding: 3px;
 }
 
+#style-icon-support-tracker {
+  width:"54";
+  height:"54";
+}
+
 /* #new_ticket {
 
   width: 15%;
