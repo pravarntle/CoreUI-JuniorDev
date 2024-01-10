@@ -40,6 +40,9 @@
             <td class="text-center">
               <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
                 @click="contactIt(item, index)">Show</CButton>
+                <CButton size="sm" color="danger" class="ml-3"  @click="buttonCancel(item, index)" >
+                <CIcon :icon="icon.cilTrash" class="style-button" size="xl"/>
+              </CButton>
             </td>
           </template>
         </CSmartTable>

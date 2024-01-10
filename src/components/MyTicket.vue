@@ -37,7 +37,7 @@
         <template #MORE="{ item, index }">
           <td class="text-center ps-0 ">
             <div class="style-action">
-              <CButton class="me-1 mb-1 mt-1" color="primary" variant="outline" square size="sm" @click="getHistoryStatus(item, index)">
+              <CButton size="sm" color="primary" variant="outline" class="ml-3 style-action" @click="getHistoryStatus(item, index)">
                 <span>Show</span>
               </CButton>
               <CModal size="lg" alignment="center" :visible="visibleShow" @close="() => { visibleShowss = false }" :backdrop="false" :keyboard="false" >
@@ -63,8 +63,8 @@
                   <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex">contact</CButton>
                 </CModalFooter>
               </CModal>
-              <CButton color="danger"  square size="sm" @click="buttonCancel(item, index)" >
-                <CIcon :icon="icon.cilTrash" size="xl"/>
+              <CButton size="sm" color="danger" class="ml-3"  @click="buttonCancel(item, index)" >
+                <CIcon :icon="icon.cilTrash" class="style-button" size="xl"/>
               </CButton></div>
           </td>
         
@@ -127,7 +127,7 @@
 }
 
 .style-action {
-  margin-right: 40px;
+  margin-right: 10px;
 }
 
 .style-button {
