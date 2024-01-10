@@ -23,7 +23,7 @@
 
         <CAvatar
           v-if="acountFile"
-          class="Icon_user_man avatar-round ps-5"
+          class="Icon_user_man avatar-round"
           :src="`data:${acountFile};base64,${acountImage}`"
           style="padding: -4px"
         />
