@@ -224,10 +224,15 @@
           striped: true,
           hover: true,
         }" :activePage="2" header :items="items" :columns="columns" columnFilter itemsPerPageSelect
-          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'asc' }"
+          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'priorities', state: 'asc' }"
           pagination>
           <template #ticket_id="{ item }">
               <td id="style-ticket-id" @click="acceptTicket(item, index)">{{ item.ticket_id }}</td>
+          </template>
+          <template #priorities="{ item }">
+            <td>
+              <CBadge :color="getBadge(item.priorities)">{{ item.priorities }}</CBadge>
+            </td>
           </template>
           <template #status="{ item }">
             <td>
@@ -290,7 +295,7 @@ export default {
       {
         key: 'title',
         label: 'TITLE',
-        _style: { width: '30%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '25%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'owner',
@@ -298,9 +303,14 @@ export default {
         _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
+        key: 'priorities',
+        label: 'PRIORITY',
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+      },
+      {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'start_date',
@@ -322,6 +332,12 @@ export default {
           return 'primary'
         case 'Closed':
           return 'danger'
+          case 'High':
+          return 'danger'
+        case 'Medium':
+          return 'warning'
+        case 'Low':
+          return 'Success'  
         default:
           return 'secondary' // Return a default color if none of the cases match.
       }
@@ -654,6 +670,11 @@ output {
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
   padding: 3px;
+}
+
+#style-icon-support-tracker {
+  width:"54";
+  height:"54";
 }
 
 /* #new_ticket {
