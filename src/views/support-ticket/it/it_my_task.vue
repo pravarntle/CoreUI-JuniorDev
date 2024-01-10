@@ -19,8 +19,8 @@
             :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
 
             <template #ticket_id="{ item }">
-              <td class="style-ticket-id">{{ item.ticket_id }}</td>
-            </template>
+              <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.ticket_id }}</td>
+          </template>
 
             <template #owner="{ item }">
               <td>{{ item.owner }}</td>

@@ -17,7 +17,7 @@
           hover: true,
         }">
         <template #TicketID="{ item }">
-            <td class="style-ticket-id">{{ item.TicketID }}</td>
+            <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.TicketID }}</td>
           </template>
           <template #STATUS="{ item }">
             <td>
