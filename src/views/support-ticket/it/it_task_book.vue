@@ -90,8 +90,14 @@
 }
 
 .table-responsive {
-  overflow-x: hidden;
   max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
 }
 
 /* .table-hover .table-bordered .table-alternate-background td:nth-child(1) {

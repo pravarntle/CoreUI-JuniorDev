@@ -107,8 +107,14 @@
 }
 
 .table-responsive {
-  overflow-x: auto;
   max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
 }
 </style>
   
