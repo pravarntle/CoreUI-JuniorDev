@@ -26,8 +26,14 @@
 </template>
 <style>
 .table-responsive {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
     overflow-x: auto;
-    max-width: 100%;
+  }
 }
 </style>
 <script>
@@ -60,14 +66,14 @@ export default {
     setup() {
         const columns = [
 
-            { key: '#', _style: { width: '5%' } ,filter: false,sorter: false },
-            { key: 'USER ID', _style: { width: '10%' } },
-            { key: 'FIRST NAME', _style: { width: '10%' } },
-            { key: 'LAST NAME', _style: { width: '11%' } },
-            { key: 'EMAIL ADDRESS', _style: { width: '5%' } },
-            { key: 'PHONE NUMBER', _style: { width: '4%' } },
-            { key: 'ROLE', _style: { width: '5%' } },
-            { key: 'MORE', _style: { width: '5%' } , filter: false, sorter: false  },
+            { key: '#', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } ,filter: false,sorter: false },
+            { key: 'USER ID', _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'FIRST NAME', _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'LAST NAME', _style: { width: '11%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'EMAIL ADDRESS', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'PHONE NUMBER', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'ROLE', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
+            { key: 'MORE', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } , filter: false, sorter: false  },
 
 
         ];

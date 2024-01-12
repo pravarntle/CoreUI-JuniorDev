@@ -5,18 +5,12 @@
       :validated="validatedCustom01" 
       @submit="handleSubmitCustom01"
     >
-    <div class="px-5 bg-white rounded" style="width: 100%; height: 845px">
+    <div class="Card_Size px-5 bg-white rounded">
       <!-- Head Priorities List -->
-      <div style="width: 60%">
+      <div id="Size_Form">
         <br>
-        <CRow class="e-3">
-          <h1 style="width: auto; 
-                  padding: 10px;
-                  border-bottom: 2px solid transparent;
-                  border-image: linear-gradient(to right, red, blue); 
-                  border-image-slice: 1;
-                  color: black;">
-            Create New Priority</h1>
+        <CRow id="LineHeadCard">
+          <h1>Create New Priority</h1>
         </CRow>
         <br>
         <div class="purple">
@@ -25,7 +19,7 @@
         <br>
         <div>
           <CFormLabel for="priorityNameTha">
-            <h4>Priority Name(Thai)<span style="color: red;">*</span></h4>
+            <h4>Priority Name(Thai)<span id="Icon_force" >*</span></h4>
           </CFormLabel>
           <CInputGroup>
             <CFormInput v-model="form.pri_name_th" placeholder="สำคัญมากที่สุด" aria-label="priorityNameTha" id="Form_border" />
@@ -34,7 +28,7 @@
         <br>
         <div>
           <CFormLabel for="priorityNameEng">
-            <h4>Priority Name(English)<span style="color: red;">*</span></h4>
+            <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
           </CFormLabel>
           <CInputGroup>
             <CFormInput v-model="form.pri_name_eng" placeholder="Very High" aria-label="priorityNameEng" id="Form_border" />
@@ -45,36 +39,25 @@
           <CRow class="justify-content-between">
             <CCol xs="4">
               <CFormLabel for="priorityLevel">
-                <h4>Level of Priority<span style="color: red;">*</span></h4>
+                <h4>Level of Priority<span id="Icon_force">*</span></h4>
               </CFormLabel>
             </CCol>
             <CCol xs="4">
               <CFormLabel for="priorityLevel">
-                <h4>Color<span style="color: red;">*</span></h4>
+                <h4>Color<span id="Icon_force">*</span></h4>
               </CFormLabel>
             </CCol>
           </CRow>
           <CRow class="justify-content-between">
             <CCol xs="4">
-              <!---------------------------------------------------------------------------------------->
-              <!-- <CFormSelect id="Form_border" aria-label="Default select example" :options="[
-                '1',
-                { label: 'One', value: '1' },
-                { label: 'Two', value: '2' },
-                { label: 'Three', value: '3', disabled: true }
-              ]">
-              </CFormSelect> -->
               <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level"></CFormInput>
-              <!---------------------------------------------------------------------------------------->
             </CCol>
             <CCol xs="4">
-              <div class="border rounded align-items-center" id="Form_border" style="width: 100%; ">
+              <div class="border rounded align-items-center" id="Form_border" >
                 <div class="color-picker end-0" style="align-items:center ">
-                  <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2"
-                    style="margin-left: 10%; width: 150px;  border-style: none; padding: 0%; border-color:#FFFFFF ; border: none;" />
+                  <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2" />
                   <label for="colorPicker">
-                    <CIcon icon="cilColorFill"
-                      style="margin-left: 90%; margin-bottom: 50%; max-width: 24px; max-height: 24px;" />
+                    <CIcon icon="cilColorFill" id="iconPicker" />
                   </label>
                 </div>
               </div>
@@ -84,9 +67,9 @@
         <br>
         <CForm>
           <CFormLabel for="desc">
-            <h4>Description<span style="color: red;">*</span></h4>
+            <h4>Description<span id="Icon_force">*</span></h4>
           </CFormLabel>
-          <CFormTextarea class="mb-3" v-model="form.pri_description" placeholder="รอดำเนินการภายใน 8 ชั่วโมง" style="border-width: 2px; height: 100px;"></CFormTextarea>
+          <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description" placeholder="รอดำเนินการภายใน 8 ชั่วโมง"></CFormTextarea>
         </CForm>
         <br>
         <CRow class="d-flex justify-content-center">
@@ -156,7 +139,7 @@ export default {
 }
 </script> 
 
-<style>
+<style scoped>
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {  
   opacity: 1;
@@ -192,5 +175,50 @@ h4 {
   font-size: 25px;
   width: 200px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#Icon_force{
+  color: red;
+}
+
+#LineHeadCard {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+}
+
+.Card_Size {
+  width: 100%;
+  height: 730px;
+}
+
+#Size_Form {
+  width: 60%
+}
+
+#Form_border{
+  width: 100%;
+}
+
+#colorPicker{
+  margin-left: 10%; 
+  width: 150px;  
+  border-style: none; 
+  padding: 0%; 
+  border-color:#FFFFFF ; 
+  border: none;
+}
+
+#iconPicker{
+  margin-left: 90%;
+  margin-bottom: 50%; 
+  max-width: 24px; 
+  max-height: 24px;
+}
+
+#Description_Text{
+  border-width: 2px; 
+  height: 100px;
 }
 </style>

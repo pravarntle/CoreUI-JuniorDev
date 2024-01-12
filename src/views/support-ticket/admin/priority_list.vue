@@ -1,13 +1,8 @@
 <template>
   <div class="bg-white rounded" style="width: 100%; height: 845px">
     <!-- Head Priorities List -->
-    <div class="bg-white rounded ms-5 py-3" 
-          >
-      <h1 style="width: 238px; 
-                border-bottom: 2px solid transparent;
-                border-image: linear-gradient(to right, red, blue); 
-                border-image-slice: 1;">
-                Priorities List</h1>
+    <div class="bg-white rounded ms-5 py-3">
+      <h1 id="LineHeadCard">Priorities List</h1>
     </div>
 
     <!-- body Priorities List -->
@@ -43,53 +38,38 @@
 
       <!-- Smart Table -->
       <div class="container">
-      <CSmartTable
-        class="w-50"
-        :active-page="3"
-        cleaner
-        column-filter
-        column-sorter
-        :columns="columns"
-        clickable-rows
-        header
-        :items-per-page="5"
-        items-per-page-select
-        :items="items"
-        pagination
-        table-filter
-        :table-props="{
-          striped: true,
-          hover: true,
-        }"
-      >
-      <!---->
-        <template #status_eng="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
-          </td>
-        </template>
-        <template #show_details="{ item, index }">
+        <CSmartTable class="w-50" :active-page="3" cleaner column-filter column-sorter :columns="columns" clickable-rows
+          header :items-per-page="5" items-per-page-select :items="items" pagination table-filter :table-props="{
+            striped: true,
+            hover: true,
+          }">
+          <!---->
+          <template #status_eng="{ item }">
+            <td>
+              <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
+            </td>
+          </template>
+          <template #show_details="{ item, index }">
             <td class="py-2">
-                    
-              <CDropdown src="More_Priority">  
-              <CDropdownToggle ><img :src="More_Priority"  /></CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
-                <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
-              </CDropdownMenu>
+
+              <CDropdown src="More_Priority">
+                <CDropdownToggle><img :src="More_Priority" /></CDropdownToggle>
+                <CDropdownMenu>
+                  <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
+                  <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
+                </CDropdownMenu>
               </CDropdown>
             </td>
           </template>
-      </CSmartTable>
-      
+        </CSmartTable>
+
       </div>
-      
+
       <!-- END Smart Table -->
-      
+
     </div>
-    
+
   </div>
-  
 </template>
 
 
@@ -185,7 +165,7 @@ export default {
     async getPriority() {
       try {
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`, {
-          
+
           where: {
             pri_status: { $ne: 'Delete' }
 
@@ -194,12 +174,12 @@ export default {
         console.log(response.data)
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         this.items = response.data.map((element, index) => ({
-          'number': index + 1, 
+          'number': index + 1,
           _id: element._id,
-          'status_eng': element.pri_name_eng, 
-          'status_th': element.pri_name_th, 
+          'status_eng': element.pri_name_eng,
+          'status_th': element.pri_name_th,
           'level_of_priority': element.pri_level,
-          MORE: false, 
+          MORE: false,
         }));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -220,7 +200,7 @@ export default {
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`, {
           data: {
             pri_status: "Delete",
-            
+
 
           }
         });
@@ -241,38 +221,57 @@ export default {
 
 
   }
-  
+
 }
 
 </script>
 
 
-<style>
+<style scoped>
 .dropdown-toggle::after {
-    display: none !important;
+  display: none !important;
 }
 
-.container{
+.container {
   display: flex;
-  justify-content: center; /* จัดเนื้อหาในแนวนอนกลาง */
-  align-items: center; /* จัดเนื้อหาในแนวตั้งกลาง */
+  justify-content: center;
+  /* จัดเนื้อหาในแนวนอนกลาง */
+  align-items: center;
+  /* จัดเนื้อหาในแนวตั้งกลาง */
 }
 
 .underline {
-  
-  position: relative; /* ตั้งค่าตำแหน่งเป็น relative เพื่อให้เราสามารถกำหนดตำแหน่งของ ::after pseudo-element ได้ */
+
+  position: relative;
+  /* ตั้งค่าตำแหน่งเป็น relative เพื่อให้เราสามารถกำหนดตำแหน่งของ ::after pseudo-element ได้ */
 }
 
 .underline::after {
-  content: ""; /* เพิ่มเนื้อหาของ pseudo-element */
-  position: absolute; /* ตั้งค่าตำแหน่งเป็น absolute เพื่อให้เส้นใต้เริ่มต้นจากตัวหนังสือ */
-  bottom: 0; /* ตำแหน่งด้านล่างของ pseudo-element */
-  left: 0; /* ตำแหน่งด้านซ้ายของ pseudo-element (จากด้านขวาของตัวหนังสือ) */
-  width: auto; /* กว้างเท่ากับตัวหนังสือ */
-  height: 2px; /* ความสูงของเส้นใต้ */
-  background-image: linear-gradient(to right, red 30%, blue 30%); /* สร้างเส้นใต้ที่มีสีแดง 30% และน้ำเงิน 70% */
-  background-repeat: no-repeat; /* ไม่ต้องรีเพียต์พื้นหลัง */
-  background-size: 100% 100%; /* ความกว้างของเส้นใต้และความสูงของเส้นใต้ (เท่ากับตัวอักษร) */
+  content: "";
+  /* เพิ่มเนื้อหาของ pseudo-element */
+  position: absolute;
+  /* ตั้งค่าตำแหน่งเป็น absolute เพื่อให้เส้นใต้เริ่มต้นจากตัวหนังสือ */
+  bottom: 0;
+  /* ตำแหน่งด้านล่างของ pseudo-element */
+  left: 0;
+  /* ตำแหน่งด้านซ้ายของ pseudo-element (จากด้านขวาของตัวหนังสือ) */
+  width: auto;
+  /* กว้างเท่ากับตัวหนังสือ */
+  height: 2px;
+  /* ความสูงของเส้นใต้ */
+  background-image: linear-gradient(to right, red 30%, blue 30%);
+  /* สร้างเส้นใต้ที่มีสีแดง 30% และน้ำเงิน 70% */
+  background-repeat: no-repeat;
+  /* ไม่ต้องรีเพียต์พื้นหลัง */
+  background-size: 100% 100%;
+  /* ความกว้างของเส้นใต้และความสูงของเส้นใต้ (เท่ากับตัวอักษร) */
+}
+
+#LineHeadCard {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
 }
 
 </style>

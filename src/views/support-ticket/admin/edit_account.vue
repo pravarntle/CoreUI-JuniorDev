@@ -1,8 +1,12 @@
 <template>
   <div>
-    <CCard>
-      <CCardHeader>
-          <h2>Edit Account</h2>
+    <CCard class="p-2 rounded-4 mx-auto">
+      <CCardHeader class="bg-white border-white mb-5">
+        <div class="d-inline ms-2">
+        <div id="LineHeadCard">
+        <h1 class="d-inline align-middle"><b>Edit Account</b></h1>
+        </div>
+      </div>
       </CCardHeader>
       <CCardBody>
         <CForm novalidate :validated="form.validatedCustom01" @submit.prevent="handleSubmitCustom01">
@@ -617,4 +621,10 @@ export default {
 
 }
 
+#LineHeadCard {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+}
 </style>

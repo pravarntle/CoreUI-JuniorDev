@@ -3,20 +3,15 @@
     <div>
         <CCard>
             <CCardBody>
-                    <CRow class="mb-2">
-                        <CCol class="header1" xs="12" md="6" lg="4">
-                            <h1 style="
-                  width: 399px;
-                  border-bottom: 5px solid transparent;
-                  border-image: linear-gradient(to right, #ea5252, #030303);
-                  border-image-slice: 1;
-                ">
-                                Account List
-                            </h1>
-                        </CCol>
-                    </CRow>
-                    <UserList/>
-                    
+                <CRow class="mb-2">
+                    <CCol class="header1" xs="12" md="6" lg="4">
+                        <h1 id="LineHeadCard">
+                            Account List
+                        </h1>
+                    </CCol>
+                </CRow>
+                <UserList />
+
             </CCardBody>
         </CCard>
     </div>
@@ -29,7 +24,7 @@ import UserList from '@/components/UserList.vue'
 
 export default {
     components: { CFormLabel, UserList },
-   
+
 }
 </script>
 <style>
@@ -63,7 +58,7 @@ export default {
 
 .mb-2 {
 
-    font-family:'Inter';
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
 }
@@ -104,5 +99,12 @@ export default {
     font-weight: 800;
     margin-top: 40px;
     margin-bottom: 30px;
+}
+
+#LineHeadCard {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
 }
 </style>
