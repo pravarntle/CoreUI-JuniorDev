@@ -216,6 +216,7 @@ export default {
             tkt_book: item.BOOKMARK,
           }
         });
+        
         // เรียกใช้เมธอด getTicket ที่ถูกสร้างใน setup()
         console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
       } catch (error) {
