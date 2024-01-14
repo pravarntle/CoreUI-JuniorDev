@@ -24,17 +24,21 @@
                   <CCardText class="fs-1"><b>{{ countAll }}</b></CCardText>
                   <hr />
                   <CCol class="d-flex align-items-center">
-                    <ul>
-                      <li id="software">
-                        <span>Software</span>
-                      </li>
-                      <li id="hardware">
-                        <span>Hardware</span>
-                      </li>
-                      <li id="ServiceRequest">
-                        <span>Service Request</span>
-                      </li>
-                    </ul>
+                    
+                          <ul>
+                            <li id="software">
+                              <span class="me-2">Software </span>
+                              <span class="ms-5 ">{{countSoftware}}</span>
+                            </li>
+                            <li id="hardware">
+                              <span class="me-2">Hardware</span>
+                              <span class="ms-5">{{ countHardware }}</span>
+                            </li>
+                            <li id="ServiceRequest">
+                              <span>Service Request</span>
+                              <span class="ms-2 p-1">{{countServiceRequest}}</span>
+                            </li>
+                          </ul>
                   </CCol>
                 </CCol>
                 <CCol>
@@ -128,7 +132,15 @@
                 "><img :src="Close_fullscreen" /></CButton>
             </CCardTitle>
 
-            <CCardText class="text-secondary">Last 7 Days</CCardText>
+            <CCardText class="text-secondary"></CCardText>
+              <CFormInput
+                type="month"
+                id="selected-month" 
+                v-model="selectedMonth" 
+                @change="onMonthChange"
+              >
+                <template #label>Mont Pick</template>
+              </CFormInput>
             <CCollapse :visible="visibleA">
               <CCardText id="support_tracker" class="mt-0">
                 {{ countAllWeek }}
@@ -397,6 +409,7 @@ export default {
       visibleA: true,
       visibleB: true,
       Iconinbox: Iconinbox,
+      selectedMonth: moment().format('YYYY-MM'),
     }
   },
   methods: {
@@ -491,31 +504,33 @@ export default {
           } else if (element.tkt_priorities == 'Low') {
             this.countLow++
           }
-          this.percentHigh = Math.round((this.countHigh / this.countAll) * 100)
-          this.percentMedium = Math.round(
-            (this.countMedium / this.countAll) * 100,
-          )
-          this.percentLow = Math.round((this.countLow / this.countAll) * 100)
+          this.percentHigh = ((this.countHigh / this.countAll) * 100).toFixed(1);
+          this.percentMedium = ((this.countMedium / this.countAll) * 100).toFixed(1);
+          this.percentLow = ((this.countLow / this.countAll) * 100).toFixed(1);
         })
       } catch (error) {
         console.error('Error fetching data:', error)
       }
     },
-    async getTicketOnWeek() {
+    async getTicketOnMonth() {
       try {
-        const currentDate = moment() // Get the current date
-        const sevenDaysAgo = currentDate.clone().subtract(7, 'days') // Calculate 7 days ago
+        const startDate = this.selectedMonth ? moment(this.selectedMonth).startOf('month').toISOString() : null;
+        const endDate = this.selectedMonth ? moment(this.selectedMonth).endOf('month').toISOString() : null;
 
+        // Use startDate and endDate to filter tickets within the selected month and year
         const response = await axios.post(
           `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
           {
             where: {
               tkt_status: { $ne: 'Cancel' },
-              tkt_time: { $gte: sevenDaysAgo.toISOString() }, // Filter by date within the last 7 days
+              tkt_time: {
+                $gte: startDate,
+                $lte: endDate,
+              },
             },
             populate: 'tkt_act',
           },
-        )
+        );
 
         response.data.forEach((element) => {
           this.countAllWeek++
@@ -525,8 +540,8 @@ export default {
           } else if (element.tkt_status == 'Pending') {
             this.countPendingWeek++
           } else if (
-            element.tkt_status == 'Close' ||
-            element.tkt_status == 'Close Bug'
+            element.tkt_status == 'Closed' ||
+            element.tkt_status == 'Closed Bug'
           ) {
             this.countCloseWeek++
           }
@@ -538,12 +553,20 @@ export default {
         console.error('Error fetching data:', error)
       }
     },
+    onMonthChange() {
+      this.countOpenWeek=0;
+      this.countAllWeek=0;
+      this.countPendingWeek=0;
+      this.countCloseWeek=0;
+      console.log(this.selectedMonth);
+      this.getTicketOnMonth();
+    },
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
     this.getTicketPending()
     this.getAllTicket()
-    this.getTicketOnWeek()
+    this.getTicketOnMonth()
   },
 }
 </script>
