@@ -40,38 +40,55 @@
         <template #MORE="{ item, index }">
           <td class="text-center ps-0 ">
             <div class="style-action">
-              <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action" @click="getHistoryStatus(item, index)">
+              <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action" @click="toggleButton(item, index)">
                 <span>Show</span>
               </CButton>
-              <CModal size="lg" alignment="center" :visible="visibleShow" :backdrop="false" :keyboard="false" >
+              
+              <CButton size="sm" color="danger" class="ml-3"  @click="buttonCancel(item, index)" >
+                <CIcon :icon="icon.cilTrash" class="style-button" size="xl"/>
+              </CButton>
+            </div>
+          </td>
+        
+        </template>
+        <template #details="">
+          <CModal size="lg" alignment="center"  :backdrop="false" :keyboard="false" :visible="visibleShow" @close="() => { visibleShow = false } ">
                 <CModalHeader>
                   <CModalTitle>Detail</CModalTitle> 
                 </CModalHeader>
                 <CModalBody>
                    <CRow>
-                      <CImage v-if="contactItItem.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
-                      <CImage v-if="contactItItem.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
-                      <CImage v-if="contactItItem.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
-                      <CImage v-if="contactItItem.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />                 
+                      <CImage v-if="selectedTicket.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                      <CImage v-if="selectedTicket.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                      <CImage v-if="selectedTicket.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
+                      <CImage v-if="selectedTicket.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />                 
                    </CRow>
                   <hr>
-                  <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex">
-                    <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> Ticket created on {{ historyItem.mod_date }} </p>
-                    <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center"><CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>  IT Support ({{ historyItem.mod_act.act_first_name_eng}}) accepted a ticket on {{ historyItem.mod_date }}</p>
-                    <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}</p>
-                    <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center"> <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge> IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unbale to edit the ticket on {{ historyItem.mod_date }}</p>
+                  <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex" class="text-center">
+                    <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center">
+                      <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                      ({{ historyItem.mod_act.act_first_name_eng}}) created Ticket on {{ historyItem.mod_date }}
+                    </p>
+                    <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center">
+                      <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                      IT Support ({{ historyItem.mod_act.act_first_name_eng}}) accepted a ticket on {{ historyItem.mod_date }}
+                    </p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center">
+                      <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                      IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                    </p>
+                    <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center">
+                      <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                      IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                    </p>
                   </div>
                 </CModalBody>
                 <CModalFooter>                 
-                  <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex">contact</CButton>
+                  <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex" @mouseup.stop="">contact</CButton>
+                  
                 </CModalFooter>
               </CModal>
-              <CButton size="sm" color="danger" class="ml-3"  @click="buttonCancel(item, index)" >
-                <CIcon :icon="icon.cilTrash" class="style-button" size="xl"/>
-              </CButton></div>
-          </td>
-        
-        </template>
+          </template>
         
         
       </CSmartTable>
@@ -139,6 +156,7 @@
 
 
 
+
 </style>
 <script>
 import { ref } from 'vue'
@@ -180,6 +198,7 @@ export default {
       contactItItem:[],
       Iconnotbookmarked: Iconnotbookmarked,
       Iconhavebookmarked: Iconhavebookmarked,
+      selectedTicket: {}, 
 
 
     };
@@ -323,8 +342,12 @@ export default {
       }
     },
 
-    async toggleButton(item) {
-      item.MORE = !item.MORE;
+    async toggleButton(item) { 
+      this.visibleShow=true;
+      this.selectedTicket = item;
+      this.contactItItem =item;
+      this.getHistoryStatus(item);
+     
     },
 
     async getTicket() {
@@ -360,8 +383,6 @@ export default {
     },
     async getHistoryStatus(item , index){
       try {
-        
-        this.visibleShow = true; 
         console.log('asdasd',item)
         this.contactItItem = item;
         console.log('assssssssss',this.contactItItem)

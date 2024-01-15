@@ -148,6 +148,7 @@
               <div class="col-10">
                 <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
                 <div class="comments_box" style="width: fit-content; padding: 10px;">
+                  
                   {{ item.cmt_message }}
                   <br v-if="item.cmt_message">
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
@@ -155,7 +156,9 @@
                   </a>
                   <br v-if="item.link">
                   <a v-if="item.cmt_picture">
-                    <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    <CRow>
+                      <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                    </CRow>
                   </a>
                   <br v-if="item.cmt_picture">
                   <a v-if="item.cmt_file">
