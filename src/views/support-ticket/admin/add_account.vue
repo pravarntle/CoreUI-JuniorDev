@@ -6,7 +6,9 @@
         <CForm novalidate :validated="form.validatedCustom01">
           <CRow class="mb-3">
             <CCol class="header1" >
-              <h1 id="LineHeadCard">Create New Account</h1>
+
+              <h1 id="LineHeadCard">
+              <CImage class="manage-accounts-image" :src="manage_accounts" alt="Manage Accounts Image"> </CImage> Create New Account</h1>
             </CCol>
           </CRow>
           <CRow class="mb-3">
@@ -17,12 +19,12 @@
               <img v-else :src="user_man" />
             </CCol>
             <CCol CCol xs="12" md="6" lg="4">
-              <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
+              <CFormLabel class="btn-Picture" for="upload_file"><b>Add Picture </b></CFormLabel>
 
               <CFormInput name="upload_file" feedbackInvalid="Please input picture." :invalid="validate.act_picture"
                 required type="file" @change="onFileUpload" id="upload_file" accept=".png, .jpg, .jpeg " hidden />
               <CCol xs="12" md="6" lg="4">
-                <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
+                <CButton class="btn-Picture" variant="outline" @click="deleteImage"><b>Delete Picture </b></CButton>
               </CCol>
             </CCol>
           </CRow>
@@ -35,13 +37,13 @@
           </CRow>
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+              <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label "> <b> First name (Thai)</b> <span id="required">*</span> </CFormLabel>
               <CFormInput type="text" name="act_first_name_th" id="act_first_name_th"
                 feedbackInvalid="Please input firstname(Thai)." v-model="form.act_first_name_th"
                 :invalid="validate.act_first_name_th" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
+              <CFormLabel for="LnameTH" class="col-sm-12 col-form-label" invalid><b>Last name (Thai)</b><span id="required">* </span>  </CFormLabel>
               <CFormInput type="text" id="LnameTH" name="FnameTH" feedbackInvalid="Please input lastname(Thai)."
                 v-model="form.act_last_name_th" :invalid="validate.act_last_name_th" required />
             </CCol>
@@ -49,13 +51,13 @@
               <br />
             </div>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="FnameEng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
+              <CFormLabel for="FnameEng" class="col-sm-12 col-form-label"><b> First name (English)</b> <span id="required"> *</span>  </CFormLabel>
               <CFormInput type="text" id="FnameEng" name="FnameEng" feedbackInvalid="Please input firstname(English)."
                 v-model="form.act_first_name_eng" :invalid="validate.act_first_name_eng" required />
             </CCol>
 
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="LnameEng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
+              <CFormLabel for="LnameEng" class="col-sm-12 col-form-label"><b>Last name (English)</b> <span id="required">* </span> </CFormLabel>
               <CFormInput type="text" id="LnameEng" name="LnameEng" feedbackInvalid="Please input lastname(English)."
                 v-model="form.act_last_name_eng" :invalid="validate.act_last_name_eng" required />
             </CCol>
@@ -63,7 +65,7 @@
               <br />
             </div>
             <CCol xs="12" md="6" lg="8">
-              <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
+              <CFormLabel for="role" class="col-sm-12 col-form-label"> <b>Role</b> <span id="required">* </span> </CFormLabel>
               <CFormSelect v-model="form.act_role" :options="roleOptions" feedbackInvalid="Please select role."
                 :invalid="validate.act_role" required @change="checkRole" />
             </CCol>
@@ -77,7 +79,7 @@
 
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="8">
-              <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label">Employee ID</CFormLabel>
+              <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label"><b>Employee ID</b> <span id="required"> *</span> </CFormLabel>
               <CFormInput type="text" id="employeeID" name="employeeID" feedbackInvalid="Please input employee ID."
                 v-model="form.act_username" :invalid="validate.act_username" required />
             </CCol>
@@ -85,7 +87,7 @@
               <br />
             </div>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="inputPassword1" class="pamt1">Password
+              <CFormLabel for="inputPassword1" class="pamt1"><b>Password </b> <span id="required"> *</span>
               </CFormLabel>
               <CFormInput feedbackInvalid="Please input password."
                 text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." type="password" id="password1"
@@ -93,7 +95,7 @@
                 placeholder="•••••••" maxlength="6" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="Password" class="pamt1">Confirm Password</CFormLabel>
+              <CFormLabel for="Password" class="pamt1"><b>Confirm Password</b> <span id="required">*  </span></CFormLabel>
               <CFormInput type="password" id="password2" v-model="form.Confirmpassword"
                 feedbackInvalid="Please confirm password." :invalid="validate.Confirmpassword"
                 autocomplete="current-password" placeholder="•••••••" maxlength="6" required />
@@ -106,7 +108,7 @@
               <br />
             </div>
             <CCol xs="12" md="6" lg="4">
-              <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
+              <input type="checkbox" id="showPassword" @click="showPassword" /> &nbsp; Show Password
             </CCol>
           </CRow>
 
@@ -118,13 +120,13 @@
 
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="Email" class="col-sm-12 col-form-label">Email Address</CFormLabel>
-              <CFormInput type="email" id="email" name="email" feedbackInvalid="Please input email."
+              <CFormLabel for="Email" class="col-sm-12 col-form-label"><b>Email Address</b> <span id="required">*</span> </CFormLabel>
+              <CFormInput type="email" id="email" name="email" feedbackInvalid="Please input email."  placeholder="example@gmail.com"
                 v-model="form.act_email_address" :invalid="validate.act_email_address" required />
             </CCol>
             <CCol xs="12" md="6" lg="4">
-              <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
-              <CFormInput type="email" id="confirmEmail" name="confirmEmail" feedbackInvalid="Please input confirm email."
+              <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label"><b>Confirm Email Address</b><span id="required">* </span> </CFormLabel>
+              <CFormInput type="email" id="confirmEmail" name="confirmEmail" feedbackInvalid="Please input confirm email."  placeholder="example@gmail.com"
                 v-model="form.confirmEmail" :invalid="validate.confirmEmail" required />
               <div v-if="validate.confirmEmail" class="text-danger">
                 Email do not match.
@@ -132,8 +134,8 @@
             </CCol>
             <br />
             <CCol xs="12" md="6" lg="8">
-              <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
-              <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."
+              <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required"> *  </span></CFormLabel>
+              <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."  placeholder="e.g. 0611234567"
                 v-model="form.act_number_phone" :invalid="validate.act_number_phone" required />
             </CCol>
           </CRow>
@@ -152,12 +154,14 @@
   </div>
 </template>
 <script>
-import { CFormFeedback, CFormLabel } from '@coreui/vue-pro'
-import axios from 'axios'
-import user_man from '../../../assets/images/preProfile.png'
+import { CCardText, CFormFeedback, CFormLabel, CImage } from '@coreui/vue-pro';
+import axios from 'axios';
+import user_man from '../../../assets/images/preProfile.png';
 import bcrypt from 'bcryptjs';
+import manage_accounts from '../../../assets/images/manage_accounts.png';
+
 export default {
-  components: { CFormLabel },
+  components: { CFormLabel, CCardText, CImage },
   data: () => {
     return {
       form: {
@@ -196,6 +200,7 @@ export default {
       pageLoading: false,
       validatedCustom01: null,
       user_man,
+      manage_accounts,
     }
   },
   created() {
@@ -531,5 +536,15 @@ export default {
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
 }
+
+#required {
+  color: red;
+}
+
+ .manage-accounts-image {
+    width: 40px; /* Adjust the width as needed */
+    height: auto;
+    margin-right: 10px; /* Adjust the margin as needed */
+  }
 
 </style>
