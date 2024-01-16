@@ -45,16 +45,59 @@
             </template>
             <template #MORE="{ item, index }">
               <td class="text-center">
-                <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
-                  @click="contactIt(item, index)">
-                  <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
-                  alt="Bookmark Icon" /> -->
-                  Show
-                </CButton>
-                <!-- <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)">
-                  <img :src="IconcancelTicket" class="style-button" alt="Bookmark Icon" />
-                </CButton> -->
+                <div class="style-action">                  
+                  <CButton size="sm" color="primary" variant="outline" square 
+                    @click="toggleButton(item, index)">
+                    <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
+                    alt="Bookmark Icon" /> -->
+                    Details
+                  </CButton>
+                  <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
+                    @click="contactIt(item, index)">
+                    <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
+                    alt="Bookmark Icon" /> -->
+                    Show
+                  </CButton>
+                </div>
               </td>
+            </template>
+            <template #details="">
+                <CModal size="lg" alignment="center"  :backdrop="false" :keyboard="false" :visible="visibleShow" @close="() => { visibleShow = false } ">
+                  <CModalHeader>
+                    <CModalTitle>Detail</CModalTitle> 
+                  </CModalHeader>
+                  <CModalBody>
+                    <CRow>
+                        <CImage v-if="selectedTicket.status === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                        <CImage v-if="selectedTicket.status === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                        <CImage v-if="selectedTicket.status === 'Open'" id="modalOpen" :src="ModalOpen" />
+                        <CImage v-if="selectedTicket.status === 'Pending'" id="modalPending" :src="ModalPending" />                 
+                    </CRow>
+                    <hr>
+                    <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex" class="text-center">
+                      <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        ({{ historyItem.mod_act.act_first_name_eng}}) created Ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) accepted a ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                      </p>
+                    </div>
+                  </CModalBody>
+                  <CModalFooter>                 
+                    <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex" @mouseup.stop="">contact</CButton>
+                    
+                  </CModalFooter>
+                </CModal>
             </template>
           </CSmartTable>
         </div>
@@ -157,6 +200,10 @@ import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
 import IconshowTicket from '@/assets/images/Icon_ShowTicket.png'
 import IconcancelTicket from '@/assets/images/Icon_CancelTicket.png'
 import Icon_bookmark from '@/assets/images/Icon_bookmark.png'
+import ModalClosedBug from '@/assets/images/modal_closedBug.png'
+import ModalOpen from '@/assets/images/modal_open.png'
+import ModalPending from '@/assets/images/modal_pending.png'
+import ModalClosed from '@/assets/images/modal_closed.png'
 export default {
   name: 'my_ticket',
   data() {
@@ -183,6 +230,10 @@ export default {
       IconshowTicket: IconshowTicket,
       IconcancelTicket: IconcancelTicket,
       Icon_bookmark,
+      visibleShow:false,
+      historyArray:[],
+      contactItItem:[],
+      selectedTicket: {}, 
     }
   },
   setup() {
@@ -283,6 +334,10 @@ export default {
       getBadge,
       activePage,
       getData,
+      ModalClosedBug,
+      ModalClosed,
+      ModalOpen,
+      ModalPending,
     }
   },
 
@@ -382,6 +437,33 @@ export default {
     },
     getBookmarkIcon(booked) {
       return booked ? this.Iconhavebookmarked : this.Iconnotbookmarked;
+    },
+    async toggleButton(item) { 
+      this.visibleShow=true;
+      this.selectedTicket = item;
+      this.contactItItem =item;
+      this.getHistoryStatus(item);
+      console.log(this.selectedTicket)
+    },
+    async getHistoryStatus(item , index){
+      try {
+        console.log('asdasd',item)
+        this.contactItItem = item;
+        console.log('assssssssss',this.contactItItem)
+        const itemTicket = item._id.toString();
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_modifications`,{
+          where:{
+            mod_tkt:itemTicket,
+          },
+          populate:'mod_act',
+        });
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.historyArray = response.data;
+        
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
   },
   mounted() {

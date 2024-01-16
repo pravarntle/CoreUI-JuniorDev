@@ -56,7 +56,7 @@
                 <b class="fs-5"> Type : </b>
                 <CCradText> {{ type }} </CCradText>
               </CCol>
-              <CCol class="text-start pt-4">
+              <CCol class="text-start">
                 <b class="fs-5"> Description : </b>
                 <CCradText>
                   {{ description }}
