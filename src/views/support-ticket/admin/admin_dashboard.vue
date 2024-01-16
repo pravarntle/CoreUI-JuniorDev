@@ -513,7 +513,6 @@ output {
 }
 
 .pie_chart {
-  padding-top: 30px;
   height: 300px;
   width: 300px;
 }
