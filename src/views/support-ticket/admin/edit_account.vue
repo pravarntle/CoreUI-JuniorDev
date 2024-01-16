@@ -4,7 +4,8 @@
       <CCardHeader class="bg-white border-white mb-5">
         <div class="d-inline ms-2">
         <div id="LineHeadCard">
-        <h1 class="d-inline align-middle"><b>Edit Account</b></h1>
+          <CImage id="custom_icon_header" :src="manage_accounts" alt="Manage Accounts Image"> </CImage> 
+        <h1 class="d-inline align-middle">Edit Account</h1>
         </div>
       </div>
       </CCardHeader>
@@ -16,7 +17,7 @@
               <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
                 <img v-else :src="user_man" />
             </CCol>
-            <CCol xs="3">
+            <CCol xs="3"> 
               <CButton class="btn-Picture" variant="outline" for="upload_file"> <b>Add Picture</b></CButton>
               <CFormInput type="file" @change="onFileUpload" id="upload_file" hidden />
               <CButton class="btn-Picture" variant="outline" @click="deleteImage"> <b>Delete Picture</b></CButton>
@@ -31,7 +32,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label"> <b>First name (Thai)</b> <span id="required">*</span></CFormLabel>
+                  <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label" > <b>First name (Thai)</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                   name="act_first_name_th"
                   type="text"
@@ -249,6 +250,7 @@ import { CFormSelect } from '@coreui/vue-pro';
 import axios from 'axios'
 import user_man from '../../../assets/images/preProfile.png'
 import bcrypt from 'bcryptjs';
+import manage_accounts from '../../../assets/images/manage_accounts.png';
 export default {
   components: { CFormLabel,CFormSelect},
   data: () => {
@@ -285,6 +287,7 @@ export default {
         act_password: false,
       },
       pageLoading: false,
+      manage_accounts,
     }
   },
 
@@ -636,17 +639,32 @@ export default {
 
 
 #cancel-button {
-  font-weight: bold;
-  font-size: x-large;
-  width: 150px;
-  color: white;
+  margin: 5px;
   border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
 }
 #submit-button {
-  font-weight: bold;
-  font-size: x-large;
-  width: 150px;
-  color: white;
+  margin: 5px;
   border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+
+#custom_icon_header {
+  width: auto;
+  height: 30px;
 }
 </style>
