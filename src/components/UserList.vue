@@ -1,46 +1,66 @@
 <template>
-        <div class="table-responsive table-borderless">
-            <CSmartTable :active-page="1" header cleaner :items="items" :columns="columns" columnFilter column-sorter
-                clickable-rows table-filter :items-per-page="5" items-per-page-select pagination columnSorter
-                :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
-                    striped: true,
-                    hover: true,
-                }">
-                
-                <template #MORE="{ item, index }">
-                    <td class="py-2">
-                    
-                            <CDropdown src="More_Priority">
-                    
-                            <CDropdownToggle ><img :src="More_Priority"  /></CDropdownToggle>
-                            <CDropdownMenu>
-                                <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
-                                <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
-                            </CDropdownMenu>
-                            </CDropdown>
-                        </td>
-                </template>
-                
-            </CSmartTable>
-        </div>
+    <div>
+        <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter
+            class="table-hover table-bordered table-alternate-background table-responsive" clickable-rows
+            :items-per-page="5" items-per-page-select pagination columnSorter
+            :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
+                striped: true,
+                hover: true,
+            }">
+
+            <template #user_username="{ item }">
+                <td class="style-username" @click="editAccount(item, index)">{{ item.user_username }}</td>
+            </template>
+            <template #user_phone_number="{ item }">
+                <td> {{ formatPhoneNumber(item.user_phone_number) }}</td>
+            </template>
+            <template #user_role="{ item }">
+                <td> {{ formatRole(item.user_role) }}</td>
+            </template>    
+
+            <template #MORE="{ item, index }">
+                <td class="text-center">
+                    <CButton size="sm" @click="editAccount(item, index)">
+                        <img :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
+                    </CButton>
+                    <CButton size="sm" @click="DeleteButton(item, index)">
+                        <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
+                    </CButton>
+                </td>
+            </template>
+
+        </CSmartTable>
+    </div>
 </template>
-<style>
+<style scoped>
 .table-responsive {
-  max-width: 100%;
-  overflow-x: hidden;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 @media (max-width: 1200px) {
-  .table-responsive {
-    overflow-x: auto;
-  }
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+
+.style-button {
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.style-username {
+    color: #5E5ADB;
 }
 </style>
-<script>
+<script scoped>
 import More_Priority from '@/assets/images/More_Priority.png'
+import Icondeleteaccount from '@/assets/images/Icon_deleteaccount.png'
+import Iconeditaccount from '@/assets/images/Icon_editaccount.png'
 import { ref } from 'vue'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
+
 
 export default {
     name: 'userlist',
@@ -59,6 +79,8 @@ export default {
             act_picture: '',
             act_role: '',
             More_Priority,
+            Icondeleteaccount,
+            Iconeditaccount,
 
         };
 
@@ -66,18 +88,66 @@ export default {
     setup() {
         const columns = [
 
-            { key: '#', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } ,filter: false,sorter: false },
-            { key: 'USER ID', _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'FIRST NAME', _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'LAST NAME', _style: { width: '11%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'EMAIL ADDRESS', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'PHONE NUMBER', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'ROLE', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } },
-            { key: 'MORE', _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' } , filter: false, sorter: false  },
+            {
+                key: 'number',
+                label: '#',
+                _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                filter: false,
+                sorter: false,
+
+            },
+            {
+                key: 'user_username',
+                label: 'USERNAME',
+                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+
+            },
+            {
+                key: 'user_first_name',
+                label: 'FIRSTNAME',
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+
+            },
+            {
+                key: 'user_last_name',
+                label: 'LASTNAME',
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+            },
+            {
+                key: 'user_email',
+                label: 'EMAIL',
+                _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+            },
+            {
+                key: 'user_phone_number',
+                label: 'NUMBER',
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+
+            },
+            {
+                key: 'user_role',
+                label: 'ROLE',
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+
+
+            },
+            {
+                key: 'MORE',
+                label: 'ACTION',
+                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '35px' },
+                filter: false,
+                sorter: false,
+
+            },
 
 
         ];
-        
+
 
         const items = ref([]);
 
@@ -112,7 +182,7 @@ export default {
 
             this.$router.push({ name: 'ST - edit_account', params: { itemId } });
         },
-        
+
         async DeleteButton(item) {
 
             try {
@@ -121,8 +191,8 @@ export default {
                 await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${itemId}`, {
                     data: {
                         act_status: "Delete",
-                        act_password:null,
-                        act_username:null,
+                        act_password: null,
+                        act_username: null,
 
                     }
                 });
@@ -145,7 +215,7 @@ export default {
             try {
                 const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_accounts`, {
                     "populate": "act_role",
-                     where: {
+                    where: {
                         act_status: { $ne: 'Delete' }
 
                     },
@@ -153,21 +223,38 @@ export default {
                 console.log(response.data)
                 // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
                 this.items = response.data.map((element, index) => ({
-                    '#': index + 1, // หมายเลขแถว
+                    number: index + 1, // หมายเลขแถว
                     _id: element._id,
-                    'USER ID': element.act_username, // ข้อมูล TicketID จาก response
-                    'FIRST NAME': element.act_first_name_eng, // ข้อมูล tkt_title จาก response
-                    
-                    'LAST NAME': element.act_last_name_eng,
-                    'EMAIL ADDRESS': element.act_email_address,
-                    'PHONE NUMBER': element.act_number_phone,
-                    ROLE: element.act_role.rol_name,
+                    user_username: element.act_username, // ข้อมูล TicketID จาก response
+                    user_first_name: element.act_first_name_eng, // ข้อมูล tkt_title จาก response
+                    user_last_name: element.act_last_name_eng,
+                    user_email: element.act_email_address,
+                    user_phone_number: element.act_number_phone,
+                    user_role: element.act_role.rol_name,
                     MORE: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
                 }));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-        }
+        },
+        formatPhoneNumber(phoneNumber) {
+            const cleaned = ('' + phoneNumber).replace(/\D/g, ''); // ทำความสะอาดข้อมูล ลบทุกอย่างที่ไม่ใช่ตัวเลข
+            const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/); // นำตัวเลขมาจับคู่ตามรูปแบบ XXXXXXXXXX
+
+            if (match) {
+                return match[1] + ' ' + match[2] + ' ' + match[3];
+            }
+
+            return phoneNumber; // คืนค่าเบอร์โทรศัพท์เดิมหากไม่พบตามรูปแบบ
+        },
+        formatRole(role) {
+            const itsup = 'IT Support';
+            if( role == 'ItSupport') {
+                return itsup;
+            }else {
+                return role;
+            }
+        },  
 
     },
     mounted() {
