@@ -156,7 +156,6 @@
               Cancel
             </CButton>
             <CButton class="btn-sec" color="success" @click="validateBeforeSave">
-
               Submit
             </CButton>
           </CCol>
