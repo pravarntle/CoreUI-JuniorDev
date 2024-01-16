@@ -272,6 +272,11 @@ export default {
       }
     },
     async updateTicket() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
       try {
@@ -285,6 +290,7 @@ export default {
                 tkt_status: 'Open',
                 tkt_acc: this.accId,
                 tkt_accept: userId,
+                tkt_last_update:ticket_date,
               },
             },
           )

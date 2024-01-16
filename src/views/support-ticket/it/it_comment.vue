@@ -866,14 +866,19 @@ export default {
       }
     },
     async onSaveSatatus() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       try {
         
         const ticketId = this.ticketId;
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
           data: {
-            tkt_status: this.edit
-
+            tkt_status: this.edit,
+            tkt_last_update:ticket_date,
           }
         })
         .then((result) => {

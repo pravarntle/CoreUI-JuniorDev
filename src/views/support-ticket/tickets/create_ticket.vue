@@ -525,6 +525,7 @@ export default {
       this.form.tkt_picture = this.form.tkt_picture || null
 
       this.form.tkt_time = ticket_date
+      this.form.tkt_last_update = ticket_date
       this.form.tkt_number = ticket_number
       this.form.tkt_act = userId
       this.form.tkt_status = ticket_status

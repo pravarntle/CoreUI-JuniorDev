@@ -349,7 +349,7 @@ export default {
         case 'Medium':
           return 'warning'
         case 'Low':
-          return 'Success'  
+          return 'success'  
         default:
           return 'secondary' // Return a default color if none of the cases match.
       }
@@ -523,7 +523,7 @@ export default {
           {
             where: {
               tkt_status: { $ne: 'Cancel' },
-              tkt_time: {
+              tkt_last_update: {
                 $gte: startDate,
                 $lte: endDate,
               },
