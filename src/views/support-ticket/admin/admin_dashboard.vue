@@ -1,12 +1,14 @@
 <template>
   <div class="box">
     <CRow>
+      <CCol>
       <count_ticket />
+      </CCol>
     </CRow>
 
     <CRow>
       <CCol>
-        <CCard class="chart-container">
+        <CCard class="mt-3 chart-container rounded-4">
           <CCardTitle>
             <CButton
               variant="ghost"
@@ -21,41 +23,64 @@
                   <CCol>
                     <CRow>
                       <!-- User Roles -->
-                      <CCol>
-                        <CCardText class="mt-4 fs-3"
-                          ><b>User Roles</b></CCardText
-                        >
-                        <CIcon :icon="icon.cilCalendar" size="xxl" />
-                        <label>&nbsp; | 26 Jul 2021 </label>
-                        <ul>
-                          <li id="employee">
-                            <span>Employee</span>
-                          </li>
-                          <li id="it_support">
-                            <span>IT Support</span>
-                          </li>
-                          <li id="admin">
-                            <span>Admin</span>
-                          </li>
-                          <li id="manager">
-                            <span>Manager</span>
-                          </li>
-                        </ul>
+                      <CCol xxl="2" xl="6">
+                        <CCardText class="pt-2 fs-2">User Roles</CCardText>
+                        <CCardText class="ps-2 fs-5 text-black-50">| now update</CCardText>
+                        <div class="d-flex">
+                          <div style="width: 50px">
+                            <ul>
+                              <li id="employee">
+                                <span>Employee</span>
+                              </li>
+                              <li id="it_support">
+                                <span>IT Support</span>
+                              </li>
+                              <li id="admin">
+                                <span>Admin</span>
+                              </li>
+                              <li id="manager">
+                                <span>Manager</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div>
+                            <ul class="text-end">
+                              <li class="list_roles">
+                                <span>20</span>
+                              </li>
+                              <li class="list_roles">
+                                <span>14</span>
+                              </li>
+                              <li class="list_roles">
+                                <span>5</span>
+                              </li>
+                              <li class="list_roles">
+                                <span>5</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </CCol>
-                      <CCol>
+                      <CCol xxl="3" xl="6">
                         <CChart
+                          class="pie_chart"
                           type="pie"
                           :data="{
-                            labels: ['Employee', 'IT Support', 'Admin', 'Manager'],
+                            labels: [
+                              'Employee',
+                              'IT Support',
+                              'Admin',
+                              'Manager',
+                            ],
                             datasets: [
                               {
                                 backgroundColor: [
-                                  '#52EAE1',
+                                  '#2EB85C',
+                                  '#F91818',
                                   '#281AC8',
-                                  '#F9A825',
-                                  '#25F993'
+                                  '#F9B115',
                                 ],
-                                data: [55, 30, 10,5],
+                                data: [20, 10, 5, 2],
                               },
                             ],
                           }"
@@ -74,32 +99,42 @@
 
                       <CCol class="vl"></CCol>
                       <!-- Chart User status -->
-                      <CCol>
-                        <CCardText class="mt-4 fs-3"
-                          ><b>User Status</b></CCardText
-                        >
-                        <label>&nbsp;| now update</label>
-                        <ul>
-                          <li id="employee">
-                            <span>Active</span>
-                          </li>
-                          <li id="it_support">
-                            <span>Inactive</span>
-                          </li>
-                        </ul>
+                      <CCol xxl="2" xl="6">
+                        <CCardText class="pt-2 fs-2">User Status</CCardText>
+                        <CCardText class="ps-2 fs-5 text-black-50">| now update</CCardText>
+                        <div class="d-flex">
+                          <div style="width: 50px">
+                            <ul>
+                              <li id="active">
+                                <span>Active</span>
+                              </li>
+                              <li id="inactive">
+                                <span>Inactive</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div>
+                            <ul class="text-end">
+                              <li class="list_roles">
+                                <span>20</span>
+                              </li>
+                              <li class="list_roles">
+                                <span>14</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </CCol>
-                      <CCol>
+                      <CCol xxl="3" xl="6">
                         <CChart
+                          class="pie_chart"
                           type="pie"
                           :data="{
                             labels: ['Active', 'Inactive'],
                             datasets: [
                               {
-                                backgroundColor: [
-                                  '#A2F860',
-                                  '#EE5731',
-                                ],
-                                data: [90, 10],
+                                backgroundColor: ['#2EB85C', '#A5AFBF'],
+                                data: [40, 60],
                               },
                             ],
                           }"
@@ -128,12 +163,16 @@
     <CRow>
       <CCol>
         <CCard class="mt-3">
+          <CCardTitle>
+            <CButton
+              variant="ghost"
+              class="border border-0 bg-body ms-auto d-flex"
+              ><img :src="Close_fullscreen"
+            /></CButton>
+          </CCardTitle>
           <CCardBody>
             <h1>Priority Category</h1>
-            <div>
-              <CIcon :icon="icon.cilCalendar" size="xxl" />
-              <label>&nbsp; | 26 Jul 2021 </label>
-            </div>
+            
             <hr />
             <PriorityChart />
           </CCardBody>
@@ -164,8 +203,13 @@
 <style>
 .vl {
   margin-left: 5%;
-  border-left: 3px solid rgba(194, 197, 204, .5);
+  border-left: 3px solid rgba(194, 197, 204, 0.5);
   height: auto;
+}
+@media screen and (max-width: 1440px) {
+  .vl {
+    display: none; /* ซ่อน element เมื่อหน้าจอเล็กกว่าหรือเท่ากับ 600px */
+  }
 }
 </style>
 
@@ -184,7 +228,7 @@ import moment from 'moment'
 import PriorityChart from '@/components/PriorityBar.vue'
 
 export default {
-  components: { CRow, CCol, CChart, count_ticket, CIcon , PriorityChart},
+  components: { CRow, CCol, CChart, count_ticket, CIcon, PriorityChart },
   setup() {
     const columns = [
       {
@@ -469,45 +513,48 @@ output {
 }
 
 .pie_chart {
+  padding-top: 30px;
   height: 300px;
   width: 300px;
 }
 
 #employee {
-  color: #52eae1;
+  color: #2eb85c;
   font-size: 24px;
 }
 
 #it_support {
-  color: #281ac8;
+  color: #f91818;
   font-size: 24px;
 }
 
 #admin {
-  color: #f9a825;
+  color: #281ac8;
   font-size: 24px;
 }
 
-#support_tracker {
-  font-size: 50px;
+#manager {
+  color: #f9b115;
+  font-size: 24px;
 }
 
-#new_ticket {
-  background-color: #e8e7fb;
-  width: 15%;
-  height: 50%;
+#active {
+  color: #2eb85c;
+  font-size: 24px;
 }
 
-#open_ticket {
-  background-color: #e5f7fb;
-  width: 15%;
-  height: 50%;
+#inactive {
+  color: #a5afbf;
+  font-size: 24px;
 }
 
-#response_time {
-  background-color: #fdf0e4;
-  width: 15%;
-  height: 50%;
+li {
+  font-size: 24px;
+}
+
+.list_roles {
+  list-style-type: none;
+  width: 80px;
 }
 
 .icon_new_ticket {
