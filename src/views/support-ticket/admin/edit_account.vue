@@ -4,7 +4,8 @@
       <CCardHeader class="bg-white border-white mb-5">
         <div class="d-inline ms-2">
         <div id="LineHeadCard">
-        <h1 class="d-inline align-middle"><b>Edit Account</b></h1>
+          <CImage id="custom_icon_header" :src="manage_accounts" alt="Manage Accounts Image"> </CImage> 
+        <h1 class="d-inline align-middle">Edit Account</h1>
         </div>
       </div>
       </CCardHeader>
@@ -16,10 +17,10 @@
               <img v-if="form.act_picture !== null && form.act_picture !== undefined" :src="`data:${fileType};base64,${fileImage}`" />
                 <img v-else :src="user_man" />
             </CCol>
-            <CCol xs="3">
-              <CFormLabel class="btn-Picture" for="upload_file">Add Picture</CFormLabel>
+            <CCol xs="3"> 
+              <CButton class="btn-Picture" variant="outline" for="upload_file"> <b>Add Picture</b></CButton>
               <CFormInput type="file" @change="onFileUpload" id="upload_file" hidden />
-              <CButton class="btn-Picture" variant="outline" @click="deleteImage">Delete Picture</CButton>
+              <CButton class="btn-Picture" variant="outline" @click="deleteImage"> <b>Delete Picture</b></CButton>
             </CCol>
           </CRow>
 
@@ -31,7 +32,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label">First name (Thai)</CFormLabel>
+                  <CFormLabel for="act_first_name_th" class="col-sm-12 col-form-label" > <b>First name (Thai)</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                   name="act_first_name_th"
                   type="text"
@@ -44,7 +45,7 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <CFormLabel for="act_last_name_th" class="col-sm-12 col-form-label" invalid>Last name (Thai)</CFormLabel>
+                  <CFormLabel for="act_last_name_th" class="col-sm-12 col-form-label" invalid> <b>Last name (Thai)</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="text"
                     id="LnameTH"
@@ -62,7 +63,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="act_first_name_eng" class="col-sm-12 col-form-label">First name (English)</CFormLabel>
+                  <CFormLabel for="act_first_name_eng" class="col-sm-12 col-form-label"><b>First name (English)</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="text"
                     id="FnameEng"
@@ -76,7 +77,7 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <CFormLabel for="act_last_name_eng" class="col-sm-12 col-form-label">Last name (English)</CFormLabel>
+                  <CFormLabel for="act_last_name_eng" class="col-sm-12 col-form-label"><b>Last name (English)</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="text"
                     id="LnameEng"
@@ -93,7 +94,7 @@
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
-                  <CFormLabel for="role" class="col-sm-12 col-form-label">Role</CFormLabel>
+                  <CFormLabel for="role" class="col-sm-12 col-form-label"><b>Role</b><span id="required">*</span> </CFormLabel>
                   <CFormSelect
                     v-model="form.act_role"
                     :options="roleOptions"
@@ -109,13 +110,13 @@
 
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
-            <CFormLabel class="col-md-12 col-form-label">Login Info</CFormLabel>
+            <CFormLabel class="col-md-12 col-form-label"><b>Login Info </b></CFormLabel>
           </CRow>
           <CRow class="mb-3">
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
-                  <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label">Employee ID</CFormLabel>
+                  <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label"><b>Employee ID</b> <span id="required">*</span></CFormLabel>
              <CFormInput
                     type="text"
                     id="employeeID"
@@ -133,7 +134,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <CFormLabel for="Password"
-                >New Password</CFormLabel
+                ><b>New Password</b> <span id="required">*</span></CFormLabel
               >
               <div>
                 <CFormInput
@@ -153,7 +154,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <CFormLabel for="Password"
-                >Confirm New Password</CFormLabel
+                > <b>Confirm New Password</b> <span id="required">*</span></CFormLabel
               >
               <div>
                 <CFormInput
@@ -171,7 +172,7 @@
               </div>
             </div>
             <div>
-            <input type="checkbox" id="showPassword" @click="showPassword" />Show Password
+            <input type="checkbox" id="showPassword" @click="showPassword" /> &nbsp; Show Password
           </div>
           </CRow>
           <CRow class="mb-2">
@@ -182,7 +183,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <CFormLabel for="Email" class="col-sm-12 col-form-label">Email Address</CFormLabel>
+                  <CFormLabel for="Email" class="col-sm-12 col-form-label"><b>Email Address</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="email"
                     id="email"
@@ -196,7 +197,7 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label">Confirm Email Address</CFormLabel>
+                  <CFormLabel for="confirmEmail" class="col-sm-12 col-form-label"><b>Confirm Email Address</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="email"
                     id="confirmEmail"
@@ -214,7 +215,7 @@
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
-                  <CFormLabel for="phone" class="col-sm-12 col-form-label">Phone Number</CFormLabel>
+                  <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
                     type="number"
                     id="phone"
@@ -230,8 +231,11 @@
             </div>
           </CRow>
           <div class="col-6 mx-auto">
-          <CButton class="btn-sec" color="secondary" variant="outline" @click="cancel">Cancel</CButton>
-          <CButton class="btn-sec" color="success" variant="outline" @click="validateBeforeSave" >Submit</CButton>
+          <CButton color="dark" @click="cancel" id="cancel-button">Cancel</CButton>
+
+           <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
+              Submit
+            </CButton>
           </div>
 
         </CForm>
@@ -246,6 +250,7 @@ import { CFormSelect } from '@coreui/vue-pro';
 import axios from 'axios'
 import user_man from '../../../assets/images/preProfile.png'
 import bcrypt from 'bcryptjs';
+import manage_accounts from '../../../assets/images/manage_accounts.png';
 export default {
   components: { CFormLabel,CFormSelect},
   data: () => {
@@ -282,9 +287,10 @@ export default {
         act_password: false,
       },
       pageLoading: false,
+      manage_accounts,
     }
   },
-  
+
   methods: {
     deleteImage() {
       this.form.act_picture = null; // Set act_picture to null to delete the image
@@ -338,7 +344,7 @@ export default {
         this.validate.act_username = true;
       }
       if (error) {
-        
+
       }
       if (this.form.act_password === '') {
         this.onSave();
@@ -397,7 +403,7 @@ export default {
         console.log(response.data)
         console.log(this.form.act_password)
 
-        
+
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -461,7 +467,7 @@ export default {
           console.log(error)
         }
       }
-      
+
     },
     encryptPasswordBeforeSave() {
 
@@ -484,14 +490,14 @@ export default {
     const accountId = this.$route.params.itemId;
     this.accountId = accountId;
     this.getAcount();
-  
+
     this.roleOptions = [
       { label: 'Employee', value: '64f95a8734feef5e9d2a4a8f' },
       { label: 'IT Support', value: '651635c98cadea5f0570a27d' },
       { label: 'Admin', value: '651636008cadea5f0570a27e' },
       { label: 'Manager', value: '651636358cadea5f0570a27f' },
     ];
-    
+
     // ทำสิ่งที่คุณต้องการกับ accountId ที่ได้รับ
   },
 }
@@ -540,7 +546,7 @@ export default {
   height: 53px;
   background-color: transparent;
   /* Set the background color to transparent */
-  border: 2px solid #5E5ADB;
+  border: 2px solid #5e5adb;
   /* Add a border with a 2px width and color of your choice */
   padding: 10px 20px;
   /* Add padding to provide spacing inside the button */
@@ -558,7 +564,6 @@ export default {
   margin-top: 30px;
   text-align: center;
   /* margin-bottom: 30px; */
-
 }
 
 .btn-Picture:hover {
@@ -626,5 +631,40 @@ export default {
   border-bottom: 5px solid transparent;
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
+}
+
+#required {
+  color: red;
+}
+
+
+#cancel-button {
+  margin: 5px;
+  border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+#submit-button {
+  margin: 5px;
+  border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+
+#custom_icon_header {
+  width: auto;
+  height: 30px;
 }
 </style>
