@@ -1,45 +1,23 @@
 <template>
-  <div class="bg-white rounded" style="width: 100%; height: 845px">
+  <CCard class="p-3 rounded-4 mx-auto">
     <!-- Head Priorities List -->
-    <div class="bg-white rounded ms-5 py-3">
-      <h1 id="LineHeadCard">Priorities List</h1>
-    </div>
-
-    <!-- body Priorities List -->
-    <div class="py-5 px-5">
-      <CButton class="px-5" variant="ghost">User</CButton>
-      <CButton class="px-5" variant="ghost">Priority</CButton>
-
-      <!-- Search bar -->
-      <!-- <div class="container pt-5">
-        <div class="row justify-content-center w-75">
-          <div class="col-md-6">
-            <form class="form-inline">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control rounded-start-pill"
-                  placeholder="Search"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-primary rounded-start-0 rounded-end-circle"
-                    type="submit"
-                  >
-                    <CIcon :icon="icon.cilMagnifyingGlass" size="xl" />
-                  </button>
+    <CCardHeader class="bg-white border-white mb-5 d-flex justify-content-between align-items-center" >
+                <div class="d-inline ms-2">
+                    <div id="LineHeadCard">
+                        <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_Priority" />
+                        <h1 class="d-inline align-middle">Priorities List</h1>
+                    </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div> -->
-      <!-- End Search bar -->
-
+                <div>
+                    <CButton class="btn btn-primary btn-block btn-long rounded-3"  @click="create_priority()" >+ Create</CButton>
+                </div>
+            </CCardHeader>
+    <!-- body Priorities List -->
+    <CCardBody class="py-5 px-5">
       <!-- Smart Table -->
-      <div class="container">
-        <CSmartTable class="w-50" :active-page="3" cleaner column-filter column-sorter :columns="columns" clickable-rows
-          header :items-per-page="5" items-per-page-select :items="items" pagination table-filter :table-props="{
+      <div >
+        <CSmartTable class="w-100 text-center" :active-page="3" column-sorter :columns="columns" clickable-rows
+          header   :items="items" pagination  :table-props="{
             striped: true,
             hover: true,
           }">
@@ -49,27 +27,25 @@
               <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
             </td>
           </template>
-          <template #show_details="{ item, index }">
-            <td class="py-2">
-
-              <CDropdown src="More_Priority">
-                <CDropdownToggle><img :src="More_Priority" /></CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
-                  <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
-            </td>
-          </template>
+          <template  #show_details="{ item, index }">
+                <td class="text-center">
+                    <CButton size="sm" class="action_button mx-1" @click="editAccount(item, index)">
+                        <CImage :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
+                    </CButton>
+                    <CButton size="sm" class="action_button ml-1"  @click="DeleteButton(item, index)">
+                        <CImage :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
+                    </CButton>
+                </td>
+            </template>
         </CSmartTable>
 
       </div>
 
       <!-- END Smart Table -->
 
-    </div>
+    </CCardBody>
 
-  </div>
+  </CCard>
 </template>
 
 
@@ -82,8 +58,9 @@ import More_Priority from '@/assets/images/More_Priority.png'
 import { CAvatar, CButton, CCol, CImage, CRow } from '@coreui/vue-pro'
 import { ref } from 'vue'
 import axios from 'axios'
-
-
+import Icon_Priority from '../../../assets/images/Icon_Priority.png';
+import Iconeditaccount from '../../../assets/images/Icon_editaccount.png';
+import Icondeleteaccount from '../../../assets/images/Icon_deleteaccount.png';
 
 export default {
   components: {
@@ -103,28 +80,28 @@ export default {
         label: '#',
         filter: false,
         sorter: false,
-        _style: { width: '5%' },
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'status_eng',
         label: 'NAME (ENG)',
-        _style: { width: '20%' },
+        _style: { width: '30%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'status_th',
         label: 'NAME (TH)',
-        _style: { width: '20%' },
+        _style: { width: '30%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'level_of_priority',
         label: 'LEVEL 0F PRIORITY',
-        _style: { width: '20%' },
+        _style: { width: '20%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
 
       {
         key: 'show_details',
-        label: 'MORE',
-        _style: { width: '1%' },
+        label: 'ACTION',
+        _style: { width: '30%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
         filter: false,
         sorter: false,
       },
@@ -134,6 +111,9 @@ export default {
       More_Priority,
       items,
       columns,
+      Icon_Priority,
+      Icondeleteaccount,
+      Iconeditaccount,
     }
   },
 
@@ -214,6 +194,9 @@ export default {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
     },
+    async create_priority() {
+            this.$router.push({ name: 'ST - create_priority' });
+        },
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
@@ -274,4 +257,33 @@ export default {
   border-image-slice: 1;
 }
 
+#custom_icon_header {
+  width: auto;
+  height: 60px;
+}
+
+.table-responsive {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.table-container {
+  max-width: 100%; /* Set the maximum width for the table container */
+  overflow-x: auto; /* Enable horizontal scroll if the content overflows */
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+
+.style-button {
+    max-width: 20px;
+    max-height: 20px;
+    background-color: white;
+}
+.action_button{
+  background-color: white;
+}
 </style>
