@@ -46,16 +46,16 @@
                           <div>
                             <ul class="text-end">
                               <li class="list_roles">
-                                <span>20</span>
+                                <span>{{countEmployee}}</span>
                               </li>
                               <li class="list_roles">
-                                <span>14</span>
+                                <span>{{countItSup}}</span>
                               </li>
                               <li class="list_roles">
-                                <span>5</span>
+                                <span>{{countAdmin}}</span>
                               </li>
                               <li class="list_roles">
-                                <span>5</span>
+                                <span>{{countManager}}</span>
                               </li>
                             </ul>
                           </div>
@@ -80,7 +80,7 @@
                                   '#281AC8',
                                   '#F9B115',
                                 ],
-                                data: [20, 10, 5, 2],
+                                data: [countEmployee, countItSup, countAdmin, countManager],
                               },
                             ],
                           }"
@@ -116,10 +116,10 @@
                           <div>
                             <ul class="text-end">
                               <li class="list_roles">
-                                <span>20</span>
+                                <span>{{countActive}}</span>
                               </li>
                               <li class="list_roles">
-                                <span>14</span>
+                                <span>{{ countInactive}}</span>
                               </li>
                             </ul>
                           </div>
@@ -134,7 +134,7 @@
                             datasets: [
                               {
                                 backgroundColor: ['#2EB85C', '#A5AFBF'],
-                                data: [40, 60],
+                                data: [countActive, countInactive],
                               },
                             ],
                           }"
@@ -230,87 +230,7 @@ import PriorityChart from '@/components/PriorityBar.vue'
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon, PriorityChart },
   setup() {
-    const columns = [
-      {
-        key: 'number',
-        label: '#',
-        _style: { width: '10%' },
-      },
-      {
-        key: 'ticket_id',
-        label: 'TICKET ID',
-        _style: { width: '10%' },
-      },
-      {
-        key: 'owner',
-        label: 'OWNER',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'start_date',
-        label: 'START DATE(D/M/Y)',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'status',
-        label: 'STATUS',
-        _style: { width: '10%' },
-      },
-      {
-        key: 'type',
-        label: 'TYPE',
-        _style: { width: '10%' },
-      },
-      // {
-      //   key: 'book_mark',
-      //   label: 'BOOKMARK',
-      //   _style: { width: '10%' },
-      //   filter: false,
-      //   sorter: false,
-      // },
-      { key: 'MORE', _style: { width: '5%' }, filter: false, sorter: false },
-    ]
-    const items = ref([])
-    const getBadge = (tkt_status) => {
-      switch (tkt_status) {
-        case 'Pending':
-          return 'warning'
-        case 'Open':
-          return 'primary'
-        case 'Closed':
-          return 'danger'
-        default:
-          return 'secondary' // Return a default color if none of the cases match.
-      }
-    }
-
-    const toggleDetails = async (item) => {
-      item.BOOKMARK = !item.BOOKMARK
-      console.log(item.BOOKMARK)
-      console.log(item)
-      try {
-        const itemId = item._id.toString()
-        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(
-          `${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`,
-          {
-            data: {
-              tkt_book: item.BOOKMARK,
-            },
-          },
-        )
-
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ')
-      } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
-      }
-    }
     return {
-      columns,
-      items,
-      getBadge,
-      toggleDetails,
       Open_in_full,
       Close_fullscreen,
       icon,
@@ -318,171 +238,67 @@ export default {
   },
   data() {
     return {
-      countAll: '',
-      countSoftware: '',
-      countHardware: '',
-      countServiceRequest: '',
-      countHigh: '',
-      countMedium: '',
-      countLow: '',
-      percentLow: '',
-      percentHigh: '',
-      percentMedium: '',
-      countAllWeek: '',
-      countOpenWeek: '',
-      countPendingWeek: '',
-      countCloseWeek: '',
+      countActive: '0',
+      countEmployee: '0',
+      countItSup: '0',
+      countAdmin: '0',
+      countManager: '0',
+      countInactive: '0',
+
     }
   },
   methods: {
-    async contactIt(item) {
-      const itemId = item._id.toString()
-
-      this.$router.push({ name: 'ST - comment Ticket', params: { itemId } })
-      console.log('Item ID:', itemId)
-    },
-    async buttonCancel(item) {
-      try {
-        const itemId = item._id.toString()
-        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(
-          `${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`,
-          {
-            data: {
-              tkt_status: 'Cancel',
-            },
-          },
-        )
-
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ')
-        // รีเฟรชหน้า
-        window.location.reload()
-      } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
-      }
-    },
-    async toggleButton(item) {
-      item.MORE = !item.MORE
-    },
-    async getTicketPending() {
+    async getAllAccounts() {
       try {
         const response = await axios.post(
-          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_accounts`,
           {
-            where: {
-              tkt_status: 'Pending',
-            },
-            populate: 'tkt_act',
+            populate: 'act_role',
           },
         )
-        console.log(response.data)
-        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-        this.items = response.data.map((element, index) => ({
-          number: index + 1, // หมายเลขแถว
-          _id: element._id,
-          ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
-          owner: `${
-            element.tkt_act.act_first_name_eng
-          } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
-          // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
-          // ตามลำดับของ columns ในตัวแปร columns
-          // เพิ่มเติมตามความต้องการ
-          start_date: element.tkt_time,
-          status: element.tkt_status,
-          type: element.tkt_types,
-          _toggled: false, // ให้เริ่มต้นเป็น false สำหรับการแสดงรายละเอียด
-        }))
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    },
-    async getAllTicket() {
-      try {
-        const response = await axios.post(
-          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
-          {
-            where: {
-              tkt_status: { $ne: 'Cancel' },
-            },
-            populate: 'tkt_act',
-          },
-        )
-
         response.data.forEach((element) => {
-          this.countAll++
-          if (element.tkt_types == 'Software') {
-            this.countSoftware++
-          } else if (element.tkt_types == 'Hardware') {
-            this.countHardware++
-          } else if (element.tkt_types == 'Service') {
-            this.countServiceRequest++
-          }
-          if (element.tkt_priorities == 'High') {
-            this.countHigh++
-          } else if (element.tkt_priorities == 'Medium') {
-            this.countMedium++
-          } else if (element.tkt_priorities == 'Low') {
-            this.countLow++
-          }
-          this.percentHigh = Math.round((this.countHigh / this.countAll) * 100)
-          this.percentMedium = Math.round(
-            (this.countMedium / this.countAll) * 100,
-          )
-          this.percentLow = Math.round((this.countLow / this.countAll) * 100)
-        })
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    },
-    async getTicketOnWeek() {
-      try {
-        const currentDate = moment() // Get the current date
-        const sevenDaysAgo = currentDate.clone().subtract(7, 'days') // Calculate 7 days ago
+          if(element.act_status=='Delete'){
+              this.countInactive++
+          }else{
+           
+              this.countActive++
+              if (element.act_role.rol_name === 'Employee') {
+                this.countEmployee++
+              } else if (element.act_role.rol_name === 'ItSupport') {
+                this.countItSup++
+              } else if (element.act_role.rol_name === 'Admin') {
+                this.countAdmin++
+              } else if (element.act_role.rol_name === 'Manager') {
+                this.countManager++
+              }
+            
 
-        const response = await axios.post(
-          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
-          {
-            where: {
-              tkt_status: { $ne: 'Cancel' },
-              tkt_time: { $gte: sevenDaysAgo.toISOString() }, // Filter by date within the last 7 days
-            },
-            populate: 'tkt_act',
-          },
-        )
-
-        response.data.forEach((element) => {
-          this.countAllWeek++
-
-          if (element.tkt_status == 'Open') {
-            this.countOpenWeek++
-          } else if (element.tkt_status == 'Pending') {
-            this.countPendingWeek++
-          } else if (
-            element.tkt_status == 'Close' ||
-            element.tkt_status == 'Close Bug'
-          ) {
-            this.countCloseWeek++
+            
           }
         })
+         
 
-        console.log(response.data)
-        // Handle the retrieved data as needed
+        
+        console.log(this.countAdmin)
+        console.log(this.countItSup)
+        console.log(this.countEmployee)
+        console.log(this.countManager)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
     },
+    
+   
+    
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
-    this.getTicketPending()
-    this.getAllTicket()
-    this.getTicketOnWeek()
+    this.getAllAccounts();
   },
 }
 </script>
 
-<style>
+<style scoped>
 input[type='range'] {
   height: 8px;
   pointer-events: none; /* ป้องกันการเลื่อน */

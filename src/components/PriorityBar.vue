@@ -32,6 +32,17 @@ export default {
         ],
       };
     },
+    data() {
+      return {
+        countActive: '0',
+        countEmployee: '0',
+        countItSup: '0',
+        countAdmin: '0',
+        countManager: '0',
+        countInactive: '0',
+
+      }
+    },
     chartOptions() {
       return {
         scales: {
@@ -44,6 +55,9 @@ export default {
         },
       };
     },
+    methods:{
+      
+    }
   },
 };
 </script>
