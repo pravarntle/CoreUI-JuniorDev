@@ -1,7 +1,7 @@
 <template>
     <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter
-            class="table-hover table-bordered table-alternate-background table-responsive" clickable-rows
+            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows
             :items-per-page="5" items-per-page-select pagination columnSorter
             :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
                 striped: true,
@@ -48,6 +48,7 @@
     max-width: 20px;
     max-height: 20px;
 }
+
 
 .style-username {
     color: #5E5ADB;
@@ -99,40 +100,40 @@ export default {
             {
                 key: 'user_username',
                 label: 'USERNAME',
-                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '3%'},
 
 
             },
             {
                 key: 'user_first_name',
                 label: 'FIRSTNAME',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2.5%' },
 
 
             },
             {
                 key: 'user_last_name',
                 label: 'LASTNAME',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2.5%' },
 
             },
             {
                 key: 'user_email',
                 label: 'EMAIL',
-                _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '6.5%' },
 
             },
             {
                 key: 'user_phone_number',
                 label: 'NUMBER',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2.5%' },
 
 
             },
             {
                 key: 'user_role',
                 label: 'ROLE',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '4%' },
 
 
             },
