@@ -11,11 +11,14 @@
             <template #user_username="{ item }">
                 <td class="style-username" @click="editAccount(item, index)">{{ item.user_username }}</td>
             </template>
+            <template #user_last_name="{ item }">
+                <td >{{ item.user_last_name }}</td>
+            </template> 
             <template #user_phone_number="{ item }">
-                <td> {{ formatPhoneNumber(item.user_phone_number) }}</td>
+                <td class="text-center"> {{ formatPhoneNumber(item.user_phone_number) }}</td>
             </template>
             <template #user_role="{ item }">
-                <td> {{ formatRole(item.user_role) }}</td>
+                <td class="text-center"> {{ formatRole(item.user_role) }}</td>
             </template>    
 
             <template #MORE="{ item, index }">
@@ -114,7 +117,7 @@ export default {
             {
                 key: 'user_last_name',
                 label: 'LASTNAME',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2.5%' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2%' },
 
             },
             {
@@ -126,14 +129,14 @@ export default {
             {
                 key: 'user_phone_number',
                 label: 'NUMBER',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2.5%' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '4%' },
 
 
             },
             {
                 key: 'user_role',
                 label: 'ROLE',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '4%' },
+                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '5%' },
 
 
             },
@@ -239,9 +242,7 @@ export default {
             }
         },
         formatPhoneNumber(phoneNumber) {
-            const cleaned = ('' + phoneNumber).replace(/\D/g, ''); // ทำความสะอาดข้อมูล ลบทุกอย่างที่ไม่ใช่ตัวเลข
-            const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/); // นำตัวเลขมาจับคู่ตามรูปแบบ XXXXXXXXXX
-
+            const match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/); // นำตัวเลขมาจับคู่ตามรูปแบบ XXXXXXXXXX
             if (match) {
                 return match[1] + ' ' + match[2] + ' ' + match[3];
             }
