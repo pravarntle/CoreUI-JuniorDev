@@ -1,7 +1,7 @@
 <template>
   <div>
     <CCard class="p-2 rounded-4">
-      <CCardHeader class="bg-white border-white mb-5 ">
+      <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center ">
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="images_Ticket" />
@@ -14,21 +14,18 @@
           <CSmartTable clickableRows :tableProps="{
             striped: true,
             hover: true,
-          }" :activePage="2" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          }" :activePage="1" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
             class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
             :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
 
             <template #ticket_id="{ item }">
               <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.ticket_id }}</td>
-          </template>
-
-            <template #owner="{ item }">
-              <td>{{ item.owner }}</td>
             </template>
-            <template #avatar="{ item }">
-              <td>
-                <CAvatar :src="$withBase(`/images/avatars/${item.avatar}`)" />
-              </td>
+            <template #start_date="{ item }">
+                <td> {{ formatDate(item.start_date) }}</td>
+            </template>
+            <template #owner="{ item }">
+              <td class="text-center">{{ item.owner }}</td>
             </template>
             <template #status="{ item }">
               <td>
@@ -48,16 +45,12 @@
             <template #MORE="{ item, index }">
               <td class="text-center">
                 <div class="style-action">                  
-                  <CButton size="sm" color="primary" variant="outline" square 
+                  <CButton size="sm mx-1" color="primary" variant="outline" square 
                     @click="toggleButton(item, index)">
-                    <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
-                    alt="Bookmark Icon" /> -->
                     Details
                   </CButton>
                   <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
                     @click="contactIt(item, index)">
-                    <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
-                    alt="Bookmark Icon" /> -->
                     Show
                   </CButton>
                 </div>
@@ -125,6 +118,7 @@ import ModalOpen from '@/assets/images/modal_open.png'
 import ModalPending from '@/assets/images/modal_pending.png'
 import ModalClosed from '@/assets/images/modal_closed.png'
 
+
 export default {
   name: 'comment',
   components: {
@@ -158,12 +152,12 @@ export default {
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '9%' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '7%' },
       },
       {
         key: 'status',
@@ -173,7 +167,7 @@ export default {
       {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '7%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '7%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1.5%' },
       },
       {
         key: 'start_date',
@@ -190,7 +184,7 @@ export default {
       {
         key: 'MORE',
         label: 'ACTION',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px' },
+        _style: { width: '12%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '50px' },
         filter: false,
         sorter: false,
       },
@@ -256,10 +250,12 @@ export default {
 
       try {
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, 
+        {
           "populate": ["tkt_acc", "tkt_act",],
           "where": {
-            "tkt_accept": userId
+            "tkt_accept": userId,
+             tkt_status: { $ne: 'Cancel' },
           }
 
         });
@@ -345,6 +341,17 @@ export default {
         console.error('Error fetching data:', error);
       }
     },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    formatDate_version2: function(dateString) {
+      return new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }).format(new Date(dateString)).replace(/(\d+) (\w+), (\d+)/, '$1 $2, $3');
+    },
   },
   mounted() {
     this.getTicket();
@@ -355,15 +362,6 @@ export default {
 
 
 <style scoped>
-.mb-3 {
-  width: 943px;
-  height: 691px;
-  flex-shrink: 0;
-  border-radius: 18px;
-  background: #fff;
-  max-width: 100%;
-  display: flex;
-}
 
 .mb-1 {
   border-radius: 18px;

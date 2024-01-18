@@ -1,7 +1,7 @@
 <template>
   <div>
     <CCard class="p-2 rounded-4">
-      <CCardHeader class="bg-white border-white mb-5 ">
+      <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
@@ -23,7 +23,7 @@
               <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.ticket_id }}</td>
           </template>
             <template #owner="{ item }">
-              <td>{{ item.owner }}</td>
+              <td class="text-center">{{ item.owner }}</td>
             </template>
 
             <template #status="{ item }">
@@ -36,6 +36,9 @@
                 <CBadge :color="getBadgeTicketType(item.TYPE)">{{ item.TYPE }}</CBadge>
               </td>
             </template>
+            <template #start_date="{ item }">
+                <td> {{ formatDate(item.start_date) }}</td>
+            </template>
             <template #book_mark="{ item, index }">
               <td class="text-center">
                 <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)" class="style-bookmark">
@@ -46,7 +49,7 @@
             <template #MORE="{ item, index }">
               <td class="text-center">
                 <div class="style-action">                  
-                  <CButton size="sm" color="primary" variant="outline" square 
+                  <CButton size="sm mx-1" color="primary" variant="outline" square 
                     @click="toggleButton(item, index)">
                     <!-- <img :src="IconshowTicket" style="max-width: 20px; max-height: 20px; "
                     alt="Bookmark Icon" /> -->
@@ -116,15 +119,6 @@
   </div>
 </template>
 <style scoped>
-.mb-3 {
-  width: 943px;
-  height: 691px;
-  flex-shrink: 0;
-  border-radius: 18px;
-  background: #fff;
-  max-width: 100%;
-  display: flex;
-}
 
 .mb-1 {
   border-radius: 18px;
@@ -249,12 +243,12 @@ export default {
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '9%' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '18%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '7%' },
       },
       {
         key: 'status',
@@ -281,7 +275,7 @@ export default {
       {
         key: 'MORE',
         label: 'ACTION',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px' },
+        _style: { width: '12%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '50px' },
         filter: false,
         sorter: false,
       },
@@ -298,14 +292,6 @@ export default {
           return 'danger'
         default:
           return 'secondary' // Return a default color if none of the cases match.
-      }
-    }
-
-    const getBadgeTicketType = (tkt_types) => {
-      switch (tkt_types) {
-        case 'Software':
-          return 'primary'
-        default: 'secendary'
       }
     }
 
@@ -464,6 +450,10 @@ export default {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
     },
   },
   mounted() {
