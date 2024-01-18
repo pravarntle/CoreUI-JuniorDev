@@ -1,7 +1,7 @@
 <template>
     <div>
         <CCard class="p-2 rounded-4">
-            <CCardHeader class="bg-white border-white mb-5 d-flex justify-content-between align-items-center">
+            <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
                 <div class="d-inline ms-2">
                     <div id="underline_header">
                         <CImage class="me-2 align-middle" id="custom_icon_header" :src="Iconaccountlist" />
@@ -10,16 +10,13 @@
                 </div>
                 <div>
                     <CButton class="btn btn-primary btn-block btn-long" color="info" @click="createAccount()">
-
                         <CImage class="style-icon-create-account" :src="Iconcreateaccount" />
                         <b class="font-button">Create</b>
                     </CButton>
                 </div>
             </CCardHeader>
             <CCardBody>
-
                 <UserList />
-
             </CCardBody>
         </CCard>
     </div>
@@ -33,21 +30,28 @@ import Iconcreateaccount from '@/assets/images/Icon_addTicket.png'
 import UserList from '@/components/UserList.vue'
 import axios from 'axios'
 
-
 export default {
-    components: { CFormLabel, CButton, CImage, CCard, CCardBody, CCardHeader, UserList, CIcon },
+    components: {
+        CFormLabel,
+        CButton,
+        CImage,
+        CCard,
+        CCardBody,
+        CCardHeader,
+        UserList,
+        CIcon,
+    },
     data() {
         return {
             Iconaccountlist: Iconaccountlist,
             Iconcreateaccount: Iconcreateaccount,
-        };
+        }
     },
     methods: {
         async createAccount() {
-            this.$router.push({ name: 'ST - add_account' });
+            this.$router.push({ name: 'ST - add_account' })
         },
     },
-
 }
 </script>
 <style scoped>
@@ -80,7 +84,6 @@ export default {
 }
 
 .mb-2 {
-
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -93,9 +96,6 @@ export default {
     padding-left: 50px;
 }
 
-.mb-3 {
-    padding-left: 150px;
-}
 
 .footer {
     display: flex;
@@ -110,7 +110,7 @@ export default {
 }
 
 .font-button {
-    color:white;
+    color: white;
 }
 
 .btn-sec {
@@ -145,12 +145,11 @@ export default {
     width: 110px;
     height: 45px;
     border-radius: 15px;
-    
 }
 
 #custom_icon_header {
     width: auto;
-    height: 40px;
+    height: 35px;
 }
 
 #underline_header {
