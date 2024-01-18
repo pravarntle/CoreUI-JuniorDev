@@ -105,7 +105,7 @@ export default {
       form: {
         pri_name_eng: '',
         pri_name_th: '',
-        pri_level: '',
+        pri_level: '1',
         pri_color: '',
         pri_description: '',
       },
@@ -127,12 +127,15 @@ export default {
       this.$router.push({ name: 'ST - priority_list Ticket' });
     },
     async onSave() {
+      console.log("1")
+      console.log(this.form)
       try {
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_priorities`, {
             data: this.form,
           })
           .then((result) => {
+            console.log(result)
             this.$router.push('/support-ticket/admin/priority_list')
           })
           .catch((err) => {
