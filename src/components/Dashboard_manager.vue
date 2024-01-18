@@ -2,12 +2,6 @@
   <div class="box">
     <CRow>
       <CCol>
-      <count_ticket />
-      </CCol>
-    </CRow>
-
-    <CRow>
-      <CCol>
         <CCard class="mt-3 chart-container rounded-4">
           <CCardTitle>
             <CButton
@@ -160,26 +154,6 @@
       </CCol>
     </CRow>
 
-    <CRow>
-      <CCol>
-        <CCard class="mt-3">
-          <CCardTitle>
-            <CButton
-              variant="ghost"
-              class="border border-0 bg-body ms-auto d-flex"
-              ><img :src="Close_fullscreen"
-            /></CButton>
-          </CCardTitle>
-          <CCardBody>
-            <h1>Priority Category</h1>
-            
-            <hr />
-            <PriorityChart />
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
-
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
       <h1
@@ -226,10 +200,10 @@ import Close_fullscreen from '@/assets/images/close_fullscreen.png'
 import UserList from '@/components/UserList.vue'
 import moment from 'moment'
 import PriorityChart from '@/components/PriorityBar.vue'
-import UserrolesChartVue from '@/components/Dashboard_manager.vue'
 
 export default {
-  components: { CRow, CCol, CChart, count_ticket, CIcon, PriorityChart },
+  name: 'dashboard_manager',
+  components: { CRow, CCol, CChart, count_ticket, CIcon,},
   setup() {
     return {
       Open_in_full,
