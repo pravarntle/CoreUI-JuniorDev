@@ -81,7 +81,7 @@
           <!-- Ticket Priority  -->
         </CCard>
 
-        <CCard class="mt-3 chart-container">
+        <CCard class="mt-3 pt-2 pb-4 chart-container">
           <CCardBody>
             <CCardTitle class="d-flex fs-2"
               ><b>Ticket Priority</b>

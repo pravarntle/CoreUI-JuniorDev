@@ -1,12 +1,6 @@
 <template>
   <CCard class="p-3 mb-2 rounded-4 mx-auto">
-  <CCardHeader class="bg-white border-white mb-4">
-    <div id="LineHeadCard">
-      <h1 class="d-inline align-middle">
-        <CImage id="Icondashboard" :src="Icondashboard" />
-        <b>Dashboard</b>
-      </h1>
-    </div>
+  <CCardHeader class="bg-white border-white mb-1">
   </CCardHeader>
     <CRow class=" mb-2 justify-content-center" >
       <CCol :xs="12" :sm="6" :md="4" :lg="4" >
