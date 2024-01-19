@@ -55,7 +55,7 @@
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -90,8 +90,6 @@
                           }"
                         />
                       </CCol>
-
-                      <CCol class="vl"></CCol>
                       <!-- Chart User status -->
                       <CCol xxl="2" xl="6">
                         <CCardText class="pt-2 fs-2">User Status</CCardText>
@@ -119,7 +117,7 @@
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -153,6 +151,7 @@
         </CCard>
       </CCol>
     </CRow>
+      
 
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
@@ -344,7 +343,7 @@ li {
 
 .list_roles {
   list-style-type: none;
-  width: 80px;
+  width: 100px;
 }
 
 .icon_new_ticket {
