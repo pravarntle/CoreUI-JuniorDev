@@ -5,7 +5,7 @@
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_bookmark" />
-            <h2 class="d-inline align-middle"><b>My Bookmark Task</b></h2>
+            <h2 class="d-inline align-middle"><b>Bookmark Tasks</b></h2>
           </div>
         </div>
       </CCardHeader>

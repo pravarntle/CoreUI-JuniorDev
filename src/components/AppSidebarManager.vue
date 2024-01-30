@@ -21,7 +21,7 @@
 
       <CNavItem href="/#/support-ticket/my_ticket" style="position: relative" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;" />
-        <font id="font-sidebar">My Ticket</font>
+        <font id="font-sidebar">My Tickets</font>
       </CNavItem>
 
       <hr id="custom-underline" />
