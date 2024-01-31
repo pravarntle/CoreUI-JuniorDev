@@ -108,21 +108,8 @@ export default {
         // toastProp: [],
       };
     },
-    created() {
-      this.getImage()
-      // this.toastProp.push({
-      //   content: 'OK'
-      // })
-    },
+    
     methods: {
-      async getImage() {
-        try {
-          const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_files/652c0247d44e6b62f7b1f65f`)
-          this.dataImageURL = `data:${dataResponse.data.filetype};base64,${dataResponse.data.image}`
-        } catch (error) {
-          
-        }
-      },
       vaildateBeforeSave() {
         let error = false
         if (this.form.username === '') {
@@ -149,7 +136,7 @@ export default {
         } else {
           try {
             const response = await axios.post(`${process.env.VUE_APP_URL}/auth/login`, { username: this.form.username, password: this.form.password })
-            console.log(response);
+            console.log(`${process.env.VUE_APP_URL}/auth/login`);
             const user = {
               id: response.data.user.id, 
               USERNAME: response.data.user.USERNAME,
