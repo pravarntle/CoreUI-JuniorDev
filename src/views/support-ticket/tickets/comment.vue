@@ -681,6 +681,9 @@ export default {
     this.getTicket();
     this.getComment(); 
     this.getAcount(); 
+    setInterval(() => {
+      this.getComment();
+    }, 1000);
 
   },
 

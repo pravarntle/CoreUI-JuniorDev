@@ -193,7 +193,7 @@
                   </CModal>
                 </CCol>
 
-                <CCol class="mb-2 text-center">
+                <!-- <CCol class="mb-2 text-center">
                   <CButton
                     class="btn-sec btn-assign"
                     @click="() => {
@@ -230,7 +230,7 @@
                       <CButton color="primary">Save changes</CButton>
                     </CModalFooter>
                   </CModal>
-                </CCol>
+                </CCol> -->
               </CRow>
             </CCollapse>
           </CCardBody>
@@ -931,7 +931,8 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
+    
   },
   mounted() {
     const itemId = this.$route.params.itemId
@@ -940,7 +941,9 @@ export default {
     this.getTicket()
     this.getComment()
     this.getAcount()
-    console.log(this.stauts);
+    setInterval(() => {
+      this.getComment();
+    }, 1000);
   },
 }
 </script>

@@ -7,10 +7,16 @@
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
             <div class="text-start p-1 mt-1" >
-              <CAvatar
+              
+              <CButton variant="outline" size="sm">
+                <CImage  
                 class="Arrow_Left text-left"
                 :src="Arrow_Left"
-              />
+                @click="backbutton"
+                >
+                </CImage>
+
+              </CButton>
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
@@ -341,6 +347,10 @@ export default {
         console.log(error)
       }
     },
+    async backbutton(){
+      this.$router.push({ name: 'ST - it_dashboard'});
+      console.log(this.$route);
+    }
   },
   mounted() {
     const ticketId = this.$route.params.itemId

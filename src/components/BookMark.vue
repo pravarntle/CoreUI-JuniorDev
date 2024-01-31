@@ -64,10 +64,10 @@
                 </CModalHeader>
                 <CModalBody>
                   <CRow>
-                    <CImage v-if="selectedTicket.STATUS === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
-                    <CImage v-if="selectedTicket.STATUS === 'Closed'" id="modalClosed" :src="ModalClosed" />
-                    <CImage v-if="selectedTicket.STATUS === 'Open'" id="modalOpen" :src="ModalOpen" />
-                    <CImage v-if="selectedTicket.STATUS === 'Pending'" id="modalPending" :src="ModalPending" />
+                    <CImage v-if="selectedTicket.status === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                    <CImage v-if="selectedTicket.status === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                    <CImage v-if="selectedTicket.status === 'Open'" id="modalOpen" :src="ModalOpen" />
+                    <CImage v-if="selectedTicket.status === 'Pending'" id="modalPending" :src="ModalPending" />
                   </CRow>
                   <hr>
                   <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex" class="text-center">
@@ -381,14 +381,13 @@ export default {
       this.selectedTicket = item;
       this.getHistoryStatus(item);
       this.visibleShow = true;
+
     },
     async getHistoryStatus(item, index) {
       try {
 
         this.visibleShow = true;
-        console.log('asdasd', item)
         this.contactItItem = item;
-        console.log('assssssssss', this.contactItItem)
         const itemTicket = item._id.toString();
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_modifications`, {
           where: {

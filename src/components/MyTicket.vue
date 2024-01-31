@@ -1,5 +1,4 @@
 <template>
-  <div>
     <CCard class="p-2 rounded-4">
       <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
         <div class="d-inline ms-2">
@@ -113,7 +112,6 @@
         </CToastBody>
       </CToast>
     </CToaster>
-  </div>
 </template>
 <style scoped>
 .table-responsive {
@@ -415,7 +413,7 @@ export default {
             MORE: false,
           };
         });
-      } catch (error) {
+       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },

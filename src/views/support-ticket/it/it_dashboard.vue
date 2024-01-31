@@ -417,7 +417,6 @@ export default {
       const itemId = item._id.toString()
 
       this.$router.push({ name: 'ST - it/it_accept_task', params: { itemId } })
-      console.log('Item ID:', itemId)
     },
     async buttonCancel(item) {
       try {
