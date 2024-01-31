@@ -1,166 +1,206 @@
 <template>
-  <CForm
-  class="row g-3 needs-validation" 
-    novalidate 
-    :validated="validatedCustom01" 
-    @submit="handleSubmitCustom01"
-  >
-    <div class="px-5 bg-white rounded" style="width: 100%; height: 845px">
-      <!-- Head Priorities List -->
-      <div style="width: 60%">
-        <br />
-        <CRow class="e-3">
-          <h1
-            style="
-              width: 238px;
-              border-bottom: 2px solid transparent;
-              border-image: linear-gradient(to right, red, blue);
-              border-image-slice: 1;
-            "
-          >
-            Edit Priority
-          </h1>
+  <CCard class="px-5 p-3 rounded-4 mx-auto row g-3 needs-validation" novalidate :validated="validatedCustom01"
+    @submit="handleSubmitCustom01">
+    <!-- Head Priorities List -->
+    <CCardHeader class="bg-white border-white ">
+      <div class="d-inline ms-2">
+        <div id="LineHeadCard">
+          <CImage id="custom_icon_header" :src="Icon_Priority" alt="Icon Priority Image"> </CImage>
+          <h1 class="d-inline align-middle">Edit Priority</h1>
+        </div>
+      </div>
+    </CCardHeader>
+    <CCardBody class="px-5">
+      <div>
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-7 col-md-12 purple">
+            <h1>Priority Info</h1>
+          </div>
         </CRow>
-        <br />
-        <div class="purple">
-          <h1>Priority Info</h1>
-        </div>
-        <br />
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-7 col-md-12">
+            <CFormLabel for="priorityNameTha">
+              <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
+            </CFormLabel>
+
+            <CInputGroup>
+              <CFormInput v-model="form.pri_name_th" placeholder="สำคัญมากที่สุด" aria-label="priorityNameTha"
+                id="Form_border" />
+            </CInputGroup>
+          </div>
+        </CRow>
+        <br>
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-7 col-md-12">
+            <CFormLabel for="priorityNameEng">
+              <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
+            </CFormLabel>
+            <CInputGroup>
+              <CFormInput v-model="form.pri_name_eng" placeholder="Very High" aria-label="priorityNameEng"
+                id="Form_border" />
+            </CInputGroup>
+          </div>
+        </CRow>
+        <br>
         <div>
-          <CFormLabel for="priorityNameTha"
-            ><h4>Priority Name(Thai)*</h4></CFormLabel
-          >
-          <CInputGroup>
-            <CFormInput
-              v-model="form.pri_name_th"
-              placeholder="สำคัญมากที่สุด"
-              aria-label="priorityNameTha"
-              required
-            />
-          </CInputGroup>
-        </div>
-        <br />
-        <div>
-          <CFormLabel for="priorityNameEng"
-            ><h4>Priority Name(English)*</h4></CFormLabel
-          >
-          <CInputGroup>
-            <CFormInput 
-              v-model="form.pri_name_eng"
-              placeholder="Very High" 
-              aria-label="priorityNameEng"
-              required
-              />
-          </CInputGroup>
-        </div>
-        <br />
-        <div class="grid gap-0 column-gap-3">
-          <CRow class="justify-content-between">
-            <CCol xs="4">
-              <CFormLabel for="priorityLevel"
-                ><h4>Level of Priority*</h4></CFormLabel
-              >
-            </CCol>
-            <CCol xs="4">
-              <CFormLabel for="priorityLevel"><h4>Color*</h4></CFormLabel>
-            </CCol>
-          </CRow>
-          <CRow class="justify-content-between">
-            <CCol xs="4">
-              <CFormSelect
-                v-model="form.pri_level"
-                aria-label="Default select example"
-                :options="levelOptions"
-              >
-              </CFormSelect>
-            </CCol>
-            <CCol xs="4">
-              <div
-                class="border border-light rounded align-items-center row"
-                style="width: 200px"
-              >
-                <link
-                  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-                  rel="stylesheet"
-                />
-                <div class="color-picker end-0" style="align-items: center">
-                  <input
-                    type="color"
-                    v-model="form.pri_color"
-                    id="colorPicker"
-                    class="mt-2"
-                    style="width: 150px"
-                  />
-                  <label for="colorPicker"
-                    ><i class="bx bxs-color-fill"></i
-                  ></label>
-                </div>
-              </div>
-            </CCol>
+          <CRow class="mb-2">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-7 col-md-12">
+              <CRow class="justify-content-between">
+                <CCol xs="4">
+                  <CFormLabel for="priorityLevel">
+                    <h4>Level of Priority<span id="Icon_force">*</span></h4>
+                  </CFormLabel>
+                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level"></CFormInput>
+                </CCol>
+                <CCol xs="4">
+                  <CFormLabel for="priorityLevel">
+                    <h4>Color<span id="Icon_force">*</span></h4>
+                  </CFormLabel>
+                  <div class="border rounded align-items-center" id="Form_border">
+                    <div class="color-picker ">
+                      <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2" />
+                      <label for="colorPicker">
+                        <CIcon icon="cilColorFill" id="iconPicker" />
+                      </label>
+                    </div>
+                  </div>
+                </CCol>
+              </CRow>
+            </div>
           </CRow>
         </div>
-        <br />
-        <CForm>
-          <CFormLabel for="desc"><h4>Description*</h4></CFormLabel>
-          <CFormTextarea
-            class="mb-3"
-            v-model="form.pri_description"
-            required
-          ></CFormTextarea>
-        </CForm>
-        <br />
-        <CRow class="d-flex justify-content-center">
-          <CCol xs="4">
-            <CButton color="secondary" shape="rounded-pill" size="xl"
-              @click="cancel">Cancel</CButton
-            >
-          </CCol>
-          <CCol xs="4">
-            <CButton
-              class="textButton"
-              color="success"
-              shape="rounded-pill"
-              size="xl"
-              type="submit"
-              @click="onSave"
-              >Submit</CButton
-            >
-          </CCol>
+        <CRow class="mb-2">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-7 col-md-12">
+            <CForm>
+              <CFormLabel for="desc">
+                <h4>Description<span id="Icon_force">*</span></h4>
+              </CFormLabel>
+              <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description"
+                placeholder="รอดำเนินการภายใน 8 ชั่วโมง"></CFormTextarea>
+            </CForm>
+            <br>
+            <CRow class="d-flex justify-content-center">
+              <CCol class="col-8 mx-auto">
+                <CButton color="dark" id="btn_cancel" @click="cancel">Cancel</CButton>
+                <CButton color="success" id="btn_submit" @click="onSave">Submit</CButton>
+              </CCol>
+            </CRow>
+          </div>
         </CRow>
       </div>
-    </div>
-  </CForm>
+    </CCardBody>
+  </CCard>
 </template>
-<style>
+<style scoped>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 textButton {
   color: white;
 }
+
 .purple {
-  color: #5e5adb;
+  color: #5E5ADB;
 }
-.black {
-  color: #303030;
+
+:root {
+  --cui-border-width: 2px;
+  --cui-border-color: #d8dbe0;
 }
-.color-picker {
-  font-size: 24px;
+
+h4 {
+  color: black;
+}
+
+#btn_cancel {
+  margin: 5px;
+  border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+
+#btn_submit {
+  margin: 5px;
+  border-radius: 20px;
+  width: 182px;
+  height: 50px;
+  flex-shrink: 0;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+
+#Icon_force {
+  color: red;
+}
+
+#LineHeadCard {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+}
+
+#Form_border {
+  width: 100%;
+}
+
+#colorPicker {
+  margin-left: 5%;
+  width: 150px;
+  max-width: auto;
+  border-style: none;
+  border-color: #FFFFFF;
+  border: none;
+}
+
+#iconPicker {
+  margin-left: 50%;
+  margin-bottom: 50%;
+}
+
+#Description_Text {
+  border-width: 2px;
+  height: 100px;
+}
+
+#custom_icon_header {
+  width: auto;
+  height: 60px;
 }
 </style>
 
 <script>
 import axios from 'axios'
-
+import Icon_Priority from '../../../assets/images/Icon_Priority.png';
 export default {
   data: () => {
     return {
-      form:{
+      form: {
         pri_name_eng: '',
         pri_name_th: '',
         pri_level: '',
-        pri_color:'',
-        pri_description:'',
+        pri_color: '',
+        pri_description: '',
       },
-      priorityId:'',
+      priorityId: '',
       validatedCustom01: null,
+      Icon_Priority,
     }
   },
   methods: {
@@ -194,23 +234,23 @@ export default {
     },
     async onSave() {
       const priorityId = this.priorityId
-        try {
-          await axios
-            .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${priorityId}`, {
-              data: this.form,
-            })
-            .then((result) => {
-              this.$router.push('/support-ticket/admin/priority_list')
-            })
-            .catch((err) => {
-              console.log(error)
-            })
-          console.log("1")
+      try {
+        await axios
+          .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${priorityId}`, {
+            data: this.form,
+          })
+          .then((result) => {
+            this.$router.push('/support-ticket/admin/priority_list')
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+        console.log("1")
 
-        } catch (error) {
-          console.log(error)
-        }
-      
+      } catch (error) {
+        console.log(error)
+      }
+
     },
   },
   mounted() {
@@ -221,7 +261,7 @@ export default {
     this.levelOptions = [
       { label: '1', value: '1' },
       { label: '2', value: '2' },
-      { label: '3', value: '3'},
+      { label: '3', value: '3' },
     ];
   }
 }

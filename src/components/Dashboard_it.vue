@@ -1,70 +1,79 @@
 <template>
   <div class="box">
-    <CRow class="mb-2">
-      <CCol sm="12">
-        <count_ticket />
-      </CCol>
-    </CRow>
-
     <CRow>
       <CCol sm="8">
         <CCard class="mt-3 chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex fs-2"><b>Category Chart</b>
-              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
-                  visibleA = !visibleA
-                  visibleB = !visibleB
-                }
-                "><img :src="Close_fullscreen" /></CButton>
+            <CCardTitle class="d-flex fs-2"
+              ><b>Category Chart</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                @click="
+                  () => {
+                    visibleA = !visibleA
+                    visibleB = !visibleB
+                  }
+                "
+                ><img :src="Close_fullscreen"
+              /></CButton>
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <CRow>
                 <CCol>
-                  <CCardSubtitle class="text-muted fs-1">All Ticket</CCardSubtitle>
-                  <CCardText class="fs-1"><b>{{ countAll }}</b></CCardText>
+                  <CCardSubtitle class="text-muted fs-1"
+                    >All Ticket</CCardSubtitle
+                  >
+                  <CCardText class="fs-1"
+                    ><b>{{ countAll }}</b></CCardText
+                  >
                   <hr />
                   <CCol class="d-flex align-items-center">
-                    
-                          <ul>
-                            <li id="software">
-                              <span class="me-2">Software </span>
-                              <span class="ms-5 ">{{countSoftware}}</span>
-                            </li>
-                            <li id="hardware">
-                              <span class="me-2">Hardware</span>
-                              <span class="ms-5">{{ countHardware }}</span>
-                            </li>
-                            <li id="ServiceRequest">
-                              <span>Service Request</span>
-                              <span class="ms-2 p-1">{{countServiceRequest}}</span>
-                            </li>
-                          </ul>
+                    <ul>
+                      <li id="software">
+                        <span class="me-2">Software </span>
+                        <span class="ms-5">{{ countSoftware }}</span>
+                      </li>
+                      <li id="hardware">
+                        <span class="me-2">Hardware</span>
+                        <span class="ms-5">{{ countHardware }}</span>
+                      </li>
+                      <li id="ServiceRequest">
+                        <span>Service Request</span>
+                        <span class="ms-2 p-1">{{ countServiceRequest }}</span>
+                      </li>
+                    </ul>
                   </CCol>
                 </CCol>
                 <CCol>
-                  <CChart class="pie_chart" type="pie" :data="{
-                    labels: ['Software', 'Hardware', 'Service Request'],
-                    datasets: [
-                      {
-                        backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
-                        data: [
-                          countSoftware,
-                          countHardware,
-                          countServiceRequest,
-                        ],
+                  <CChart
+                    class="pie_chart"
+                    type="pie"
+                    :data="{
+                      labels: ['Software', 'Hardware', 'Service Request'],
+                      datasets: [
+                        {
+                          backgroundColor: ['#0071ff', '#f9a825', '#ee5731'],
+                          data: [
+                            countSoftware,
+                            countHardware,
+                            countServiceRequest,
+                          ],
+                        },
+                      ],
+                    }"
+                    :options="{
+                      plugins: {
+                        title: {
+                          display: true,
+                          text: 'All ticket',
+                        },
+                        legend: {
+                          display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
+                        },
                       },
-                    ],
-                  }" :options="{
-                    plugins: {
-                      title: {
-                        display: true,
-                        text: 'All ticket',
-                      },
-                      legend: {
-                        display: false, // ตั้งค่าเป็น false เพื่อที่จะซ่อน Legend
-                      },
-                      },
-                    }" />
+                    }"
+                  />
                 </CCol>
               </CRow>
             </CCollapse>
@@ -74,12 +83,19 @@
 
         <CCard class="mt-3 chart-container">
           <CCardBody>
-            <CCardTitle class="d-flex fs-2"><b>Ticket Priority</b>
-              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
-                  visibleA = !visibleA
-                  visibleB = !visibleB
-                }
-                "><img :src="Close_fullscreen" /></CButton>
+            <CCardTitle class="d-flex fs-2"
+              ><b>Ticket Priority</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                @click="
+                  () => {
+                    visibleA = !visibleA
+                    visibleB = !visibleB
+                  }
+                "
+                ><img :src="Close_fullscreen"
+              /></CButton>
             </CCardTitle>
             <CCollapse :visible="visibleA">
               <div class="row align-items-center border border-white">
@@ -87,10 +103,18 @@
                   <h6>High</h6>
                 </div>
                 <div class="col-md-7 col-sm-12 ps-5">
-                  <input class="w-100" type="range" :value="percentHigh" min="1" max="100"
-                    oninput="this.nextElementSibling.value = this.value" />
+                  <input
+                    class="w-100"
+                    type="range"
+                    :value="percentHigh"
+                    min="1"
+                    max="100"
+                    oninput="this.nextElementSibling.value = this.value"
+                  />
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5">{{ percentHigh }}%</output>
+                <output class="col-md-3 col-sm-12 ps-5"
+                  >{{ percentHigh }}%</output
+                >
               </div>
 
               <br />
@@ -99,10 +123,18 @@
                   <h6>Medium</h6>
                 </div>
                 <div class="col-md-7 col-sm-12 ps-5">
-                  <input class="w-100" type="range" :value="percentMedium" min="1" max="100"
-                    oninput="this.nextElementSibling.value = this.value" />
+                  <input
+                    class="w-100"
+                    type="range"
+                    :value="percentMedium"
+                    min="1"
+                    max="100"
+                    oninput="this.nextElementSibling.value = this.value"
+                  />
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5">{{ percentMedium }}%</output>
+                <output class="col-md-3 col-sm-12 ps-5"
+                  >{{ percentMedium }}%</output
+                >
               </div>
               <br />
               <div class="row align-items-center border border-white">
@@ -110,10 +142,18 @@
                   <h6>Low</h6>
                 </div>
                 <div class="col-md-7 col-sm-12 ps-5">
-                  <input class="w-100" type="range" :value="percentLow" min="1" max="100"
-                    oninput="this.nextElementSibling.value = this.value" />
+                  <input
+                    class="w-100"
+                    type="range"
+                    :value="percentLow"
+                    min="1"
+                    max="100"
+                    oninput="this.nextElementSibling.value = this.value"
+                  />
                 </div>
-                <output class="col-md-3 col-sm-12 ps-5">{{ percentLow }}%</output>
+                <output class="col-md-3 col-sm-12 ps-5"
+                  >{{ percentLow }}%</output
+                >
               </div>
             </CCollapse>
           </CCardBody>
@@ -124,23 +164,30 @@
       <CCol sm="4">
         <CCard class="mt-3 chart-container">
           <CCardBody class="ps-4">
-            <CCardTitle class="d-flex fs-2"><b>Support Tracker</b>
-              <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
-                  visibleA = !visibleA
-                  visibleB = !visibleB
-                }
-                "><img :src="Close_fullscreen" /></CButton>
+            <CCardTitle class="d-flex fs-2"
+              ><b>Support Tracker</b>
+              <CButton
+                variant="ghost"
+                class="border border-0 bg-body ms-auto d-flex"
+                @click="
+                  () => {
+                    visibleA = !visibleA
+                    visibleB = !visibleB
+                  }
+                "
+                ><img :src="Close_fullscreen"
+              /></CButton>
             </CCardTitle>
 
             <CCardText class="text-secondary"></CCardText>
-              <CFormInput
-                type="month"
-                id="selected-month" 
-                v-model="selectedMonth" 
-                @change="onMonthChange"
-              >
-                <template #label>Mont Pick</template>
-              </CFormInput>
+            <CFormInput
+              type="month"
+              id="selected-month"
+              v-model="selectedMonth"
+              @change="onMonthChange"
+            >
+              <template #label>Mont Pick</template>
+            </CFormInput>
             <CCollapse :visible="visibleA">
               <CCardText id="support_tracker" class="mt-0">
                 {{ countAllWeek }}
@@ -149,11 +196,7 @@
                 >
               </CCardText>
               <CRow class="d-flex align-items-center mb-4">
-                <CCol
-                  class="rounded-3 ms-1 pt-2 with-flex"
-                  id="new_ticket"
-
-                >
+                <CCol class="rounded-3 ms-1 pt-2 with-flex" id="new_ticket">
                   <CImage
                     :src="newticketicon"
                     alt="New Ticket Icon"
@@ -162,8 +205,7 @@
                     class="icon_new_ticket"
                   />
                   <CCol class="with-margin-left">
-                    <CCardText class="fs-5 mb-1"
-                    >New Tickets</CCardText>
+                    <CCardText class="fs-5 mb-1">New Tickets</CCardText>
                     <CCardText class="text-body-secondary">{{
                       countPendingWeek || 0
                     }}</CCardText>
@@ -172,7 +214,7 @@
               </CRow>
 
               <CRow class="d-flex align-items-center mb-4">
-                <CCol  class="rounded-3 ms-1 pt-2  with-flex" id="open_ticket">
+                <CCol class="rounded-3 ms-1 pt-2 with-flex" id="open_ticket">
                   <CImage
                     :src="OpenTickets"
                     alt="Open Ticket Icon"
@@ -181,18 +223,17 @@
                     class="icon_Open_ticket"
                   />
                   <CCol class="with-margin-left">
-                  <CCardText class="fs-5 mb-1"
-                    >Open Tickets
-                    <CCardText class="text-body-secondary">
-                      {{ countOpenWeek || 0 }}
+                    <CCardText class="fs-5 mb-1"
+                      >Open Tickets
+                      <CCardText class="text-body-secondary">
+                        {{ countOpenWeek || 0 }}
+                      </CCardText>
                     </CCardText>
-                  </CCardText>
+                  </CCol>
                 </CCol>
-                </CCol>
-
               </CRow>
               <CRow class="d-flex align-items-center mb-4">
-                <CCol class="rounded-3 ms-1 pt-2  with-flex" id="closed_ticket" >
+                <CCol class="rounded-3 ms-1 pt-2 with-flex" id="closed_ticket">
                   <CImage
                     :src="ClosedTicket"
                     alt="Closed Ticket Icon"
@@ -201,76 +242,21 @@
                     class="icon_Close_ticket"
                   />
                   <CCol class="with-margin-left">
-                  <CCardText class="fs-5 mb-1"
-                    >Closed Tickets
-                    <CCardText class="text-body-secondary">
-                      {{ countCloseWeek || 0 }}
+                    <CCardText class="fs-5 mb-1"
+                      >Closed Tickets
+                      <CCardText class="text-body-secondary">
+                        {{ countCloseWeek || 0 }}
+                      </CCardText>
                     </CCardText>
-                  </CCardText>
+                  </CCol>
                 </CCol>
-                </CCol>
-
               </CRow>
-              <br>
+              <br />
             </CCollapse>
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
-
-    <!-- inbox -->
-
-
-    <CCard class="p-2 rounded-4 d-block mt-4">
-      <CCardHeader class="bg-white border-white mb-2 ">
-        <div class="d-inline ms-2">
-          <div id="underline_header">
-            <CImage class="me-2 align-middle" id="custom_icon_header" :src="Iconinbox" />
-            <h2 class="d-inline align-middle"><b>Inbox</b></h2>
-          </div>
-        </div>
-      </CCardHeader>
-
-      <div class="table-responsive table-borderless">
-        <CSmartTable clickableRows :tableProps="{
-          striped: true,
-          hover: true,
-        }" :activePage="2" header :items="items" :columns="columns" columnFilter itemsPerPageSelect
-          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'priorities', state: 'asc' }"
-          pagination>
-          <template #ticket_id="{ item }">
-              <td id="style-ticket-id" @click="acceptTicket(item, index)">{{ item.ticket_id }}</td>
-          </template>
-          <template #priorities="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.priorities)">{{ item.priorities }}</CBadge>
-            </td>
-          </template>
-          <template #status="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.status)">
-                <li>{{ item.status }}</li>
-              </CBadge>
-            </td>
-          </template>
-          <template #type="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
-            </td>
-          </template>
-          <template #start_date="{ item }">
-                <td> {{ formatDate(item.start_date) }}</td>
-          </template>
-          <template #action="{ item, index }">
-            <td class="text-center">
-              <CButton color="primary" variant="outline" square size="xl" @click="acceptTicket(item, index)">
-                Detail
-              </CButton>
-            </td>
-          </template>
-        </CSmartTable>
-      </div>
-    </CCard>
   </div>
 </template>
 
@@ -291,100 +277,10 @@ import ClosedTicket from '@/assets/images/ClosedTicket.png'
 import Iconinbox from '@/assets/images/Icon_Inbox.png'
 
 export default {
+  name: 'dashboard_it',
   components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
-    const columns = [
-    {
-        key: 'number',
-        label: '#',
-        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-        filter: false,
-        sorter: false,
-
-      },
-      {
-        key: 'ticket_id',
-        label: 'TICKET ID',
-        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      {
-        key: 'title',
-        label: 'TITLE',
-        _style: { width: '25%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      {
-        key: 'owner',
-        label: 'OWNER',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      {
-        key: 'priorities',
-        label: 'PRIORITY',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      {
-        key: 'type',
-        label: 'TYPE',
-        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      {
-        key: 'start_date',
-        label: 'START DATE',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-      },
-      { key: 'action',
-        label: 'ACTION',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '35px'  },
-        filter: false,
-      },
-    ]
-    const items = ref([])
-    const getBadge = (tkt_status) => {
-      switch (tkt_status) {
-        case 'Pending':
-          return 'warning'
-        case 'Open':
-          return 'primary'
-        case 'Closed':
-          return 'danger'
-          case 'High':
-          return 'danger'
-        case 'Medium':
-          return 'warning'
-        case 'Low':
-          return 'success'  
-        default:
-          return 'secondary' // Return a default color if none of the cases match.
-      }
-    }
-
-    const toggleDetails = async (item) => {
-      item.BOOKMARK = !item.BOOKMARK
-      console.log(item.BOOKMARK)
-      console.log(item)
-      try {
-        const itemId = item._id.toString()
-        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(
-          `${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`,
-          {
-            data: {
-              tkt_book: item.BOOKMARK,
-            },
-          },
-        )
-
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ')
-      } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
-      }
-    }
     return {
-      columns,
-      items,
-      getBadge,
-      toggleDetails,
       Open_in_full,
       Close_fullscreen,
       icon,
@@ -420,6 +316,7 @@ export default {
       const itemId = item._id.toString()
 
       this.$router.push({ name: 'ST - it/it_accept_task', params: { itemId } })
+      console.log('Item ID:', itemId)
     },
     async buttonCancel(item) {
       try {
@@ -462,8 +359,9 @@ export default {
           number: index + 1, // หมายเลขแถว
           _id: element._id,
           ticket_id: element.tkt_number, // ข้อมูล TicketID จาก response
-          owner: `${element.tkt_act.act_first_name_eng
-            } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
+          owner: `${
+            element.tkt_act.act_first_name_eng
+          } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
           // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
           // ตามลำดับของ columns ในตัวแปร columns
           // เพิ่มเติมตามความต้องการ
@@ -506,9 +404,12 @@ export default {
           } else if (element.tkt_priorities == 'Low') {
             this.countLow++
           }
-          this.percentHigh = ((this.countHigh / this.countAll) * 100).toFixed(1);
-          this.percentMedium = ((this.countMedium / this.countAll) * 100).toFixed(1);
-          this.percentLow = ((this.countLow / this.countAll) * 100).toFixed(1);
+          this.percentHigh = ((this.countHigh / this.countAll) * 100).toFixed(1)
+          this.percentMedium = (
+            (this.countMedium / this.countAll) *
+            100
+          ).toFixed(1)
+          this.percentLow = ((this.countLow / this.countAll) * 100).toFixed(1)
         })
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -516,8 +417,12 @@ export default {
     },
     async getTicketOnMonth() {
       try {
-        const startDate = this.selectedMonth ? moment(this.selectedMonth).startOf('month').toISOString() : null;
-        const endDate = this.selectedMonth ? moment(this.selectedMonth).endOf('month').toISOString() : null;
+        const startDate = this.selectedMonth
+          ? moment(this.selectedMonth).startOf('month').toISOString()
+          : null
+        const endDate = this.selectedMonth
+          ? moment(this.selectedMonth).endOf('month').toISOString()
+          : null
 
         // Use startDate and endDate to filter tickets within the selected month and year
         const response = await axios.post(
@@ -532,7 +437,7 @@ export default {
             },
             populate: 'tkt_act',
           },
-        );
+        )
 
         response.data.forEach((element) => {
           this.countAllWeek++
@@ -556,18 +461,13 @@ export default {
       }
     },
     onMonthChange() {
-      this.countOpenWeek=0;
-      this.countAllWeek=0;
-      this.countPendingWeek=0;
-      this.countCloseWeek=0;
-      console.log(this.selectedMonth);
-      this.getTicketOnMonth();
+      this.countOpenWeek = 0
+      this.countAllWeek = 0
+      this.countPendingWeek = 0
+      this.countCloseWeek = 0
+      console.log(this.selectedMonth)
+      this.getTicketOnMonth()
     },
-    formatDate: function(dateString) {
-      const options = { day: '2-digit', month: 'short', year: 'numeric' };
-      return new Date(dateString).toLocaleDateString('en-GB', options);
-    },
-    
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
@@ -601,19 +501,8 @@ output {
   border-radius: 18px;
 }
 
-.table-responsive {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-@media (max-width: 1200px) {
-  .table-responsive {
-    overflow-x: auto;
-  }
-}
-
 #style-ticket-id {
-  color: #5E5ADB;
+  color: #5e5adb;
 }
 
 .style-bookmark {
@@ -688,7 +577,6 @@ output {
   font-size: 50px;
 }
 
-
 #custom_icon_header {
   width: auto;
   height: 30px;
@@ -703,37 +591,9 @@ output {
 }
 
 #style-icon-support-tracker {
-  width:"54";
-  height:"54";
+  width: '54';
+  height: '54';
 }
-
-/* #new_ticket {
-
-  width: 15%;
-  height: 50%;
-}
-
-#open_ticket {
-
-  width: 15%;
-  height: 50%;
-}
-
-#response_time {
-  background-color: #fdf0e4;
-  width: 15%;
-  height: 50%;
-} */
-
-/* .icon_open_ticket {
-  margin-bottom: 10px;
-  color: #69cfe6;
-}
-
-.response_time {
-  margin-bottom: 10px;
-  color: #f2a356;
-} */
 
 span {
   color: black;
@@ -753,7 +613,7 @@ span {
 }
 
 .with-flex {
-        display: flex;
-        align-items: center;
-      }
+  display: flex;
+  align-items: center;
+}
 </style>

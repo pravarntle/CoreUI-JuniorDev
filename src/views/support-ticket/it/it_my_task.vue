@@ -1,135 +1,102 @@
 <template>
   <div>
-    <CCard class="mb-3">
-      <CCardBody>
-        <CRow style="margin-bottom: 22px">
-          <CCol xs="auto">
-            <div Class="clearfix">
-              <CImage Class="images_Ticket" :src="images_Ticket" width="55" height="40"/>
-            </div>
-          </CCol>
-          <CCol xs="auto">
-            <div Class="text-end p-2">
-              <CCardTitle> <b> My Tasks </b></CCardTitle>
-            </div>
-          </CCol>
-          <div Class="line">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="219"
-              height="3"
-              viewBox="0 0 219 3"
-              fill="none"
-            >
-              <rect
-                y="0.259277"
-                width="215.682"
-                height="2.2588"
-                fill="#EA5252"
-              />
-              <path
-                d="M69.4795 0.259277H219V2.51807H69.4795V0.259277Z"
-                fill="#030303"
-              />
-            </svg>
+    <CCard class="p-2 rounded-4">
+      <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center ">
+        <div class="d-inline ms-2">
+          <div id="underline_header">
+            <CImage class="me-2 align-middle" id="custom_icon_header" :src="images_Ticket" />
+            <h2 class="d-inline align-middle"><b>My Tasks</b></h2>
           </div>
-        </CRow>
-
-        <CSmartTable
-          clickableRows
-          :tableProps="{
+        </div>
+      </CCardHeader>
+      <CCardBody>
+        <div>
+          <CSmartTable clickableRows :tableProps="{
             striped: true,
             hover: true,
-          }"
-          :activePage="2"
-          header
-          :items="items"
-          :columns="columns"
-          columnFilter
-          tableFilter
-          cleaner
-          itemsPerPageSelect
-          :itemsPerPage="5"
-          columnSorter
-          :sorterValue="{ column: 'status', state: 'asc' }"
-          pagination
-        >
-          <template #avatar="{ item }">
-            <td>
-              <CAvatar :src="$withBase(`/images/avatars/${item.avatar}`)" />
-            </td>
-          </template>
-          <template #status="{ item }">
-            <td>
-              <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
-            </td>
-          </template>
-          <template #book_mark="{ item, index }" >
-            <td class="text-center">
-              <CButton
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleDetails(item, index)"
-              >
-              {{ Boolean(item.book_mark) ? '👁️' : '🙈' }}
-              </CButton>
-            </td>
-          </template>
-          <template #MORE="{ item, index }" >
-            <td class="text-center">
-              <CButton
-                color="primary"
-                variant="outline"
-                square
-                size="xl"
-                @click="toggleButton(item, index)"
-              >
-              {{ Boolean(item.MORE) ? 'Hide' : 'Show' }}
-              </CButton>
-            </td>
-          </template>
-          <template #details="{ item, index }">
-            <CCollapse :visible="Boolean(item.MORE)">
-              <CCardBody>
-                <h4>
-                  {{ item.tkt_title }}
-                </h4>
-                <CButton size="sm" color="info" class="" @click="contactIt(item, index)"> CheckTicket </CButton>
-                <CButton size="sm" color="danger" class="ml-3" @click="buttonCancel(item, index)"> Cancel </CButton>
-              </CCardBody>
-            </CCollapse>
-          </template>
-          <!-- <template #show_details="{ item, index }">
-            <td class="py-2">
-              <CButton
-                color="primary"
-                variant="outline"
-                square
-                size="sm"
-                @click="toggleDetails(item, index)"
-              >
-                {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
-              </CButton>
-            </td>
-          </template> -->
-          <!-- <template #details="{ item }">
-            <CCollapse :visible="this.details.includes(item._id)">
-              <CCardBody>
-                <h4>
-                  {{ item.username }}
-                </h4>
-                <p class="text-muted">User since: {{ item.registered }}</p>
-                <CButton size="sm" color="info" class="">
-                  User Settings
+          }" :activePage="1" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+            class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
+            :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
+
+            <template #ticket_id="{ item }">
+              <td class="style-ticket-id" @click="contactIt(item, index)">{{ item.ticket_id }}</td>
+            </template>
+            <template #start_date="{ item }">
+                <td> {{ formatDate(item.start_date) }}</td>
+            </template>
+            <template #owner="{ item }">
+              <td class="text-center">{{ item.owner }}</td>
+            </template>
+            <template #status="{ item }">
+              <td>
+                <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
+              </td>
+            </template>
+            <template #type="{ item }">
+              <td>{{ item.type }}</td>
+            </template>
+            <template #book_mark="{ item, index }">
+              <td class="text-center">
+                <CButton variant="outline" square size="xl" @click="toggleDetails(item, index)" class="style-bookmark">
+                  <img :src="getBookmarkIcon(item.book_mark)" class="style-button" alt="Bookmark Icon" />
                 </CButton>
-                <CButton size="sm" color="danger" class="ml-1">
-                  Delete
-                </CButton>
-              </CCardBody>
-            </CCollapse>
-          </template> -->
-        </CSmartTable>
+              </td>
+            </template>
+            <template #MORE="{ item, index }">
+              <td class="text-center">
+                <div class="style-action">                  
+                  <CButton size="sm mx-1" color="primary" variant="outline" square 
+                    @click="toggleButton(item, index)">
+                    Details
+                  </CButton>
+                  <CButton size="sm" color="primary" variant="outline" square class="ml-3 style-action"
+                    @click="contactIt(item, index)">
+                    Show
+                  </CButton>
+                </div>
+              </td>
+            </template>
+            <template #details="">
+                <CModal size="lg" alignment="center"  :backdrop="false" :keyboard="false" :visible="visibleShow" @close="() => { visibleShow = false } ">
+                  <CModalHeader>
+                    <CModalTitle>Detail</CModalTitle> 
+                  </CModalHeader>
+                  <CModalBody>
+                    <CRow>
+                        <CImage v-if="selectedTicket.status === 'Closed Bug'" id="modalClosedBug" :src="ModalClosedBug" />
+                        <CImage v-if="selectedTicket.status === 'Closed'" id="modalClosed" :src="ModalClosed" />
+                        <CImage v-if="selectedTicket.status === 'Open'" id="modalOpen" :src="ModalOpen" />
+                        <CImage v-if="selectedTicket.status === 'Pending'" id="modalPending" :src="ModalPending" />                 
+                    </CRow>
+                    <hr>
+                    <div v-for="(historyItem, historyIndex) in historyArray" :key="historyIndex" class="text-center">
+                      <p v-if="historyItem.mod_status=== 'Pending'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        ({{ historyItem.mod_act.act_first_name_eng}}) created Ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Open'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) accepted a ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Closed'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                      </p>
+                      <p v-else-if="historyItem.mod_status=== 'Closed Bug'" class="md-flex align-items-center">
+                        <CBadge :color="getBadge(historyItem.mod_status)" class="me-1">{{ historyItem.mod_status }}</CBadge>
+                        IT Support ({{ historyItem.mod_act.act_first_name_eng}}) was unable to edit the ticket on {{ historyItem.mod_date }}
+                      </p>
+                    </div>
+                  </CModalBody>
+                  <CModalFooter>                 
+                    <CButton color="info" @click="contactIt(contactItItem,contactItIndex)in contactItItem" :key="contactItIndex" @mouseup.stop="">contact</CButton>
+                    
+                  </CModalFooter>
+                </CModal>
+            </template>
+            
+          </CSmartTable>
+        </div>
       </CCardBody>
     </CCard>
   </div>
@@ -140,8 +107,18 @@ import { CIcon } from '@coreui/icons-vue'
 import * as icon from '@coreui/icons'
 import images_Ticket from '@/assets/images/Ticket.png'
 import { CCol, CImage, CRow } from '@coreui/vue-pro'
+import Iconnotbookmarked from '@/assets/images/Icon_Not_Bookmarked.png'
+import Iconhavebookmarked from '@/assets/images/Icon_Have_Bookmarked.png'
+import IconshowTicket from '@/assets/images/Icon_ShowTicket.png'
+import IconcancelTicket from '@/assets/images/Icon_CancelTicket.png'
 import { ref } from 'vue'
 import axios from 'axios'
+import ModalClosedBug from '@/assets/images/modal_closedBug.png'
+import ModalOpen from '@/assets/images/modal_open.png'
+import ModalPending from '@/assets/images/modal_pending.png'
+import ModalClosed from '@/assets/images/modal_closed.png'
+
+
 export default {
   name: 'comment',
   components: {
@@ -150,51 +127,64 @@ export default {
     CImage,
     CCol,
   },
+  data() {
+    return {
+      Iconnotbookmarked: Iconnotbookmarked,
+      Iconhavebookmarked: Iconhavebookmarked,
+      IconshowTicket: IconshowTicket,
+      IconcancelTicket: IconcancelTicket,
+      visibleShow:false,
+      historyArray:[],
+      contactItItem:[],
+      selectedTicket: {}, 
+    };
+  },
   setup() {
     const columns = [
-
       {
         key: 'number',
         label: '#',
-        _style: { width: '10%' },
+        _style: { width: '3%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
 
       },
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '10%' },
+        _style: { width: '22%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '9%' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '15%' },
-      },
-      {
-        key: 'start_date',
-        label: 'START DATE(D/M/Y)',
-        _style: { width: '15%' },
+        _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '7%' },
       },
       {
         key: 'status',
         label: 'STATUS',
-        _style: { width: '10%' },
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '10%' },
+        _style: { width: '7%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1.5%' },
+      },
+      {
+        key: 'start_date',
+        label: 'START DATE ',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
       },
       {
         key: 'book_mark',
         label: 'BOOKMARK',
-        _style: { width: '10%' },
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
         filter: false,
         sorter: false,
       },
       {
         key: 'MORE',
-        label: 'MORE',
-        _style: { width: '5%' },
+        label: 'ACTION',
+        _style: { width: '12%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '50px' },
         filter: false,
         sorter: false,
       },
@@ -223,6 +213,10 @@ export default {
       columns,
       items,
       getBadge,
+      ModalClosedBug,
+      ModalClosed,
+      ModalOpen,
+      ModalPending,
 
     }
   },
@@ -256,12 +250,14 @@ export default {
 
       try {
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
-          "populate":["tkt_acc","tkt_act",],
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, 
+        {
+          "populate": ["tkt_acc", "tkt_act",],
           "where": {
-            "tkt_accept": userId
+            "tkt_accept": userId,
+             tkt_status: { $ne: 'Cancel' },
           }
-          
+
         });
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         console.log(response.data.tkt_book_task);
@@ -278,7 +274,7 @@ export default {
           status: element.tkt_status,
           type: element.tkt_types,
           book_mark: element.tkt_book_task,
-          MORE:false,
+          MORE: false,
         }));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -315,6 +311,47 @@ export default {
       this.$router.push({ name: 'ST - it/it_comment', params: { itemId } });
 
     },
+    getBookmarkIcon(booked) {
+      return booked ? this.Iconhavebookmarked : this.Iconnotbookmarked;
+    },
+    async toggleButton(item) { 
+      this.visibleShow=true;
+      this.selectedTicket = item;
+      this.contactItItem =item;
+      this.getHistoryStatus(item);
+      console.log(this.selectedTicket)
+    },
+    async getHistoryStatus(item , index){
+      try {
+        console.log('asdasd',item)
+        this.contactItItem = item;
+        console.log('assssssssss',this.contactItItem)
+        const itemTicket = item._id.toString();
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_modifications`,{
+          where:{
+            mod_tkt:itemTicket,
+          },
+          populate:'mod_act',
+        });
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.historyArray = response.data;
+        
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    formatDate_version2: function(dateString) {
+      return new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }).format(new Date(dateString)).replace(/(\d+) (\w+), (\d+)/, '$1 $2, $3');
+    },
   },
   mounted() {
     this.getTicket();
@@ -322,30 +359,70 @@ export default {
 }
 </script>
 
-<style>
-.mb-3 {
-  width: 943px;
-  height: 691px;
-  flex-shrink: 0;
+
+
+<style scoped>
+
+.mb-1 {
   border-radius: 18px;
   background: #fff;
   max-width: 100%;
   display: flex;
 }
 
-.clearfix {
-  flex-shrink: 0;
+.table-responsive {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-.text-end {
-  padding-left: 0px;
-  flex-shrink: 0;
-  color: #000;
-  padding-left: 0%;
-  margin-left: 0px;
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
 }
 
-.line {
-  margin-top: auto;
+/* .table-hover .table-bordered .table-alternate-background td:nth-child(1) {
+  background-color: #feffde;
+}
+
+.table-hover .table-bordered .table-alternate-background td:nth-child(2) {
+  background-color: #d9edf7;
+}
+
+.table-hover .table-bordered .table-alternate-background td:nth-child(3) {
+  color: black;
+  font-size: 16px;
+} */
+
+
+.style-ticket-id {
+  color: #5E5ADB;
+}
+
+.style-bookmark {
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+
+.style-action {
+  margin-right: 10px;
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+}
+#custom_icon_header {
+  width: auto;
+  height: 30px;
+}
+
+#underline_header {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+  padding: 3px;
 }
 </style>
+

@@ -1,104 +1,115 @@
 <template>
   <CCard class="p-2">
-    <CCardbody>
+    <CCardbody class="vh-55">
       <CRow>
         <div>
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
-            <div class="text-start" style="padding: 1px;  margin-top: 1%">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" style="text-align: left;" />
+            <div class="text-start p-1 mt-1" >
+              
+              <CButton variant="outline" size="sm">
+                <CImage  
+                class="Arrow_Left text-left"
+                :src="Arrow_Left"
+                @click="backbutton"
+                >
+                </CImage>
+
+              </CButton>
               <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
             </div>
           </CCol>
         </div>
       </CRow>
       <hr />
-      <CRow class="g-0">
+      <CRow class="g-0 align-items-center">
         <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-        <CAvatar v-if="acountFile" class="Icon_user_man avatar-round" :src="`data:${acountFile};base64,${acountImage}`"
-          style="padding: -4px" />
-        <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
-        <CCol style="padding: 4px">
-          <b> {{firstname}}</b>
-          <p class="small">{{email}}</p>
+        <CAvatar
+          v-if="acountFile"
+          class="Icon_user_man avatar-round ps-1"
+          :src="`data:${acountFile};base64,${acountImage}`"
+        />
+        <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" />
+        <CCol class="p-3">
+          <b> {{ firstname }}</b>
+          <p class="small">{{ email }}</p>
         </CCol>
-        <CCol class="text-end p-3" style="margin-right: 2%">
-          <b> {{date}} &nbsp; </b>
+        <CCol class="text-end d-flex justify-content-end pe-5">
+          <b> {{ formatDate(date) }} &nbsp; </b>
           <!-- <CBadge :color="getBadge(priorities)"><span > -->
-            <li>{{priorities}}</li>
+          <CBadge class="d-flex align-items-center" :color="getBadge(priorities)"
+                ><li>{{ priorities }}</li></CBadge
+              >
           <!-- </span></CBadge> -->
         </CCol>
       </CRow>
       <hr />
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
-      <div class="clearfix text-end" style="margin-right: 4%">
-       <b>{{number}}</b>
+      <div class="clearfix text-end me-5">
+        <b>{{ number }}</b>
 
         <CRow>
           <CCol xs="12">
-
-              <CCardBody style="margin-left: 2%">
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Title : </b>
-                  <CCradText>{{ title }} </CCradText>
-                </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Type : </b>
-                  <CCradText> {{ type }} </CCradText>
-                </CCol>
-                <CCol class="text-start" style="padding: -3px">
-                  <b style="font-size: 20px"> Description : </b>
-                  <CCradText>
-                    {{description}} 
-                  </CCradText>
-                </CCol>
-              </CCardBody>
-              <hr/>
-              <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <output style="margin-left: 5%"> 1 </output>
-                  <CCradText style="margin-left: 2%"> Attachment </CCradText>
-                </CCol>
-              </Crow>
-              <Crow class="text-start">
-                  <CCol style="margin-left: 5%">
-                    <CCardImage class="File_test" :src="File_test" style="padding: 2px" />
-                  
-                    <a v-if="picture">
-                      <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{ `${picture.filename}` }}</a>
-                    </a>
-
-                    <br />
-                  </CCol>
-                  <br />
-                </Crow>
+            <CCardBody class="ms-3">
+              <CCol class="text-start">
+                <b class="fs-5"> Title : </b>
+                <CCradText>{{ title }} </CCradText>
+              </CCol>
+              <CCol class="text-start">
+                <b class="fs-5"> Type : </b>
+                <CCradText> {{ type }} </CCradText>
+              </CCol>
+              <CCol class="text-start">
+                <b class="fs-5"> Description : </b>
+                <CCradText>
+                  {{ description }}
+                </CCradText>
+              </CCol>
+            </CCardBody>
           </CCol>
-                <br />
-        </Crow>
-
-
-
+          <br />
+        </CRow>
       </div>
     </CCardbody>
-    <hr />
-    <div class="text-end">
-    <CButton
-      class="btn-sec"
-      color="success"
+    <CCardFooter class="bg-white">
+      <Crow>
+        <CCol class="d-flex text-start">
+          <output class="ms-1"><h5>1</h5> </output>
+          <CCradText class="ms-3"><h5>Attachment</h5> </CCradText>
+        </CCol>
+      </Crow>
 
-      style="
-        font-weight: bold;
-        font-size: x-large;
-        width: 150px;
-        color: white;
-        border-radius: 20px;
-      "
-      @click="acceptButton">Accept</CButton
-    >
-        </div>
+      <Crow class="text-start">
+        <CCol class="ps-3 ms-5">
+          <CCardImage class="File_test" :src="File_test"/>
+
+          <a v-if="picture">
+            <a
+              :href="`data:${picture.filetype};base64,${picture.image}`"
+              alt="Comment Image"
+              class="mw-auto"
+              download
+              >{{ `${picture.filename}` }}</a
+            >
+          </a>
+
+          <br />
+        </CCol>
+        <br />
+      </Crow>
+      <hr />
+      <div class="text-end ">
+        <CButton
+          class="btn-sec fw-bolder fs-4 text-white rounded-5 custom-btn"
+          color="success"
+          @click="acceptButton"
+          >Accept</CButton
+        >
+      </div>
+    </CCardFooter>
   </CCard>
 </template>
 
@@ -128,11 +139,24 @@ import {
 export default {
   name: 'comment',
   setup() {
+    const getBadge = (priority) => {
+        switch (priority) {
+          case 'High':
+            return 'danger bg-opacity-50 text-danger'
+          case 'Medium':
+            return 'warning bg-opacity-50 text-warning'
+          case 'Low':
+            return 'success bg-opacity-50 text-success'
+          default:
+            return 'secondary'
+        }
+      }
     return {
       Arrow_Left,
       Icon_user_man,
       Short,
       commit,
+      getBadge,
     }
   },
   components: {
@@ -146,13 +170,14 @@ export default {
     CCardText,
     CFormInput,
     CButton,
-    CBadge
-},
+    CBadge,
+  },
   data() {
     return {
       uploadImage: '',
       uploadFile: '',
-      form: {  // Initialize the form object
+      form: {
+        // Initialize the form object
         cmt_message: '',
         cmt_link: '',
         cmt_picture: '',
@@ -174,47 +199,51 @@ export default {
       email: '',
       date: '',
       number: '',
-      accId:'',
-
-
-    };
+      accId: '',
+      allUpdate: {
+        mod_act: '',
+        mod_date: '',
+        mod_status: '',
+        mod_tkt: '',
+      },
+    }
   },
   methods: {
     async getTicket() {
       try {
+        const ticketId = this.ticketId
 
-        const ticketId = this.ticketId;
-
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
           {
             populate: [
               {
-                "path": "tkt_act",
-                "populate": "act_picture"
-              }
-              , "tkt_picture"
-            ]
-          });
-        this.type = response.data.tkt_types;
-        this.description = response.data.tkt_description;
-        this.title = response.data.tkt_title;
-        this.priorities = response.data.tkt_priorities;
-        this.picture = response.data.tkt_picture;
-        this.date = response.data.tkt_time;
-        this.acountFile = response.data.tkt_act.act_picture.filetype;
-        this.acountImage = response.data.tkt_act.act_picture.image;
-        this.email = response.data.tkt_act.act_email_address;
-        this.firstname = response.data.tkt_act.act_first_name_eng;
-        this.number = response.data.tkt_number;
+                path: 'tkt_act',
+                populate: 'act_picture',
+              },
+              'tkt_picture',
+            ],
+          },
+        )
+        this.type = response.data.tkt_types
+        this.description = response.data.tkt_description
+        this.title = response.data.tkt_title
+        this.priorities = response.data.tkt_priorities
+        this.picture = response.data.tkt_picture
+        this.date = response.data.tkt_time
+        this.acountFile = response.data.tkt_act.act_picture.filetype
+        this.acountImage = response.data.tkt_act.act_picture.image
+        this.email = response.data.tkt_act.act_email_address
+        this.firstname = response.data.tkt_act.act_first_name_eng
+        this.number = response.data.tkt_number
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         // this.getAcount();
         console.log(response.data)
-
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     },
     async acceptButton() {
@@ -229,58 +258,109 @@ export default {
       console.log(ticket_date)
       console.log(userId)
       try {
-        const dataResponse =await axios
-          .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`, {
-            data: {
-              acc_time:ticket_date,
-              acc_act: userId,
-              
+        const dataResponse = await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`,
+            {
+              data: {
+                acc_time: ticket_date,
+                acc_act: userId,
+              },
             },
-          })
+          )
           .catch((err) => {
             console.log(error)
           })
         this.accId = dataResponse.data._id
-        this.updateTicket();  
+        this.updateTicket()
       } catch (error) {
         console.log(error)
       }
     },
     async updateTicket() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
       try {
-        const ticketId = this.ticketId;
+        const ticketId = this.ticketId
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
-          data: {
-            tkt_status:'Open',
-            tkt_acc: this.accId,
-            tkt_accept: userId,
-
-          }
-        })
-        .then((result) => {
-          this.$router.push('/support-ticket/it/it_my_task')
-        })
-        .catch((err) => {
-          console.log(error)
-        });
+        await axios
+          .put(
+            `${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`,
+            {
+              data: {
+                tkt_status: 'Open',
+                tkt_acc: this.accId,
+                tkt_accept: userId,
+                tkt_last_update:ticket_date,
+              },
+            },
+          )
+          .then((result) => {
+            console.log('222')
+            this.allUpdate.mod_status = result.data.tkt_status
+            this.allUpdate.mod_tkt = result.data._id
+            this.updateStatus()
+          })
+          .catch((err) => {
+            console.log(error)
+          })
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
       } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }
-    }
+    },
+    async updateStatus() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA'))
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const accept_date = `${date.format('D MMM YYYY, h:mm A')}`
+      const userId = userData.id
+      this.allUpdate.mod_date = accept_date
+      this.allUpdate.mod_act = userId
 
-    
+      console.log(this.allUpdate)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`,
+            {
+              data: this.allUpdate,
+            },
+          )
+          .then((result) => {
+            this.$router.push('/support-ticket/it/it_my_task')
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async backbutton(){
+      this.$router.push({ name: 'ST - it_dashboard'});
+      console.log(this.$route);
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
   },
   mounted() {
-    const ticketId = this.$route.params.itemId;
-    this.ticketId = ticketId;
-    this.getTicket();
-
-    
-  }
+    const ticketId = this.$route.params.itemId
+    this.ticketId = ticketId
+    this.getTicket()
+  },
 }
 </script>
 <style>
@@ -325,6 +405,15 @@ export default {
 .Dis_Between {
   display: flex;
   justify-content: space-between;
+}
+
+.vh-55 {
+  height: 55vh;
+}
+
+.custom-btn {
+  width: 150px;
+  /* และคุณสามารถเพิ่มสไตล์อื่น ๆ ตามต้องการ */
 }
 
 </style>

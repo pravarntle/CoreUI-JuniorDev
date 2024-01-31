@@ -1,8 +1,11 @@
 <template>
   <div>
-    <CCard>
-      <div id="ticket-header">
-        <h2><b>New Ticket</b></h2>
+    <CCard class="p-4 rounded-4">
+      <div class="d-inline ms-2">
+        <div id="ticket-header">
+          <CImage id="Icon_my_ticket" :src="Ticketlogo" />
+        <h2 class="d-inline align-middle"><b>New Ticket</b></h2>
+        </div>
       </div>
       <CCardBody>
         <CForm>
@@ -85,7 +88,7 @@
                       </CImage>
                       <br />
                       <h6 id="uploaded-file">
-                        {{ uploadedFileName || 'Upload' }}
+                        {{ uploadedFileName || 'Upload File' }}
                       </h6>
                     </div>
                   </div>
@@ -164,12 +167,11 @@
 
 <style>
 #ticket-header {
-  width: 225px;
+  display: inline-block;
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, red, blue);
+  border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
   padding: 3px;
-  margin: 30px;
 }
 
 .popup_priority {
@@ -344,9 +346,18 @@
 #detail-for-submit {
   color: #29b227;
 }
+
+#Icon_my_ticket{
+  width: auto;
+  max-height: 25px;
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-right: 5px;
+}
 </style>
 
 <script>
+import Ticketlogo from '@/assets/images/blackTick.png'
 import Cloud from '@/assets/images/Cloud.png'
 import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
@@ -389,6 +400,13 @@ export default {
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
       isLoading: false,
+      Ticketlogo,
+      allUpdate:{
+        mod_act:'',
+        mod_date:'',
+        mod_status:'',
+        mod_tkt:'',
+      },
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -454,7 +472,7 @@ export default {
         this.validate.tkt_priorities = false;
       }
 
-      if (this.form.tkt_description.trim() === '' || specialCharRegex.test(this.form.tkt_description)) {
+      if (this.form.tkt_description.trim() === '' ) {
         this.validate.tkt_description = true;
         error = true;
       } else {
@@ -464,18 +482,19 @@ export default {
 
       if (!error) {
         this.isLoading = true
-
-        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
         this.toastProp.push({
           title: 'Create Ticket',
-          content: 'สร้างสำเร็จ',
+          content: 'Create Success  ',
         })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
         setTimeout(() => {
+          
           // จบการโหลด
           this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
           this.onSave()
         }, 2000)
       } else {
@@ -496,36 +515,48 @@ export default {
       dayjs.locale('th')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
-
+      const date = dayjs()
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()
+      
       const ticket_status = `Pending`
       const ticket_date = `${date.format('YYYY-MM-DD')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
       this.form.tkt_picture = this.form.tkt_picture || null
 
       this.form.tkt_time = ticket_date
+      this.form.tkt_last_update = ticket_date
       this.form.tkt_number = ticket_number
       this.form.tkt_act = userId
       this.form.tkt_status = ticket_status
       this.form.tkt_book = false
-      console.log(this.form)
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
 
+
       try {
-        await axios
+          await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
+            
           })
           .then((result) => {
-            this.confirm()
+            this.allUpdate.mod_tkt = result.data._id;
+            this.updateStatus();
           })
           .catch((err) => {
+            this.toastProp.push({
+              title: 'Create Ticket',
+              content: 'Create Fail',
+            });
             console.log(error)
           })
+          
       } catch (error) {
+        this.toastProp.push({
+            title: 'Create Ticket',
+            content: 'Create Fail',
+          })
         console.log(error)
       }
     },
@@ -580,6 +611,32 @@ export default {
     togglePopup() {
       this.isPopupVisible = !this.isPopupVisible;
     },
+    async updateStatus(){
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const update_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.allUpdate.mod_status = this.form.tkt_status;
+      this.allUpdate.mod_date = update_date;
+      this.allUpdate.mod_act = this.form.tkt_act;
+      
+      console.log(this.allUpdate)
+      try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+            data: this.allUpdate,
+            
+          })
+          .then((result) => {
+            this.confirm();
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   components: { CForm, CFormLabel, CImage },
 }

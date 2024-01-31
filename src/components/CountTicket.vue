@@ -1,113 +1,183 @@
 <template>
-  <Ccrad>
-    <CCardHeader>
-      <h1 class="LineHeadCard">
-        Dashboard
-      </h1>
-    </CCardHeader>
-    <CRow class="RowCard">
-      <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
+  <CCard class="p-3 mb-2 rounded-4 mx-auto">
+    <CRow class=" mb-2 justify-content-center" >
+      <CCol :xs="12" :sm="6" :md="4" :lg="4" >
+        <CCard class="p-3 mb-2 rounded-5 "  id="count_all">
           <CCardbody>
-            <b id="all">All Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_all }}</p>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
+                <CImage class="LG" :src="LGall" />
               </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGblue" fluid block />
+              <CCol :xs="6" :md="6" class="center_Text">
+                <p id="font">{{ count_all }}</p>
+                <p id="all">All Tickets</p>
               </CCol>
             </CRow>
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
+      <CCol :xs="12" :sm="6" :md="4" :lg="4">
+        <CCard class="p-3 mb-2 rounded-5" id="count_open" >
           <CCardbody>
-            <b id="open">Open Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_open }}</p>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
+                <CImage class="LG" :src="LGopen"  />
               </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGgreen" fluid block />
+              <CCol :xs="6" :md="6"  >
+                <p  id="font">{{ count_open }}</p>
+                <p id="open">Open Tickets</p>
               </CCol>
             </CRow>
           </CCardbody>
         </CCard>
       </CCol>
-      <CCol :sm="4">
-        <CCard class="p-2 mb-2" id="border">
+      <CCol :xs="12" :sm="6" :md="4" :lg="4">
+        <CCard class="p-3 mb-2 rounded-5 " id="count_close" >
           <CCardbody>
-            <b id="closed">Closed Tickets</b>
-            <CRow>
-              <CCol>
-                <p class="ps-5 ms-3" id="font">{{ count_closed }}</p>
+            <CRow :xs="{ cols: 1, gutter: 1}" :md="{ cols: 2 }">
+              <CCol :xs="6" :md="6" class="d-flex flex-column align-items-center justify-content-center">
+                <CImage class="LG " id="LGclose" :src="LGclose"  />
               </CCol>
-              <CCol class="mt-5">
-                <CImage class="LG" :src="LGred" fluid block />
+              <CCol :xs="6" :md="6">
+                <p id="font">{{ count_closed }}</p>
+                <p id="closed">Closed Tickets</p>
               </CCol>
             </CRow>
           </CCardbody>
         </CCard>
       </CCol>
     </CRow>
-  </Ccrad>
+  </CCard>
 </template>
-<style>
-.text-right-header {
-  text-align: right;
-}
+<style scoped>
 
-#all {
-  font-size: 24px;
-  color: #1a72b8;
-}
+#all, #open, #closed {
+  font-size: 20px;
+  color: #fff;
+  line-height: 2;
+  margin-left: 10px;
 
-#open {
-  font-size: 24px;
-  color: #147a2a;
-}
-
-#closed {
-  font-size: 24px;
-  color: #b22424;
 }
 
 #font {
-  font-weight: 700;
-  align-items: center;
-  font-size: 100px;
-  color: #000;
+  margin-top: 50px;
+  font-weight: bold;
+  text-align:start;
+  font-size: 70px;
+  color: #fff;
+  line-height: 0.2;
+  margin-left: 10px;
 }
-
 .LG {
-  width: 100px;
-  max-height: 100px;
+  max-width: 100%; 
+  width: 150px;
+  height: auto;
+  max-height: 150px;
+}
+
+#LGclose{
+  max-width: 100%; 
+  width: 130px; 
+  height: auto;
+  max-height: 150px;
 
 }
 
-#border {
-  height: 220px;
-  border-radius: 15px;
-}
-
-.LineHeadCard {
-  width: 180px;
+#LineHeadCard {
+  display: inline-block;
   border-bottom: 5px solid transparent;
   border-image: linear-gradient(to right, #ea5252, #030303);
   border-image-slice: 1;
 }
 
-.RowCard{
-  height: auto;
+#Icondashboard {
+  width: auto;
+  max-height: 30px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
 }
+
+#count_all{
+  background-color: #787878;
+  max-height: 170px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
+  
+}
+
+#count_open{
+  background-color: #45AA91;
+  max-height: 170px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
+}
+
+#count_close{
+  background-color: #FF6464;
+  max-height: 170px;
+  height: auto;
+  width: 100%; 
+  max-width: 400px; 
+  margin: 0 auto;
+}
+
+
+
+/* สำหรับหน้าจอขนาดเล็ก (เช่น 600px หรือน้อยกว่า) */
+@media only screen and (max-width: 600px) {
+  #font {
+    font-size: 30px;
+
+    white-space: nowrap; 
+  }
+
+  #all, #open, #closed {
+    font-size: 14px; 
+    white-space: nowrap; 
+  }
+}
+
+/* สำหรับหน้าจอขนาดกลาง (เช่น 601px ถึง 1024px) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  #font {
+    font-size: 30px; 
+    white-space: nowrap;
+  }
+
+  #all, #open, #closed {
+    font-size: 13px; 
+    white-space: nowrap; 
+    
+  }
+}
+
+/* สำหรับหน้าจอขนาดใหญ่ (เช่น 1025px ขึ้นไป) */
+@media only screen and (min-width: 1025px) {
+  #font {
+  font-size: 70px;
+  white-space: nowrap;
+  }
+
+  #all, #open, #closed {
+    font-size: 20px;
+    white-space: nowrap;
+  }
+}
+
+
+
 </style>
   
 <script>
-import LGblue from '@/assets/images/blueTick.png'
-import LGred from '@/assets/images/redTick.png'
-import LGgreen from '@/assets/images/greenTick.png'
+import Icondashboard from '@/assets/images/Icon_dashboard.png'
+import LGall from '@/assets/images/all_ticket.png'
+import LGclose from '@/assets/images/close_ticket.png'
+import LGopen from '@/assets/images/open_ticket.png'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
 import { CBadge } from '@coreui/vue-pro'
@@ -141,11 +211,12 @@ export default {
     }
 
     return {
-      LGblue,
-      LGgreen,
-      LGred,
+      LGall,
+      LGclose,
+      LGopen,
       LGlogo,
       getData,
+      Icondashboard,
     };
   },
 

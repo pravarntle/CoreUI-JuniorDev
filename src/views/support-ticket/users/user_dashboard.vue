@@ -1,13 +1,16 @@
 <template>
   <div class="box">
     <CRow>
-      <count_ticket/>
+        <count_ticket/>
+        <my_tickets/>
     </CRow>
-      <my_tickets/>
+      
     
   </div>
 </template>
 
+<style>
+</style>
 
 <script>
 import { CCol, CRow } from '@coreui/vue-pro'

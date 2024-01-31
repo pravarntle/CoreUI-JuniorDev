@@ -1,99 +1,57 @@
 <template>
-  <div class="bg-white rounded" style="width: 100%; height: 845px">
-    <!-- Head Priorities List -->
-    <div class="bg-white rounded ms-5 py-3" 
-          >
-      <h1 style="width: 238px; 
-                border-bottom: 2px solid transparent;
-                border-image: linear-gradient(to right, red, blue); 
-                border-image-slice: 1;">
-                Priorities List</h1>
-    </div>
-
-    <!-- body Priorities List -->
-    <div class="py-5 px-5">
-      <CButton class="px-5" variant="ghost">User</CButton>
-      <CButton class="px-5" variant="ghost">Priority</CButton>
-
-      <!-- Search bar -->
-      <!-- <div class="container pt-5">
-        <div class="row justify-content-center w-75">
-          <div class="col-md-6">
-            <form class="form-inline">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control rounded-start-pill"
-                  placeholder="Search"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-primary rounded-start-0 rounded-end-circle"
-                    type="submit"
-                  >
-                    <CIcon :icon="icon.cilMagnifyingGlass" size="xl" />
-                  </button>
-                </div>
-              </div>
-            </form>
+  <div>
+    <CCard class="p-2 rounded-4">
+      <!-- Head Priorities List -->
+      <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center custom-CCard-Header" >
+        <div class="d-inline ms-2">
+          <div id="underline_header">
+            <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_Priority" />
+            <h2 class="d-inline align-middle"><b>Priorities List</b></h2>
           </div>
         </div>
-      </div> -->
-      <!-- End Search bar -->
+        <div>
+          <CButton class="btn btn-primary btn-block btn-long" color="info" @click="create_priority()">
+            <CImage class="style-icon-create-priority" :src="Iconcreatepriority" />
+            <b class="font-button">Create</b>
+          </CButton>
+        </div>
+      </CCardHeader>
+      <!-- body Priorities List -->
+      <CCardBody>
+          <!-- Smart Table -->
+          <div>
+            <CSmartTable :active-page="3" column-sorter :columns="columns"
+              class="text-center table-hover table-bordered table-alternate-background table-responsive" clickable-rows
+              header :items="items" pagination :table-props="{
+                striped: true,
+                hover: true,
+              }">
+              <!---->
+              <template #status_eng="{ item }">
+                <td>
+                  <CBadge :color="getBadge(item.status_eng)">{{
+                    item.status_eng
+                  }}</CBadge>
+                </td>
+              </template>
+              <template #show_details="{ item, index }">
+                <td class="text-center">
+                  <CButton size="sm" class="action_button mx-1" @click="editAccount(item, index)">
+                    <CImage :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
+                  </CButton>
+                  <CButton size="sm" class="action_button ml-1" @click="DeleteButton(item, index)">
+                    <CImage :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
+                  </CButton>
+                </td>
+              </template>
+            </CSmartTable>
+          </div>
 
-      <!-- Smart Table -->
-      <div class="container">
-      <CSmartTable
-        class="w-50"
-        :active-page="3"
-        cleaner
-        column-filter
-        column-sorter
-        :columns="columns"
-        clickable-rows
-        header
-        :items-per-page="5"
-        items-per-page-select
-        :items="items"
-        pagination
-        table-filter
-        :table-props="{
-          striped: true,
-          hover: true,
-        }"
-      >
-      <!---->
-        <template #status_eng="{ item }">
-          <td>
-            <CBadge :color="getBadge(item.status_eng)">{{ item.status_eng }}</CBadge>
-          </td>
-        </template>
-        <template #show_details="{ item, index }">
-            <td class="py-2">
-                    
-              <CDropdown src="More_Priority">  
-              <CDropdownToggle ><img :src="More_Priority"  /></CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem @click="editAccount(item, index)">Edit</CDropdownItem>
-                <CDropdownItem @click="DeleteButton(item, index)" class="text-danger">Delete</CDropdownItem>
-              </CDropdownMenu>
-              </CDropdown>
-            </td>
-          </template>
-      </CSmartTable>
-      
-      </div>
-      
-      <!-- END Smart Table -->
-      
-    </div>
-    
+        <!-- END Smart Table -->
+      </CCardBody>
+    </CCard>
   </div>
-  
 </template>
-
-
-
 
 <script>
 import { CIcon } from '@coreui/icons-vue'
@@ -102,8 +60,10 @@ import More_Priority from '@/assets/images/More_Priority.png'
 import { CAvatar, CButton, CCol, CImage, CRow } from '@coreui/vue-pro'
 import { ref } from 'vue'
 import axios from 'axios'
-
-
+import Icon_Priority from '../../../assets/images/Icon_Priority.png'
+import Iconeditaccount from '../../../assets/images/Icon_editaccount.png'
+import Icondeleteaccount from '../../../assets/images/Icon_deleteaccount.png'
+import Iconcreatepriority from '@/assets/images/Icon_addTicket.png'
 
 export default {
   components: {
@@ -116,50 +76,79 @@ export default {
     ref,
   },
   setup() {
-    const items = ref([]);
+    const items = ref([])
     const columns = [
       {
         key: 'number',
         label: '#',
         filter: false,
         sorter: false,
-        _style: { width: '5%' },
+        _style: {
+          width: '5%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
       },
       {
         key: 'status_eng',
         label: 'NAME (ENG)',
-        _style: { width: '20%' },
+        _style: {
+          width: '30%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
       },
       {
         key: 'status_th',
         label: 'NAME (TH)',
-        _style: { width: '20%' },
+        _style: {
+          width: '30%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
       },
       {
         key: 'level_of_priority',
         label: 'LEVEL 0F PRIORITY',
-        _style: { width: '20%' },
+        _style: {
+          width: '20%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
       },
 
       {
         key: 'show_details',
-        label: 'MORE',
-        _style: { width: '1%' },
+        label: 'ACTION',
+        _style: {
+          width: '30%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
         filter: false,
         sorter: false,
       },
-    ];
+    ]
     return {
       icon,
       More_Priority,
       items,
       columns,
+      Icon_Priority,
+      Icondeleteaccount,
+      Iconeditaccount,
     }
   },
 
   data() {
     return {
       details: [],
+      Iconcreatepriority: Iconcreatepriority,
     }
   },
   methods: {
@@ -184,95 +173,168 @@ export default {
     },
     async getPriority() {
       try {
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`, {
-          
-          where: {
-            pri_status: { $ne: 'Delete' }
-
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`,
+          {
+            where: {
+              pri_status: { $ne: 'Delete' },
+            },
           },
-        });
+        )
         console.log(response.data)
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         this.items = response.data.map((element, index) => ({
-          'number': index + 1, 
+          number: index + 1,
           _id: element._id,
-          'status_eng': element.pri_name_eng, 
-          'status_th': element.pri_name_th, 
-          'level_of_priority': element.pri_level,
-          MORE: false, 
-        }));
+          status_eng: element.pri_name_eng,
+          status_th: element.pri_name_th,
+          level_of_priority: element.pri_level,
+          MORE: false,
+        }))
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     },
     async editAccount(item) {
-      const itemId = item._id.toString();
+      const itemId = item._id.toString()
       console.log(itemId)
 
-      this.$router.push({ name: 'ST - edit_priority', params: { itemId } });
+      this.$router.push({ name: 'ST - edit_priority', params: { itemId } })
     },
 
     async DeleteButton(item) {
-
       try {
-        const itemId = item._id.toString();
+        const itemId = item._id.toString()
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
-        await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`, {
-          data: {
-            pri_status: "Delete",
-            
-
-          }
-        });
+        await axios.put(
+          `${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`,
+          {
+            data: {
+              pri_status: 'Delete',
+            },
+          },
+        )
 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('ลบ priority');
+        console.log('ลบ priority')
         // รีเฟรชหน้า
-        window.location.reload();
-
+        window.location.reload()
       } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }
+    },
+    async create_priority() {
+      this.$router.push({ name: 'ST - create_priority' })
     },
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
-    this.getPriority();
-
-
-  }
-  
+    this.getPriority()
+  },
 }
-
 </script>
 
-
-<style>
+<style scoped>
 .dropdown-toggle::after {
-    display: none !important;
+  display: none !important;
 }
 
-.container{
+
+
+
+.container {
   display: flex;
-  justify-content: center; /* จัดเนื้อหาในแนวนอนกลาง */
-  align-items: center; /* จัดเนื้อหาในแนวตั้งกลาง */
+  justify-content: center;
+  /* จัดเนื้อหาในแนวนอนกลาง */
+  align-items: center;
+  /* จัดเนื้อหาในแนวตั้งกลาง */
 }
 
 .underline {
-  
-  position: relative; /* ตั้งค่าตำแหน่งเป็น relative เพื่อให้เราสามารถกำหนดตำแหน่งของ ::after pseudo-element ได้ */
+  position: relative;
+  /* ตั้งค่าตำแหน่งเป็น relative เพื่อให้เราสามารถกำหนดตำแหน่งของ ::after pseudo-element ได้ */
+}
+
+.btn-long {
+  width: 110px;
+  height: 45px;
+  border-radius: 15px;
+}
+
+.style-icon-create-priority {
+  max-height: 20px;
+  margin-bottom: 2px;
+  margin-right: 5px;
 }
 
 .underline::after {
-  content: ""; /* เพิ่มเนื้อหาของ pseudo-element */
-  position: absolute; /* ตั้งค่าตำแหน่งเป็น absolute เพื่อให้เส้นใต้เริ่มต้นจากตัวหนังสือ */
-  bottom: 0; /* ตำแหน่งด้านล่างของ pseudo-element */
-  left: 0; /* ตำแหน่งด้านซ้ายของ pseudo-element (จากด้านขวาของตัวหนังสือ) */
-  width: auto; /* กว้างเท่ากับตัวหนังสือ */
-  height: 2px; /* ความสูงของเส้นใต้ */
-  background-image: linear-gradient(to right, red 30%, blue 30%); /* สร้างเส้นใต้ที่มีสีแดง 30% และน้ำเงิน 70% */
-  background-repeat: no-repeat; /* ไม่ต้องรีเพียต์พื้นหลัง */
-  background-size: 100% 100%; /* ความกว้างของเส้นใต้และความสูงของเส้นใต้ (เท่ากับตัวอักษร) */
+  content: '';
+  /* เพิ่มเนื้อหาของ pseudo-element */
+  position: absolute;
+  /* ตั้งค่าตำแหน่งเป็น absolute เพื่อให้เส้นใต้เริ่มต้นจากตัวหนังสือ */
+  bottom: 0;
+  /* ตำแหน่งด้านล่างของ pseudo-element */
+  left: 0;
+  /* ตำแหน่งด้านซ้ายของ pseudo-element (จากด้านขวาของตัวหนังสือ) */
+  width: auto;
+  /* กว้างเท่ากับตัวหนังสือ */
+  height: 2px;
+  /* ความสูงของเส้นใต้ */
+  background-image: linear-gradient(to right, red 30%, blue 30%);
+  /* สร้างเส้นใต้ที่มีสีแดง 30% และน้ำเงิน 70% */
+  background-repeat: no-repeat;
+  /* ไม่ต้องรีเพียต์พื้นหลัง */
+  background-size: 100% 100%;
+  /* ความกว้างของเส้นใต้และความสูงของเส้นใต้ (เท่ากับตัวอักษร) */
 }
 
+#underline_header {
+  display: inline-block;
+  border-bottom: 5px solid transparent;
+  border-image: linear-gradient(to right, #ea5252, #030303);
+  border-image-slice: 1;
+  padding: 3px;
+}
+
+#custom_icon_header {
+  width: auto;
+  height: 40px;
+}
+
+.table-responsive {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
+.custom-CCard-Header {
+  margin-top: 7px;
+}
+
+.table-container {
+  max-width: 100%;
+  /* Set the maximum width for the table container */
+  overflow-x: auto;
+  /* Enable horizontal scroll if the content overflows */
+}
+
+@media (max-width: 1200px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+
+.style-button {
+  max-width: 20px;
+  max-height: 20px;
+  background-color: white;
+}
+
+.action_button {
+  background-color: white;
+}
+
+.font-button {
+  color: white;
+}
 </style>

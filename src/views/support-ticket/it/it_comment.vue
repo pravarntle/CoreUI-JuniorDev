@@ -1,6 +1,6 @@
 <template>
-  <CRow class="mr-md-3" style="padding: 2px">
-    <CCol xs class="col-md-9 mr-md-3" style="padding: 10px">
+  <CRow class="mr-md-3 p-2" >
+    <CCol xs class="col-md-9 mr-md-3" id="col-ticket" >
       <CCard class="p-2">
         <CCardbody>
           <CRow>
@@ -8,11 +8,10 @@
               <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
               <!-- Icon สำหรับย้อนกลับ -->
               <CCol>
-                <div class="text-start" style="padding: 1px; margin-top: 1%">
+                <div class="text-start div-arrow-left" >
                   <CAvatar
                     class="Arrow_Left"
                     :src="Arrow_Left"
-                    style="text-align: left"
                   />
                   <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
                 </div>
@@ -25,22 +24,22 @@
 
             <CAvatar
               v-if="acountFile"
-              class="Icon_user_man avatar-round"
+              class="Icon_user_man avatar-round avatar-icon-p4"
               :src="`data:${acountFile};base64,${acountImage}`"
-              style="padding: -4px"
+              
             />
             <CAvatar
               v-else
-              class="Icon_user_man"
+              class="Icon_user_man avatar-icon-p4"
               :src="Icon_user_man"
-              style="padding: -4px"
+              
             />
             <CCol style="padding: 4px">
               <b> {{ firstname }}</b>
               <p class="small">{{ email }}</p>
             </CCol>
             <CCol class="text-end p-3" style="margin-right: 2%">
-              <b>{{ date }} &nbsp; </b>
+              <b> {{ formatDate(date) }} &nbsp; </b>
               <CBadge :color="getBadge(priorities)"
                 ><span>
                   <li>{{ priorities }}</li>
@@ -53,14 +52,13 @@
           <!-- <CImage align="end" class="Short" :src="Short" /> -->
           <div class="clearfix text-end m-2" style="margin-right: 4%">
             <CButton
-              class="btn btn-outline-info"
-              style="font-weight: bold; font-size: x-small; width: 65px"
+              class="btn btn-outline-info btn-short"
               id="b1"
               @click="
                 () => {
                   visibleA = !visibleA
                   visibleB = !visibleB
-                  javascript3()
+                  switchname()
                 }
               "
               >Short
@@ -70,16 +68,16 @@
               <CCol>
                 <CCollapse :visible="visibleA">
                   <CCardBody style="margin-left: 2%">
-                    <CCol class="text-start" style="padding: -3px">
-                      <b style="font-size: 20px"> Title : </b>
+                    <CCol class="text-start">
+                      <b class="detail-title"> Title : </b>
                       <CCradText> {{ title }}</CCradText>
                     </CCol>
-                    <CCol class="text-start" style="padding: -3px">
-                      <b style="font-size: 20px"> Type : </b>
+                    <CCol class="text-start" >
+                      <b class="detail-title"> Type : </b>
                       <CCradText> {{ type }} </CCradText>
                     </CCol>
-                    <CCol class="text-start" style="padding: -3px">
-                      <b style="font-size: 20px"> Description : </b>
+                    <CCol class="text-start" >
+                      <b class="detail-title"> Description : </b>
                       <CCradText>
                         {{ description }}
                       </CCradText>
@@ -87,29 +85,20 @@
                   </CCardBody>
                   <hr />
                   <Crow>
-                    <CCol class="text-start" style="padding: -1px">
-                      <output style="margin-left: 5%"> 1 </output>
+                    <CCol class="text-start" >
+                      <output class="output-number"> 1 </output>
                       <CCradText style="margin-left: 2%">
                         Attachment
                       </CCradText>
                     </CCol>
                   </Crow>
                   <Crow class="text-start">
-                    <CCol style="margin-left: 5%">
-                      <CCardImage
-                        class="File_test"
-                        :src="File_test"
-                        style="padding: 2px"
-                      />
-
+                    <CCol class="output-number">
+                      
                       <a v-if="picture">
-                        <a
-                          :href="`data:${picture.filetype};base64,${picture.image}`"
-                          alt="Comment Image"
-                          style="max-width: auto; height: 300px"
-                          download
-                          >{{ `${picture.filename}` }}</a
-                        >
+                        <br>
+                        <CImage :src="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" /><br><br>
+                        <a :href="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" Download><u>Download</u></a>
                       </a>
 
                       <br />
@@ -132,27 +121,19 @@
             <h6><b>Ticket ID:</b></h6>
             <p>{{number}}</p>
             <h6><b>Date & Time:</b></h6>
-            <p>{{date}}</p>
+            <p> {{ formatDate(date) }} &nbsp; </p>
 
             <CCollapse :visible="visibleB">
-              <h6 style="color: red"><b>Title</b></h6>
+              <h6 class="detail-font-red"><b>Title</b></h6>
               <p>{{title}}</p>
-              <h6 style="color: red"><b>Status</b></h6>
+              <h6 class="detail-font-red"><b>Status</b></h6>
               <p>{{stauts}}</p>
-              <h6 style="color: red"><b>Priority</b></h6>
+              <h6 class="detail-font-red"><b>Priority</b></h6>
               <p>{{priorities}}</p>
               <CRow>
                 <CCol class="mb-2 text-center">
                   <CButton
-                    class="btn-sec"
-                    style="
-                    font-weight: bold;
-                    font-size: 22.5px;
-                    width: 150px;
-                    color: white;
-                    border-radius: 20px;
-                    background-color: #d0293b;
-                  "
+                    class="btn-sec btn-resolve"
                     @click="() => {
                         visibleVerticallyCenteredDemo = true
                       }
@@ -203,17 +184,9 @@
                   </CModal>
                 </CCol>
 
-                <CCol class="mb-2 text-center">
+                <!-- <CCol class="mb-2 text-center">
                   <CButton
-                    class="btn-sec"
-                    style="
-                    font-weight: bold;
-                    font-size: 22.5px;
-                    width: 150px;
-                    color: white;
-                    background-color: #f9a825;
-                    border-radius: 20px;
-                  "
+                    class="btn-sec btn-assign"
                     @click="() => {
                         PopupAssign = true
                       }
@@ -248,7 +221,7 @@
                       <CButton color="primary">Save changes</CButton>
                     </CModalFooter>
                   </CModal>
-                </CCol>
+                </CCol> -->
               </CRow>
             </CCollapse>
           </CCardBody>
@@ -266,15 +239,15 @@
               <div class="avatar">
                 <CAvatar
                   v-if="acountIdFile"
-                  class="Icon_user_man avatar-round"
+                  class="Icon_user_man avatar-round avatar-icon-p4"
                   :src="`data:${acountIdFile};base64,${acountIdImage}`"
-                  style="padding: -4px"
+                  
                 />
                 <CAvatar
                   v-else
-                  class="Icon_user_man"
+                  class="Icon_user_man avatar-icon-p4"
                   :src="Icon_user_man"
-                  style="padding: -4px"
+                  
                 />
               </div>
             </div>
@@ -305,19 +278,17 @@
               />
               <CButton @click="attachImage" id="attach_image"
                 ><img
-                  class="attach-image"
+                  class="attach-image btn-attach"
                   :src="Attach_Image"
                   id="attachImage"
                   alt="Attach Image"
-                  style="width: 20px"
                 />
               </CButton>
               <CButton @click="attachLink" id="attach_link"
                 ><img
-                  class="insert-link"
+                  class="insert-link btn-attach" 
                   :src="insert_link"
                   alt="Insert Link"
-                  style="width: 20px"
                 />
               </CButton>
               <input
@@ -330,13 +301,12 @@
               />
               <CButton @click="attachFile" id="attach_file"
                 ><img
-                  class="attach-file"
+                  class="attach-file btn-attach2"
                   :src="Attach_File"
                   alt="Attach File"
-                  style="width: 12px"
                 />
               </CButton>
-              <span class="text-end" style="margin-left: 710px"
+              <span class="text-end span-char-count" 
                 >Character count: {{ characterCount }} / 200</span
               >
               <p id="selectedImage">{{ imageName }}</p>
@@ -373,13 +343,11 @@
                     v-if="item.cmt_act.act_picture"
                     class="Icon_user_man"
                     :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
-                    style="padding: -4px"
                   />
                   <CAvatar
                     v-else
                     class="Icon_user_man"
                     :src="Icon_user_man"
-                    style="padding: -4px"
                   />
                 </div>
               </div>
@@ -390,8 +358,7 @@
                   }}
                 </p>
                 <div
-                  class="comments_box"
-                  style="width: fit-content; padding: 10px"
+                  class="comments_box div-comment-box"
                 >
                   {{ item.cmt_message }}
                   <a
@@ -405,14 +372,14 @@
                     <CImage
                       :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
                       alt="Comment Image"
-                      style="max-width: auto; height: 300px"
+                      class="comment-image"
                     />
                   </a>
                   <a v-if="item.cmt_file">
                     <a
                       :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
                       alt="Comment Image"
-                      style="max-width: auto; height: 300px"
+                      class="comment-image"
                       download
                       >{{ `${item.cmt_file.filename}` }}</a
                     >
@@ -420,7 +387,7 @@
                   <a
                     v-if="item.cmt_link"
                     @click="openLink(item.cmt_link)"
-                    style="text-decoration: none; color: #007bff"
+                    class="a-cmt-link"
                   >
                     {{ item.cmt_link }}
                   </a>
@@ -537,6 +504,12 @@ export default {
       number: '',
       stauts: '',
       edit:'',
+      allUpdate:{
+        mod_act:'',
+        mod_date:'',
+        mod_status:'',
+        mod_tkt:'',
+      },
       
     }
   },
@@ -561,7 +534,7 @@ export default {
   },
 
   methods: {
-    async javascript3() {
+    async switchname() {
       var x = document.getElementById('b1')
       if (x.innerHTML === 'Expand') {
         x.innerHTML = 'Short'
@@ -884,18 +857,25 @@ export default {
       }
     },
     async onSaveSatatus() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const ticket_date = `${date.format('YYYY-MM-DD')}`
       try {
         
         const ticketId = this.ticketId;
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
           data: {
-            tkt_status: this.edit
-
+            tkt_status: this.edit,
+            tkt_last_update:ticket_date,
           }
         })
         .then((result) => {
-          this.$router.push({ name: 'ST - it/it_comment' });
+          this.allUpdate.mod_status = result.data.tkt_status;
+          this.allUpdate.mod_tkt = result.data._id;
+          this.updateStatus();
           
         })
         .catch((err) => {
@@ -912,7 +892,42 @@ export default {
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
-    }
+    },
+    async updateStatus(){
+      const userData = JSON.parse(localStorage.getItem('USER_DATA'))
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'));
+      dayjs.extend(require('dayjs/plugin/customParseFormat'));
+      dayjs.extend(require('dayjs/plugin/localizedFormat'));
+      const accept_date = `${date.format('D MMM YYYY, h:mm A')}`
+      const userId = userData.id
+      this.allUpdate.mod_date = accept_date;
+      this.allUpdate.mod_act = userId;
+
+      console.log(this.allUpdate)
+      try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+            data: this.allUpdate,
+            
+          })
+          .then((result) => {
+            this.$router.push({ name: 'ST - it/it_comment' });
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    
   },
   mounted() {
     const itemId = this.$route.params.itemId
@@ -921,7 +936,9 @@ export default {
     this.getTicket()
     this.getComment()
     this.getAcount()
-    console.log(this.stauts);
+    setInterval(() => {
+      this.getComment();
+    }, 1000);
   },
 }
 </script>
@@ -938,6 +955,7 @@ export default {
 
 .Arrow_Left {
   width: 35px;
+  text-align: left;
 }
 
 .Icon_user_man {
@@ -948,6 +966,81 @@ export default {
 
 .Short {
   width: 60px;
+}
+
+.avatar-icon-p4{
+  padding: -4px;
+}
+
+.detail-title {
+  font-size: 20px;
+}
+
+.output-number {
+  margin-left: 5%;
+}
+
+.ticket-file {
+  max-width: auto; 
+  height: 300px
+}
+
+.detail-font-red {
+  color: red;
+}
+
+.btn-resolve {
+  font-weight: bold;
+  font-size: 22.5px;
+  width: 150px;
+  color: white;
+  border-radius: 20px;
+  background-color: #d0293b;
+}
+
+.btn-assign {
+  font-weight: bold;
+  font-size: 22.5px;
+  width: 150px;
+  color: white;
+  background-color: #f9a825;
+  border-radius: 20px;
+}
+
+.btn-attach {
+  width: 20px;
+}
+
+.btn-attach2 {
+  width: 12px;
+}
+
+.span-char-count {
+  margin-left: 710px;
+}
+
+.btn-short {
+  font-weight: bold; font-size: x-small; width: 65px
+}
+
+.div-comment-box {
+  width: fit-content; padding: 10px
+}
+
+.comment-image {
+  max-width: auto; height: 300px
+}
+
+.a-cmt-link {
+  text-decoration: none; color: #007bff
+}
+
+.div-arrow-left {
+  margin-top: 1%;
+}
+
+#col-ticket {
+  padding: 10px;
 }
 
 .Cte {
