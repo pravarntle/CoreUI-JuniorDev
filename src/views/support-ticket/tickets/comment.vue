@@ -25,7 +25,7 @@
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
-          <b>{{date}} &nbsp; </b>
+          <b> {{ formatDate(date) }} &nbsp; </b>
           <CBadge :color="getBadge(priorities)"><span >
             <li>{{ priorities }}</li>
           </span></CBadge>
@@ -669,6 +669,10 @@ export default {
           default:
             return 'ไฟล์อื่น ๆ';
         }
+      },
+      formatDate: function(dateString) {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-GB', options);
       },
       
 

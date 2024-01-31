@@ -363,7 +363,7 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.$router.push('/support-ticket/user/dashboard')
+            this.$router.push('/support-ticket/admin/user_list')
           })
           .catch((err) => {
             console.log(error)

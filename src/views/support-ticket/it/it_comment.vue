@@ -39,7 +39,7 @@
               <p class="small">{{ email }}</p>
             </CCol>
             <CCol class="text-end p-3" style="margin-right: 2%">
-              <b>{{ date }} &nbsp; </b>
+              <b> {{ formatDate(date) }} &nbsp; </b>
               <CBadge :color="getBadge(priorities)"
                 ><span>
                   <li>{{ priorities }}</li>
@@ -94,20 +94,11 @@
                   </Crow>
                   <Crow class="text-start">
                     <CCol class="output-number">
-                      <CCardImage
-                        class="File_test"
-                        :src="File_test"
-                        style="padding: 2px"
-                      />
-
+                      
                       <a v-if="picture">
-                        <a
-                          :href="`data:${picture.filetype};base64,${picture.image}`"
-                          alt="Comment Image"
-                          class="ticket-file"
-                          download
-                          >{{ `${picture.filename}` }}</a
-                        >
+                        <br>
+                        <CImage :src="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" /><br><br>
+                        <a :href="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" Download><u>Download</u></a>
                       </a>
 
                       <br />
@@ -130,7 +121,7 @@
             <h6><b>Ticket ID:</b></h6>
             <p>{{number}}</p>
             <h6><b>Date & Time:</b></h6>
-            <p>{{date}}</p>
+            <p> {{ formatDate(date) }} &nbsp; </p>
 
             <CCollapse :visible="visibleB">
               <h6 class="detail-font-red"><b>Title</b></h6>
@@ -931,6 +922,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
     },
     
   },

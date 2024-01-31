@@ -258,6 +258,9 @@
               <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
             </td>
           </template>
+          <template #start_date="{ item }">
+                <td> {{ formatDate(item.start_date) }}</td>
+          </template>
           <template #action="{ item, index }">
             <td class="text-center">
               <CButton color="primary" variant="outline" square size="xl" @click="acceptTicket(item, index)">
@@ -560,6 +563,11 @@ export default {
       console.log(this.selectedMonth);
       this.getTicketOnMonth();
     },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า

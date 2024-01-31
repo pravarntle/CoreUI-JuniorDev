@@ -12,7 +12,7 @@
     <CSidebarNav>
       <MenuNewticket />
 
-      <CNavItem href="/#/support-ticket/it/it_dashboard" id="custom-nav-item">
+      <CNavItem href="/#/support-ticket/manager/manager_dashboard" id="custom-nav-item">
         <CImage customClassName="nav-icon" :src="Icondashboard" id="custom-icon-sidebar" />
         <font id="font-sidebar">Dashboard</font>
       </CNavItem>

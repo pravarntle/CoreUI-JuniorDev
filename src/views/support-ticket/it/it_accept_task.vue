@@ -37,7 +37,7 @@
           <p class="small">{{ email }}</p>
         </CCol>
         <CCol class="text-end d-flex justify-content-end pe-5">
-          <b> {{ date }} &nbsp; </b>
+          <b> {{ formatDate(date) }} &nbsp; </b>
           <!-- <CBadge :color="getBadge(priorities)"><span > -->
           <CBadge class="d-flex align-items-center" :color="getBadge(priorities)"
                 ><li>{{ priorities }}</li></CBadge
@@ -350,7 +350,11 @@ export default {
     async backbutton(){
       this.$router.push({ name: 'ST - it_dashboard'});
       console.log(this.$route);
-    }
+    },
+    formatDate: function(dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
   },
   mounted() {
     const ticketId = this.$route.params.itemId
