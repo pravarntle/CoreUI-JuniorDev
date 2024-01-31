@@ -8,7 +8,7 @@
 
     <CRow>
       <CCol>
-        <CCard class="mt-3 pb-4 chart-container rounded-4">
+        <CCard class="mt-3 pb-4 rounded-4">
           <CCardTitle>
             <CButton
               variant="ghost"
@@ -25,9 +25,7 @@
                       <!-- User Roles -->
                       <CCol xxl="2" xl="6">
                         <CCardText class="pt-2 fs-2">User Roles</CCardText>
-                        <CCardText class="ps-2 fs-5 text-black-50"
-                          >| now update</CCardText
-                        >
+                        <CCardText class="ps-2 fs-5 text-black-50">| now update</CCardText>
                         <div class="d-flex">
                           <div style="width: 50px">
                             <ul>
@@ -108,9 +106,7 @@
                       <!-- Chart User status -->
                       <CCol xxl="2" xl="6">
                         <CCardText class="pt-2 fs-2">User Status</CCardText>
-                        <CCardText class="ps-2 fs-5 text-black-50"
-                          >| now update</CCardText
-                        >
+                        <CCardText class="ps-2 fs-5 text-black-50" >| now update</CCardText>
                         <div class="d-flex">
                           <div style="width: 50px">
                             <ul>
