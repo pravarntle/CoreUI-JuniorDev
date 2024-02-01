@@ -135,7 +135,7 @@ export default {
 
         } else {
           try {
-            const response = await axios.post(`${process.env.VUE_APP_URL}/auth/login`, { username: this.form.username, password: this.form.password })
+            const response = await axios.post(`${process.env.VUE_APP_URL}/auth/login`, { username: this.form.username, password: this.form.password });
             console.log(`${process.env.VUE_APP_URL}/auth/login`);
             const user = {
               id: response.data.user.id, 
