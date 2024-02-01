@@ -483,7 +483,6 @@ export default {
       if (!error) {
         this.isLoading = true
         this.toastProp.push({
-          title: 'Create Ticket',
           content: 'Create Success  ',
         })
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
@@ -546,7 +545,6 @@ export default {
           })
           .catch((err) => {
             this.toastProp.push({
-              title: 'Create Ticket',
               content: 'Create Fail',
             });
             console.log(error)
@@ -554,7 +552,6 @@ export default {
           
       } catch (error) {
         this.toastProp.push({
-            title: 'Create Ticket',
             content: 'Create Fail',
           })
         console.log(error)
@@ -612,7 +609,7 @@ export default {
       this.isPopupVisible = !this.isPopupVisible;
     },
     async updateStatus(){
-      dayjs.locale('th')
+      dayjs.locale('en')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
       const date = dayjs()

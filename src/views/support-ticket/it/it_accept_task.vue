@@ -316,7 +316,7 @@ export default {
     },
     async updateStatus() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA'))
-      dayjs.locale('th')
+      dayjs.locale('en')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
       const date = dayjs()
