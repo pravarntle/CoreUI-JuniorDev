@@ -404,7 +404,10 @@ export default {
       }
 
 
-    }
+    },
+    async cancel() {
+      this.$router.push({ name: 'ST - admin/user_list'});
+    },
 
   },
   mounted() {

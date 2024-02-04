@@ -1,7 +1,7 @@
 <template>
-  <CDropdown variant="nav-item">
-    <CDropdownToggle placement="bottom-end" class="py-0" :caret="false">
-      <CRow align-items="center" class="border rounded p-2 bg-white shadow-sm" style="border-color: rgba(0, 0, 0, 0.1);">
+  
+    
+      <CRow align-items="center" class="border rounded p-2 bg-white shadow-sm ms-2" style="border-color: rgba(0, 0, 0, 0.1);">
         <CCol md="4" class="text-center">
           <CAvatar :src="`data:${acountFile};base64,${acountImage}`" shape="rounded-circle" size="lg" />
         </CCol>
@@ -9,7 +9,7 @@
           <strong class="text-truncate">{{firstname}}</strong>
         </CCol>
       </CRow>
-    </CDropdownToggle>
+    
     <!-- <CDropdownMenu class="pt-0">
       <CDropdownHeader component="h6" class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10 py-2">
         Account
@@ -49,7 +49,7 @@
       </CDropdownItem>
       <CDropdownItem> <CIcon icon="cil-lock-locked" /> Logout </CDropdownItem>
     </CDropdownMenu> -->
-  </CDropdown>
+  
 </template>
 
 <script>
