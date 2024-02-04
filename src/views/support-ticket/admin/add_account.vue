@@ -146,7 +146,7 @@
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required"> * </span>
               </CFormLabel>
-              <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."
+              <CFormInput type="Text" id="phone" name="phone" feedbackInvalid="Please input your phone number."
                 placeholder="e.g. 0611234567" v-model="form.act_number_phone" :invalid="validate.act_number_phone"
                 required />
             </CCol>
