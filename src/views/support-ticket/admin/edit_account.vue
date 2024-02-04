@@ -217,7 +217,7 @@
                 <div class="form-group">
                   <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required">*</span></CFormLabel>
                   <CFormInput
-                    type="number"
+                    type="Text"
                     id="phone"
                     name="phone"
                     feedbackInvalid="Please input your phone number."
@@ -233,7 +233,7 @@
           <div class="col-6 mx-auto">
           <CButton color="dark" @click="cancel" id="cancel-button">Cancel</CButton>
 
-           <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
+           <CButton class="btn-sec" color="success" id="submit-button" @click="validateBeforeSave">
               Submit
             </CButton>
           </div>
@@ -306,50 +306,92 @@ export default {
       this.form.validatedCustom01 = true;
     },
     validateBeforeSave() {
-      let error = false;
+      let error = false
+      if (!this.form.act_picture) {
+        error = true
+        this.validate.act_picture = false
+      }
       if (this.form.act_first_name_th === '') {
-        error = true;
-        this.validate.act_first_name_th = true;
+        error = true
+        this.validate.act_first_name_th = false
       }
       if (this.form.act_last_name_th === '') {
-        error = true;
-        this.validate.act_last_name_th = true;
+        error = true
+        this.validate.act_last_name_th = false
       }
       if (this.form.act_first_name_eng === '') {
-        error = true;
-        this.validate.act_first_name_eng = true;
+        error = true
+        this.validate.act_first_name_eng = false
       }
       if (this.form.act_last_name_eng === '') {
-        error = true;
-        this.validate.act_last_name_eng = true;
+        error = true
+        this.validate.act_last_name_eng = false
       }
       if (this.form.act_role === '') {
-        error = true;
-        this.validate.act_role = true;
+        error = true
+        this.validate.act_role = false
       }
       if (this.form.act_email_address === '') {
-        error = true;
-        this.validate.act_email_address = true;
+        error = true
+        this.validate.act_email_address = false
       }
-      if (this.form.act_email_address === '') {
-        error = true;
-        this.validate.act_email_address = true;
+      if (this.form.confirmEmail === '') {
+        error = true
+        this.validate.confirmEmail = false
+      }
+      if (
+        this.form.act_email_address !== this.form.confirmEmail &&
+        this.form.confirmEmail !== ''
+      ) {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
+      }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
+      }
+      if (this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
+        error = true
+        this.validate.confirmEmail = true
+        this.form.confirmEmail = ''
+      }
+      if (this.form.act_email_address === this.form.confirmEmail) {
+        error = true
+        this.validate.confirmEmail = false
       }
       if (this.form.act_number_phone === '') {
-        error = true;
-        this.validate.act_number_phone = true;
+        error = true
+        this.validate.act_number_phone = false
       }
       if (this.form.act_username === '') {
-        error = true;
-        this.validate.act_username = true;
-      }
-      if (error) {
-
+        error = true
+        this.validate.act_username = false
       }
       if (this.form.act_password === '') {
-        this.onSave();
+        error = true
+        this.validate.act_password = false
       }
-      else {
+      if (this.form.Confirmpassword === '') {
+        error = true
+        this.validate.Confirmpassword = false
+      }
+      if (
+        this.form.act_password !== this.form.Confirmpassword &&
+        this.form.Confirmpassword !== ''
+      ) {
+        error = true
+        this.validate.Confirmpassword = true
+        this.form.Confirmpassword = ''
+      }
+      if (this.form.act_password === this.form.Confirmpassword) {
+        error = true
+        this.validate.Confirmpassword = false
+      }
+
+      if (!error) {
+      } else {
+        this.form.validatedCustom01 = true
         this.encryptPasswordBeforeSave();
       }
     },
