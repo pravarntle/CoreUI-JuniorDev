@@ -1,5 +1,7 @@
 <template>
   <CCard class="p-3 mb-2 rounded-4 mx-auto">
+  <CCardHeader class="bg-white border-white mb-1">
+  </CCardHeader>
     <CRow class=" mb-2 justify-content-center" >
       <CCol :xs="12" :sm="6" :md="4" :lg="4" >
         <CCard class="p-3 mb-2 rounded-5 "  id="count_all">
