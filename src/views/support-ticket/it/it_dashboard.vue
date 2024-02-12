@@ -36,7 +36,7 @@
                             </li>
                             <li id="ServiceRequest">
                               <span>Service Request</span>
-                              <span class="ms-2 p-1">{{countServiceRequest}}</span>
+                              <span class="ms-2 p-1">{{ countServiceRequest }}</span>
                             </li>
                           </ul>
                   </CCol>
