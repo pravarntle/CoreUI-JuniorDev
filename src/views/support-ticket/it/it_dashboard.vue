@@ -138,6 +138,7 @@
                 id="selected-month" 
                 v-model="selectedMonth" 
                 @change="onMonthChange"
+                :value="selectedMonth ? new Date(selectedMonth).toLocaleString('en-US', { month: 'long', year: 'numeric' }) : ''"
               >
                 <template #label>Mont Pick</template>
               </CFormInput>
