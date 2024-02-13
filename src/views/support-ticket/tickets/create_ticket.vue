@@ -120,6 +120,7 @@
                 </CButton>
               </CModalBody>
             </CModal>
+            
             <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
               Submit
             </CButton>
