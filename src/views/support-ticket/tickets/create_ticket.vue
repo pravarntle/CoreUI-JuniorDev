@@ -4,7 +4,7 @@
       <div class="d-inline ms-2">
         <div id="ticket-header">
           <CImage id="Icon_my_ticket" :src="Ticketlogo" />
-        <h2 class="d-inline align-middle"><b>New Ticket</b></h2>
+          <h2 class="d-inline align-middle"><b>New Ticket</b></h2>
         </div>
       </div>
       <CCardBody>
@@ -43,12 +43,15 @@
                 <div class="popup" @mouseover="togglePopup">
                   <CAvatar class="popup_priority" :src="popup_priority" />
                   <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup">
-                    <p>
-                      <font id="low-priority">Low = ดำเนินการภายใน 72 ชม.</font>
+                    <p class="custom-alert-priority custom-font-size-alert">
+                      <font id="low-priority"> Low </font>
+                      <font class="custom-padding-alert-low-priority custom-alert-detail-priority"> =  ดำเนินการภายใน 72 ชม. </font>
                       <br />
-                      <font id="medium-priority">Medium = ดำเนินการภายใน 48 ชม.</font>
+                      <font id="medium-priority"> Medium </font>
+                      <font class="custom-padding-alert-medium-priority custom-alert-detail-priority"> = ดำเนินการภายใน 48 ชม. </font>
                       <br />
-                      <font id="high-priority">High = ดำเนินการภายใน 24 ชม.</font>
+                      <font id="high-priority">High </font>
+                      <font class="custom-padding-alert-high-priority custom-alert-detail-priority"> = ดำเนินการภายใน 24 ชม. </font>
                     </p>
                   </div>
                 </div>
@@ -84,8 +87,7 @@
                       :invalid="validate.tkt_picture" feedbackInvalid="ห้ามเว้นว่าง" />
 
                     <div>
-                      <CImage class="Cloud" :src="Cloud">
-                      </CImage>
+                      <CImage class="Cloud" :src="Cloud"> </CImage>
                       <br />
                       <h6 id="uploaded-file">
                         {{ uploadedFileName || 'Upload File' }}
@@ -101,18 +103,21 @@
           <div class="clearfix text-end">
             <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
             <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
-              visibleVerticallyCenteredDemo = false
-            }
+                visibleVerticallyCenteredDemo = false
+              }
               ">
               <CModalBody>
-                <h2 class="cancel-heading"  id="button-head">Cancel</h2>
+                <h2 class="cancel-heading" id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
                   <span id="detail-for-cancel">Cancel The Ticket ?</span>
                 </p>
                 <br />
                 <hr />
-                <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
+                <CButton color="light" @click="() => {
+                    visibleVerticallyCenteredDemo = false
+                  }
+                  ">
                   Cancel
                 </CButton>
                 <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
@@ -124,23 +129,25 @@
               Submit
             </CButton>
             <CModal alignment="center" :visible="visibleSubmit" @close="() => {
-              visibleSubmit = false
-            }
+                visibleSubmit = false
+              }
               ">
               <CModalBody>
-                <h2 class="ms-3" id="button-head">
-                  Submit
-                </h2>
+                <h2 class="ms-3" id="button-head">Submit</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
                   <span id="detail-for-submit">Submit The Ticket ?</span>
                 </p>
                 <br />
                 <hr />
-                <CButton color="light" @click="() => { visibleSubmit = false }">
+                <CButton color="light" @click="() => {
+                    visibleSubmit = false
+                  }
+                  ">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave" :disabled="isLoading">
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave"
+                  :disabled="isLoading">
                   <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                 </CButton>
@@ -154,7 +161,7 @@
 
   <br />
   <CToaster placement="top-end">
-    <CToast visible color="info" v-for="(toast) in toastProp">
+    <CToast visible color="info" v-for="toast in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -189,7 +196,8 @@
 /* The actual popup */
 .popup .popuptext {
   visibility: hidden;
-  width: 255px;
+  width: 300px;
+  height: 85px;
   background-color: rgb(255, 255, 255);
   color: #fff;
   text-align: center;
@@ -209,7 +217,7 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  margin-left: -47px;
+  margin-left: -70px;
   border-width: 5px;
   border-style: solid;
   border-color: #000000 transparent transparent transparent;
@@ -250,7 +258,6 @@
   align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .custom-file-upload:hover {
   background-color: #7ee4b3;
@@ -303,7 +310,6 @@
   text-align: left;
   margin-left: 10px;
   margin-top: -5px;
-
 }
 
 #formFileLg {
@@ -347,13 +353,42 @@
   color: #29b227;
 }
 
-#Icon_my_ticket{
+#Icon_my_ticket {
   width: auto;
   max-height: 25px;
   padding-left: 5px;
   padding-top: 3px;
   padding-right: 5px;
 }
+
+.custom-alert-priority {
+  text-align: left; 
+  padding-left: 12px;
+
+}
+
+.custom-font-size-alert {
+  font-size: 90%;
+}
+
+.custom-alert-detail-priority {
+  color:#4F5D73;
+
+}
+
+.custom-padding-alert-low-priority {
+  padding-left: 70px;
+}
+
+.custom-padding-alert-medium-priority {
+  padding-left: 43px;
+
+}
+
+.custom-padding-alert-high-priority {
+  padding-left: 66px;
+}
+
 </style>
 
 <script>
@@ -401,24 +436,23 @@ export default {
       visibleSubmit: false,
       isLoading: false,
       Ticketlogo,
-      allUpdate:{
-        mod_act:'',
-        mod_date:'',
-        mod_status:'',
-        mod_tkt:'',
+      allUpdate: {
+        mod_act: '',
+        mod_date: '',
+        mod_status: '',
+        mod_tkt: '',
       },
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
   created() {
-    (this.piorityOptions = [
+    ; (this.piorityOptions = [
       { label: 'Select Priority', value: '' },
       { label: 'Low', value: 'Low' },
       { label: 'Medium', value: 'Medium' },
       { label: 'High', value: 'High' },
       { label: 'ไม่ระบุ', value: 'none', disabled: true },
-    ])
-      ,
+    ]),
       (this.typeOptions = [
         { label: 'Select type', value: '' },
         { label: 'Software', value: 'Software' },
@@ -445,40 +479,48 @@ export default {
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
     vaildateBeforeSave() {
-      let error = false;
+      let error = false
 
       // Regular expression to check for special characters
-      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/
 
       // Check for empty values and display validation messages
-      if (this.form.tkt_title.trim() === '' || specialCharRegex.test(this.form.tkt_title)) {
-        this.validate.tkt_title = true; // Show validation message
-        error = true;
+      if (
+        this.form.tkt_title.trim() === '' ||
+        specialCharRegex.test(this.form.tkt_title)
+      ) {
+        this.validate.tkt_title = true // Show validation message
+        error = true
       } else {
-        this.validate.tkt_title = false; // Hide validation message
+        this.validate.tkt_title = false // Hide validation message
       }
 
-      if (this.form.tkt_types.trim() === '' || specialCharRegex.test(this.form.tkt_types)) {
-        this.validate.tkt_types = true;
-        error = true;
+      if (
+        this.form.tkt_types.trim() === '' ||
+        specialCharRegex.test(this.form.tkt_types)
+      ) {
+        this.validate.tkt_types = true
+        error = true
       } else {
-        this.validate.tkt_types = false;
+        this.validate.tkt_types = false
       }
 
-      if (this.form.tkt_priorities.trim() === '' || specialCharRegex.test(this.form.tkt_priorities)) {
-        this.validate.tkt_priorities = true;
-        error = true;
+      if (
+        this.form.tkt_priorities.trim() === '' ||
+        specialCharRegex.test(this.form.tkt_priorities)
+      ) {
+        this.validate.tkt_priorities = true
+        error = true
       } else {
-        this.validate.tkt_priorities = false;
+        this.validate.tkt_priorities = false
       }
 
-      if (this.form.tkt_description.trim() === '' ) {
-        this.validate.tkt_description = true;
-        error = true;
+      if (this.form.tkt_description.trim() === '') {
+        this.validate.tkt_description = true
+        error = true
       } else {
-        this.validate.tkt_description = false;
+        this.validate.tkt_description = false
       }
-
 
       if (!error) {
         this.isLoading = true
@@ -488,12 +530,11 @@ export default {
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
         setTimeout(() => {
-          
           // จบการโหลด
           this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          
+
           this.onSave()
         }, 2000)
       } else {
@@ -517,7 +558,7 @@ export default {
       const date = dayjs()
       const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const userId = userData.id // ดึงค่า id จาก userData
-      
+
       const ticket_status = `Pending`
       const ticket_date = `${date.format('YYYY-MM-DD')}`
       const ticket_number = `TKT-${date.format('DDMMYYYYHHmmssSSS')}`
@@ -532,28 +573,25 @@ export default {
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
 
-
       try {
-          await axios
+        await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
-            
           })
           .then((result) => {
-            this.allUpdate.mod_tkt = result.data._id;
-            this.updateStatus();
+            this.allUpdate.mod_tkt = result.data._id
+            this.updateStatus()
           })
           .catch((err) => {
             this.toastProp.push({
               content: 'Create Fail',
-            });
+            })
             console.log(error)
           })
-          
       } catch (error) {
         this.toastProp.push({
-            content: 'Create Fail',
-          })
+          content: 'Create Fail',
+        })
         console.log(error)
       }
     },
@@ -582,13 +620,13 @@ export default {
         this.form.tkt_priorities.trim(),
         this.form.tkt_types.trim(),
         this.form.tkt_picture.trim(),
-      ].every(value => value === '');
+      ].every((value) => value === '')
 
       if (!isFormEmpty) {
-        this.visibleVerticallyCenteredDemo = true;
+        this.visibleVerticallyCenteredDemo = true
       } else {
         // If the form is empty, navigate away without confirmation
-        this.confirm();
+        this.confirm()
       }
     },
     async confirm() {
@@ -606,26 +644,29 @@ export default {
       }
     },
     togglePopup() {
-      this.isPopupVisible = !this.isPopupVisible;
+      this.isPopupVisible = !this.isPopupVisible
     },
-    async updateStatus(){
+    async updateStatus() {
       dayjs.locale('en')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
       const date = dayjs()
       const update_date = `${date.format('D MMM YYYY, h:mm A')}`
-      this.allUpdate.mod_status = this.form.tkt_status;
-      this.allUpdate.mod_date = update_date;
-      this.allUpdate.mod_act = this.form.tkt_act;
-      
+      this.allUpdate.mod_status = this.form.tkt_status
+      this.allUpdate.mod_date = update_date
+      this.allUpdate.mod_act = this.form.tkt_act
+
       console.log(this.allUpdate)
       try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
-            data: this.allUpdate,
-            
-          })
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`,
+            {
+              data: this.allUpdate,
+            },
+          )
           .then((result) => {
-            this.confirm();
+            this.confirm()
           })
           .catch((err) => {
             console.log(error)
@@ -633,7 +674,7 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
   },
   components: { CForm, CFormLabel, CImage },
 }

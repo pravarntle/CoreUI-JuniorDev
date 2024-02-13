@@ -13,7 +13,7 @@
           <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter clickable-rows
             class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5"
             items-per-page-select pagination columnSorter
-            :sorterValue="{ column: 'status', state: 'desc' }" :table-props="{
+            :sorterValue="{ column: 'STATUS', state: 'desc' }" :table-props="{
               striped: true,
               hover: true,
             }">
