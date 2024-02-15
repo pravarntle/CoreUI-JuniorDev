@@ -7,8 +7,9 @@
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
             <div class="text-start" id="head_description">
-              <CAvatar class="Arrow_Left" :src="Arrow_Left" />
-              <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
+              <CButton class="btn btn-block btn-long custom-button-back" color="light" @click="backtohomepage()">
+                <CImage class="style-icon-button-back" :src="Button_back" />
+              </CButton>
             </div>
           </CCol>
         </div>
@@ -26,9 +27,9 @@
         </CCol>
         <CCol class="text-end p-3" style="margin-right: 2%">
           <b> {{ formatDate(date) }} &nbsp; </b>
-          <CBadge :color="getBadge(priorities)"><span >
-            <li>{{ priorities }}</li>
-          </span></CBadge>
+          <CBadge :color="getBadge(priorities)"><span>
+              <li>{{ priorities }}</li>
+            </span></CBadge>
         </CCol>
       </CRow>
       <hr />
@@ -69,11 +70,13 @@
                 </CCol>
               </Crow>
               <Crow class="text-start">
-                <CCol style="margin-left: 5%">  
+                <CCol style="margin-left: 5%">
                   <a v-if="picture">
                     <br>
-                    <CImage :src="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" /><br><br>
-                    <a :href="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" Download><u>Download</u></a>
+                    <CImage :src="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
+                      style="max-width: auto; height: 300px;" /><br><br>
+                    <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
+                      style="max-width: auto; height: 300px;" Download><u>Download</u></a>
                   </a>
 
                   <br />
@@ -97,8 +100,8 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar v-if="acountIdFile" class="Icon_user_man avatar-round" :src="`data:${acountIdFile};base64,${acountIdImage}`" 
-                  style="padding: -4px" />
+                <CAvatar v-if="acountIdFile" class="Icon_user_man avatar-round"
+                  :src="`data:${acountIdFile};base64,${acountIdImage}`" style="padding: -4px" />
                 <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
             </div>
@@ -111,25 +114,29 @@
               </CFormInput>
               <br>
               <!-- <CFormInput type="file" @change="onFileUpload" /> -->
-              <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput" accept=".png, .jpg, .jpeg" />
-              <CButton @click="attachImage  " id="attach_image"><img class="attach-image" :src="Attach_Image"
+              <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput"
+                accept=".png, .jpg, .jpeg" />
+              <CButton @click="attachImage" id="attach_image"><img class="attach-image" :src="Attach_Image"
                   id="attachImage" alt="Attach Image" style="width: 20px" />
               </CButton>
-              <CButton  @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
+              <CButton @click="attachLink" id="attach_link"><img class="insert-link" :src="insert_link" alt="Insert Link"
                   style="width: 20px" />
               </CButton>
-              <input type="file" ref="fileInput" @change="onFileUpload"  style="display: none" id="fileInput" accept=".txt, .pdf, .docx ,.xlsx" />
+              <input type="file" ref="fileInput" @change="onFileUpload" style="display: none" id="fileInput"
+                accept=".txt, .pdf, .docx ,.xlsx" />
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} / 200</span>
+              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} /
+                200</span>
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
             <div class="col">
               <div class="avatar">
-                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment" :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''" > <img class="commit" :src="commit"
-                    alt="Commit Icon" /></CButton>
+                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment"
+                  :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''"> <img class="commit"
+                    :src="commit" alt="Commit Icon" /></CButton>
               </div>
             </div>
           </div>
@@ -141,14 +148,15 @@
               <div class="col-1">
                 <div class="avatar">
                   <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
-                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`" style="padding: -4px" />
+                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
+                    style="padding: -4px" />
                   <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
                 </div>
               </div>
               <div class="col-10">
                 <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
                 <div class="comments_box" style="width: fit-content; padding: 10px;">
-                  
+
                   {{ item.cmt_message }}
                   <br v-if="item.cmt_message">
                   <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
@@ -157,22 +165,25 @@
                   <br v-if="item.link">
                   <a v-if="item.cmt_picture">
                     <CRow>
-                      <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" />
+                      <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
+                        alt="Comment Image" style="max-width: auto; height: 300px;" />
                     </CRow>
                   </a>
                   <br v-if="item.cmt_picture">
                   <a v-if="item.cmt_file">
-                    <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image" style="max-width: auto; height: 300px;" download>{{`${item.cmt_file.filename}`}}</a>
+                    <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
+                      style="max-width: auto; height: 300px;" download>{{ `${item.cmt_file.filename}` }}</a>
                   </a>
                   <br v-if="item.cmt_file">
-                  <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" style="text-decoration: none; color: #007bff; ">
-                      {{ item.cmt_link }}
+                  <a v-if="item.cmt_link" @click="openLink(item.cmt_link)"
+                    style="text-decoration: none; color: #007bff; ">
+                    {{ item.cmt_link }}
                   </a>
-                  
+
                 </div>
-                
-                    
-                 
+
+
+
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
@@ -186,13 +197,13 @@
       </CCardBody>
     </CCard>
 
-    
+
 
   </div>
 </template>
 
 <script>
-import Arrow_Left from '@/assets/images/Arrow_Left.png'
+import Button_back from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
 import Icon_user_man from '@/assets/images/icon_user_man.jpg'
@@ -219,7 +230,7 @@ export default {
   name: 'comment',
   setup() {
     return {
-      Arrow_Left,
+      Button_back,
       Icon_user_man,
       Short,
       File_test,
@@ -238,7 +249,7 @@ export default {
     CFormInput,
     CButton,
     CBadge
-},
+  },
   data() {
     return {
       uploadImage: '',
@@ -264,23 +275,24 @@ export default {
       insert_link,
       link: '', // เพื่อจัดเก็บลิงก์ที่แทรก
       file: '', // เพิ่มคุณสมบัตินี้เพื่อเก็บไฟล์ที่แนบ
-      ticketId:'',
-      type:'',
-      description:'',
-      title:'',
-      priorities:'',
-      picture:'',
-      avatar:'',
-      acountFile:'',
-      acountImage:'',
-      acountIdFile:'',
-      acountIdImage:'',
-      firstname:'',
-      email:'',
-      date:'',
+      ticketId: '',
+      type: '',
+      description: '',
+      title: '',
+      priorities: '',
+      picture: '',
+      avatar: '',
+      acountFile: '',
+      acountImage: '',
+      acountIdFile: '',
+      acountIdImage: '',
+      firstname: '',
+      email: '',
+      date: '',
       comment: '',
       commentAccount: '',
-      characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
+      characterCount: 0,
+      Button_back, // เพิ่ม characterCount เริ่มต้นที่ 0
 
     };
   },
@@ -289,25 +301,25 @@ export default {
       return this.comment.length;
     },
   },
-  setup(){
+  setup() {
     const getBadge = (priorities) => {
-        
-          switch (priorities) {
-            case 'Low':
-              return 'success' ;
-            case 'Medium':
-              return 'warning' ;
-            case 'High':
-              return 'danger' ;
-            
-            default:
-              return 'primary'; // Return a default color if none of the cases match.
-          }
-      };
-      
-      return{
-        getBadge
+
+      switch (priorities) {
+        case 'Low':
+          return 'success';
+        case 'Medium':
+          return 'warning';
+        case 'High':
+          return 'danger';
+
+        default:
+          return 'primary'; // Return a default color if none of the cases match.
       }
+    };
+
+    return {
+      getBadge
+    }
 
 
   },
@@ -329,17 +341,17 @@ export default {
 
       // Check for empty values and display validation messages
       if (this.comment.trim() === '' || specialCharRegex.test(this.comment)) {
-        if(this.form.cmt_file){
+        if (this.form.cmt_file) {
           this.onSave()
-        }else if(this.form.cmt_picture){
+        } else if (this.form.cmt_picture) {
           this.onSave()
-        }else if(this.link){
+        } else if (this.link) {
           this.onSave()
-        }else{
-          
+        } else {
+
           console.error('Invalid comment');
         }
-        
+
       } else {
         this.onSave()
       }
@@ -361,7 +373,7 @@ export default {
 
       // Optionally, update the data property to use in the template
       this.characterCount = charCount;
-      
+
       // Your async logic here (if needed)
       // await someAsyncFunction();
     },
@@ -376,7 +388,7 @@ export default {
     async attachImage() {
       const imageInput = this.$refs.pictureInput
       this.$refs.pictureInput.click()
-     
+
 
       imageInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -481,23 +493,24 @@ export default {
 
         const ticketId = this.ticketId;
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`, 
-        { populate: [
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
+          {
+            populate: [
               {
-                  "path":"tkt_act",
-                  "populate":"act_picture"
+                "path": "tkt_act",
+                "populate": "act_picture"
               }
-              ,"tkt_picture"
-          ] 
-        });
+              , "tkt_picture"
+            ]
+          });
         this.type = response.data.tkt_types;
         this.description = response.data.tkt_description;
         this.title = response.data.tkt_title;
         this.priorities = response.data.tkt_priorities;
         this.picture = response.data.tkt_picture;
         this.date = response.data.tkt_time;
-        this.acountFile=response.data.tkt_act.act_picture.filetype
-        this.acountImage=response.data.tkt_act.act_picture.image
+        this.acountFile = response.data.tkt_act.act_picture.filetype
+        this.acountImage = response.data.tkt_act.act_picture.image
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
         // this.email = response.data.tkt_act.act_email_address;
@@ -506,9 +519,9 @@ export default {
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         // this.getAcount();
 
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
     async getAcount() {
       try {
@@ -518,173 +531,176 @@ export default {
         console.log(userId);
 
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
-        this.acountIdFile=response.data.act_picture.filetype
-        this.acountIdImage=response.data.act_picture.image
+        this.acountIdFile = response.data.act_picture.filetype
+        this.acountIdImage = response.data.act_picture.image
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
     async onPictureUpload(event) {
-        const uploadFile = event.target.files[0]
-        const formData = new FormData()
-        formData.append('file', uploadFile)
-      
-        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        this.form.cmt_picture = dataResponse.data._id
-        this.form.cmt_file = null
-        document.getElementById('imageInput').value = ''
-        
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
 
-      },
-    async onFileUpload(event) {
-        const uploadFile = event.target.files[0]
-        const formData = new FormData()
-        formData.append('file', uploadFile)
-      
-        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        this.form.cmt_file = dataResponse.data._id
-        this.form.cmt_picture = null
-        document.getElementById('fileInput').value = ''
-      },
-
-      async onSave() {
-        dayjs.locale('th')
-        dayjs.extend(require('dayjs/plugin/timezone'))
-        dayjs.tz.setDefault('Asia/Bangkok')
-        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-        const userId = userData.id.toString(); // ดึงค่า id จาก userData
-        
-        const date = dayjs()
-
-
-        this.form.cmt_file = this.form.cmt_file || null;
-        this.form.cmt_picture = this.form.cmt_picture || null;
-
-        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-        const ticketId=this.ticketId
-        this.form.cmt_message = this.comment
-        this.form.cmt_date = comment_date
-        this.form.cmt_tkt = ticketId
-        this.form.cmt_link = this.link
-        this.form.cmt_act = userId
-        // this.form.cmt_picture = this.imageName
-        // this.form.cmt_file = this.file
-    
-        //     // .then((result) => {
-        //     //   this.$router.push('/support-ticket/user/dashboard')
-        //     // })
-
-        try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
-            data: this.form,
-          });
-          setTimeout(function() {
-            this.getComment()
-          }.bind(this), 200)
-          // Handle success here
-        } catch (error) {
-          console.log(error);
-          // Handle the error appropriately (e.g., display an error message)
+      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-        
-        this.comment = ''
-        this.imageDataURL = ''
-        this.imageName = ''
-        this.link = ''
-        this.form.cmt_file = null;
-        this.form.cmt_picture = null;
+      })
+      this.form.cmt_picture = dataResponse.data._id
+      this.form.cmt_file = null
+      document.getElementById('imageInput').value = ''
 
-
-        // this.$socket.sendObj({
-        // type: 'new-comment',
-        // comment: this.form,
-        // });
-        
-        
-        // window.location.reload();
-      },
-      async getComment(){
-        const ticketId=this.ticketId
-        const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-              where: {
-                cmt_tkt: ticketId,
-              },
-              populate:[
-              {
-                  "path":"cmt_act",
-                  "populate":"act_picture"
-              },
-              "cmt_picture","cmt_file"
-              ]
-                
-              
-            });
-            console.log(ticketId)
-            console.log(comment.data)
-            this.comments = comment.data;
-            this.commentAccount= comment.data.cmt_act;
-            console.log(this.comments)
-      },
-      async getAcountComment() {
-        try {
-
-          const commentAcount = this.commentAccount;
-          console.log(commentAcount);
-
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
-          console.log(response.data);
-          
-          
-
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-      },
-      async getFileType(filetype) {
-        console.log("เข้า")
-        switch (filetype) {
-          case 'image/jpeg':
-          case 'image/jpg':
-          case 'image/png':
-            return 'รูปภาพ';
-          case 'application/pdf':
-            return 'ไฟล์ PDF';
-          case 'application/msword':
-          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-            return 'ไฟล์เอกสาร Microsoft Word';
-          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            return 'ไฟล์เอกสาร Microsoft Excel';
-          default:
-            return 'ไฟล์อื่น ๆ';
-        }
-      },
-      formatDate: function(dateString) {
-        const options = { day: '2-digit', month: 'short', year: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-GB', options);
-      },
-      
 
     },
-      
-  mounted(){
+    async onFileUpload(event) {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      this.form.cmt_file = dataResponse.data._id
+      this.form.cmt_picture = null
+      document.getElementById('fileInput').value = ''
+    },
+
+    async onSave() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id.toString(); // ดึงค่า id จาก userData
+
+      const date = dayjs()
+
+
+      this.form.cmt_file = this.form.cmt_file || null;
+      this.form.cmt_picture = this.form.cmt_picture || null;
+
+      const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+      const ticketId = this.ticketId
+      this.form.cmt_message = this.comment
+      this.form.cmt_date = comment_date
+      this.form.cmt_tkt = ticketId
+      this.form.cmt_link = this.link
+      this.form.cmt_act = userId
+      // this.form.cmt_picture = this.imageName
+      // this.form.cmt_file = this.file
+
+      //     // .then((result) => {
+      //     //   this.$router.push('/support-ticket/user/dashboard')
+      //     // })
+
+      try {
+        await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
+          data: this.form,
+        });
+        setTimeout(function () {
+          this.getComment()
+        }.bind(this), 200)
+        // Handle success here
+      } catch (error) {
+        console.log(error);
+        // Handle the error appropriately (e.g., display an error message)
+      }
+
+      this.comment = ''
+      this.imageDataURL = ''
+      this.imageName = ''
+      this.link = ''
+      this.form.cmt_file = null;
+      this.form.cmt_picture = null;
+
+
+      // this.$socket.sendObj({
+      // type: 'new-comment',
+      // comment: this.form,
+      // });
+
+
+      // window.location.reload();
+    },
+    async getComment() {
+      const ticketId = this.ticketId
+      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
+        where: {
+          cmt_tkt: ticketId,
+        },
+        populate: [
+          {
+            "path": "cmt_act",
+            "populate": "act_picture"
+          },
+          "cmt_picture", "cmt_file"
+        ]
+
+
+      });
+      console.log(ticketId)
+      console.log(comment.data)
+      this.comments = comment.data;
+      this.commentAccount = comment.data.cmt_act;
+      console.log(this.comments)
+    },
+    async getAcountComment() {
+      try {
+
+        const commentAcount = this.commentAccount;
+        console.log(commentAcount);
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
+        console.log(response.data);
+
+
+
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async getFileType(filetype) {
+      console.log("เข้า")
+      switch (filetype) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+          return 'รูปภาพ';
+        case 'application/pdf':
+          return 'ไฟล์ PDF';
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          return 'ไฟล์เอกสาร Microsoft Word';
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+          return 'ไฟล์เอกสาร Microsoft Excel';
+        default:
+          return 'ไฟล์อื่น ๆ';
+      }
+    },
+    formatDate: function (dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    async backtohomepage() {
+      this.$router.push({ name: 'ST - Dashboard User' });
+    },
+
+
+  },
+
+  mounted() {
     const itemId = this.$route.params.itemId;
     console.log(itemId)
     this.ticketId = itemId;
     this.getTicket();
-    this.getComment(); 
-    this.getAcount(); 
+    this.getComment();
+    this.getAcount();
     setInterval(() => {
       this.getComment();
     }, 1000);
@@ -796,8 +812,15 @@ a:hover {
 }
 
 /* --------FIGHT---------- */
-#head_description{
-  padding: 1px;  
+#head_description {
+  padding: 1px;
   margin-top: 1%;
 }
-</style>
+
+.custom-button-back {
+  height: 35px;
+}
+
+.style-icon-button-back {
+  width: 30px;
+}</style>
