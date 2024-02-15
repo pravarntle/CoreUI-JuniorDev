@@ -25,6 +25,7 @@
                         :invalid="validate.username"
                         size="lg"
                         id="username"
+                        @keyup.enter="onLoginClick"
                       />
                     </CInputGroup>
                     <CFormLabel>Password</CFormLabel>
@@ -37,6 +38,7 @@
                         :invalid="validate.password"
                         autocomplete="current-password"
                         size="lg"
+                        @keyup.enter="onLoginClick"
                       />
                       <CInputGroupText>
                         <CFormCheck
