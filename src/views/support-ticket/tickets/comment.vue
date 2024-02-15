@@ -685,10 +685,13 @@ export default {
     this.getTicket();
     this.getComment(); 
     this.getAcount(); 
-    setInterval(() => {
+    this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
 
+  },
+  beforeUnmount() {
+    clearInterval(this.commentInterval);
   },
 
 }

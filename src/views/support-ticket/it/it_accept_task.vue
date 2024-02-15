@@ -206,6 +206,15 @@ export default {
         mod_status: '',
         mod_tkt: '',
       },
+      notifications:{
+        not_datetime:'',
+        not_status:'',
+        not_type:'',
+        not_act:'',
+        not_tkt:'',
+        not_cmt:'',
+      }
+      //notย่อมาจาก notifications
     }
   },
   methods: {
@@ -338,6 +347,7 @@ export default {
             },
           )
           .then((result) => {
+            this.notificcation();
             this.$router.push('/support-ticket/it/it_my_task')
           })
           .catch((err) => {
@@ -355,6 +365,39 @@ export default {
       const options = { day: '2-digit', month: 'short', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
     },
+    async notificcation() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA'))
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
+      const userId = userData.id
+      this.notifications.not_datetime = noti_date
+      this.notifications.not_act = userId
+      this.notifications.not_type = 'Status'
+      this.notifications.not_tkt = this.ticketId
+      this.notifications.not_cmt = null
+      this.notifications.not_status = false
+
+      
+      console.log(this.notifications)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+            {
+              data: this.notifications,
+            },
+          )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    
   },
   mounted() {
     const ticketId = this.$route.params.itemId

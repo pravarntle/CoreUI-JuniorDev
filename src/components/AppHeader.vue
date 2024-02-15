@@ -16,8 +16,9 @@
       <CHeaderNav class="ms-1 me-2"> <!-- เพิ่มค่า margin ที่ฝั่งซ้ายเป็น ms-2 -->
         <CFormCheck type="radio" :button="{ color: 'gray' }">
           <template #label>
-            <CIcon icon="cilBell" />
+            <AppHeaderDropdownNotif/>
           </template>
+          
         </CFormCheck>
       </CHeaderNav>
       <CHeaderNav class="ms-1 me-5">
@@ -40,7 +41,7 @@ import AppHeaderDropdownMssgs from './AppHeaderDropdownMssgs'
 import AppHeaderDropdownNotif from './AppHeaderDropdownNotif'
 import AppHeaderDropdownTasks from './AppHeaderDropdownTasks'
 import { logo } from '@/assets/brand/logo'
-import { CContainer, CHeaderToggler } from '@coreui/vue-pro'
+import { CContainer, CDropdownToggle, CHeaderNav, CHeaderToggler } from '@coreui/vue-pro'
 import CIcon from '@coreui/icons-vue'
 
 export default {
@@ -54,7 +55,9 @@ export default {
     CContainer,
     CHeaderToggler,
     CIcon,
-  },
+    CHeaderNav,
+    CDropdownToggle
+},
   setup() {
     return {
       logo,
