@@ -202,7 +202,6 @@
                       text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                       type="password"
                       id="password"
-                      v-model="form.act_password"
                       feedbackInvalid="Please input password."
                       :invalid="validate.act_password"
                       placeholder="•••••••"
@@ -222,7 +221,6 @@
                     <CFormInput
                       type="password"
                       id="Confirmpassword"
-                      v-model="form.Confirmpassword"
                       feedbackInvalid="Please confirm password."
                       :invalid="validate.Confirmpassword"
                       autocomplete="current-password"
@@ -392,7 +390,7 @@
                   class="ms-2"
                   color="info"
                   id="confirm-btn-in-detail"
-                  @click="vaildateBeforeSave"
+                  @click="validateBeforeSave"
                   :disabled="isLoading"
                 >
                   <CSpinner
@@ -458,6 +456,7 @@ export default {
       manage_accounts,
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
+      isLoading: false,
     }
   },
 
@@ -564,6 +563,8 @@ export default {
 
       if (!error) {
         this.isLoading = true
+        console.log('1')
+        console.log(this.form.Confirmpassword)
         this.toastProp.push({
           content: 'Create Success  ',
         })
@@ -574,14 +575,16 @@ export default {
           this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-
+          console.log('2')
+          
           this.onSave()
         }, 2000)
       } else {
         this.form.validatedCustom01 = true
         this.encryptPasswordBeforeSave()
         this.visibleSubmit = false
-        console.log('1')
+        
+        console.log('8')
       }
     },
     async onFileUpload(event) {
@@ -721,29 +724,45 @@ export default {
     },
     cancel() {
       // Check if there is any data in the form
-      const isFormEmpty = [
-        console.log('1'),
-        this.form.act_first_name_th.trim(),
-        this.form.act_last_name_th.trim(),
-        this.form.act_first_name_eng.trim(),
-        this.form.act_last_name_eng.trim(),
-        this.form.act_role.trim(),
-        this.form.act_username.trim(),
-        this.form.act_password.trim(),
-        this.form.Confirmpassword.trim(),
-        this.form.act_email_address.trim(),
-        this.form.confirmEmail.trim(),
-        this.form.act_number_phone.trim(),
-      ].every((value) => value === '')
-
-      if (!isFormEmpty) {
         this.visibleVerticallyCenteredDemo = true
         console.log('2')
-      } else {
         // If the form is empty, navigate away without confirmation
-        this.confirm()
-      }
     },
+    async confirm() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+      this.$router.push('/support-ticket/admin/user_list')
+      
+    },
+    togglePopup() {
+      this.isPopupVisible = !this.isPopupVisible;
+    },
+    async updateStatus(){
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      const update_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.allUpdate.mod_status = this.form.tkt_status;
+      this.allUpdate.mod_date = update_date;
+      this.allUpdate.mod_act = this.form.tkt_act;
+      
+      console.log(this.allUpdate)
+      try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+            data: this.allUpdate,
+            
+          })
+          .then((result) => {
+            this.confirm();
+          })
+          .catch((err) => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   created() {
     const accountId = this.$route.params.itemId
@@ -758,6 +777,7 @@ export default {
     ]
 
     // ทำสิ่งที่คุณต้องการกับ accountId ที่ได้รับ
+    this.form.Confirmpassword = this.form.password
   },
 }
 </script>
