@@ -1,6 +1,6 @@
 <template>
   <CDropdown>
-    <CDropdownToggle placement="bottom-end" :caret="false">
+    <CDropdownToggle placement="bottom-end" :caret="false" @click="getNotifications">
       <CIcon class="my-1 mx-2" icon="cil-bell" size="lg" />
       <CBadge
         v-if="itemsCount > 0"
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import avatar4 from '@/assets/images/avatars/4.jpg'
 import avatar5 from '@/assets/images/avatars/5.jpg'
 import avatar6 from '@/assets/images/avatars/6.jpg'
@@ -62,30 +63,57 @@ export default {
   data() {
     return { 
       itemsCount: 5,
+      userID:'',
     }
   },
   methods:{
     async getNotifications(){
       const response = await axios.post(
-          `${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`,
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_notifications`,
           {
-            where: {
-              tkt_status: { $ne: 'Cancel' },
-              tkt_last_update: {
-                $gte: startDate,
-                $lte: endDate,
-              },
-            },
+              
             populate: [
               {
-                path: 'tkt_act',
+                path: 'not_act',
                 populate: 'act_picture',
               },
-              'tkt_picture',
+              {
+                path: 'not_tkt',
+                populate:[
+                  {
+                    path:'tkt_act',
+                    populate:'act_picture',
+                  }
+                ]
+              },
+              // {
+              //   path: 'not_acc',
+              //   populate:[
+              //     {
+              //       path:'acc_act',
+              //       populate:'act_picture',
+              //     }
+              //   ]
+              // },
+              
+              "not_cmt",
+              "not_acc",
+              
+
             ],
+            where: {
+              not_status: { $ne: 'true' },
+              // not_act : this.userID
+            },
           },
         );
+          console.log(response.data)
     }
   },
+  mounted(){
+    const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+    this.userID=userData.id
+    console.log("ยูสเซอร์:"+ this.userID)
+  }
 }
 </script>

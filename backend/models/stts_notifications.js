@@ -30,6 +30,11 @@ const SchemaData = new schema({
         ref: "stts_comments",
         required: false,
     },
+    not_acc: {
+        type: schema.Types.ObjectId,
+        ref: "stts_accept_tickets",
+        required: true,
+    },
     //notย่อมาจาก notifications
 }, {
     timestamps: {
