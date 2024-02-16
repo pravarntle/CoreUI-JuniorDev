@@ -26,9 +26,32 @@
                     <CButton size="sm" @click="editAccount(item, index)">
                         <img :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
                     </CButton>
-                    <CButton size="sm" @click="DeleteButton(item, index)">
+                    <!-- <CButton size="sm" @click="DeleteButton(item, index)">
+                        <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
+                    </CButton> -->
+
+                    <CButton size="sm" @click="() => { visibleLiveDemo = true }">
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton>
+                    <CModal alignment="center" :visible="visibleLiveDemo" @close="() => { visibleLiveDemo = false }" >
+
+
+                        <CModalBody>
+                            <h2 class="cancel-heading"  id="button-head">Cancel</h2>
+                            <p class="ms-2" id="popup-detail">
+                            Are you sure you want to
+                            <span id="detail-for-cancel">Cancel The Ticket ?</span>
+                            </p>
+                            <br />
+                            <hr />
+                            <CButton color="light" @click="() => { visibleLiveDemo = false }">
+                                Cancel
+                            </CButton>
+                            <CButton class="ms-2 " color="info" id="confirm-btn-in-detail" @click="DeleteButton(item, index)">
+                                Delete
+                            </CButton>
+                        </CModalBody>
+                    </CModal>
                 </td>
             </template>
 
@@ -55,6 +78,45 @@
 
 .style-username {
     color: #5E5ADB;
+}
+
+#cancel-heading {
+  margin-left: 3px;
+  text-align: left;
+  color: #000;
+}
+
+.popup_priority {
+  text-align: left;
+  margin-left: 10px;
+  margin-top: -5px;
+
+}
+
+#detail-for-cancel {
+  color: #d0293b;
+}
+
+#confirm-btn-in-detail {
+  color: #ffffff;
+}
+
+#button-head {
+  text-align: left;
+  color: #000;
+}
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+}
+/* .modal-backdrop.show{
+    opacity: 0.5;
+} */
+.modal fade show{
+    opacity: 0.5;
 }
 </style>
 <script scoped>
@@ -85,6 +147,7 @@ export default {
             More_Priority,
             Icondeleteaccount,
             Iconeditaccount,
+            visibleLiveDemo: false,
 
         };
 
