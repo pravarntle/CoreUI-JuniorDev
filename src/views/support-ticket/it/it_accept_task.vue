@@ -351,6 +351,7 @@ export default {
             },
           )
           .then((result) => {
+            console.log("เข้าthen")
             this.notification();
             this.$router.push('/support-ticket/it/it_my_task')
           })
