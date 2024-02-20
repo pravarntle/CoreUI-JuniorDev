@@ -12,6 +12,12 @@
     </CCardHeader>
     <CCardBody class="px-5">
       <div>
+        <CForm 
+          class="row g-3 needs-validation" 
+          novalidate 
+          :validated="validatedCustom01" 
+          @submit="handleSubmitCustom01"
+        >
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <div class="col-lg-7 col-md-12 purple">
@@ -21,7 +27,7 @@
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <div class="col-lg-7 col-md-12">
-            <CFormLabel for="priorityNameTha">
+            <CFormLabel type="text" id="validationCustom01" for="priorityNameTha" feedbackInValid="Please input title." required >
               <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
             </CFormLabel>
 
@@ -92,6 +98,7 @@
             </CRow>
           </div>
         </CRow>
+        </CForm>
       </div>
     </CCardBody>
   </CCard>
@@ -112,6 +119,7 @@ export default {
       priorityId: '',
       validatedCustom01: null,
       Icon_Priority,
+      visibleVerticallyCenteredDemo: false,
     }
   },
   methods: {
@@ -147,6 +155,30 @@ export default {
         console.log(error)
       }
 
+    },
+    Cancel() {
+      // Check if there is any data in the form
+      const isFormEmpty = [
+        this.form.pri_name_eng.trim(),
+        this.form.pri_name_th.trim(),
+        this.form.pri_level.trim(),
+        this.form.pri_color.trim(),
+        this.form.pri_description.trim(),
+      ].every(value => value === '');
+
+      if (!isFormEmpty) {
+        this.visibleVerticallyCenteredDemo = true;
+      } else {
+        // If the form is empty, navigate away without confirmation
+        this.confirm();
+      }
+    },
+    async confirm() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+
+      this.$router.push('/support-ticket/admin/priority_list')
+      
     },
   },
   mounted() {

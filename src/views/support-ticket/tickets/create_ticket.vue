@@ -101,9 +101,7 @@
           <div class="clearfix text-end">
             <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
             <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
-              visibleVerticallyCenteredDemo = false
-            }
-              ">
+              visibleVerticallyCenteredDemo = false }">
               <CModalBody>
                 <h2 class="cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
