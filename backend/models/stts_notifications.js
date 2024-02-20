@@ -5,20 +5,20 @@ const schema = mongoose.Schema;
 const SchemaData = new schema({
     not_datetime: {
         type: String,
-        required: true,
+        required: false,
     },
     not_status: {
         type: Boolean,
-        required: true,
+        required: false,
     },
     not_type: {
         type: String,
-        required: true,
+        required: false,
     },
     not_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
-        required: true,
+        required: false,
     },
     not_tkt: {
         type: schema.Types.ObjectId,
@@ -33,7 +33,7 @@ const SchemaData = new schema({
     not_acc: {
         type: schema.Types.ObjectId,
         ref: "stts_accept_tickets",
-        required: true,
+        required: false,
     },
     //notย่อมาจาก notifications
 }, {
