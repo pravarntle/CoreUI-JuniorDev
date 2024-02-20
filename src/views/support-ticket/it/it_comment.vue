@@ -687,8 +687,8 @@ export default {
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
         this.stauts = response.data.tkt_status
-        this.actId = response.data.tkt_act
-        // this.email = response.data.tkt_act.act_email_address;
+        this.actId = response.data.tkt_act.id
+           // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
@@ -960,6 +960,8 @@ export default {
       this.notifications.not_tkt = this.ticketId
       this.notifications.not_status = false
       this.notifications.not_acc = this.accId
+      this.notifications.not_act = this.actId
+      this.notifications.not_cmt = null
 
       console.log(this.notifications)
       try {

@@ -5,20 +5,20 @@ const schema = mongoose.Schema;
 const SchemaData = new schema({
     not_datetime: {
         type: String,
-        required: false,
+        required: true,
     },
     not_status: {
         type: Boolean,
-        required: false,
+        required: true,
     },
     not_type: {
         type: String,
-        required: false,
+        required: true,
     },
     not_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",
-        required: false,
+        required: true,
     },
     not_tkt: {
         type: schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const SchemaData = new schema({
     not_cmt: {
         type: schema.Types.ObjectId,
         ref: "stts_comments",
-        required: false,
+        required: true,
     },
     not_acc: {
         type: schema.Types.ObjectId,
