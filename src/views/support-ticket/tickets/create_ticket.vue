@@ -136,8 +136,8 @@
                   Are you sure you want to
                   <span id="detail-for-submit">Submit The Ticket ?</span>
                 </p>
-                <br />
-                <hr />
+                <br/>
+                <hr/>
                 <CButton color="light" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>

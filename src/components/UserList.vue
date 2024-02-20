@@ -30,27 +30,27 @@
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton> -->
 
-                    <CButton size="sm" @click="() => { visibleLiveDemo = true }">
+                    <CButton size="sm" @click="() => { visibleDelete = true }">
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton>
-                    <CModal alignment="center" :visible="visibleLiveDemo" @close="() => { visibleLiveDemo = false }" >
+                    <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleDelete"
+                    @close="() => { visibleDelete = false }">
 
-
-                        <CModalBody>
-                            <h2 class="cancel-heading"  id="button-head">Cancel</h2>
-                            <p class="ms-2" id="popup-detail">
-                            Are you sure you want to
-                            <span id="detail-for-cancel">Cancel The Ticket ?</span>
-                            </p>
-                            <br />
-                            <hr />
-                            <CButton color="light" @click="() => { visibleLiveDemo = false }">
-                                Cancel
+                    <CModalBody>
+                        <h2 class="text-start"> Delete Account </h2>
+                        <p class="text-black" id="popup-detail">
+                        Are you sure you want to
+                        <span class="text-danger">Delete Account ?</span>
+                        </p>
+                        <br/>
+                        <hr/>
+                        <div class="d-flex justify-content-end">
+                            <CButton color="light"> Cancel </CButton>
+                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton(item, index)">
+                            Confirm
                             </CButton>
-                            <CButton class="ms-2 " color="info" id="confirm-btn-in-detail" @click="DeleteButton(item, index)">
-                                Delete
-                            </CButton>
-                        </CModalBody>
+                        </div>
+                    </CModalBody>
                     </CModal>
                 </td>
             </template>
@@ -103,7 +103,6 @@
 
 #button-head {
   text-align: left;
-  color: #000;
 }
 
 #popup-detail {
@@ -147,7 +146,7 @@ export default {
             More_Priority,
             Icondeleteaccount,
             Iconeditaccount,
-            visibleLiveDemo: false,
+            visibleDelete: false,
 
         };
 
