@@ -241,12 +241,12 @@ export default {
       },
       {
         key: 'STATUS', label: 'STATUS',
-        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1%' },
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1%' },
       },
       {
         key: 'TYPE',
         label: 'TYPE',
-        _style: { width: '4%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1.5%' },
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1.5%' },
       },
       {
         key: 'start_date',
@@ -263,7 +263,7 @@ export default {
       {
         key: 'MORE',
         label: 'ACTION',
-        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '40px'},
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px'},
         filter: false,
         sorter: false,
       },
