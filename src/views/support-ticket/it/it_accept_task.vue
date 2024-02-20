@@ -388,9 +388,6 @@ export default {
       this.notifications.not_cmt = null
       this.notifications.not_status = false
       this.notifications.not_acc = this.accId
-    
-
-      
       console.log(this.notifications)
       try {
         await axios

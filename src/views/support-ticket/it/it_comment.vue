@@ -918,6 +918,8 @@ export default {
       const userId = userData.id
       this.allUpdate.mod_date = accept_date;
       this.allUpdate.mod_act = userId;
+      this.notifications.not_act=userId;
+
 
       console.log(this.allUpdate)
       try {
@@ -941,7 +943,7 @@ export default {
       const options = { day: '2-digit', month: 'short', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
     },
-    async notification() {
+    async notification_change() {
       console.log("เข้า1")
       const userData = JSON.parse(localStorage.getItem('USER_DATA'))
       dayjs.locale('en')
@@ -952,7 +954,6 @@ export default {
       dayjs.extend(require('dayjs/plugin/customParseFormat'))
       dayjs.extend(require('dayjs/plugin/localizedFormat'))
       const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
-      const userId = userData.id
       this.notifications.not_datetime = noti_date
       this.notifications.not_act = this.actId
       this.notifications.not_type = 'Status'
@@ -961,7 +962,6 @@ export default {
       this.notifications.not_status = false
       this.notifications.not_acc = this.accId
 
-      
       console.log(this.notifications)
       try {
         await axios
@@ -971,39 +971,6 @@ export default {
               data: this.notifications,
             },
           )
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async accept() {
-      console.log("เข้า2")
-
-      dayjs.locale('th')
-      dayjs.extend(require('dayjs/plugin/timezone'))
-      dayjs.tz.setDefault('Asia/Bangkok')
-      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
-      const userId = userData.id // ดึงค่า id จาก userData
-      const date = dayjs()
-      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-
-      console.log(ticket_date)
-      console.log(userId)
-      try {
-        const dataResponse = await axios
-          .post(
-            `${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`,
-            {
-              data: {
-                acc_time: ticket_date,
-                acc_act: userId,
-              },
-            },
-          )
-          .catch((err) => {
-            console.log(error)
-          })
-        this.accId = dataResponse.data._id
-        this.updateTicket()
       } catch (error) {
         console.log(error)
       }
