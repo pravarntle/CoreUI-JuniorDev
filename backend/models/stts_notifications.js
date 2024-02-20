@@ -28,7 +28,7 @@ const SchemaData = new schema({
     not_cmt: {
         type: schema.Types.ObjectId,
         ref: "stts_comments",
-        required: true,
+        required: false,
     },
     not_acc: {
         type: schema.Types.ObjectId,

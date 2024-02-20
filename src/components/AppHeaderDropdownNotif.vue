@@ -1,6 +1,6 @@
 <template>
   <CDropdown>
-    <CDropdownToggle placement="bottom-end" :caret="false" @click="getNotifications">
+    <CDropdownToggle placement="bottom-end" :caret="false">
       <CIcon class="my-1 mx-2" icon="cil-bell" size="lg" />
       <CBadge
         v-if="itemsCount > 0"
@@ -16,25 +16,44 @@
       >
         <strong>You have {{ itemsCount }} messages</strong>
       </CDropdownHeader>
-      <CDropdownItem >
-        <div class="message">
-          <div class="pt-3 me-3 float-start">
-            <CAvatar :src="avatar7" status="success" />
+      <div v-for="(item, index) in notificationAll" :key="index">
+        
+        <CDropdownItem v-if="item.not_type == 'Status'" >
+
+          <div class="message" >
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> change Status Ticket
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b>{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.
+              </div>
           </div>
-          <div>
-            <small class="text-medium-emphasis">John Doe</small>
-            <small class="text-medium-emphasis float-end mt-1">Just now</small>
-          </div>
-          <div class="text-truncate font-weight-bold">
-            <span class="fa fa-exclamation text-danger"></span> Important
-            message
-          </div>
-          <div class="small text-medium-emphasis text-truncate">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt...
-          </div>
-        </div>
-      </CDropdownItem>
+        </CDropdownItem>
+        <CDropdownItem v-else >
+            <div class="message">
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> New message
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b>{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
+              </div>
+            </div>
+        </CDropdownItem>
+      </div>
       <CDropdownItem  class="text-center border-top">
         <strong>View all messages</strong>
       </CDropdownItem>
@@ -51,19 +70,17 @@ import avatar7 from '@/assets/images/avatars/7.jpg'
 export default {
   name: 'TheHeaderDropdownNotif',
   setup() {
-    const itemsCount = 7
     return {
       avatar4,
       avatar5,
       avatar6,
       avatar7,
-      itemsCount,
     }
   },
   data() {
     return { 
-      itemsCount: 5,
-      userID:'',
+      itemsCount:'',
+      notificationAll:'',
     }
   },
   methods:{
@@ -86,19 +103,16 @@ export default {
                   }
                 ]
               },
-              // {
-              //   path: 'not_acc',
-              //   populate:[
-              //     {
-              //       path:'acc_act',
-              //       populate:'act_picture',
-              //     }
-              //   ]
-              // },
-              
+              {
+                path: 'not_acc',
+                populate:[
+                  {
+                    path:'acc_act',
+                    populate:'act_picture',
+                  }
+                ]
+              },
               "not_cmt",
-              "not_acc",
-              
 
             ],
             where: {
@@ -106,13 +120,19 @@ export default {
               // not_act : this.userID
             },
           },
+
         );
-          console.log(response.data)
+        response.data.forEach((element) => {
+          this.itemsCount++
+        })
+        this.notificationAll=response.data;
+        console.log(this.notificationAll)
     }
   },
   mounted(){
     const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
     this.userID=userData.id
+    this.getNotifications()
     console.log("ยูสเซอร์:"+ this.userID)
   }
 }

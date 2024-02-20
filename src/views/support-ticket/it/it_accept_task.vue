@@ -247,7 +247,7 @@ export default {
         this.email = response.data.tkt_act.act_email_address
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
-        this.actId = response.data.tkt_act
+        this.actId = response.data.tkt_act._id
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 

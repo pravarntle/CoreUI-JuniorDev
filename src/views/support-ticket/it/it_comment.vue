@@ -687,7 +687,8 @@ export default {
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
         this.stauts = response.data.tkt_status
-        this.actId = response.data.tkt_act.id
+        this.actId = response.data.tkt_act._id
+        console.log('asdasd=',this.actId);
            // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
