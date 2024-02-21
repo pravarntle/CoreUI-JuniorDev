@@ -1,7 +1,6 @@
 <template>
-  <CCard class="px-5 p-3 rounded-4 mx-auto row g-3 needs-validation" novalidate :validated="validatedCustom01"
-    @submit="handleSubmitCustom01">
-    <!-- Head Priorities List -->
+  <CCard>
+    <CContainer>
     <CCardHeader class="bg-white border-white ">
       <div class="d-inline ms-2">
         <div id="LineHeadCard">
@@ -10,59 +9,48 @@
         </div>
       </div>
     </CCardHeader>
-    <CCardBody class="px-5">
-      <div>
-        <CForm 
-          class="row g-3 needs-validation" 
-          novalidate 
-          :validated="validatedCustom01" 
-          @submit="handleSubmitCustom01"
-        >
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-7 col-md-12 purple">
+    <CRow class="g-1 ms-5 ps-5" >
+      <CCol class="ms-5 mt-3">
+          <div class="purple">
             <h1>Priority Info</h1>
           </div>
-        </CRow>
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-7 col-md-12">
-            <CFormLabel type="text" id="validationCustom01" for="priorityNameTha" feedbackInValid="Please input title." required >
-              <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
-            </CFormLabel>
+      </CCol>
+      </CRow>
+      
+    <CForm 
+    class="row g-1 needs-validation ms-5 ps-5" 
+    novalidate 
+    :validated="validatedCustom01" 
+    @submit="handleSubmitCustom01"
+  >
 
-            <CInputGroup>
-              <CFormInput v-model="form.pri_name_th"  aria-label="priorityNameTha"
-                id="Form_border" />
-            </CInputGroup>
-          </div>
-        </CRow>
-        <br>
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-7 col-md-12">
-            <CFormLabel for="priorityNameEng">
-              <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
-            </CFormLabel>
-            <CInputGroup>
-              <CFormInput v-model="form.pri_name_eng"  aria-label="priorityNameEng"
-                id="Form_border" />
-            </CInputGroup>
-          </div>
-        </CRow>
-        <br>
-        <div>
-          <CRow class="mb-2">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-7 col-md-12">
-              <CRow class="justify-content-between">
-                <CCol xs="4">
+    <CCol class="ms-5 mt-3" md="7">
+      <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
+        <CFormInput
+          feedbackValid="Looks good!"
+          id="validationCustom01"
+          required
+          v-model="form.pri_name_th"
+          aria-label="priorityNameTha"
+        />     
+    </CCol>
+
+    <CCol class="ms-5 mt-3" md="7">
+      <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
+        <CFormInput
+          feedbackValid="Looks good!"
+          id="validationCustom01"
+          required
+        />     
+    </CCol>
+    <CRow class="row g-1 needs-validation ">
+                <CCol class="ms-5 mt-3 me-5" md="3">
                   <CFormLabel for="priorityLevel">
                     <h4>Level of Priority<span id="Icon_force">*</span></h4>
                   </CFormLabel>
                   <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level"></CFormInput>
                 </CCol>
-                <CCol xs="4">
+                <CCol class="ms-5 mt-3" md="3">
                   <CFormLabel for="priorityLevel">
                     <h4>Color<span id="Icon_force">*</span></h4>
                   </CFormLabel>
@@ -75,32 +63,28 @@
                     </div>
                   </div>
                 </CCol>
-              </CRow>
-            </div>
-          </CRow>
-        </div>
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-7 col-md-12">
-            <CForm>
-              <CFormLabel for="desc">
-                <h4>Description<span id="Icon_force">*</span></h4>
-              </CFormLabel>
-              <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description"
-                placeholder="รอดำเนินการภายใน 8 ชั่วโมง"></CFormTextarea>
-            </CForm>
-            <br>
-            <CRow class="d-flex justify-content-center">
+      </CRow>
+      <CCol class="ms-5 mt-3" md="7">
+      <h4>Description<span id="Icon_force">*</span></h4>
+        <CFormTextarea
+          feedbackValid="Looks good!"
+          id="validationCustom01"
+          required
+        >     
+        </CFormTextarea>
+    </CCol>  
+
+
+      <CRow class="d-flex justify-content-center pt-3 pb-3">
               <CCol class="col-8 mx-auto">
                 <CButton color="dark" id="btn_cancel" @click="cancel">Cancel</CButton>
-                <CButton color="success" id="btn_submit" @click="onSave">Submit</CButton>
+                <CButton color="success" type="submit" id="btn_submit" @click="onSave">Submit</CButton>
               </CCol>
             </CRow>
-          </div>
-        </CRow>
-        </CForm>
-      </div>
-    </CCardBody>
+    
+    
+  </CForm>
+  </CContainer>
   </CCard>
 </template>
 <script>
@@ -252,7 +236,7 @@ h4 {
 
 #colorPicker {
   margin-left: 5%;
-  width: 150px;
+  width: 80%;
   max-width: auto;
   border-style: none;
   border-color: #FFFFFF;
