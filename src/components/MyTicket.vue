@@ -320,8 +320,7 @@ export default {
     async contactIt(item, index) {
 
       const itemId = item._id.toString();
-
-
+    
       this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
 
     },

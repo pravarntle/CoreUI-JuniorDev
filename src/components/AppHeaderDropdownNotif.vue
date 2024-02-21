@@ -18,7 +18,7 @@
       </CDropdownHeader>
       <div v-for="(item, index) in notificationAll" :key="index">
         
-        <CDropdownItem v-if="item.not_type == 'Status'" >
+        <CDropdownItem v-if="item.not_type == 'Status'" @click="changeStatus(item,index)">
 
           <div class="message" >
               <div class="pt-3 me-3 float-start">
@@ -36,7 +36,7 @@
               </div>
           </div>
         </CDropdownItem>
-        <CDropdownItem v-else >
+        <CDropdownItem v-else @click="changeStatus(item,index)" >
             <div class="message">
               <div class="pt-3 me-3 float-start">
                 <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
@@ -81,6 +81,7 @@ export default {
     return { 
       itemsCount:'',
       notificationAll:'',
+      userID:'',
     }
   },
   methods:{
@@ -117,6 +118,7 @@ export default {
             ],
             where: {
               not_status: { $ne: 'true' },
+              not_act:this.userID,
               // not_act : this.userID
             },
           },
@@ -127,6 +129,34 @@ export default {
         })
         this.notificationAll=response.data;
         console.log(this.notificationAll)
+    },
+    async changeStatus(item,index){
+      const notificationId =item._id;
+      const response = 
+      await axios.put(
+          `${process.env.VUE_APP_URL}/mongoose/update/stts_notifications/${notificationId}`,{
+            data:{
+              not_status : 'true'
+            }
+          },
+      )
+        .then((result) => {
+          this.itemsCount=0;          
+          this.getNotifications();
+          
+          this.pushPage(result,index)
+          console.log('เข้า')
+          
+        })
+        .catch((err) => { 
+          console.log(error)
+        });
+    },
+    async pushPage(item,index){
+      const ticketId =item.data.not_tkt;
+      console.log('id:',ticketId)
+      await this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
+      window.location.reload();
     }
   },
   mounted(){

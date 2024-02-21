@@ -179,7 +179,7 @@
                       >
                         Close
                       </CButton>
-                      <CButton color="primary" @click="onSaveSatatus">Save changes</CButton>
+                      <CButton color="primary"  @click="onSaveSatatus">Save changes</CButton>
                     </CModalFooter>
                   </CModal>
                 </CCol>
@@ -804,13 +804,12 @@ export default {
       this.link = ''
       this.form.cmt_file = null
       this.form.cmt_picture = null
-
-      // this.$socket.sendObj({
-      // type: 'new-comment',
+     
+      
       // comment: this.form,
       // });
 
-      // window.location.reload();
+      //  
     },
     async getComment() {
       const ticketId = this.ticketId
@@ -891,12 +890,12 @@ export default {
           this.updateStatus();
           
         })
-        .catch((err) => {
+        .catch((err) => { 
           console.log(error)
         });
-        this.stauts = this.edit
-        // window.location.reload();
-
+        this.stauts = this.edit 
+        this.visibleVerticallyCenteredDemo = false
+ 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต status และส่งข้อมูลไปยัง MongoDB สำเร็จ');
         // รีเฟรชหน้า
