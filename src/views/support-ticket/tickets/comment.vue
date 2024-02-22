@@ -281,6 +281,16 @@ export default {
       comment: '',
       commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
+      actId:'',
+      notifications:{
+        not_datetime:'',
+        not_status:'',
+        not_type:'',
+        not_act:'',
+        not_tkt:'',
+        not_cmt:'',
+        not_acc:'',
+      }
 
     };
   },
@@ -488,6 +498,12 @@ export default {
                   "populate":"act_picture"
               }
               ,"tkt_picture"
+              ,
+              {
+                  "path":"tkt_acc",
+                  "populate":"acc_act"
+              }
+              ,"tkt_picture"
           ] 
         });
         this.type = response.data.tkt_types;
@@ -500,11 +516,13 @@ export default {
         this.acountImage=response.data.tkt_act.act_picture.image
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.actId = response.data.tkt_acc.acc_act._id
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         // this.getAcount();
+        console.log(response.data)
 
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -541,7 +559,7 @@ export default {
         document.getElementById('imageInput').value = ''
         
 
-      },
+    },
     async onFileUpload(event) {
         const uploadFile = event.target.files[0]
         const formData = new FormData()
@@ -555,9 +573,9 @@ export default {
         this.form.cmt_file = dataResponse.data._id
         this.form.cmt_picture = null
         document.getElementById('fileInput').value = ''
-      },
+    },
 
-      async onSave() {
+    async onSave() {
         dayjs.locale('th')
         dayjs.extend(require('dayjs/plugin/timezone'))
         dayjs.tz.setDefault('Asia/Bangkok')
@@ -603,6 +621,7 @@ export default {
         this.link = ''
         this.form.cmt_file = null;
         this.form.cmt_picture = null;
+        this.acceptButton();
 
 
         // this.$socket.sendObj({
@@ -612,8 +631,8 @@ export default {
         
         
         // window.location.reload();
-      },
-      async getComment(){
+    },
+    async getComment(){
         const ticketId=this.ticketId
         const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
               where: {
@@ -634,8 +653,8 @@ export default {
             this.comments = comment.data;
             this.commentAccount= comment.data.cmt_act;
             console.log(this.comments)
-      },
-      async getAcountComment() {
+    },
+    async getAcountComment() {
         try {
 
           const commentAcount = this.commentAccount;
@@ -651,8 +670,8 @@ export default {
           } catch (error) {
             console.error('Error fetching data:', error);
           }
-      },
-      async getFileType(filetype) {
+    },
+    async getFileType(filetype) {
         console.log("เข้า")
         switch (filetype) {
           case 'image/jpeg':
@@ -669,14 +688,76 @@ export default {
           default:
             return 'ไฟล์อื่น ๆ';
         }
-      },
-      formatDate: function(dateString) {
+    },
+    formatDate: function(dateString) {
         const options = { day: '2-digit', month: 'short', year: 'numeric' };
         return new Date(dateString).toLocaleDateString('en-GB', options);
-      },
+    },
+    async notificationChange() {
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.notifications.not_datetime = noti_date
+      this.notifications.not_tkt = this.ticketId
+      this.notifications.not_type = 'Comment'
+      this.notifications.not_status = false
+      this.notifications.not_acc = this.accId
+      this.notifications.not_act = this.actId
+      this.notifications.not_cmt = null
+
+      console.log(this.notifications)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+            {
+              data: this.notifications,
+            },
+          )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async acceptButton() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
+      const date = dayjs()
+      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+
+      console.log(ticket_date)
+      console.log(userId)
+      try {
+        const dataResponse = await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`,
+            {
+              data: {
+                acc_time: ticket_date,
+                acc_act: userId,
+              },
+            },
+          )
+          .catch((err) => {
+            console.log(error)
+          })
+        this.accId = dataResponse.data._id
+        this.notificationChange()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+      
       
 
-    },
+  },
       
   mounted(){
     const itemId = this.$route.params.itemId;

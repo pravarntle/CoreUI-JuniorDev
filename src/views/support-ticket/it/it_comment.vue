@@ -688,7 +688,6 @@ export default {
         this.number = response.data.tkt_number
         this.stauts = response.data.tkt_status
         this.actId = response.data.tkt_act._id
-        console.log('asdasd=',this.actId);
            // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
@@ -772,6 +771,8 @@ export default {
       this.form.cmt_tkt = ticketId
       this.form.cmt_link = this.link
       this.form.cmt_act = userId
+      this.notifications.not_act=userId
+      this.notifications.not_type = 'Comment'
       // this.form.cmt_picture = this.imageName
       // this.form.cmt_file = this.file
 
@@ -792,6 +793,7 @@ export default {
           }.bind(this),
           200,
         )
+        this.acceptButton();
         // Handle success here
       } catch (error) {
         console.log(error)
@@ -919,6 +921,7 @@ export default {
       this.allUpdate.mod_date = accept_date;
       this.allUpdate.mod_act = userId;
       this.notifications.not_act=userId;
+      this.notifications.not_type = 'Status'
 
 
       console.log(this.allUpdate)
@@ -956,7 +959,6 @@ export default {
       dayjs.extend(require('dayjs/plugin/localizedFormat'))
       const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
       this.notifications.not_datetime = noti_date
-      this.notifications.not_type = 'Status'
       this.notifications.not_tkt = this.ticketId
       this.notifications.not_status = false
       this.notifications.not_acc = this.accId
