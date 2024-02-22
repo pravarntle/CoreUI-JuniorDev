@@ -41,6 +41,8 @@
           feedbackValid="Looks good!"
           id="validationCustom01"
           required
+          v-model="form.pri_name_eng"  
+          aria-label="priorityNameEng"
         />     
     </CCol>
     <CRow class="row g-1 needs-validation ">
@@ -70,6 +72,7 @@
           feedbackValid="Looks good!"
           id="validationCustom01"
           required
+          v-model="form.pri_description"
         >     
         </CFormTextarea>
     </CCol>  
@@ -80,7 +83,7 @@
                 <CButton color="dark" id="btn_cancel" @click="cancel">Cancel</CButton>
                 <CButton color="success" type="submit" id="btn_submit" @click="onSave">Submit</CButton>
               </CCol>
-            </CRow>
+      </CRow>
     
     
   </CForm>
@@ -115,9 +118,6 @@ export default {
       }
       this.validatedCustom01 = true
     },
-    async cancel() {
-      this.$router.push({ name: 'ST - priority_list Ticket' });
-    },
     async onSave() {
       console.log("1")
       console.log(this.form)
@@ -138,7 +138,7 @@ export default {
       } catch (error) {
         console.log(error)
       }
-
+      this.$router.push('/support-ticket/admin/priority_list')
     },
     Cancel() {
       // Check if there is any data in the form
