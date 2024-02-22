@@ -110,12 +110,14 @@
                 </p>
                 <br />
                 <hr />
-                <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
-                  Cancel
-                </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
-                  Confirm
-                </CButton>
+                <div class="d-flex justify-content-end">
+                  <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
+                    Cancel
+                  </CButton>
+                  <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                    Confirm
+                  </CButton>
+                </div>
               </CModalBody>
             </CModal>
             
