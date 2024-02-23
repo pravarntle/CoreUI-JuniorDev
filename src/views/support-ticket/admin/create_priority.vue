@@ -104,7 +104,7 @@
 
 
 
-            <CButton color="success" type="submit" id="btn_submit" @click="() => { visibleLivesubmit = true }">Submit</CButton>
+            <CButton color="success" type="submit" id="btn_submit" @click="visibleLivesubmit = true" >Submit</CButton>
             <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
               
               <CModalBody>
@@ -162,6 +162,7 @@ export default {
       Icon_Priority,
       visibleLiveDemo: false,
       visibleLivesubmit: false,
+      toastProp: [],
     }
   },
   methods: {
@@ -199,8 +200,8 @@ export default {
       const isFormEmpty = [
         this.form.pri_name_eng.trim(),
         this.form.pri_name_th.trim(),
-        // this.form.pri_level.trim(),
-        // this.form.pri_color.trim(),
+        this.form.pri_level.trim(),
+        this.form.pri_color.trim(),
         this.form.pri_description.trim(),
       ].every(value => value === '');
 
@@ -261,11 +262,13 @@ export default {
 
       if (!error) {
         this.isLoading = true
+        this.onSave()
         this.toastProp.push({
           content: 'Create Success  ',
         })
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
         setTimeout(() => {
           
           // จบการโหลด
@@ -276,8 +279,8 @@ export default {
           this.onSave()
         }, 2000)
       } else {
-        console.log('1'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.visibleSubmit = false
+        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleLivesubmit = false
       }
     },
   },
