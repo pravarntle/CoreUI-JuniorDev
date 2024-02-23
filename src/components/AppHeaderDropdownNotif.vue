@@ -54,7 +54,7 @@
             </div>
         </CDropdownItem>
       </div>
-      <CDropdownItem  class="text-center border-top">
+      <CDropdownItem  class="text-center border-top" @click="toViewAll">
         <strong>View all messages</strong>
       </CDropdownItem>
     </CDropdownMenu>
@@ -159,6 +159,7 @@ export default {
       )
         .then((result) => {
           this.itemsCount=0;          
+          
           this.getNotifications();
           this.pushPage(result,index)
           
@@ -193,6 +194,9 @@ export default {
       }, 500);
       
       
+    },
+    toViewAll(){
+      this.$router.push({ path: `/support-ticket/ticket/notifications` });
     }
   },
   mounted(){
