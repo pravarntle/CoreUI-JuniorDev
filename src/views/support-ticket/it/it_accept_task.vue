@@ -200,12 +200,23 @@ export default {
       date: '',
       number: '',
       accId: '',
+      actId:'',
       allUpdate: {
         mod_act: '',
         mod_date: '',
         mod_status: '',
         mod_tkt: '',
       },
+      notifications:{
+        not_datetime:'',
+        not_status:'',
+        not_type:'',
+        not_act:'',
+        not_tkt:'',
+        not_cmt:'',
+        not_acc:'',
+      }
+      //notย่อมาจาก notifications
     }
   },
   methods: {
@@ -236,6 +247,7 @@ export default {
         this.email = response.data.tkt_act.act_email_address
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
+        this.actId = response.data.tkt_act._id
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
@@ -330,6 +342,7 @@ export default {
 
       console.log(this.allUpdate)
       try {
+        
         await axios
           .post(
             `${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`,
@@ -338,6 +351,8 @@ export default {
             },
           )
           .then((result) => {
+            console.log("เข้าthen")
+            this.notification();
             this.$router.push('/support-ticket/it/it_my_task')
           })
           .catch((err) => {
@@ -355,6 +370,38 @@ export default {
       const options = { day: '2-digit', month: 'short', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
     },
+    async notification() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA'))
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
+      const userId = userData.id
+      this.notifications.not_datetime = noti_date
+      this.notifications.not_act = this.actId
+      this.notifications.not_type = 'Status'
+      this.notifications.not_tkt = this.ticketId
+      this.notifications.not_cmt = null
+      this.notifications.not_status = false
+      this.notifications.not_acc = this.accId
+      console.log(this.notifications)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+            {
+              data: this.notifications,
+            },
+          )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    
   },
   mounted() {
     const ticketId = this.$route.params.itemId

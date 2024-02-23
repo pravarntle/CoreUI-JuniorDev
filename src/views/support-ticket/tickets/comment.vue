@@ -291,8 +291,17 @@ export default {
       date: '',
       comment: '',
       commentAccount: '',
-      characterCount: 0,
-      Button_back, // เพิ่ม characterCount เริ่มต้นที่ 0
+      characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
+      actId:'',
+      notifications:{
+        not_datetime:'',
+        not_status:'',
+        not_type:'',
+        not_act:'',
+        not_tkt:'',
+        not_cmt:'',
+        not_acc:'',
+      }
 
     };
   },
@@ -500,9 +509,15 @@ export default {
                 "path": "tkt_act",
                 "populate": "act_picture"
               }
-              , "tkt_picture"
-            ]
-          });
+              ,"tkt_picture"
+              ,
+              {
+                  "path":"tkt_acc",
+                  "populate":"acc_act"
+              }
+              ,"tkt_picture"
+          ] 
+        });
         this.type = response.data.tkt_types;
         this.description = response.data.tkt_description;
         this.title = response.data.tkt_title;
@@ -513,11 +528,13 @@ export default {
         this.acountImage = response.data.tkt_act.act_picture.image
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.actId = response.data.tkt_acc.acc_act._id
         // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         // this.getAcount();
+        console.log(response.data)
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -544,167 +561,220 @@ export default {
       const formData = new FormData()
       formData.append('file', uploadFile)
 
-      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      this.form.cmt_picture = dataResponse.data._id
-      this.form.cmt_file = null
-      document.getElementById('imageInput').value = ''
-
-
     },
     async onFileUpload(event) {
-      const uploadFile = event.target.files[0]
-      const formData = new FormData()
-      formData.append('file', uploadFile)
-
-      const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      this.form.cmt_file = dataResponse.data._id
-      this.form.cmt_picture = null
-      document.getElementById('fileInput').value = ''
+        const uploadFile = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', uploadFile)
+      
+        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.form.cmt_file = dataResponse.data._id
+        this.form.cmt_picture = null
+        document.getElementById('fileInput').value = ''
     },
 
     async onSave() {
+        dayjs.locale('th')
+        dayjs.extend(require('dayjs/plugin/timezone'))
+        dayjs.tz.setDefault('Asia/Bangkok')
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        
+        const date = dayjs()
+
+
+        this.form.cmt_file = this.form.cmt_file || null;
+        this.form.cmt_picture = this.form.cmt_picture || null;
+
+        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+        const ticketId=this.ticketId
+        this.form.cmt_message = this.comment
+        this.form.cmt_date = comment_date
+        this.form.cmt_tkt = ticketId
+        this.form.cmt_link = this.link
+        this.form.cmt_act = userId
+        // this.form.cmt_picture = this.imageName
+        // this.form.cmt_file = this.file
+    
+        //     // .then((result) => {
+        //     //   this.$router.push('/support-ticket/user/dashboard')
+        //     // })
+
+        try {
+          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
+            data: this.form,
+          });
+          setTimeout(function() {
+            this.getComment()
+          }.bind(this), 200)
+          // Handle success here
+        } catch (error) {
+          console.log(error);
+          // Handle the error appropriately (e.g., display an error message)
+        }
+        
+        this.comment = ''
+        this.imageDataURL = ''
+        this.imageName = ''
+        this.link = ''
+        this.form.cmt_file = null;
+        this.form.cmt_picture = null;
+        this.acceptButton();
+
+
+        // this.$socket.sendObj({
+        // type: 'new-comment',
+        // comment: this.form,
+        // });
+        
+        
+        // window.location.reload();
+    },
+    async getComment(){
+        const ticketId=this.ticketId
+        const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
+              where: {
+                cmt_tkt: ticketId,
+              },
+              populate:[
+              {
+                  "path":"cmt_act",
+                  "populate":"act_picture"
+              },
+              "cmt_picture","cmt_file"
+              ]
+                
+              
+            });
+            console.log(ticketId)
+            console.log(comment.data)
+            this.comments = comment.data;
+            this.commentAccount= comment.data.cmt_act;
+            console.log(this.comments)
+    },
+    async getAcountComment() {
+        try {
+
+          const commentAcount = this.commentAccount;
+          console.log(commentAcount);
+
+          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
+          console.log(response.data);
+          
+          
+
+          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+    },
+    async getFileType(filetype) {
+        console.log("เข้า")
+        switch (filetype) {
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+            return 'รูปภาพ';
+          case 'application/pdf':
+            return 'ไฟล์ PDF';
+          case 'application/msword':
+          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            return 'ไฟล์เอกสาร Microsoft Word';
+          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            return 'ไฟล์เอกสาร Microsoft Excel';
+          default:
+            return 'ไฟล์อื่น ๆ';
+        }
+    },
+    formatDate: function(dateString) {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-GB', options);
+    },
+    async notificationChange() {
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.notifications.not_datetime = noti_date
+      this.notifications.not_tkt = this.ticketId
+      this.notifications.not_type = 'Comment'
+      this.notifications.not_status = false
+      this.notifications.not_acc = this.accId
+      this.notifications.not_act = this.actId
+      this.notifications.not_cmt = null
+
+      console.log(this.notifications)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+            {
+              data: this.notifications,
+            },
+          )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async acceptButton() {
       dayjs.locale('th')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
-      const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-      const userId = userData.id.toString(); // ดึงค่า id จาก userData
-
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
+      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
 
-
-      this.form.cmt_file = this.form.cmt_file || null;
-      this.form.cmt_picture = this.form.cmt_picture || null;
-
-      const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-      const ticketId = this.ticketId
-      this.form.cmt_message = this.comment
-      this.form.cmt_date = comment_date
-      this.form.cmt_tkt = ticketId
-      this.form.cmt_link = this.link
-      this.form.cmt_act = userId
-      // this.form.cmt_picture = this.imageName
-      // this.form.cmt_file = this.file
-
-      //     // .then((result) => {
-      //     //   this.$router.push('/support-ticket/user/dashboard')
-      //     // })
-
+      console.log(ticket_date)
+      console.log(userId)
       try {
-        await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
-          data: this.form,
-        });
-        setTimeout(function () {
-          this.getComment()
-        }.bind(this), 200)
-        // Handle success here
+        const dataResponse = await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`,
+            {
+              data: {
+                acc_time: ticket_date,
+                acc_act: userId,
+              },
+            },
+          )
+          .catch((err) => {
+            console.log(error)
+          })
+        this.accId = dataResponse.data._id
+        this.notificationChange()
       } catch (error) {
-        console.log(error);
-        // Handle the error appropriately (e.g., display an error message)
-      }
-
-      this.comment = ''
-      this.imageDataURL = ''
-      this.imageName = ''
-      this.link = ''
-      this.form.cmt_file = null;
-      this.form.cmt_picture = null;
-
-
-      // this.$socket.sendObj({
-      // type: 'new-comment',
-      // comment: this.form,
-      // });
-
-
-      // window.location.reload();
-    },
-    async getComment() {
-      const ticketId = this.ticketId
-      const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-        where: {
-          cmt_tkt: ticketId,
-        },
-        populate: [
-          {
-            "path": "cmt_act",
-            "populate": "act_picture"
-          },
-          "cmt_picture", "cmt_file"
-        ]
-
-
-      });
-      console.log(ticketId)
-      console.log(comment.data)
-      this.comments = comment.data;
-      this.commentAccount = comment.data.cmt_act;
-      console.log(this.comments)
-    },
-    async getAcountComment() {
-      try {
-
-        const commentAcount = this.commentAccount;
-        console.log(commentAcount);
-
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
-        console.log(response.data);
-
-
-
-        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        console.log(error)
       }
     },
-    async getFileType(filetype) {
-      console.log("เข้า")
-      switch (filetype) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-          return 'รูปภาพ';
-        case 'application/pdf':
-          return 'ไฟล์ PDF';
-        case 'application/msword':
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-          return 'ไฟล์เอกสาร Microsoft Word';
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-          return 'ไฟล์เอกสาร Microsoft Excel';
-        default:
-          return 'ไฟล์อื่น ๆ';
-      }
-    },
-    formatDate: function (dateString) {
-      const options = { day: '2-digit', month: 'short', year: 'numeric' };
-      return new Date(dateString).toLocaleDateString('en-GB', options);
-    },
-    async backtohomepage() {
-      this.$router.push({ name: 'ST - Dashboard User' });
-    },
-
+      
+      
 
   },
-
-  mounted() {
+      
+  mounted(){
     const itemId = this.$route.params.itemId;
     console.log(itemId)
     this.ticketId = itemId;
     this.getTicket();
-    this.getComment();
-    this.getAcount();
-    setInterval(() => {
+    this.getComment(); 
+    this.getAcount(); 
+    this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
 
+  },
+  beforeUnmount() {
+    clearInterval(this.commentInterval);
   },
 
 }

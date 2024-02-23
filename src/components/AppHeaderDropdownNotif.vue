@@ -1,8 +1,9 @@
 <template>
-  <CDropdown variant="nav-item">
+  <CDropdown>
     <CDropdownToggle placement="bottom-end" :caret="false">
       <CIcon class="my-1 mx-2" icon="cil-bell" size="lg" />
       <CBadge
+        v-if="itemsCount > 0"
         class="position-absolute top-0 end-0"
         color="danger-gradient"
         shape="rounded-pill"
@@ -13,58 +14,197 @@
       <CDropdownHeader
         class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10"
       >
-        <strong>You have {{ itemsCount }} notifications</strong>
+        <strong>You have {{ itemsCount }} messages</strong>
       </CDropdownHeader>
-      <CDropdownItem>
-        <CIcon icon="cil-user-follow" class="text-success" /> New user
-        registered
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-user-unfollow" class="text-danger" /> User deleted
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-chart-pie" class="text-info" /> Sales report is ready
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-basket" class="text-primary" /> New client
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-speedometer" class="text-warning" /> Server overloaded
-      </CDropdownItem>
-      <CDropdownHeader
-        class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10"
-      >
-        <strong>Server</strong>
-      </CDropdownHeader>
-      <CDropdownItem class="d-block">
-        <div class="text-uppercase mb-1">
-          <small><b>CPU Usage</b></small>
-        </div>
-        <CProgress thin color="info-gradient" :value="25" />
-        <small class="text-muted">348 Processes. 1/4 Cores.</small>
-      </CDropdownItem>
-      <CDropdownItem class="d-block">
-        <div class="text-uppercase mb-1">
-          <small><b>Memory Usage</b></small>
-        </div>
-        <CProgress thin color="warning-gradient" :value="70" />
-        <small class="text-muted">11444GB/16384MB</small>
-      </CDropdownItem>
-      <CDropdownItem class="d-block">
-        <div class="text-uppercase mb-1">
-          <small><b>SSD 1 Usage</b></small>
-        </div>
-        <CProgress thin color="danger-gradient" :value="90" />
-        <small class="text-muted">243GB/256GB</small>
+      <div v-for="(item, index) in notificationAll" :key="index">
+        
+        <CDropdownItem v-if="item.not_type == 'Status'" @click="changeStatus(item,index)">
+
+          <div class="message" >
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> change Status Ticket
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b>{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.
+              </div>
+          </div>
+        </CDropdownItem>
+        <CDropdownItem v-else @click="changeStatus(item,index)" >
+            <div class="message">
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> New message
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b>{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
+              </div>
+            </div>
+        </CDropdownItem>
+      </div>
+      <CDropdownItem  class="text-center border-top" @click="toViewAll">
+        <strong>View all messages</strong>
       </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>
 </template>
+
 <script>
+import axios from 'axios'
+import avatar4 from '@/assets/images/avatars/4.jpg'
+import avatar5 from '@/assets/images/avatars/5.jpg'
+import avatar6 from '@/assets/images/avatars/6.jpg'
+import avatar7 from '@/assets/images/avatars/7.jpg'
 export default {
   name: 'TheHeaderDropdownNotif',
-  data() {
-    return { itemsCount: 5 }
+  setup() {
+    return {
+      avatar4,
+      avatar5,
+      avatar6,
+      avatar7,
+    }
   },
+  data() {
+    return { 
+      itemsCount:'',
+      notificationAll:'',
+      userID:'',
+      roleID:'',
+    }
+  },
+  methods:{
+    async getNotifications(){
+      const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_notifications`,
+          {
+              
+            populate: [
+              {
+                path: 'not_act',
+                populate: 'act_picture',
+              },
+              {
+                path: 'not_tkt',
+                populate:[
+                  {
+                    path:'tkt_act',
+                    populate:'act_picture',
+                  }
+                ]
+              },
+              {
+                path: 'not_acc',
+                populate:[
+                  {
+                    path:'acc_act',
+                    populate:'act_picture',
+                  }
+                ]
+              },
+              "not_cmt",
+
+            ],
+            where: {
+              not_status: { $ne: 'true' },
+              not_act:this.userID,
+              // not_act : this.userID
+            },
+          },
+
+        );
+        response.data.forEach((element) => {
+          this.itemsCount++
+        })
+        this.notificationAll=response.data;
+        console.log(this.notificationAll)
+    },
+    async changeStatus(item,index){
+      const notificationId =item._id;
+      const response = 
+      await axios.put(
+          `${process.env.VUE_APP_URL}/mongoose/update/stts_notifications/${notificationId}`,{
+            data:{
+              not_status : 'true'
+            },
+            populate: [
+            {
+              path: 'not_acc',
+              populate: [
+                {
+                  path:'acc_act',
+                  populate:'act_role',
+                }
+              ],
+            },
+            {
+              path: 'not_act',
+              populate: 'act_role',
+            },
+        
+          ],
+          },
+      )
+        .then((result) => {
+          this.itemsCount=0;          
+          
+          this.getNotifications();
+          this.pushPage(result,index)
+          
+        })
+        .catch((err) => { 
+          console.log(error)
+        });
+    },
+    async pushPage(item,index){
+      var ticketId =item.data.not_tkt;
+
+      var roleItem=item.data.not_act.act_role.rol_name
+      var idItem=item.data.not_act._id
+    
+      if(roleItem=='ItSupport'){
+
+        if(idItem==this.userID){
+    
+         this.$router.push({ path: `/support-ticket/it/it_comment/${ticketId}` });
+         
+        }else{
+          this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
+          
+        }
+      }else{
+        console.log('เอล')
+         this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
+         
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      
+      
+    },
+    toViewAll(){
+      this.$router.push({ path: `/support-ticket/ticket/notifications` });
+    }
+  },
+  mounted(){
+    const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+    this.userID=userData.id
+    this.roleID=userData.role
+    this.getNotifications()
+    console.log("ยูสเซอร์:"+ this.userID)
+  }
 }
 </script>
