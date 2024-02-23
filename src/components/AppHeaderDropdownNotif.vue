@@ -82,6 +82,7 @@ export default {
       itemsCount:'',
       notificationAll:'',
       userID:'',
+      roleID:'',
     }
   },
   methods:{
@@ -137,15 +138,29 @@ export default {
           `${process.env.VUE_APP_URL}/mongoose/update/stts_notifications/${notificationId}`,{
             data:{
               not_status : 'true'
-            }
+            },
+            populate: [
+            {
+              path: 'not_acc',
+              populate: [
+                {
+                  path:'acc_act',
+                  populate:'act_role',
+                }
+              ],
+            },
+            {
+              path: 'not_act',
+              populate: 'act_role',
+            },
+        
+          ],
           },
       )
         .then((result) => {
           this.itemsCount=0;          
           this.getNotifications();
-          
           this.pushPage(result,index)
-          console.log('เข้า')
           
         })
         .catch((err) => { 
@@ -153,15 +168,37 @@ export default {
         });
     },
     async pushPage(item,index){
-      const ticketId =item.data.not_tkt;
-      console.log('id:',ticketId)
-      await this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
-      window.location.reload();
+      var ticketId =item.data.not_tkt;
+
+      var roleItem=item.data.not_act.act_role.rol_name
+      var idItem=item.data.not_act._id
+    
+      if(roleItem=='ItSupport'){
+
+        if(idItem==this.userID){
+    
+         this.$router.push({ path: `/support-ticket/it/it_comment/${ticketId}` });
+         
+        }else{
+          this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
+          
+        }
+      }else{
+        console.log('เอล')
+         this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
+         
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      
+      
     }
   },
   mounted(){
     const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
     this.userID=userData.id
+    this.roleID=userData.role
     this.getNotifications()
     console.log("ยูสเซอร์:"+ this.userID)
   }
