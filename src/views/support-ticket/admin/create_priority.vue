@@ -124,9 +124,6 @@
                   <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave">Save changes</CButton>
                 </div>
               </CModalBody>
-              
-                
-              
             </CModal>
         </CCol>
       </CRow>
@@ -200,6 +197,7 @@ export default {
       const isFormEmpty = [
         this.form.pri_name_eng.trim(),
         this.form.pri_name_th.trim(),
+        //** เนื่องจากค่า level กับ color มีค่าให้มาแล้ว เลย comment */
         this.form.pri_level.trim(),
         this.form.pri_color.trim(),
         this.form.pri_description.trim(),
