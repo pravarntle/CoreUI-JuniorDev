@@ -202,6 +202,7 @@
                       text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
                       type="password"
                       id="password"
+                      v-model="form.act_password"
                       feedbackInvalid="Please input password."
                       :invalid="validate.act_password"
                       placeholder="•••••••"
@@ -581,7 +582,13 @@ export default {
         }, 2000)
       } else {
         this.form.validatedCustom01 = true
-        this.encryptPasswordBeforeSave()
+        if (this.form.act_password == ""){
+          console.log("var_if")
+          this.onSave()
+        }else{
+          console.log("var_else")
+          this.encryptPasswordBeforeSave()
+        }
         this.visibleSubmit = false
         
         console.log('8')
@@ -667,6 +674,8 @@ export default {
     async onSave() {
       const userId = this.accountId
       if (this.form.act_password == '') {
+        console.log("if")
+        console.log("password if", this.form.act_password)
         try {
           const requestData = { ...this.form }
           delete requestData.act_password
@@ -688,6 +697,8 @@ export default {
           console.log(error)
         }
       } else {
+        console.log("else")
+        console.log("password", this.form.act_password)
         try {
           await axios
             .put(

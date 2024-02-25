@@ -39,11 +39,32 @@
                   <CButton size="sm" class="action_button mx-1" @click="editAccount(item, index)">
                     <CImage :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
                   </CButton>
-                  <CButton size="sm" class="action_button ml-1" @click="DeleteButton(item, index)">
+                  <CButton size="sm" class="action_button ml-1" @click="showDelete(item)">
                     <CImage :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                   </CButton>
                 </td>
               </template>
+              <template #details="">
+                <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleDelete"
+                    @close="() => { visibleDelete = false }">
+
+                    <CModalBody>
+                        <h2 class="text-start"> Delete Priorities </h2>
+                        <p class="text-black" id="popup-detail">
+                        Are you sure you want to
+                        <span class="text-danger">Delete Priorities ?</span>
+                        </p>
+                        <br/>
+                        <hr/>
+                        <div class="d-flex justify-content-end">
+                            <CButton color="light"> Cancel </CButton>
+                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="">
+                            Confirm
+                            </CButton>
+                        </div>
+                    </CModalBody>
+                    </CModal>
+            </template>
             </CSmartTable>
           </div>
 
@@ -149,6 +170,8 @@ export default {
     return {
       details: [],
       Iconcreatepriority: Iconcreatepriority,
+      visibleDelete: false,
+      indexDelete: '',
     }
   },
   methods: {
@@ -202,9 +225,10 @@ export default {
       this.$router.push({ name: 'ST - edit_priority', params: { itemId } })
     },
 
-    async DeleteButton(item) {
+    async DeleteButton() {
       try {
-        const itemId = item._id.toString()
+        const itemId = this.indexDelete._id.toString()
+        console.log(itemId);
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(
           `${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`,
@@ -217,12 +241,24 @@ export default {
 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('ลบ priority')
+        this.indexDelete = '',
         // รีเฟรชหน้า
-        window.location.reload()
+        this.getPriority();
+        this.visibleDelete = false;
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }
     },
+
+    showDelete(item){
+            console.log("showmodal",)
+            console.log("index",this.visibleDelete)
+            console.log("qqq",item)
+            this.visibleDelete = true;
+            this.indexDelete = item;
+            
+        },
+
     async create_priority() {
       this.$router.push({ name: 'ST - create_priority' })
     },

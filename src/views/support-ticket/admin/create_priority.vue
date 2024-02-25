@@ -27,6 +27,7 @@
     <CCol class="ms-5 mt-3" md="7">
       <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
         <CFormInput
+          :invalid="validate.pri_name_th" 
           feedbackValid="Looks good!"
           id="validationCustom01"
           required
@@ -40,6 +41,7 @@
         <CFormInput
           feedbackValid="Looks good!"
           id="validationCustom01"
+          :invalid="validate.pri_name_eng" 
           required
           v-model="form.pri_name_eng"  
           aria-label="priorityNameEng"
@@ -50,7 +52,7 @@
                   <CFormLabel for="priorityLevel">
                     <h4>Level of Priority<span id="Icon_force">*</span></h4>
                   </CFormLabel>
-                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level"></CFormInput>
+                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level" ></CFormInput>
                 </CCol>
                 <CCol class="ms-5 mt-3" md="3">
                   <CFormLabel for="priorityLevel">
@@ -70,6 +72,7 @@
       <h4>Description<span id="Icon_force">*</span></h4>
         <CFormTextarea
           feedbackValid="Looks good!"
+          :invalid="validate.pri_description"
           id="validationCustom01"
           required
           v-model="form.pri_description"
@@ -104,7 +107,7 @@
 
 
 
-            <CButton color="success" type="submit" id="btn_submit" @click="visibleLivesubmit = true" >Submit</CButton>
+            <CButton color="success" id="btn_submit" @click="visibleLivesubmit = true" >Submit</CButton>
             <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
               
               <CModalBody>
@@ -259,8 +262,7 @@ export default {
       }
 
       if (!error) {
-        this.isLoading = true
-        this.onSave()
+        // this.onSave()
         this.toastProp.push({
           content: 'Create Success  ',
         })
@@ -270,12 +272,11 @@ export default {
         setTimeout(() => {
           
           // จบการโหลด
-          this.isLoading = false
 
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
           
           this.onSave()
-        }, 2000)
+        }, 500)
       } else {
         console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.visibleLivesubmit = false
