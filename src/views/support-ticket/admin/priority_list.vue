@@ -373,4 +373,11 @@ export default {
 .font-button {
   color: white;
 }
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+}
 </style>
