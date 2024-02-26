@@ -1,10 +1,10 @@
 <template>
-      <CRow align-items="center" class="border rounded p-2 bg-white shadow-sm ms-2" style="border-color: rgba(0, 0, 0, 0.1);">
+      <CRow align-items="center" class="border rounded p-2 bg-white shadow-sm ms-2"  style="border-color: rgba(0, 0, 0, 0.1); ">
         <CCol md="4" class="text-center">
           <CAvatar :src="`data:${acountFile};base64,${acountImage}`" shape="rounded-circle" size="lg" />
         </CCol>
         <CCol md="8" class="d-flex align-items-center justify-content-center">
-          <strong class="text-truncate">{{firstname}}</strong>
+          <strong class="text-truncate">{{ shortenName(firstname, 12) }}</strong>
         </CCol>
       </CRow>
 </template>
@@ -45,6 +45,13 @@ export default {
           console.error('Error fetching data:', error);
         }
     },
+    shortenName(name, maxLength) {
+  if (name.length <= maxLength) {
+    return name; // ไม่ต้องย่อหากยาวเท่ากับหรือน้อยกว่า maxLength
+  } else {
+    return name.substring(0, maxLength) + '.'; // แยกชื่อออกมาเพียง maxLength ตัวแล้วเติมจุดต่อท้าย
+  }
+}
   },
   mounted(){
     this.getAcount();

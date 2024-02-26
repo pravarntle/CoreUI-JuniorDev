@@ -7,9 +7,9 @@
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
             <div class="text-start" id="head_description">
-              <CButton class="btn btn-block btn-long custom-button-back" color="light" @click="backtohomepage()">
-                <CImage class="style-icon-button-back" :src="Button_back" />
-              </CButton>
+              
+                <CImage class="style-icon-button-back" :src="Button_back"  @click="backtohomepage()" />
+              
             </div>
           </CCol>
         </div>
@@ -301,7 +301,8 @@ export default {
         not_tkt:'',
         not_cmt:'',
         not_acc:'',
-      }
+      },
+      Button_back : Button_back,
 
     };
   },
@@ -756,6 +757,9 @@ export default {
         console.log(error)
       }
     },
+    backtohomepage(){
+      this.$router.push({ name: 'ST - Dashboard User'});
+    },
       
       
 
@@ -893,4 +897,7 @@ a:hover {
 
 .style-icon-button-back {
   width: 30px;
-}</style>
+  cursor: pointer; 
+  margin-left: 10px;
+}
+</style>

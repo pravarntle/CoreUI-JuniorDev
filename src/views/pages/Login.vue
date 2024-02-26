@@ -76,11 +76,11 @@
         </CToast>
     </CToaster>
 </template>
-<style>
+<style scoped>
 .c-image {
     border-radius: 15px 15px 15px 15px;
   }
-</style>
+</style >
 <script>
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';

@@ -72,7 +72,7 @@
           <!-- Ticket Priority  -->
         </CCard>
 
-        <CCard class="mt-3 chart-container">
+        <CCard class="mt-4 chart-container custom-ticket-priority" >
           <CCardBody>
             <CCardTitle class="d-flex fs-2"><b>Ticket Priority</b>
               <CButton variant="ghost" class="border border-0 bg-body ms-auto d-flex" @click="() => {
@@ -243,12 +243,12 @@
               <td id="style-ticket-id" @click="acceptTicket(item, index)">{{ item.ticket_id }}</td>
           </template>
           <template #priorities="{ item }">
-            <td>
+            <td style="padding-left: 3%;">
               <CBadge :color="getBadge(item.priorities)">{{ item.priorities }}</CBadge>
             </td>
           </template>
           <template #status="{ item }">
-            <td>
+            <td > 
               <CBadge :color="getBadge(item.status)">
                 <li>{{ item.status }}</li>
               </CBadge>
@@ -256,9 +256,11 @@
           </template>
           <template #type="{ item }">
             <td>
-              <CBadge :color="getBadge(item.type)">{{ item.type }}</CBadge>
+              <CBadge :color="getBadge(item.type)" >{{ item.type }}</CBadge>
             </td>
           </template>
+ 
+        
           <template #start_date="{ item }">
                 <td> {{ formatDate(item.start_date) }}</td>
           </template>
@@ -306,27 +308,27 @@ export default {
       {
         key: 'ticket_id',
         label: 'TICKET ID',
-        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '14%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '5%'  },
       },
       {
         key: 'title',
         label: 'TITLE',
-        _style: { width: '25%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '25%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '14%' },
       },
       {
         key: 'owner',
         label: 'OWNER',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2%' },
       },
       {
         key: 'priorities',
         label: 'PRIORITY',
-        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '8%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '2%'},
       },
       {
         key: 'type',
         label: 'TYPE',
-        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        _style: { width: '5%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '1.5%' },
       },
       {
         key: 'start_date',
@@ -648,6 +650,10 @@ output {
   color: #000;
   padding-left: 0%;
   margin-left: 0px;
+}
+
+.custom-ticket-priority {
+  height: 37%;
 }
 
 .line {
