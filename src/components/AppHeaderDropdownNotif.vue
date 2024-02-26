@@ -32,7 +32,7 @@
                 <span class="fa fa-exclamation text-danger"></span> change Status Ticket
               </div>
               <div class="small text-medium-emphasis text-truncate">
-               <b>{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.
+               <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.
               </div>
           </div>
         </CDropdownItem>
@@ -49,7 +49,7 @@
                 <span class="fa fa-exclamation text-danger"></span> New message
               </div>
               <div class="small text-medium-emphasis text-truncate">
-               <b>{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
+               <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
               </div>
             </div>
         </CDropdownItem>
@@ -208,3 +208,8 @@ export default {
   }
 }
 </script>
+<style>
+.ticket-number{
+    color: #3399ff;
+}
+</style>
