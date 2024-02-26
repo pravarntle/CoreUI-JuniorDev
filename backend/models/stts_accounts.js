@@ -9,7 +9,7 @@ const SchemaData = new schema({
     },
     act_password: {
         type: String,
-        required: true,
+        required: false,
     },
     act_number_phone: {
         type: String,

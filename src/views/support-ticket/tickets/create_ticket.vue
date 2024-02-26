@@ -103,9 +103,7 @@
           <div class="clearfix text-end">
             <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
             <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
-                visibleVerticallyCenteredDemo = false
-              }
-              ">
+              visibleVerticallyCenteredDemo = false }">
               <CModalBody>
                 <h2 class="cancel-heading" id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
@@ -114,17 +112,18 @@
                 </p>
                 <br />
                 <hr />
-                <CButton color="light" @click="() => {
-                    visibleVerticallyCenteredDemo = false
-                  }
-                  ">
-                  Cancel
-                </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
-                  Confirm
-                </CButton>
+                <div class="d-flex justify-content-end">
+                  <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
+                    Cancel
+                  </CButton>
+                  <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                    Confirm
+                  </CButton>
+                </div>
               </CModalBody>
             </CModal>
+            
+            
             <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
               Submit
             </CButton>
@@ -138,12 +137,9 @@
                   Are you sure you want to
                   <span id="detail-for-submit">Submit The Ticket ?</span>
                 </p>
-                <br />
-                <hr />
-                <CButton color="light" @click="() => {
-                    visibleSubmit = false
-                  }
-                  ">
+                <br/>
+                <hr/>
+                <CButton color="light" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>
                 <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave"
