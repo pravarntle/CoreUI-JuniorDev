@@ -6,7 +6,7 @@
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_Priority" />
-            <h2 class="d-inline align-middle"><b>Priorities List</b></h2>
+            <h1 class="d-inline align-middle"><b>Priorities List</b></h1>
           </div>
         </div>
         <div>
@@ -58,8 +58,9 @@
                         <hr/>
                         <div class="d-flex justify-content-end">
                             <CButton color="light"> Cancel </CButton>
-                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="">
-                            Confirm
+                            <CButton class="ms-2" color="info text-white" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="" :disabled="isLoading">
+                              <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                               {{ isLoading ? 'Confirm...' : 'Confirm' }}
                             </CButton>
                         </div>
                     </CModalBody>
@@ -71,6 +72,17 @@
         <!-- END Smart Table -->
       </CCardBody>
     </CCard>
+    <br />
+  <CToaster placement="top-end">
+    <CToast visible color="danger" v-for="(toast) in toastDelete">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
   </div>
 </template>
 
@@ -172,6 +184,8 @@ export default {
       Iconcreatepriority: Iconcreatepriority,
       visibleDelete: false,
       indexDelete: '',
+      toastDelete: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -226,6 +240,7 @@ export default {
     },
 
     async DeleteButton() {
+      this.isLoading = true
       try {
         const itemId = this.indexDelete._id.toString()
         console.log(itemId);
@@ -238,13 +253,26 @@ export default {
             },
           },
         )
-
+        this.toastDelete.push({
+          content: 'Delete Success  ',
+        })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
+        setTimeout(() => {
+          
+          // จบการโหลด
+          this.isLoading = false
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
+        }, 500)
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('ลบ priority')
         this.indexDelete = '',
         // รีเฟรชหน้า
         this.getPriority();
         this.visibleDelete = false;
+        
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }

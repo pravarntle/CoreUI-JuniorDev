@@ -5,7 +5,7 @@
       <div class="d-inline ms-2">
         <div id="LineHeadCard">
           <CImage id="custom_icon_header" :src="Icon_Priority" alt="Icon Priority Image"> </CImage>
-          <h1 class="d-inline align-middle">Create New Priority</h1>
+          <h1 class="d-inline align-middle"> Create New Priority</h1>
         </div>
       </div>
     </CCardHeader>
@@ -25,7 +25,7 @@
   >
 
     <CCol class="ms-5 mt-3" md="7">
-      <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
+      <h4>Priority name (Thai)<span id="Icon_force">*</span></h4>
         <CFormInput
           :invalid="validate.pri_name_th" 
           feedbackValid="Looks good!"
@@ -37,7 +37,7 @@
     </CCol>
 
     <CCol class="ms-5 mt-3" md="7">
-      <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
+      <h4>Priority name (English)<span id="Icon_force">*</span></h4>
         <CFormInput
           feedbackValid="Looks good!"
           id="validationCustom01"
@@ -90,7 +90,7 @@
                 <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span class="text-danger">Create New Priority ?</span>
+                  <span class="text-danger"> Create New Priority ?</span>
                 </p>
                 <br />
                 <hr />
@@ -124,7 +124,10 @@
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
                     Close
                   </CButton>
-                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave">Save changes</CButton>
+                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave" :disabled="isLoading">
+                    <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                  {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                  </CButton>
                 </div>
               </CModalBody>
             </CModal>
@@ -135,6 +138,18 @@
   </CForm>
   </CContainer>
   </CCard>
+
+  <br />
+  <CToaster placement="top-end">
+    <CToast visible color="info" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <script>
 import axios from 'axios'
@@ -163,6 +178,7 @@ export default {
       visibleLiveDemo: false,
       visibleLivesubmit: false,
       toastProp: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -263,6 +279,7 @@ export default {
 
       if (!error) {
         // this.onSave()
+        this.isLoading = true
         this.toastProp.push({
           content: 'Create Success  ',
         })
@@ -272,7 +289,7 @@ export default {
         setTimeout(() => {
           
           // จบการโหลด
-
+          this.isLoading = false
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
           
           this.onSave()

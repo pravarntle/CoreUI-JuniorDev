@@ -165,7 +165,7 @@
       </CCol>
     </CRow>
 
-    <CRow>
+    <!-- <CRow>
       <CCol>
         <CCard class="mt-3">
           <CCardTitle>
@@ -183,7 +183,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
 
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
