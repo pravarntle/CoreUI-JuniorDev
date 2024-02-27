@@ -18,7 +18,7 @@
         </CCol>
     </CRow>
 
-    <CRow>
+    <!-- <CRow>
       <CCol>
         <CCard class="mt-3 rounded-4">
           <CCardTitle>
@@ -36,7 +36,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
 
   </div>
 </template>

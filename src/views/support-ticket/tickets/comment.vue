@@ -184,6 +184,7 @@
 
 
 
+
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
                     style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
@@ -194,6 +195,8 @@
             </div>
           </div>
         </div>
+        <br>
+        
       </CCardBody>
     </CCard>
 
@@ -530,12 +533,8 @@ export default {
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
         this.actId = response.data.tkt_acc.acc_act._id
-        // this.email = response.data.tkt_act.act_email_address;
-        // this.firstname = response.data.tkt_act.act_first_name_eng;
-
-        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-        // this.getAcount();
-        console.log(response.data)
+        
+        
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -651,11 +650,13 @@ export default {
                 
               
             });
+            
             console.log(ticketId)
             console.log(comment.data)
             this.comments = comment.data;
             this.commentAccount= comment.data.cmt_act;
             console.log(this.comments)
+            
     },
     async getAcountComment() {
         try {

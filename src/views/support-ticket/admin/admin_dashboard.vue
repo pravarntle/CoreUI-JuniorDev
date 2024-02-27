@@ -164,7 +164,8 @@
         </CCard>
       </CCol>
     </CRow>
-
+    
+    <!--
     <CRow>
       <CCol>
         <CCard class="mt-3">
@@ -175,15 +176,10 @@
               ><img :src="Close_fullscreen"
             /></CButton>
           </CCardTitle>
-          <CCardBody>
-            <h1>Priority Category</h1>
-
-            <hr />
-            <PriorityChart />
-          </CCardBody>
+          
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
 
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
