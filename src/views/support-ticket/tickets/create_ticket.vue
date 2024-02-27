@@ -43,20 +43,20 @@
                 <div class="popup" @mouseover="togglePopup">
                   <CAvatar class="popup_priority" :src="popup_priority" />
                   <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup">
-                    <p class="custom-alert-priority custom-font-size-alert">
-                      <font id="low-priority"> Low </font>
-                      <font class="custom-padding-alert-low-priority custom-alert-detail-priority"> =  ดำเนินการภายใน 72 ชม. </font>
+                    <p v-for="(item, index) in priorityAll" :key="index" class="custom-alert-priority custom-font-size-alert" >
+                      <font id="low-priority"> {{item.pri_name_eng}} </font>
+                      <font class="custom-padding-alert-low-priority custom-alert-detail-priority"> =  {{item.pri_description}} </font>
                       <br />
-                      <font id="medium-priority"> Medium </font>
+                      <!-- <font id="medium-priority"> Medium </font>
                       <font class="custom-padding-alert-medium-priority custom-alert-detail-priority"> = ดำเนินการภายใน 48 ชม. </font>
                       <br />
                       <font id="high-priority">High </font>
-                      <font class="custom-padding-alert-high-priority custom-alert-detail-priority"> = ดำเนินการภายใน 24 ชม. </font>
+                      <font class="custom-padding-alert-high-priority custom-alert-detail-priority"> = ดำเนินการภายใน 24 ชม. </font> -->
                     </p>
                   </div>
                 </div>
               </div>
-              <CFormSelect v-model="form.tkt_priorities" :options="piorityOptions"
+              <CFormSelect v-model="form.tkt_priorities" :options="this.userOptions"
                 feedbackInvalid="Please select priority." :invalid="validate.tkt_priorities" required
                 @change="checkpiority" />
             </div>
@@ -419,7 +419,6 @@ export default {
       Cloud,
       isPopupVisible: false,
       userOptions: [],
-      userOptions: [],
       genderOptions: [],
       pageLoading: false,
       validatedCustom01: null,
@@ -438,6 +437,7 @@ export default {
         mod_status: '',
         mod_tkt: '',
       },
+      priorityAll:'',
     }
   },
   //สร้างข้อมูลของ Options ต่างๆใน selectfrom
@@ -456,21 +456,29 @@ export default {
         { label: 'Service Request', value: 'Service' },
         { label: 'ไม่ระบุ', value: 'none', disabled: true },
       ])
-    // this.getUser()
+    this.getUser()
   },
 
   methods: {
-    //เรียกใช้ฟังกืชั่น get จาก server ดึงข้อมูลจาก model stts_account
-    // async getUser(){
-    //   const user= await axios.get('http://localhost:3000/mongoose/get/stts_accounts')
-    //   const users= await axios.post('http://localhost:3000/mongoose/get/stts_tickets',{populate:['tkt_act']})
-    //   console.log(users)
-    //   user.data.forEach(element => {
-    //     this.userOptions.push({value:element._id,label:element.act_username})
+    async getUser(){
+      const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`,
+          {
+            where: {
+              pri_status: { $ne: 'Delete' },
+            },
+          },
+        )
+      console.log('sss',response.data)
+      response.data.sort((a, b) => b.pri_level - a.pri_level);
+      this.priorityAll = response.data;
+      this.userOptions.unshift({ label: 'Select Priority', value: '',     });
+      response.data.forEach(element => {
+        this.userOptions.push({value:element._id,label:element.pri_name_eng})
 
-    //   });
-
-    // },
+      });
+      this.userOptions.push({ label: 'ไม่ระบุ', value: 'none', disabled: true });
+    },
 
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า
 
