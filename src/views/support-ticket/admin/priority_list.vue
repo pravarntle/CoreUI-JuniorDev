@@ -58,8 +58,9 @@
                         <hr/>
                         <div class="d-flex justify-content-end">
                             <CButton color="light"> Cancel </CButton>
-                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="">
-                            Confirm
+                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="" :disabled="isLoading">
+                              <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                               {{ isLoading ? 'Confirm...' : 'Confirm' }}
                             </CButton>
                         </div>
                     </CModalBody>
@@ -71,6 +72,17 @@
         <!-- END Smart Table -->
       </CCardBody>
     </CCard>
+    <br />
+  <CToaster placement="top-end">
+    <CToast visible color="danger" v-for="(toast) in toastDelete">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
   </div>
 </template>
 
@@ -172,6 +184,8 @@ export default {
       Iconcreatepriority: Iconcreatepriority,
       visibleDelete: false,
       indexDelete: '',
+      toastDelete: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -226,6 +240,20 @@ export default {
     },
 
     async DeleteButton() {
+      this.isLoading = true
+        this.toastDelete.push({
+          content: 'Delete Success  ',
+        })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
+        setTimeout(() => {
+          
+          // จบการโหลด
+          this.isLoading = false
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
+        }, 500)
       try {
         const itemId = this.indexDelete._id.toString()
         console.log(itemId);
@@ -245,6 +273,7 @@ export default {
         // รีเฟรชหน้า
         this.getPriority();
         this.visibleDelete = false;
+        
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }

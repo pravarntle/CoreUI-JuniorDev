@@ -87,7 +87,10 @@
             <CRow class="d-flex justify-content-center">
               <CCol class="col-8 mx-auto">
                 <CButton color="dark" id="btn_cancel" @click="cancel">Cancel</CButton>
-                <CButton color="success" id="btn_submit" @click="onSave">Submit</CButton>
+                <CButton color="success" id="btn_submit" @click="onSave" :disabled="isLoading">
+                  <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                  {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                </CButton>
               </CCol>
             </CRow>
           </div>
@@ -95,6 +98,17 @@
       </div>
     </CCardBody>
   </CCard>
+  <br />
+  <CToaster placement="top-end">
+    <CToast visible color="warning" v-for="(toast) in toastEdit">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <style scoped>
 input[type=number]::-webkit-inner-spin-button,
@@ -201,6 +215,8 @@ export default {
       priorityId: '',
       validatedCustom01: null,
       Icon_Priority,
+      toastEdit: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -235,6 +251,19 @@ export default {
     async onSave() {
       const priorityId = this.priorityId
       try {
+        this.isLoading = true
+        this.toastEdit.push({
+         content: 'Edit Success  ',
+       })
+          // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+          // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+          //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
+        setTimeout(() => {
+          
+        // จบการโหลด
+        this.isLoading = false
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+        }, 500)
         await axios
           .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${priorityId}`, {
             data: this.form,

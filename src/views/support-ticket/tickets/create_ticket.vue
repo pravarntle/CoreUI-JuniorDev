@@ -394,6 +394,7 @@ export default {
       genderOptions: [],
       pageLoading: false,
       validatedCustom01: null,
+      toastProp: [],
       validate: {
         ticket: null,
       },

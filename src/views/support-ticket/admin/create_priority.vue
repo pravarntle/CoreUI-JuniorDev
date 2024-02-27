@@ -124,7 +124,10 @@
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
                     Close
                   </CButton>
-                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave">Save changes</CButton>
+                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave" :disabled="isLoading">
+                    <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                  {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                  </CButton>
                 </div>
               </CModalBody>
             </CModal>
@@ -135,6 +138,18 @@
   </CForm>
   </CContainer>
   </CCard>
+
+  <br />
+  <CToaster placement="top-end">
+    <CToast visible color="info" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <script>
 import axios from 'axios'
@@ -163,6 +178,7 @@ export default {
       visibleLiveDemo: false,
       visibleLivesubmit: false,
       toastProp: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -263,6 +279,7 @@ export default {
 
       if (!error) {
         // this.onSave()
+        this.isLoading = true
         this.toastProp.push({
           content: 'Create Success  ',
         })
@@ -272,7 +289,7 @@ export default {
         setTimeout(() => {
           
           // จบการโหลด
-
+          this.isLoading = false
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
           
           this.onSave()
