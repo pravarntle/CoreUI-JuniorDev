@@ -115,7 +115,7 @@ export default {
         key: 'status_eng',
         label: 'NAME (ENG)',
         _style: {
-          width: '30%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -125,7 +125,7 @@ export default {
         key: 'status_th',
         label: 'NAME (TH)',
         _style: {
-          width: '30%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -135,18 +135,27 @@ export default {
         key: 'level_of_priority',
         label: 'LEVEL 0F PRIORITY',
         _style: {
-          width: '20%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
         },
       },
-
+      {
+        key: 'description',
+        label: 'Description',
+        _style: {
+          width: '40%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
+      },
       {
         key: 'show_details',
         label: 'ACTION',
         _style: {
-          width: '30%',
+          width: '20%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -212,6 +221,7 @@ export default {
           status_eng: element.pri_name_eng,
           status_th: element.pri_name_th,
           level_of_priority: element.pri_level,
+          description: element.pri_description,
           MORE: false,
         }))
       } catch (error) {
