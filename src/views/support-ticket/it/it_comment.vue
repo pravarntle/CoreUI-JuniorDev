@@ -232,6 +232,80 @@
   <div>
     <CCard>
       <CCardBody>
+        <div class="scoll">
+          <br />
+          <div v-for="(item, index) in comments" :key="index">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-1">
+                  <div class="avatar">
+                    <CAvatar
+                      v-if="item.cmt_act.act_picture"
+                      class="Icon_user_man"
+                      :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
+                    />
+                    <CAvatar
+                      v-else
+                      class="Icon_user_man"
+                      :src="Icon_user_man"
+                    />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <p>
+                    <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
+                      item.cmt_date
+                    }}
+                  </p>
+                  <div
+                    class="comments_box div-comment-box"
+                  >
+                    {{ item.cmt_message }}
+                    <a
+                      v-if="item.link"
+                      href="#"
+                      @click.prevent="openLink(item.cmt_link)"
+                    >
+                      {{ item.cmt_link }}
+                    </a>
+                    <a v-if="item.cmt_picture">
+                      <CImage
+                        :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
+                        alt="Comment Image"
+                        class="comment-image"
+                      />
+                    </a>
+                    <a v-if="item.cmt_file">
+                      <a
+                        :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
+                        alt="Comment Image"
+                        class="comment-image"
+                        download
+                        >{{ `${item.cmt_file.filename}` }}</a
+                      >
+                    </a>
+                    <a
+                      v-if="item.cmt_link"
+                      @click="openLink(item.cmt_link)"
+                      class="a-cmt-link"
+                    >
+                      {{ item.cmt_link }}
+                    </a>
+                  </div>
+
+                  <!-- <span v-if="item.file">
+                    <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
+                      style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
+                    <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
+                    <a :href="item.file.url" download></a>
+                  </span> -->
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <br />
         <CCardTitle>Comments</CCardTitle>
         <div class="container text-start" id="My_Comments">
           <div class="row align-items-center">
@@ -329,76 +403,6 @@
                 >
                   <img class="commit" :src="commit" alt="Commit Icon"
                 /></CButton>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <div v-for="(item, index) in comments" :key="index">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-1">
-                <div class="avatar">
-                  <CAvatar
-                    v-if="item.cmt_act.act_picture"
-                    class="Icon_user_man"
-                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
-                  />
-                  <CAvatar
-                    v-else
-                    class="Icon_user_man"
-                    :src="Icon_user_man"
-                  />
-                </div>
-              </div>
-              <div class="col-10">
-                <p>
-                  <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
-                    item.cmt_date
-                  }}
-                </p>
-                <div
-                  class="comments_box div-comment-box"
-                >
-                  {{ item.cmt_message }}
-                  <a
-                    v-if="item.link"
-                    href="#"
-                    @click.prevent="openLink(item.cmt_link)"
-                  >
-                    {{ item.cmt_link }}
-                  </a>
-                  <a v-if="item.cmt_picture">
-                    <CImage
-                      :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
-                      alt="Comment Image"
-                      class="comment-image"
-                    />
-                  </a>
-                  <a v-if="item.cmt_file">
-                    <a
-                      :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
-                      alt="Comment Image"
-                      class="comment-image"
-                      download
-                      >{{ `${item.cmt_file.filename}` }}</a
-                    >
-                  </a>
-                  <a
-                    v-if="item.cmt_link"
-                    @click="openLink(item.cmt_link)"
-                    class="a-cmt-link"
-                  >
-                    {{ item.cmt_link }}
-                  </a>
-                </div>
-
-                <!-- <span v-if="item.file">
-                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
-                    style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
-                  <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
-                  <a :href="item.file.url" download></a>
-                </span> -->
               </div>
             </div>
           </div>
@@ -1043,6 +1047,12 @@ export default {
   text-align: left;
 }
 
+.scoll{
+  width: 100%;
+  height: 500px;
+  overflow-y: auto !important;
+  
+}
 .Icon_user_man {
   /* margin-left: 0.5pc; */
   width: 56px;

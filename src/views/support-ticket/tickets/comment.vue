@@ -95,6 +95,65 @@
   <div>
     <CCard>
       <CCardBody>
+       
+        <br />
+        <div class="scoll" >
+          <div v-for="(item, index) in comments" :key="index">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-1">
+                  <div class="avatar">
+                    <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
+                      :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
+                      style="padding: -4px" />
+                    <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
+                  <div class="comments_box" style="width: fit-content; padding: 10px;">
+
+                    {{ item.cmt_message }}
+                    <br v-if="item.cmt_message">
+                    <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
+                      {{ item.cmt_link }}
+                    </a>
+                    <br v-if="item.link">
+                    <a v-if="item.cmt_picture">
+                      <CRow>
+                        <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
+                          alt="Comment Image" style="max-width: auto; height: 300px;" />
+                      </CRow>
+                    </a>
+                    <br v-if="item.cmt_picture">
+                    <a v-if="item.cmt_file">
+                      <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
+                        style="max-width: auto; height: 300px;" download>{{ `${item.cmt_file.filename}` }}</a>
+                    </a>
+                    <br v-if="item.cmt_file">
+                    <a v-if="item.cmt_link" @click="openLink(item.cmt_link)"
+                      style="text-decoration: none; color: #007bff; ">
+                      {{ item.cmt_link }}
+                    </a>
+
+                  </div>
+
+        </div>
+
+
+
+
+                <!-- <span v-if="item.file">
+                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
+                    style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
+                  <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
+                  <a :href="item.file.url" download></a>
+                </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
         <CCardTitle>Comments</CCardTitle>
         <div class="container text-start" id="My_Comments">
           <div class="row align-items-center">
@@ -141,61 +200,6 @@
             </div>
           </div>
         </div>
-        <br />
-        <div v-for="(item, index) in comments" :key="index">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-1">
-                <div class="avatar">
-                  <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man"
-                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
-                    style="padding: -4px" />
-                  <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
-                </div>
-              </div>
-              <div class="col-10">
-                <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
-                <div class="comments_box" style="width: fit-content; padding: 10px;">
-
-                  {{ item.cmt_message }}
-                  <br v-if="item.cmt_message">
-                  <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
-                    {{ item.cmt_link }}
-                  </a>
-                  <br v-if="item.link">
-                  <a v-if="item.cmt_picture">
-                    <CRow>
-                      <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
-                        alt="Comment Image" style="max-width: auto; height: 300px;" />
-                    </CRow>
-                  </a>
-                  <br v-if="item.cmt_picture">
-                  <a v-if="item.cmt_file">
-                    <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
-                      style="max-width: auto; height: 300px;" download>{{ `${item.cmt_file.filename}` }}</a>
-                  </a>
-                  <br v-if="item.cmt_file">
-                  <a v-if="item.cmt_link" @click="openLink(item.cmt_link)"
-                    style="text-decoration: none; color: #007bff; ">
-                    {{ item.cmt_link }}
-                  </a>
-
-                </div>
-
-
-
-
-                <!-- <span v-if="item.file">
-                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
-                    style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
-                  <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
-                  <a :href="item.file.url" download></a>
-                </span> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
         
       </CCardBody>
     </CCard>
@@ -793,6 +797,12 @@ export default {
   /* ปรับขนาดตามที่ต้องการ */
   border-radius: 50%;
   /* ทำให้รูปเป็นวงกลม */
+}
+.scoll{
+  width: 100%;
+  height: 500px;
+  overflow-y: auto !important;
+  
 }
 
 .Arrow_Left {
