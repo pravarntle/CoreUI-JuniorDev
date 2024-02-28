@@ -22,7 +22,7 @@
           <div class="col-lg-1"></div>
           <div class="col-lg-7 col-md-12">
             <CFormLabel for="priorityNameTha">
-              <h4>Priority Name(Thai)<span id="Icon_force">*</span></h4>
+              <h4>Priority name (Thai)<span id="Icon_force">*</span></h4>
             </CFormLabel>
 
             <CInputGroup>
@@ -36,7 +36,7 @@
           <div class="col-lg-1"></div>
           <div class="col-lg-7 col-md-12">
             <CFormLabel for="priorityNameEng">
-              <h4>Priority Name(English)<span id="Icon_force">*</span></h4>
+              <h4>Priority name (English)<span id="Icon_force">*</span></h4>
             </CFormLabel>
             <CInputGroup>
               <CFormInput v-model="form.pri_name_eng" placeholder="Very High" aria-label="priorityNameEng"
@@ -87,7 +87,53 @@
             <CRow class="d-flex justify-content-center">
               <CCol class="col-8 mx-auto">
                 <CButton color="dark" id="btn_cancel" @click="cancel">Cancel</CButton>
-                <CButton color="success" id="btn_submit" @click="onSave">Submit</CButton>
+                <CModal alignment="center" :visible="visibleLiveDemo" @close="() => {
+                  visibleLiveDemo = false }">
+                  <CModalBody>
+                    <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
+                    <p class="ms-2" id="popup-detail">
+                      Are you sure you want to
+                      <span class="text-danger">Cancel Edit Priority ?</span>
+                    </p>
+                    <br />
+                    <hr />
+                    <div class="d-flex justify-content-end">
+                    <CButton color="light" @click="() => { visibleLiveDemo = false }">
+                      Cancel
+                    </CButton>
+                    <CButton class="ms-2" color="info text-white" id="confirm-btn-in-detail" @click="confirm">
+                      Confirm
+                    </CButton>
+                    </div>
+                  </CModalBody>
+                </CModal>
+                
+                
+                
+                <CButton color="success" id="btn_submit" @click="visibleLivesubmit = true">Submit</CButton>
+                <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
+              
+                  <CModalBody>
+                    <h2 class="ms-2" id="button-head">
+                      Submit
+                    </h2>
+                    <p class="ms-2" id="popup-detail">
+                      Are you sure you want to
+                      <span id="detail-for-submit" class="text-warning">Edit Priority ?</span>
+                    </p>
+                    <br/>
+                    <hr/>
+                    <div class="d-flex justify-content-end">
+                      <CButton color="light"  @click="() => { visibleLivesubmit = false }">
+                        Close
+                      </CButton>
+                      <CButton class="ms-2" id="confirm-btn-in-detail" color="info text-white" @click="vaildateBeforeSave" :disabled="isLoading">
+                        <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                      {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                      </CButton>
+                    </div>
+                  </CModalBody>
+                </CModal>
               </CCol>
             </CRow>
           </div>
@@ -95,6 +141,18 @@
       </div>
     </CCardBody>
   </CCard>
+  
+  <br />
+  <CToaster placement="top-end">
+    <CToast visible color="warning" v-for="(toast) in toastEdit">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <style scoped>
 input[type=number]::-webkit-inner-spin-button,
@@ -183,6 +241,13 @@ h4 {
   width: auto;
   height: 60px;
 }
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+}
 </style>
 
 <script>
@@ -198,9 +263,20 @@ export default {
         pri_color: '',
         pri_description: '',
       },
+      validate: {
+        pri_name_eng: false,
+        pri_name_th: false,
+        pri_level: false,
+        pri_color: false,
+        pri_description: false,
+    },
       priorityId: '',
       validatedCustom01: null,
       Icon_Priority,
+      visibleLivesubmit: false,
+      visibleLiveDemo: false,
+      toastEdit: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -213,7 +289,28 @@ export default {
       this.validatedCustom01 = true
     },
     async cancel() {
-      this.$router.push({ name: 'ST - priority_list Ticket' });
+      const isFormEmpty = [
+        this.form.pri_name_eng.trim(),
+        this.form.pri_name_th.trim(),
+        //** เนื่องจากค่า level กับ color มีค่าให้มาแล้ว เลย comment */
+        this.form.pri_level.trim(),
+        this.form.pri_color.trim(),
+        this.form.pri_description.trim(),
+      ].every(value => value === '');
+      if (!isFormEmpty) {
+        this.visibleLiveDemo = true;
+      } else {
+        this.confirm();
+        // this.$router.push({ name: 'ST - priority_list Ticket' });
+
+      }
+    },
+    async confirm() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+
+      this.$router.push('/support-ticket/admin/priority_list')
+      
     },
     async getPriority() {
       try {
@@ -226,8 +323,6 @@ export default {
         this.form.pri_color = response.data.pri_color
         console.log(response.data)
 
-
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -238,7 +333,7 @@ export default {
         await axios
           .put(`${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${priorityId}`, {
             data: this.form,
-          })
+          })       
           .then((result) => {
             this.$router.push('/support-ticket/admin/priority_list')
           })
@@ -246,11 +341,72 @@ export default {
             console.log(error)
           })
         console.log("1")
-
       } catch (error) {
         console.log(error)
       }
+    },
 
+    vaildateBeforeSave() {
+      let error = false;
+      // Regular expression to check for special characters
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      // Check for empty values and display validation messages
+      if (this.form.pri_name_eng.trim() === '' || specialCharRegex.test(this.form.pri_name_eng)) {
+        this.validate.pri_name_eng = true; // Show validation message
+        error = true;
+      } else {
+        this.validate.pri_name_eng = false; // Hide validation message
+      }
+
+      if (this.form.pri_name_th.trim() === '' || specialCharRegex.test(this.form.pri_name_th)) {
+        this.validate.pri_name_th = true;
+        error = true;
+      } else {
+        this.validate.pri_name_th = false;
+      }
+
+      if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+        this.validate.pri_level = true;
+        error = true;
+      } else {
+        this.validate.pri_level = false;
+      }
+
+      if (this.form.pri_color.trim() === '' ) {
+        this.validate.pri_color = true;
+        error = true;
+      } else {
+        this.validate.pri_color = false;
+      }
+
+      if (this.form.pri_description.trim() === '' ) {
+        this.validate.pri_description = true;
+        error = true;
+      } else {
+        this.validate.pri_description = false;
+      }
+
+      if (!error) {
+        // this.onSave()
+        this.isLoading = true
+        this.toastEdit.push({
+          content: 'Edit Success  ',
+        })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
+        setTimeout(() => {
+          
+          // จบการโหลด
+          this.isLoading = false
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
+          this.onSave()
+        }, 500)
+      } else {
+        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleLivesubmit = false
+      }
     },
   },
   mounted() {

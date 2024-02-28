@@ -2,13 +2,13 @@
   <div class="box">
     <CRow>
       <CCol>
-      <count_ticket />
+        <count_ticket />
       </CCol>
     </CRow>
 
     <CRow>
       <CCol>
-        <CCard class="mt-3 chart-container rounded-4">
+        <CCard class="mt-3 pb-4 rounded-4">
           <CCardTitle>
             <CButton
               variant="ghost"
@@ -46,22 +46,22 @@
                           <div>
                             <ul class="text-end">
                               <li class="list_roles">
-                                <span>{{countEmployee}}</span>
+                                <span>{{ countEmployee }}</span>
                               </li>
                               <li class="list_roles">
-                                <span>{{countItSup}}</span>
+                                <span>{{ countItSup }}</span>
                               </li>
                               <li class="list_roles">
-                                <span>{{countAdmin}}</span>
+                                <span>{{ countAdmin }}</span>
                               </li>
                               <li class="list_roles">
-                                <span>{{countManager}}</span>
+                                <span>{{ countManager }}</span>
                               </li>
                             </ul>
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -75,12 +75,17 @@
                             datasets: [
                               {
                                 backgroundColor: [
-                                  '#2EB85C',
-                                  '#F91818',
-                                  '#281AC8',
-                                  '#F9B115',
+                                  '#54AC88',
+                                  '#EE6E69',
+                                  '#6287B3',
+                                  '#FEAD33',
                                 ],
-                                data: [countEmployee, countItSup, countAdmin, countManager],
+                                data: [
+                                  countEmployee,
+                                  countItSup,
+                                  countAdmin,
+                                  countManager,
+                                ],
                               },
                             ],
                           }"
@@ -97,11 +102,11 @@
                         />
                       </CCol>
 
-                      <CCol class="vl"></CCol>
+                      <!-- <CCol class="vl"></CCol> -->
                       <!-- Chart User status -->
                       <CCol xxl="2" xl="6">
                         <CCardText class="pt-2 fs-2">User Status</CCardText>
-                        <CCardText class="ps-2 fs-5 text-black-50">| now update</CCardText>
+                        <CCardText class="ps-2 fs-5 text-black-50" >| now update</CCardText>
                         <div class="d-flex">
                           <div style="width: 50px">
                             <ul>
@@ -116,16 +121,16 @@
                           <div>
                             <ul class="text-end">
                               <li class="list_roles">
-                                <span>{{countActive}}</span>
+                                <span>{{ countActive }}</span>
                               </li>
                               <li class="list_roles">
-                                <span>{{ countInactive}}</span>
+                                <span>{{ countInactive }}</span>
                               </li>
                             </ul>
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -133,7 +138,7 @@
                             labels: ['Active', 'Inactive'],
                             datasets: [
                               {
-                                backgroundColor: ['#2EB85C', '#A5AFBF'],
+                                backgroundColor: ['#54AC88', '#5F6A6C'],
                                 data: [countActive, countInactive],
                               },
                             ],
@@ -160,7 +165,7 @@
       </CCol>
     </CRow>
 
-    <CRow>
+    <!-- <CRow>
       <CCol>
         <CCard class="mt-3">
           <CCardTitle>
@@ -170,15 +175,10 @@
               ><img :src="Close_fullscreen"
             /></CButton>
           </CCardTitle>
-          <CCardBody>
-            <h1>Priority Category</h1>
-            
-            <hr />
-            <PriorityChart />
-          </CCardBody>
+          
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
 
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
@@ -245,7 +245,6 @@ export default {
       countAdmin: '0',
       countManager: '0',
       countInactive: '0',
-
     }
   },
   methods: {
@@ -258,28 +257,22 @@ export default {
           },
         )
         response.data.forEach((element) => {
-          if(element.act_status=='Delete'){
-              this.countInactive++
-          }else{
-           
-              this.countActive++
-              if (element.act_role.rol_name === 'Employee') {
-                this.countEmployee++
-              } else if (element.act_role.rol_name === 'ItSupport') {
-                this.countItSup++
-              } else if (element.act_role.rol_name === 'Admin') {
-                this.countAdmin++
-              } else if (element.act_role.rol_name === 'Manager') {
-                this.countManager++
-              }
-            
-
-            
+          if (element.act_status == 'Delete') {
+            this.countInactive++
+          } else {
+            this.countActive++
+            if (element.act_role.rol_name === 'Employee') {
+              this.countEmployee++
+            } else if (element.act_role.rol_name === 'ItSupport') {
+              this.countItSup++
+            } else if (element.act_role.rol_name === 'Admin') {
+              this.countAdmin++
+            } else if (element.act_role.rol_name === 'Manager') {
+              this.countManager++
+            }
           }
         })
-         
 
-        
         console.log(this.countAdmin)
         console.log(this.countItSup)
         console.log(this.countEmployee)
@@ -288,13 +281,10 @@ export default {
         console.error('Error fetching data:', error)
       }
     },
-    
-   
-    
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
-    this.getAllAccounts();
+    this.getAllAccounts()
   },
 }
 </script>
@@ -335,32 +325,32 @@ output {
 }
 
 #employee {
-  color: #2eb85c;
+  color: #54AC88;
   font-size: 24px;
 }
 
 #it_support {
-  color: #f91818;
+  color: #EE6E69;
   font-size: 24px;
 }
 
 #admin {
-  color: #281ac8;
+  color: #6287B3;
   font-size: 24px;
 }
 
 #manager {
-  color: #f9b115;
+  color: #FEAD33;
   font-size: 24px;
 }
 
 #active {
-  color: #2eb85c;
+  color: #54AC88;
   font-size: 24px;
 }
 
 #inactive {
-  color: #a5afbf;
+  color: #5F6A6C;
   font-size: 24px;
 }
 
@@ -370,7 +360,7 @@ li {
 
 .list_roles {
   list-style-type: none;
-  width: 80px;
+  width: 100px;
 }
 
 .icon_new_ticket {

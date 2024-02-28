@@ -18,9 +18,9 @@
         </CCol>
     </CRow>
 
-    <CRow>
+    <!-- <CRow>
       <CCol>
-        <CCard class="mt-3">
+        <CCard class="mt-3 rounded-4">
           <CCardTitle>
             <CButton
               variant="ghost"
@@ -36,7 +36,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
 
   </div>
 </template>

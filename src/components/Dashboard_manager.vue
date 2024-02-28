@@ -10,7 +10,7 @@
               ><img :src="Close_fullscreen"
             /></CButton>
           </CCardTitle>
-          <CCardBody>
+          <CCardBody class="pb-4">
             <CRow>
               <CCol class="ms-5">
                 <CRow>
@@ -55,7 +55,7 @@
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -69,10 +69,10 @@
                             datasets: [
                               {
                                 backgroundColor: [
-                                  '#2EB85C',
-                                  '#F91818',
-                                  '#281AC8',
-                                  '#F9B115',
+                                  '#54AC88',
+                                  '#EE6E69',
+                                  '#6287B3',
+                                  '#FEAD33',
                                 ],
                                 data: [countEmployee, countItSup, countAdmin, countManager],
                               },
@@ -90,8 +90,6 @@
                           }"
                         />
                       </CCol>
-
-                      <CCol class="vl"></CCol>
                       <!-- Chart User status -->
                       <CCol xxl="2" xl="6">
                         <CCardText class="pt-2 fs-2">User Status</CCardText>
@@ -119,7 +117,7 @@
                           </div>
                         </div>
                       </CCol>
-                      <CCol xxl="3" xl="6">
+                      <CCol xxl="4" xl="6">
                         <CChart
                           class="pie_chart"
                           type="pie"
@@ -127,7 +125,7 @@
                             labels: ['Active', 'Inactive'],
                             datasets: [
                               {
-                                backgroundColor: ['#2EB85C', '#A5AFBF'],
+                                backgroundColor: ['#54AC88', '#5F6A6C'],
                                 data: [countActive, countInactive],
                               },
                             ],
@@ -153,6 +151,7 @@
         </CCard>
       </CCol>
     </CRow>
+      
 
     <!-- inbox -->
     <!-- <CCard class="d-block mt-2">
@@ -309,32 +308,32 @@ output {
 }
 
 #employee {
-  color: #2eb85c;
+  color: #54AC88;
   font-size: 24px;
 }
 
 #it_support {
-  color: #f91818;
+  color: #EE6E69;
   font-size: 24px;
 }
 
 #admin {
-  color: #281ac8;
+  color: #6287B3;
   font-size: 24px;
 }
 
 #manager {
-  color: #f9b115;
+  color: #FEAD33;
   font-size: 24px;
 }
 
 #active {
-  color: #2eb85c;
+  color: #54AC88;
   font-size: 24px;
 }
 
 #inactive {
-  color: #a5afbf;
+  color: #5F6A6C;
   font-size: 24px;
 }
 
@@ -344,7 +343,7 @@ li {
 
 .list_roles {
   list-style-type: none;
-  width: 80px;
+  width: 100px;
 }
 
 .icon_new_ticket {

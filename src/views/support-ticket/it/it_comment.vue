@@ -179,7 +179,7 @@
                       >
                         Close
                       </CButton>
-                      <CButton color="primary" @click="onSaveSatatus">Save changes</CButton>
+                      <CButton color="primary"  @click="onSaveSatatus">Save changes</CButton>
                     </CModalFooter>
                   </CModal>
                 </CCol>
@@ -232,6 +232,80 @@
   <div>
     <CCard>
       <CCardBody>
+        <div class="scoll">
+          <br />
+          <div v-for="(item, index) in comments" :key="index">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-1">
+                  <div class="avatar">
+                    <CAvatar
+                      v-if="item.cmt_act.act_picture"
+                      class="Icon_user_man"
+                      :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
+                    />
+                    <CAvatar
+                      v-else
+                      class="Icon_user_man"
+                      :src="Icon_user_man"
+                    />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <p>
+                    <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
+                      item.cmt_date
+                    }}
+                  </p>
+                  <div
+                    class="comments_box div-comment-box"
+                  >
+                    {{ item.cmt_message }}
+                    <a
+                      v-if="item.link"
+                      href="#"
+                      @click.prevent="openLink(item.cmt_link)"
+                    >
+                      {{ item.cmt_link }}
+                    </a>
+                    <a v-if="item.cmt_picture">
+                      <CImage
+                        :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
+                        alt="Comment Image"
+                        class="comment-image"
+                      />
+                    </a>
+                    <a v-if="item.cmt_file">
+                      <a
+                        :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
+                        alt="Comment Image"
+                        class="comment-image"
+                        download
+                        >{{ `${item.cmt_file.filename}` }}</a
+                      >
+                    </a>
+                    <a
+                      v-if="item.cmt_link"
+                      @click="openLink(item.cmt_link)"
+                      class="a-cmt-link"
+                    >
+                      {{ item.cmt_link }}
+                    </a>
+                  </div>
+
+                  <!-- <span v-if="item.file">
+                    <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
+                      style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
+                    <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
+                    <a :href="item.file.url" download></a>
+                  </span> -->
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <br />
         <CCardTitle>Comments</CCardTitle>
         <div class="container text-start" id="My_Comments">
           <div class="row align-items-center">
@@ -329,76 +403,6 @@
                 >
                   <img class="commit" :src="commit" alt="Commit Icon"
                 /></CButton>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <div v-for="(item, index) in comments" :key="index">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-1">
-                <div class="avatar">
-                  <CAvatar
-                    v-if="item.cmt_act.act_picture"
-                    class="Icon_user_man"
-                    :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
-                  />
-                  <CAvatar
-                    v-else
-                    class="Icon_user_man"
-                    :src="Icon_user_man"
-                  />
-                </div>
-              </div>
-              <div class="col-10">
-                <p>
-                  <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
-                    item.cmt_date
-                  }}
-                </p>
-                <div
-                  class="comments_box div-comment-box"
-                >
-                  {{ item.cmt_message }}
-                  <a
-                    v-if="item.link"
-                    href="#"
-                    @click.prevent="openLink(item.cmt_link)"
-                  >
-                    {{ item.cmt_link }}
-                  </a>
-                  <a v-if="item.cmt_picture">
-                    <CImage
-                      :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
-                      alt="Comment Image"
-                      class="comment-image"
-                    />
-                  </a>
-                  <a v-if="item.cmt_file">
-                    <a
-                      :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
-                      alt="Comment Image"
-                      class="comment-image"
-                      download
-                      >{{ `${item.cmt_file.filename}` }}</a
-                    >
-                  </a>
-                  <a
-                    v-if="item.cmt_link"
-                    @click="openLink(item.cmt_link)"
-                    class="a-cmt-link"
-                  >
-                    {{ item.cmt_link }}
-                  </a>
-                </div>
-
-                <!-- <span v-if="item.file">
-                  <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
-                    style=" max-width: 20px; max-height: 20px; margin-left: 5px;" />
-                  <a :href="item.file.url" target="_blank">{{ item.file.name }}</a>
-                  <a :href="item.file.url" download></a>
-                </span> -->
               </div>
             </div>
           </div>
@@ -504,12 +508,23 @@ export default {
       number: '',
       stauts: '',
       edit:'',
+      actId:'',
+      accId:'',
       allUpdate:{
         mod_act:'',
         mod_date:'',
         mod_status:'',
         mod_tkt:'',
       },
+      notifications:{
+        not_datetime:'',
+        not_status:'',
+        not_type:'',
+        not_act:'',
+        not_tkt:'',
+        not_cmt:'',
+        not_acc:'',
+      }
       
     }
   },
@@ -676,7 +691,8 @@ export default {
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
         this.stauts = response.data.tkt_status
-        // this.email = response.data.tkt_act.act_email_address;
+        this.actId = response.data.tkt_act._id
+           // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
@@ -759,6 +775,8 @@ export default {
       this.form.cmt_tkt = ticketId
       this.form.cmt_link = this.link
       this.form.cmt_act = userId
+      this.notifications.not_act=userId
+      this.notifications.not_type = 'Comment'
       // this.form.cmt_picture = this.imageName
       // this.form.cmt_file = this.file
 
@@ -779,6 +797,7 @@ export default {
           }.bind(this),
           200,
         )
+        this.acceptButton();
         // Handle success here
       } catch (error) {
         console.log(error)
@@ -791,13 +810,12 @@ export default {
       this.link = ''
       this.form.cmt_file = null
       this.form.cmt_picture = null
-
-      // this.$socket.sendObj({
-      // type: 'new-comment',
+     
+      
       // comment: this.form,
       // });
 
-      // window.location.reload();
+      //  
     },
     async getComment() {
       const ticketId = this.ticketId
@@ -878,12 +896,12 @@ export default {
           this.updateStatus();
           
         })
-        .catch((err) => {
+        .catch((err) => { 
           console.log(error)
         });
-        this.stauts = this.edit
-        window.location.reload();
-
+        this.stauts = this.edit 
+        this.visibleVerticallyCenteredDemo = false
+ 
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต status และส่งข้อมูลไปยัง MongoDB สำเร็จ');
         // รีเฟรชหน้า
@@ -895,7 +913,7 @@ export default {
     },
     async updateStatus(){
       const userData = JSON.parse(localStorage.getItem('USER_DATA'))
-      dayjs.locale('th')
+      dayjs.locale('en')
       dayjs.extend(require('dayjs/plugin/timezone'))
       dayjs.tz.setDefault('Asia/Bangkok')
       const date = dayjs()
@@ -906,6 +924,9 @@ export default {
       const userId = userData.id
       this.allUpdate.mod_date = accept_date;
       this.allUpdate.mod_act = userId;
+      this.notifications.not_act=userId;
+      this.notifications.not_type = 'Status'
+
 
       console.log(this.allUpdate)
       try {
@@ -914,6 +935,7 @@ export default {
             
           })
           .then((result) => {
+            this.acceptButton();
             this.$router.push({ name: 'ST - it/it_comment' });
           })
           .catch((err) => {
@@ -927,7 +949,74 @@ export default {
       const options = { day: '2-digit', month: 'short', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
     },
+    async call(){
+      await console.log('บัคไรน้อง')
+    }
+    ,
+    async notificationChange() {
+      dayjs.locale('en')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const date = dayjs()
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.extend(require('dayjs/plugin/customParseFormat'))
+      dayjs.extend(require('dayjs/plugin/localizedFormat'))
+      const noti_date = `${date.format('D MMM YYYY, h:mm A')}`
+      this.notifications.not_datetime = noti_date
+      this.notifications.not_tkt = this.ticketId
+      this.notifications.not_status = false
+      this.notifications.not_acc = this.accId
+      this.notifications.not_act = this.actId
+      this.notifications.not_cmt = null
+
+      console.log(this.notifications)
+      try {
+        await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+            {
+              data: this.notifications,
+            },
+          )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async acceptButton() {
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id // ดึงค่า id จาก userData
+      const date = dayjs()
+      const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+
+      console.log(ticket_date)
+      console.log(userId)
+      try {
+        const dataResponse = await axios
+          .post(
+            `${process.env.VUE_APP_URL}/mongoose/insert/stts_accept_tickets`,
+            {
+              data: {
+                acc_time: ticket_date,
+                acc_act: userId,
+              },
+            },
+          )
+          .catch((err) => {
+            console.log(error)
+          })
+        this.accId = dataResponse.data._id
+        this.notificationChange()
+      } catch (error) {
+        console.log(error)
+      }
+    },
     
+  },
+  beforeUnmount() {
+    clearInterval(this.commentInterval);
   },
   mounted() {
     const itemId = this.$route.params.itemId
@@ -936,7 +1025,7 @@ export default {
     this.getTicket()
     this.getComment()
     this.getAcount()
-    setInterval(() => {
+    this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
   },
@@ -958,6 +1047,12 @@ export default {
   text-align: left;
 }
 
+.scoll{
+  width: 100%;
+  height: 500px;
+  overflow-y: auto !important;
+  
+}
 .Icon_user_man {
   /* margin-left: 0.5pc; */
   width: 56px;

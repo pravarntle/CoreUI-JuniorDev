@@ -12,27 +12,69 @@
                 <td class="style-username" @click="editAccount(item, index)">{{ item.user_username }}</td>
             </template>
             <template #user_last_name="{ item }">
-                <td >{{ item.user_last_name }}</td>
-            </template> 
+                <td>{{ item.user_last_name }}</td>
+            </template>
             <template #user_phone_number="{ item }">
                 <td class="text-center"> {{ formatPhoneNumber(item.user_phone_number) }}</td>
             </template>
             <template #user_role="{ item }">
-                <td class="text-center"> {{ formatRole(item.user_role) }}</td>
-            </template>    
+
+                <td class="text-center">
+                    <CBadge :color="getBadge(item.user_role)">{{ formatRole(item.user_role) }}</CBadge>
+                </td>
+            </template>
 
             <template #MORE="{ item, index }">
                 <td class="text-center">
                     <CButton size="sm" @click="editAccount(item, index)">
                         <img :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
                     </CButton>
-                    <CButton size="sm" @click="DeleteButton(item, index)">
+                    <!-- <CButton size="sm" @click="DeleteButton(item, index)">
+                        <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
+                    </CButton> -->
+
+                    <CButton size="sm" @click="showDelete(item)">
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton>
+
                 </td>
             </template>
 
+            <template #details="">
+                <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleDelete"
+                    @close="() => { visibleDelete = false }">
+
+                    <CModalBody>
+                        <h2 class="text-start"> Delete Account </h2>
+                        <p class="text-black" id="popup-detail">
+                            Are you sure you want to
+                            <span class="text-danger">Delete Account ?</span>
+                        </p>
+                        <br />
+                        <hr />
+                        <div class="d-flex justify-content-end">
+                            <CButton color="light"> Cancel </CButton>
+                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()"
+                                @mouseup.stop="" :disabled="isLoading">
+                                <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                                {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                            </CButton>
+                        </div>
+                    </CModalBody>
+                </CModal>
+            </template>
+
         </CSmartTable>
+        <CToaster placement="top-end">
+            <CToast visible color="info" v-for="(toast) in toastProp">
+                <CToastHeader closeButton v-if="toast.title">
+                    <span class="me-auto fw-bold">{{ toast.title }}</span>
+                </CToastHeader>
+                <CToastBody v-if="toast.content">
+                    <span class="text-white">{{ toast.content }}</span>
+                </CToastBody>
+            </CToast>
+        </CToaster>
     </div>
 </template>
 <style scoped>
@@ -55,6 +97,45 @@
 
 .style-username {
     color: #5E5ADB;
+}
+
+#cancel-heading {
+    margin-left: 3px;
+    text-align: left;
+    color: #000;
+}
+
+.popup_priority {
+    text-align: left;
+    margin-left: 10px;
+    margin-top: -5px;
+
+}
+
+#detail-for-cancel {
+    color: #d0293b;
+}
+
+#confirm-btn-in-detail {
+    color: #ffffff;
+}
+
+#button-head {
+    text-align: left;
+}
+
+#popup-detail {
+    font-size: larger;
+    font-weight: 600;
+    text-align: left;
+    color: #000;
+}
+
+/* .modal-backdrop.show{
+    opacity: 0.5;
+} */
+.modal fade show {
+    opacity: 0.5;
 }
 </style>
 <script scoped>
@@ -85,7 +166,10 @@ export default {
             More_Priority,
             Icondeleteaccount,
             Iconeditaccount,
-
+            visibleDelete: false,
+            indexDelete: '',
+            toastProp: [],
+            isLoading: false,
         };
 
     },
@@ -103,7 +187,7 @@ export default {
             {
                 key: 'user_username',
                 label: 'USERNAME',
-                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '3%'},
+                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '3%' },
 
 
             },
@@ -151,7 +235,12 @@ export default {
 
 
         ];
-
+        const getBadge = (tkt_status) => {
+            switch (tkt_status) {
+                default:
+                    return 'secondary'; // Return a default color if none of the cases match.
+            }
+        };
 
         const items = ref([]);
 
@@ -176,6 +265,7 @@ export default {
             items,
             activePage,
             getData,
+            getBadge,
         };
     },
 
@@ -187,11 +277,12 @@ export default {
             this.$router.push({ name: 'ST - edit_account', params: { itemId } });
         },
 
-        async DeleteButton(item) {
+        async DeleteButton() {
 
             try {
-                const itemId = item._id.toString();
+                const itemId = this.indexDelete._id.toString();
                 // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+                console.log(itemId);
                 await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${itemId}`, {
                     data: {
                         act_status: "Delete",
@@ -200,15 +291,29 @@ export default {
 
                     }
                 });
-
+                this.isLoading = true;
+                this.toastProp.push({
+                    content: 'Account deleted successfully'
+                });
                 // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
                 console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
-                // รีเฟรชหน้า
-                window.location.reload();
-
+                this.indexDelete = '',
+                    // รีเฟรชหน้า
+                    this.getAccount();
+                this.visibleDelete = false;
+                this.isLoading = false;
             } catch (error) {
                 console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
             }
+        },
+
+        showDelete(item) {
+            console.log("showmodal",)
+            console.log("index", this.visibleDelete)
+            console.log("qqq", item)
+            this.visibleDelete = true;
+            this.indexDelete = item;
+
         },
 
         async toggleButton(item) {
@@ -251,12 +356,12 @@ export default {
         },
         formatRole(role) {
             const itsup = 'IT Support';
-            if( role == 'ItSupport') {
+            if (role == 'ItSupport') {
                 return itsup;
-            }else {
+            } else {
                 return role;
             }
-        },  
+        },
 
     },
     mounted() {

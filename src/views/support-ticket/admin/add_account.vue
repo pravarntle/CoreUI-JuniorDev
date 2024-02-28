@@ -146,7 +146,7 @@
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required"> * </span>
               </CFormLabel>
-              <CFormInput type="number" id="phone" name="phone" feedbackInvalid="Please input your phone number."
+              <CFormInput type="Text" id="phone" name="phone" feedbackInvalid="Please input your phone number."
                 placeholder="e.g. 0611234567" v-model="form.act_number_phone" :invalid="validate.act_number_phone"
                 required />
             </CCol>
@@ -155,9 +155,51 @@
             <CButton class="btn-sec" color="dark" @click="cancel">
               Cancel
             </CButton>
-            <CButton class="btn-sec" color="success" @click="validateBeforeSave">
+            <CModal alignment="center" :visible="visibleLiveDemo" @close="() => {
+              visibleLiveDemo = false }">
+              <CModalBody>
+                <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
+                <p class="ms-2" id="popup-detail">
+                  Are you sure you want to
+                  <span class="text-danger">Create New Account ?</span>
+                </p>
+                <br />
+                <hr />
+                <div class="d-flex justify-content-end">
+                <CButton color="light" @click="() => { visibleLiveDemo = false }">
+                  Cancel
+                </CButton>
+                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                  Confirm
+                </CButton>
+                </div>
+              </CModalBody>
+            </CModal>
+
+            <CButton class="btn-sec" color="success" @click="visibleLivesubmit = true">
               Submit
             </CButton>
+            <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
+              
+              <CModalBody>
+                <h2 class="ms-2" id="button-head">
+                  Submit
+                </h2>
+                <p class="ms-2" id="popup-detail">
+                  Are you sure you want to
+                  <span id="detail-for-submit" class="text-success">Create New Priority ?</span>
+                </p>
+                <br/>
+                <hr/>
+                <div class="d-flex justify-content-end">
+                  <CButton color="light"  @click="() => { visibleLivesubmit = false }">
+                    Close
+                  </CButton>
+                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="validateBeforeSave">Save changes</CButton>
+                </div>
+              </CModalBody>
+            </CModal>
+
           </CCol>
         </CForm>
       </CCardBody>
@@ -212,6 +254,8 @@ export default {
       validatedCustom01: null,
       user_man,
       manage_accounts,
+      visibleLiveDemo: false,
+      visibleLivesubmit: false,
     }
   },
   created() {
@@ -323,6 +367,7 @@ export default {
       if (!error) {
       } else {
         this.form.validatedCustom01 = true
+        this.visibleLivesubmit = false
         this.encryptPasswordBeforeSave();
       }
     },
@@ -404,7 +449,36 @@ export default {
       }
 
 
-    }
+    },
+    async cancel() {
+      const isFormEmpty = [
+        this.form.act_username.trim(),
+        this.form.act_password.trim(),
+        this.form.act_number_phone.trim(),
+        this.form.act_email_address.trim(),
+        this.form.act_first_name_th.trim(),
+        this.form.act_first_name_eng.trim(),
+        this.form.act_last_name_th.trim(),
+        this.form.act_last_name_eng.trim(),
+        this.form.act_picture.trim(),
+        this.form.act_role.trim(),
+        this.form.confirmEmail.trim(),
+        this.form.Confirmpassword.trim(),
+      ].every(value => value === '');
+
+      if (!isFormEmpty){
+        this.visibleLiveDemo = true;
+      }else{
+        this.$router.push('/support-ticket/admin/user_list')
+      }
+    },
+    async confirm() {
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.role
+
+      this.$router.push('/support-ticket/admin/user_list')
+      
+    },
 
   },
   mounted() {

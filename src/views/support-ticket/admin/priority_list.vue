@@ -6,7 +6,7 @@
         <div class="d-inline ms-2">
           <div id="underline_header">
             <CImage class="me-2 align-middle" id="custom_icon_header" :src="Icon_Priority" />
-            <h2 class="d-inline align-middle"><b>Priorities List</b></h2>
+            <h1 class="d-inline align-middle"><b>Priorities List</b></h1>
           </div>
         </div>
         <div>
@@ -39,17 +39,50 @@
                   <CButton size="sm" class="action_button mx-1" @click="editAccount(item, index)">
                     <CImage :src="Iconeditaccount" class="style-button" alt="Edit Icon" />
                   </CButton>
-                  <CButton size="sm" class="action_button ml-1" @click="DeleteButton(item, index)">
+                  <CButton size="sm" class="action_button ml-1" @click="showDelete(item)">
                     <CImage :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                   </CButton>
                 </td>
               </template>
+              <template #details="">
+                <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleDelete"
+                    @close="() => { visibleDelete = false }">
+
+                    <CModalBody>
+                        <h2 class="text-start"> Delete Priorities </h2>
+                        <p class="text-black" id="popup-detail">
+                        Are you sure you want to
+                        <span class="text-danger">Delete Priorities ?</span>
+                        </p>
+                        <br/>
+                        <hr/>
+                        <div class="d-flex justify-content-end">
+                            <CButton color="light"> Cancel </CButton>
+                            <CButton class="ms-2" color="info text-white" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="" :disabled="isLoading">
+                              <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                               {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                            </CButton>
+                        </div>
+                    </CModalBody>
+                    </CModal>
+            </template>
             </CSmartTable>
           </div>
 
         <!-- END Smart Table -->
       </CCardBody>
     </CCard>
+    <br />
+  <CToaster placement="top-end">
+    <CToast visible color="danger" v-for="(toast) in toastDelete">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
   </div>
 </template>
 
@@ -94,7 +127,7 @@ export default {
         key: 'status_eng',
         label: 'NAME (ENG)',
         _style: {
-          width: '30%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -104,7 +137,7 @@ export default {
         key: 'status_th',
         label: 'NAME (TH)',
         _style: {
-          width: '30%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -114,18 +147,27 @@ export default {
         key: 'level_of_priority',
         label: 'LEVEL 0F PRIORITY',
         _style: {
-          width: '20%',
+          width: '15%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
         },
       },
-
+      {
+        key: 'description',
+        label: 'Description',
+        _style: {
+          width: '40%',
+          fontWeight: 'bold',
+          color: 'gray',
+          fontSize: '13px',
+        },
+      },
       {
         key: 'show_details',
         label: 'ACTION',
         _style: {
-          width: '30%',
+          width: '20%',
           fontWeight: 'bold',
           color: 'gray',
           fontSize: '13px',
@@ -149,6 +191,10 @@ export default {
     return {
       details: [],
       Iconcreatepriority: Iconcreatepriority,
+      visibleDelete: false,
+      indexDelete: '',
+      toastDelete: [],
+      isLoading: false,
     }
   },
   methods: {
@@ -189,6 +235,7 @@ export default {
           status_eng: element.pri_name_eng,
           status_th: element.pri_name_th,
           level_of_priority: element.pri_level,
+          description: element.pri_description,
           MORE: false,
         }))
       } catch (error) {
@@ -202,9 +249,11 @@ export default {
       this.$router.push({ name: 'ST - edit_priority', params: { itemId } })
     },
 
-    async DeleteButton(item) {
+    async DeleteButton() {
+      this.isLoading = true
       try {
-        const itemId = item._id.toString()
+        const itemId = this.indexDelete._id.toString()
+        console.log(itemId);
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(
           `${process.env.VUE_APP_URL}/mongoose/update/stts_priorities/${itemId}`,
@@ -214,15 +263,40 @@ export default {
             },
           },
         )
-
+        this.toastDelete.push({
+          content: 'Delete Success  ',
+        })
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
+        setTimeout(() => {
+          
+          // จบการโหลด
+          this.isLoading = false
+          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+          
+        }, 500)
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('ลบ priority')
+        this.indexDelete = '',
         // รีเฟรชหน้า
-        window.location.reload()
+        this.getPriority();
+        this.visibleDelete = false;
+        
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error)
       }
     },
+
+    showDelete(item){
+            console.log("showmodal",)
+            console.log("index",this.visibleDelete)
+            console.log("qqq",item)
+            this.visibleDelete = true;
+            this.indexDelete = item;
+            
+        },
+
     async create_priority() {
       this.$router.push({ name: 'ST - create_priority' })
     },
@@ -336,5 +410,12 @@ export default {
 
 .font-button {
   color: white;
+}
+
+#popup-detail {
+  font-size: larger;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
 }
 </style>

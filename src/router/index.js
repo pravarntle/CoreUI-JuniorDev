@@ -439,6 +439,11 @@ const routes = [
             name: 'ST - it/it_comment',
             component: () => import('@/views/support-ticket/it/it_comment.vue'),
           },
+          {
+            path: 'ticket/notifications',
+            name: 'ST - ticket/notifications',
+            component: () => import('@/views/support-ticket/tickets/notifications_all.vue'),
+          },
         ],
       },
     ],
