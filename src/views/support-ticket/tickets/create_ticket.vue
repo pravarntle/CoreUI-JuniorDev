@@ -44,9 +44,10 @@
                   <CAvatar class="popup_priority" :src="popup_priority" />
                   <div class="popuptext" :class="{ show: isPopupVisible }" @mouseover="togglePopup">
                     <p v-for="(item, index) in priorityAll" :key="index" class="custom-alert-priority custom-font-size-alert" >
-                      <font id="low-priority"> {{item.pri_name_eng}} </font>
-                      <font class="custom-padding-alert-low-priority custom-alert-detail-priority"> =  {{item.pri_description}} </font>
-                      <br />
+                      <label id="low-priority"> {{item.pri_name_eng}} </label>
+                      <font class="custom-padding-alert-priority">=</font>
+                      <font class=" custom-alert-detail-priority">{{item.pri_description}} </font>
+                      
                       <!-- <font id="medium-priority"> Medium </font>
                       <font class="custom-padding-alert-medium-priority custom-alert-detail-priority"> = ดำเนินการภายใน 48 ชม. </font>
                       <br />
@@ -192,8 +193,9 @@
 /* The actual popup */
 .popup .popuptext {
   visibility: hidden;
-  width: 300px;
-  height: 85px;
+  max-width: 300px;
+  width: max-content;
+  height: auto;
   background-color: rgb(255, 255, 255);
   color: #fff;
   text-align: center;
@@ -270,6 +272,7 @@
 
 #low-priority {
   color: #38a06c;
+  width: 70px;
 }
 
 #medium-priority {
@@ -360,7 +363,9 @@
 .custom-alert-priority {
   text-align: left; 
   padding-left: 12px;
-
+  padding-right: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .custom-font-size-alert {
@@ -368,21 +373,13 @@
 }
 
 .custom-alert-detail-priority {
+  text-align: center; /* จัดให้อยู่ตรงกลาง */
   color:#4F5D73;
-
 }
 
-.custom-padding-alert-low-priority {
-  padding-left: 70px;
-}
-
-.custom-padding-alert-medium-priority {
-  padding-left: 43px;
-
-}
-
-.custom-padding-alert-high-priority {
-  padding-left: 66px;
+.custom-padding-alert-priority {
+  color:#4F5D73;
+  margin-right: 10px; /* เพิ่มการเว้นระยะห่างด้านขวา */
 }
 
 </style>
