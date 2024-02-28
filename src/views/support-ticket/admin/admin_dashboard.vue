@@ -164,9 +164,8 @@
         </CCard>
       </CCol>
     </CRow>
-    
-    <!--
-    <CRow>
+
+    <!-- <CRow>
       <CCol>
         <CCard class="mt-3">
           <CCardTitle>
