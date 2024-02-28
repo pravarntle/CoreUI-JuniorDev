@@ -1,5 +1,5 @@
 <template>
-  <CDropdown>
+  <CDropdown >
     <CDropdownToggle placement="bottom-end" :caret="false">
       <CIcon class="my-1 mx-2" icon="cil-bell" size="lg" />
       <CBadge
@@ -10,7 +10,7 @@
         >{{ itemsCount }}</CBadge
       >
     </CDropdownToggle>
-    <CDropdownMenu class="pt-0">
+    <CDropdownMenu class="scol pt-0">
       <CDropdownHeader
         class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10"
       >
@@ -211,5 +211,12 @@ export default {
 <style>
 .ticket-number{
     color: #3399ff;
+}
+.scol{
+  width: 500px;
+  height: 500px;
+  overflow-y: auto !important;
+  
+  
 }
 </style>
