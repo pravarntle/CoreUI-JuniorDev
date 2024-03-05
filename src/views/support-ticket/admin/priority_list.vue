@@ -20,7 +20,7 @@
       <CCardBody>
           <!-- Smart Table -->
           <div>
-            <CSmartTable :active-page="3" column-sorter :columns="columns"
+            <CSmartTable :active-page="3" column-sorter :columns="columns" tableFilter table-filter-placeholder="Search"
               class="text-center table-hover table-bordered table-alternate-background table-responsive" clickable-rows
               header :items="items" pagination :table-props="{
                 striped: true,

@@ -471,7 +471,7 @@ export default {
       this.priorityAll = response.data;
       this.userOptions.unshift({ label: 'Select Priority', value: '',     });
       response.data.forEach(element => {
-        this.userOptions.push({value:element._id,label:element.pri_name_eng})
+        this.userOptions.push({value:element.pri_name_eng,label:element.pri_name_eng})
 
       });
       this.userOptions.push({ label: 'ไม่ระบุ', value: 'none', disabled: true });

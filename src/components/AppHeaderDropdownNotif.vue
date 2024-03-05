@@ -29,7 +29,7 @@
                 <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
-                <span class="fa fa-exclamation text-danger"></span> change Status Ticket
+                <span class="fa fa-exclamation text-danger"></span> Change Status Ticket
               </div>
               <div class="small text-medium-emphasis text-truncate">
                <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.

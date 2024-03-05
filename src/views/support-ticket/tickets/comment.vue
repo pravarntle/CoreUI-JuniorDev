@@ -186,18 +186,25 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} /
-                200</span>
+              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} /200</span>
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
             </div>
-            <div class="col">
+            <div class="col" v-if="status =='Closed'||status =='Closed Bug'">
+              <div class="avatar">
+                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment"
+                :disabled="true"> <img class="commit"
+                    :src="commit" alt="Commit Icon" /></CButton>
+              </div>
+            </div>
+            <div class="col" v-else>
               <div class="avatar">
                 <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment"
                   :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''"> <img class="commit"
                     :src="commit" alt="Commit Icon" /></CButton>
               </div>
             </div>
+            
           </div>
         </div>
         
@@ -296,6 +303,7 @@ export default {
       firstname: '',
       email: '',
       date: '',
+      status:'',
       comment: '',
       commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
@@ -426,14 +434,13 @@ export default {
             };
             reader.readAsArrayBuffer(file);
 
-            console.log('รูปถูกแนบเรียบร้อย');
+
           } else {
             this.imageName = '';
-            console.error('ประเภทของไฟล์ไม่รองรับ');
+
           }
         } else {
           this.imageName = '';
-          console.error('เกิดข้อผิดพลาดในการแนบรูป');
         }
       });
     },
@@ -442,7 +449,6 @@ export default {
       if (link) {
         this.link = link // เก็บลิงค์ในคุณสมบัติข้อมูล
         // this.comment = link; // อัปเดตค่า comment เพื่อแสดงข้อมูลลิงก์ใน comment box
-        console.log('ลิงค์ถูกแนบเรียบร้อย')
       }
     },
     async attachFile() {
@@ -468,14 +474,11 @@ export default {
             };
             reader.readAsArrayBuffer(file);
 
-            console.log('ไฟล์ถูกแนบเรียบร้อย');
           } else {
             this.imageName = '';
-            console.error('ประเภทของไฟล์ไม่รองรับ');
           }
         } else {
           this.imageName = '';
-          console.error('เกิดข้อผิดพลาดในการแนบไฟล์');
         }
       });
     },
@@ -537,9 +540,7 @@ export default {
         this.email = response.data.tkt_act.act_email_address;
         this.firstname = response.data.tkt_act.act_first_name_eng;
         this.actId = response.data.tkt_acc.acc_act._id
-        
-        
-
+        this.status = response.data.tkt_status
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -549,7 +550,6 @@ export default {
 
         const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
         const userId = userData.id // ดึงค่า id จาก userData
-        console.log(userId);
 
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
         this.acountIdFile = response.data.act_picture.filetype
@@ -655,24 +655,17 @@ export default {
               
             });
             
-            console.log(ticketId)
-            console.log(comment.data)
+
             this.comments = comment.data;
             this.commentAccount= comment.data.cmt_act;
-            console.log(this.comments)
+
             
     },
     async getAcountComment() {
         try {
 
           const commentAcount = this.commentAccount;
-          console.log(commentAcount);
-
           const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
-          console.log(response.data);
-          
-          
-
           // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
 
           } catch (error) {
@@ -680,7 +673,6 @@ export default {
           }
     },
     async getFileType(filetype) {
-        console.log("เข้า")
         switch (filetype) {
           case 'image/jpeg':
           case 'image/jpg':
@@ -718,7 +710,6 @@ export default {
       this.notifications.not_act = this.actId
       this.notifications.not_cmt = null
 
-      console.log(this.notifications)
       try {
         await axios
           .post(
@@ -740,8 +731,7 @@ export default {
       const date = dayjs()
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
 
-      console.log(ticket_date)
-      console.log(userId)
+
       try {
         const dataResponse = await axios
           .post(
@@ -772,7 +762,6 @@ export default {
       
   mounted(){
     const itemId = this.$route.params.itemId;
-    console.log(itemId)
     this.ticketId = itemId;
     this.getTicket();
     this.getComment(); 
@@ -780,12 +769,11 @@ export default {
     this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
-
   },
   beforeUnmount() {
     clearInterval(this.commentInterval);
   },
-
+  
 }
 </script>
 

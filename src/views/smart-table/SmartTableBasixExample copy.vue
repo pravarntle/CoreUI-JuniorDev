@@ -10,7 +10,7 @@
   <CSmartTable
     :active-page="3"
     cleaner
-    column-filter
+    tableFilter
     column-sorter
     :columns="columns"
     clickable-rows
@@ -21,6 +21,7 @@
     :items="items"
     pagination
     table-filter
+    table-filter-placeholder="Search"
     :table-props="{
       striped: true,
       hover: true,

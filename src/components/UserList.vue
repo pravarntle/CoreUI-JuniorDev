@@ -1,7 +1,7 @@
 <template>
     <div>
-        <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter
-            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows
+        <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter
+            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows table-filter-placeholder="Search"
             :items-per-page="5" items-per-page-select pagination columnSorter
             :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
                 striped: true,

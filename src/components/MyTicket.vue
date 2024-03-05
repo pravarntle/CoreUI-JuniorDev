@@ -10,7 +10,7 @@
     </CCardHeader>
     <CCardBody>
       <div>
-        <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter clickable-rows
+        <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter clickable-rows  table-filter-placeholder="Search"
           class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5"
           items-per-page-select pagination columnSorter :sorterValue="{ column: 'STATUS', state: 'desc' }" :table-props="{
             striped: true,

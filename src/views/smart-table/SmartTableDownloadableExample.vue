@@ -10,12 +10,12 @@
   <CSmartTable
     :items="items"
     :columns="columns"
-    column-filter
-    table-filter
+    tableFilter
     cleaner
     :items-per-page="5"
     column-sorter
     pagination
+    table-filter-placeholder="Search"
   />
 </template>
 
