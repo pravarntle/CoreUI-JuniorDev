@@ -14,7 +14,7 @@
           <CSmartTable clickableRows :tableProps="{
             striped: true,
             hover: true,
-          }" :activePage="1" header :items="items" :columns="columns" columnFilter="true" TableFilter="false"
+          }" :activePage="1" header :items="items" :columns="columns" tableFilter table-filter-placeholder="Search"
             class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
             :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
 

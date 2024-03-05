@@ -3,12 +3,13 @@
   <CSmartTable
     :items="usersData"
     :columns="columns"
-    column-filter
+    tableFilter
     table-filter
     cleaner
     :items-per-page="5"
     column-sorter
     pagination
+    table-filter-placeholder="Search"
   >
     <template #status="{ item }">
       <td>

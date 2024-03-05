@@ -236,7 +236,7 @@
         <CSmartTable clickableRows :tableProps="{
           striped: true,
           hover: true,
-        }" :activePage="2" header :items="items" :columns="columns" columnFilter itemsPerPageSelect
+        }" :activePage="2" header :items="items" :columns="columns" tableFilter itemsPerPageSelect table-filter-placeholder="Search"
           items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'priorities', state: 'asc' }"
           pagination>
           <template #ticket_id="{ item }">

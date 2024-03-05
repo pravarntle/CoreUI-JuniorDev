@@ -127,7 +127,7 @@
               <h6 class="detail-font-red"><b>Title</b></h6>
               <p>{{title}}</p>
               <h6 class="detail-font-red"><b>Status</b></h6>
-              <p>{{stauts}}</p>
+              <p>{{status}}</p>
               <h6 class="detail-font-red"><b>Priority</b></h6>
               <p>{{priorities}}</p>
               <CRow>
@@ -153,7 +153,7 @@
                     </CModalHeader>
                     <CModalBody>
                       <div style="margin-bottom: 20px">
-                        <b>{{stauts}}</b>
+                        <b>{{status}}</b>
                       </div>
                       <CFormSelect
                           aria-label="Default select example"
@@ -388,7 +388,19 @@
                 | <a>link : {{ link }}</a></span
               >
             </div>
-            <div class="col">
+            <div class="col" v-if="status =='Closed'||status =='Closed Bug'" >
+              <div class="avatar">
+                <CButton
+                  @keyup.enter="onSave"
+                  @click="onSave"
+                  id="submitComment"
+                  :disabled="true"
+                >
+                  <img class="commit" :src="commit" alt="Commit Icon"
+                /></CButton>
+              </div>
+            </div>
+            <div class="col" v-else>
               <div class="avatar">
                 <CButton
                   @keyup.enter="onSave"
@@ -506,7 +518,7 @@ export default {
       commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
       number: '',
-      stauts: '',
+      status: '',
       edit:'',
       actId:'',
       accId:'',
@@ -690,8 +702,10 @@ export default {
         this.email = response.data.tkt_act.act_email_address
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.number = response.data.tkt_number
-        this.stauts = response.data.tkt_status
+        this.status = response.data.tkt_status
         this.actId = response.data.tkt_act._id
+        console.log('asdasdasd',this.status)
+        console.log('asdasdasd',response.data.tkt_status)
            // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
@@ -899,7 +913,7 @@ export default {
         .catch((err) => { 
           console.log(error)
         });
-        this.stauts = this.edit 
+        this.status = this.edit 
         this.visibleVerticallyCenteredDemo = false
  
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่

@@ -350,7 +350,10 @@ export default {
             where: {
               tkt_status: 'Pending',
             },
-            populate: 'tkt_act',
+            populate: [
+              'tkt_priorities',
+              'tkt_act',
+            ],
           },
         )
         console.log(response.data)
@@ -362,9 +365,6 @@ export default {
           owner: `${
             element.tkt_act.act_first_name_eng
           } ${element.tkt_act.act_last_name_eng.charAt(0)}.`, // ข้อมูล tkt_title จาก response
-          // นำข้อมูลอื่นๆ จาก response มาใส่ตามที่คุณต้องการ
-          // ตามลำดับของ columns ในตัวแปร columns
-          // เพิ่มเติมตามความต้องการ
           start_date: element.tkt_time,
           status: element.tkt_status,
           type: element.tkt_types,

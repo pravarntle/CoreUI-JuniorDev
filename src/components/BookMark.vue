@@ -11,9 +11,9 @@
       </CCardHeader>
       <CCardBody>
         <div>
-          <CSmartTable :active-page="1" header :items="items" :columns="columns" columnFilter column-sorter clickable-rows
+          <CSmartTable :active-page="1" header :items="items" :columns="columns"  column-sorter clickable-rows tableFilter
             class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5"
-            items-per-page-select pagination columnSorter
+            items-per-page-select pagination columnSorter table-filter-placeholder="Search"
             :sorterValue="{ column: 'status', state: 'desc' }" :table-props="{
               striped: true,
               hover: true,
