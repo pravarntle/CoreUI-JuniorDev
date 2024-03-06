@@ -1,7 +1,7 @@
 <template>
   <CRow class="mr-md-3 p-2" >
     <CCol xs class="col-md-9 mr-md-3" id="col-ticket" >
-      <CCard class="p-2">
+      <CCard class="p-3">
         <CCardbody>
           <CRow>
             <div>
@@ -873,7 +873,7 @@ export default {
       
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
-      
+      this.setScollHeight();
     },
     async getAcountComment() {
       try {
@@ -1048,6 +1048,16 @@ export default {
         console.log(error)
       }
     },
+    setScollHeight() {
+    const scollElement = document.querySelector('.scoll');
+    if (this.comments.length <= 4) {
+      scollElement.style.height = 'auto';
+    } else {
+      scollElement.style.height = '500px';
+    }
+    console.log("comment length" + this.comments.length);
+  },
+   
     
   },
   beforeUnmount() {
@@ -1063,6 +1073,7 @@ export default {
     this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
+    
   },
 }
 </script>
@@ -1084,7 +1095,7 @@ export default {
 
 .scoll{
   width: 100%;
-  height: 500px;
+  height: auto;
   overflow-y: auto !important;
   
 }
@@ -1146,7 +1157,7 @@ export default {
 }
 
 .span-char-count {
-  margin-left: 710px;
+  margin-left: 70%;
 }
 
 .btn-short {
