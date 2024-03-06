@@ -8,14 +8,10 @@
               <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
               <!-- Icon สำหรับย้อนกลับ -->
               <CCol>
-                <div class="text-start div-arrow-left" >
-                  <CAvatar
-                    class="Arrow_Left"
-                    :src="Arrow_Left"
-                  />
-                  <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
-                </div>
-              </CCol>
+            <div class="text-start" id="head_description">
+              <CImage class="style-icon-button-back" :src="Button_back" @click="backtohomepage()" />
+            </div>
+          </CCol>
             </div>
           </CRow>
           <hr />
@@ -437,6 +433,7 @@ import Attach_File from '@/assets/images/Attach_File.png'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
+import Button_back from '@/assets/images/Arrow_Left.png'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
 import {
   CAvatar,
@@ -453,6 +450,7 @@ export default {
   setup() {
     return {
       Arrow_Left,
+      Button_back,
       Icon_user_man,
       Short,
       File_test,
@@ -521,6 +519,7 @@ export default {
       status: '',
       edit:'',
       actId:'',
+      Button_back: Button_back,
       accId:'',
       allUpdate:{
         mod_act:'',
@@ -1057,6 +1056,9 @@ export default {
     }
     console.log("comment length" + this.comments.length);
   },
+  backtohomepage() {
+      this.$router.push({ name: 'ST - it_my_task' })
+    },
    
     
   },
@@ -1245,6 +1247,12 @@ img.commit {
 .card {
   border-radius: 15px;
   border-color: white;
+}
+
+.style-icon-button-back {
+  width: 30px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 #submitComment {
