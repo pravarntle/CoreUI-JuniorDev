@@ -379,8 +379,8 @@
                   :src="Attach_File"
                   alt="Attach File"
                 />
-              </CButton>
-              <span class="text-end span-char-count" 
+              </CButton> 
+              <span class="text-end span-char-count"  id="charCount"
                 >Character count: {{ characterCount }} / 200</span
               >
               <p id="selectedImage">{{ imageName }}</p>
@@ -540,6 +540,11 @@ export default {
       
     }
   },
+  computed: {
+    characterCount() {
+      return this.comment.length;
+    },
+  },
   setup() {
     const getBadge = (priorities) => {
       switch (priorities) {
@@ -570,8 +575,24 @@ export default {
       }
     },
 
-    async countCharacters() {
-      this.characterCount = this.comment.length
+    async countCharacters(event) {
+      // Get the input element
+      var inputElement = event.target;
+
+      // Get the span element to display the character count
+      var charCountElement = document.getElementById("charCount");
+
+      // Get the value of the input and calculate the character count
+      var charCount = inputElement.value.length;
+
+      // Update the span element with the character count
+      charCountElement.innerText = charCount;
+
+      // Optionally, update the data property to use in the template
+      this.characterCount = charCount;
+
+      // Your async logic here (if needed)
+      // await someAsyncFunction();
     },
 
     async attachImage() {
