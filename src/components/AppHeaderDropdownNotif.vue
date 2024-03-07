@@ -10,11 +10,61 @@
         >{{ itemsCount }}</CBadge
       >
     </CDropdownToggle>
-    <CDropdownMenu class="scol pt-0">
+    <CDropdownMenu class="scol pt-0" v-if="itemsCount >5">
       <CDropdownHeader
         class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10"
       >
-        <strong>You have {{ itemsCount }} messages</strong>
+        <strong v-if="itemsCount > 1">You have {{ itemsCount }} messages</strong>
+        <strong v-else>You have {{ itemsCount }} message</strong>
+      </CDropdownHeader>
+      <div v-for="(item, index) in notificationAll" :key="index">
+        
+        <CDropdownItem v-if="item.not_type == 'Status'" @click="changeStatus(item,index)">
+
+          <div class="message" >
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> Change Status Ticket
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> The ticket status has been changed.
+              </div>
+          </div>
+        </CDropdownItem>
+        <CDropdownItem v-else @click="changeStatus(item,index)" >
+            <div class="message">
+              <div class="pt-3 me-3 float-start">
+                <CAvatar :src="`data:${item.not_acc.acc_act.act_picture.flietype};base64,${item.not_acc.acc_act.act_picture.image}`" shape="rounded-circle" size="md" status="success"/>
+              </div>
+              <div>
+                <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+              </div>
+              <div class="text-truncate font-weight-bold">
+                <span class="fa fa-exclamation text-danger"></span> New message
+              </div>
+              <div class="small text-medium-emphasis text-truncate">
+               <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
+              </div>
+            </div>
+        </CDropdownItem>
+      </div>
+      <CDropdownItem  class="text-center border-top" @click="toViewAll">
+        <strong>View all messages</strong>
+      </CDropdownItem>
+    </CDropdownMenu>
+    <CDropdownMenu class="scoll pt-0" v-else>
+      <CDropdownHeader
+        class="dropdown-header bg-light dark:bg-white dark:bg-opacity-10"
+      >
+        <strong v-if="itemsCount > 1">You have {{ itemsCount }} messages</strong>
+        <strong v-else>You have {{ itemsCount }} message</strong>
       </CDropdownHeader>
       <div v-for="(item, index) in notificationAll" :key="index">
         
@@ -217,6 +267,12 @@ export default {
   height: 500px;
   overflow-y: auto !important;
   
+  
+}
+.scoll{
+  width: 500px;
+  height: auto;
+  overflow-y: auto !important;
   
 }
 </style>

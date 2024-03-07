@@ -115,6 +115,18 @@
                 </div>
                 <output class="col-md-3 col-sm-12 ps-5">{{ percentLow }}%</output>
               </div>
+              <br />
+              <div class="row align-items-center ">
+                <div class="col-md-2 col-sm-12 ps-5">
+                  <h6>Other</h6>
+                </div>
+                <div class="col-md-7 col-sm-12 ps-5">
+                  <input class="w-100" type="range" :value="percenOther" min="1" max="100"
+                    oninput="this.nextElementSibling.value = this.value" />
+                </div>
+                <output class="col-md-3 col-sm-12 ps-5">{{ percenOther }}%</output><br/>
+              </div>
+              
             </CCollapse>
           </CCardBody>
         </CCard>
@@ -405,6 +417,8 @@ export default {
       countHigh: '',
       countMedium: '',
       countLow: '',
+      countOther: 0,
+      percenOther:'',
       percentLow: '',
       percentHigh: '',
       percentMedium: '',
@@ -508,10 +522,14 @@ export default {
             this.countMedium++
           } else if (element.tkt_priorities == 'Low') {
             this.countLow++
+          }else{
+ 
+            this.countOther++
           }
           this.percentHigh = ((this.countHigh / this.countAll) * 100).toFixed(1);
           this.percentMedium = ((this.countMedium / this.countAll) * 100).toFixed(1);
           this.percentLow = ((this.countLow / this.countAll) * 100).toFixed(1);
+          this.percenOther = ((this.countOther / this.countAll) * 100).toFixed(1);
         })
       } catch (error) {
         console.error('Error fetching data:', error)

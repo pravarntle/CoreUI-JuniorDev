@@ -130,6 +130,7 @@
                     >Resolve</CButton
                   >
                   <CModal
+                    :keyboard="false"
                     alignment="center"
                     :visible="visibleVerticallyCenteredDemo"
                     @close="() => {
@@ -137,10 +138,10 @@
                       }
                       "
                   >
-                    <CModalHeader>
-                      <CModalTitle>Resolve Status</CModalTitle>
-                    </CModalHeader>
+                   
                     <CModalBody>
+                      <CModalTitle id="button-head">Resolve Status</CModalTitle>
+                      <hr>
                       <div style="margin-bottom: 20px">
                         <b>{{status}}</b>
                       </div>
@@ -149,7 +150,7 @@
                           color="secondary"
                           v-model="edit"
                           :options="[
-                           
+                            
                             { label: 'Closed', value: 'Closed' },
                             { label: 'Closed Bug', value: 'Closed Bug' },
                             { label: 'Open', value: 'Open'}
@@ -1255,5 +1256,9 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+#button-head {
+  text-align: left;
+  color: #000;
 }
 </style>
