@@ -314,7 +314,7 @@
                 />
               </div>
             </div>
-            <div class="col-10">
+            <div class="inputbar col-10 justify-content-between">
               <CFormInput
                 v-model="comment"
                 class="comments_box"
@@ -369,7 +369,7 @@
                   alt="Attach File"
                 />
               </CButton> 
-              <span class="text-end span-char-count"  id="charCount"
+              <span class="char-count "  id="charCount"
                 >Character count: {{ characterCount }} / 200</span
               >
               <p id="selectedImage">{{ imageName }}</p>
@@ -1146,9 +1146,6 @@ export default {
   width: 12px;
 }
 
-.span-char-count {
-  margin-left: 70%;
-}
 
 .btn-short {
   font-weight: bold; font-size: x-small; width: 65px
@@ -1204,6 +1201,7 @@ div .comments_box {
   /* เพื่อให้ข้อความคอมเมนต์ขึ้นบรรทัดใหม่เมื่อมีการพิมพ์และเกิน 1 บรรทัด */
   word-wrap: break-word;
   /* เพื่อให้ข้อความคอมเมนต์แตกคำเมื่อเกินขอบเขตของตัวอักษร */
+  
 }
 
 /* div .comments_box:focus {
@@ -1256,4 +1254,16 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
+.col-10 {
+  position: relative;
+}
+
+.char-count {
+  position: absolute; 
+  bottom: 1; 
+  right: 5%; 
+}
+
 </style>
