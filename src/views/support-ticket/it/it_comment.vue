@@ -80,14 +80,7 @@
                     </CCol>
                   </CCardBody>
                   <hr />
-                  <Crow>
-                    <CCol class="text-start" >
-                      <output class="output-number"> 1 </output>
-                      <CCradText style="margin-left: 2%">
-                        Attachment
-                      </CCradText>
-                    </CCol>
-                  </Crow>
+                  
                   <Crow class="text-start">
                     <CCol class="output-number">
                       
@@ -156,7 +149,7 @@
                           color="secondary"
                           v-model="edit"
                           :options="[
-                            'Status to edit',
+                           
                             { label: 'Closed', value: 'Closed' },
                             { label: 'Closed Bug', value: 'Closed Bug' },
                             { label: 'Open', value: 'Open'}
@@ -845,11 +838,6 @@ export default {
       this.form.cmt_file = null
       this.form.cmt_picture = null
      
-      
-      // comment: this.form,
-      // });
-
-      //  
     },
     async getComment() {
       const ticketId = this.ticketId
@@ -869,7 +857,6 @@ export default {
           ],
         },
       )
-      
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
       this.setScollHeight();
@@ -1048,15 +1035,16 @@ export default {
       }
     },
     setScollHeight() {
-    const scollElement = document.querySelector('.scoll');
-    if (this.comments.length <= 4) {
-      scollElement.style.height = 'auto';
-    } else {
-      scollElement.style.height = '500px';
-    }
-    console.log("comment length" + this.comments.length);
-  },
-  backtohomepage() {
+      const scollElement = document.querySelector('.scoll');
+      if (this.comments.length <= 4) {
+        scollElement.style.height = 'auto';
+      } else {
+        scollElement.style.height = '500px';
+      }
+      
+    
+    },
+    backtohomepage() {
       this.$router.push({ name: 'ST - it_my_task' })
     },
    
