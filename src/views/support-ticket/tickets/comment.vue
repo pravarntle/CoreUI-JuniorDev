@@ -62,11 +62,6 @@
                 </CCol>
               </CCardBody>
               <hr />
-              <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <CCradText class="ms-5"> <b>Attachment</b> </CCradText>
-                </CCol>
-              </Crow>
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <a v-if="picture">
