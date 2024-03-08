@@ -129,7 +129,7 @@ export default {
   },
   data() {
     return { 
-      itemsCount:'',
+      itemsCount:0,
       notificationAll:'',
       userID:'',
       roleID:'',

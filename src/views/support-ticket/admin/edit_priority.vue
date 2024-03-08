@@ -26,7 +26,7 @@
             </CFormLabel>
 
             <CInputGroup>
-              <CFormInput v-model="form.pri_name_th" placeholder="สำคัญมากที่สุด" aria-label="priorityNameTha"
+              <CFormInput v-model="form.pri_name_th" placeholder="สำคัญมากที่สุด" aria-label="priorityNameTha" :invalid="validate.pri_name_th"
                 id="Form_border" />
             </CInputGroup>
           </div>
@@ -39,7 +39,7 @@
               <h4>Priority name (English)<span id="Icon_force">*</span></h4>
             </CFormLabel>
             <CInputGroup>
-              <CFormInput v-model="form.pri_name_eng" placeholder="Very High" aria-label="priorityNameEng"
+              <CFormInput v-model="form.pri_name_eng" placeholder="Very High" aria-label="priorityNameEng" :invalid="validate.pri_name_eng"
                 id="Form_border" />
             </CInputGroup>
           </div>
@@ -54,7 +54,7 @@
                   <CFormLabel for="priorityLevel">
                     <h4>Level of Priority<span id="Icon_force">*</span></h4>
                   </CFormLabel>
-                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level"></CFormInput>
+                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level"></CFormInput>
                 </CCol>
                 <CCol xs="4">
                   <CFormLabel for="priorityLevel">
@@ -80,7 +80,7 @@
               <CFormLabel for="desc">
                 <h4>Description<span id="Icon_force">*</span></h4>
               </CFormLabel>
-              <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description"
+              <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description" :invalid="validate.pri_description"
                 placeholder="รอดำเนินการภายใน 8 ชั่วโมง"></CFormTextarea>
             </CForm>
             <br>
