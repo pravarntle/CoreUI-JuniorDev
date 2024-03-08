@@ -149,7 +149,7 @@
                 <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" style="padding: -4px" />
               </div>
             </div>
-            <div class="col-10">
+            <div class="col-10 justify-content-between">
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
                 aria-label="comments_box" id="comments_box" ref="comments_box" @input="checkCharacterLimit"
                 @keyup.enter="onSave" maxlength="200" row="3">
@@ -169,8 +169,9 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" id="charCount" style="margin-left: 70%">Character count: {{ characterCount }}
-                /200</span>
+              <span class="char-count "  id="charCount"
+                >Character count: {{ characterCount }} / 200</span
+              >
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''">
                 | <a>link : {{ link }}</a></span>
@@ -983,5 +984,16 @@ a:hover {
   width: 30px;
   cursor: pointer;
   margin-left: 10px;
+}
+
+
+.col-10 {
+  position: relative;
+}
+
+.char-count {
+  position: absolute; 
+  bottom: 1; 
+  right: 3%; 
 }
 </style>
