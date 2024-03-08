@@ -52,7 +52,7 @@
                   <CFormLabel for="priorityLevel">
                     <h4>Level of Priority<span id="Icon_force">*</span></h4>
                   </CFormLabel>
-                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level" ></CFormInput>
+                  <CFormInput type="number"  min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level" ></CFormInput>
                 </CCol>
                 <CCol class="ms-5 mt-3" md="3">
                   <CFormLabel for="priorityLevel">
@@ -60,7 +60,7 @@
                   </CFormLabel>
                   <div class="border rounded align-items-center" id="Form_border">
                     <div class="color-picker ">
-                      <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2" />
+                      <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2"   />
                       <label for="colorPicker">
                         <CIcon icon="cilColorFill" id="iconPicker" />
                       </label>
@@ -256,11 +256,9 @@ export default {
         this.validate.pri_name_th = false;
       }
 
-      if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+       if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
         this.validate.pri_level = true;
         error = true;
-      } else {
-        this.validate.pri_level = false;
       }
 
       if (this.form.pri_color.trim() === '' ) {
@@ -278,7 +276,34 @@ export default {
       }
 
       if (!error) {
-        // this.onSave()
+        this.checkDuplicateValue();
+      } else {
+        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleLivesubmit = false
+      }
+
+    },
+  async checkDuplicateValue() {
+    const value = this.form.pri_level;
+
+    console.log("sss",value);
+    try {
+      // Send a request to your API to check for duplicate values
+      const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`,
+          {
+            where: {
+              pri_status: { $ne: 'Delete' },
+            },
+          },
+        )
+      console.log(response.data)
+      // Assuming response.data is an array of objects with pri_level property
+      const duplicate = response.data.some(item => item.pri_level === value);
+      console.log(duplicate)
+      // Set the validation flag based on whether duplicate value is found
+      this.validate.pri_level = duplicate ? true : false;
+      if(this.validate.pri_level== false){
         this.isLoading = true
         this.toastProp.push({
           content: 'Create Success  ',
@@ -291,47 +316,21 @@ export default {
           // จบการโหลด
           this.isLoading = false
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          this.checkDuplicateValue();
+          
           this.onSave()
         }, 500)
-      } else {
-        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+      }else{
         this.visibleLivesubmit = false
       }
+      
+    } catch (error) {
+      console.error("Error checking duplicate value:", error);
+      this.validate.pri_level = false;
+      // Handle error appropriately, such as showing an error message to the user
+    }
+},
 
-    },
-    async  checkDuplicateValue(value) {
-      try {
-          // ส่งค่า value ไปที่ API หรือฟังก์ชั่นที่เรียกข้อมูลจากฐานข้อมูล
-          const response = await axios.get(`${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`);
-          // ตรวจสอบว่ามีค่าซ้ำในฐานข้อมูลหรือไม่
-          console.log("sssaad",value)
-          console.log("sssaad",response.data.pri_level)
-          if (response.data.pri_level==value) {
-              // ถ้ามีค่าซ้ำให้คืนค่า true
-              return true;
-          } else {
-              // ถ้าไม่มีค่าซ้ำให้คืนค่า false
-              return false;
-          }
-      } catch (error) {
-          console.error("Error checking duplicate value:", error);
-          // ในกรณีที่เกิดข้อผิดพลาดในการเรียก API หรือฟังก์ชั่น
-          // คุณสามารถจัดการข้อผิดพลาดได้ตามความเหมาะสม
-          console.log("s")
-          return false; // หรือสามารถ throw error ออกไปต่อได้
-          
-      }
-    },
 
-// ฟังก์ชั่นเช็คค่า pri_level
-    async  checkPriLevel() {
-          console.log("g-hk")
-          const value = this.form.pri_level; // ค่าที่ต้องการตรวจสอบ
-          const isDuplicate = await checkDuplicateValue(value);
-          // ตั้งค่า pri_level ตามผลลัพธ์ที่ได้จากการตรวจสอบค่าซ้ำในฐานข้อมูล
-          this.validate.pri_level = isDuplicate;
-    },
 
   },
   mounted() {
