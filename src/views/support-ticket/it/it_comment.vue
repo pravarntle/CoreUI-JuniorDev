@@ -1,63 +1,47 @@
 <template>
-  <CRow class="mr-md-3 p-2" >
-    <CCol xs class="col-md-9 mr-md-3" id="col-ticket" >
-      <CCard class="p-3">
+  <CRow class="mr-md-3 p-2">
+    <CCol xs class="col-md-9 mr-md-3 ccol1" id="col-ticket" >
+      <CCard class="p-3" ref="ccardref">
         <CCardbody>
           <CRow>
             <div>
               <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
               <!-- Icon สำหรับย้อนกลับ -->
               <CCol>
-            <div class="text-start" id="head_description">
-              <CImage class="style-icon-button-back" :src="Button_back" @click="backtohomepage()" />
-            </div>
-          </CCol>
+                <div class="text-start" id="head_description">
+                  <CImage class="style-icon-button-back" :src="Button_back" @click="backtohomepage()" />
+                </div>
+              </CCol>
             </div>
           </CRow>
           <hr />
           <CRow class="g-0">
             <!-- <CImage class="Avatar_4" :src="Avatar_4" /> -->
 
-            <CAvatar
-              v-if="acountFile"
-              class="Icon_user_man avatar-round avatar-icon-p4"
-              :src="`data:${acountFile};base64,${acountImage}`"
-              
-            />
-            <CAvatar
-              v-else
-              class="Icon_user_man avatar-icon-p4"
-              :src="Icon_user_man"
-              
-            />
+            <CAvatar v-if="acountFile" class="Icon_user_man avatar-round avatar-icon-p4"
+              :src="`data:${acountFile};base64,${acountImage}`" />
+            <CAvatar v-else class="Icon_user_man avatar-icon-p4" :src="Icon_user_man" />
             <CCol style="padding: 4px">
               <b> {{ firstname }}</b>
               <p class="small">{{ email }}</p>
             </CCol>
             <CCol class="text-end p-3" style="margin-right: 2%">
               <b> {{ formatDate(date) }} &nbsp; </b>
-              <CBadge :color="getBadge(priorities)"
-                ><span>
+              <CBadge :color="getBadge(priorities)"><span>
                   <li>{{ priorities }}</li>
-                </span></CBadge
-              >
+                </span></CBadge>
             </CCol>
           </CRow>
           <hr />
 
           <!-- <CImage align="end" class="Short" :src="Short" /> -->
           <div class="clearfix text-end m-2" style="margin-right: 4%">
-            <CButton
-              class="btn btn-outline-info btn-short"
-              id="b1"
-              @click="
-                () => {
-                  visibleA = !visibleA
-                  visibleB = !visibleB
-                  switchname()
-                }
-              "
-              >Short
+            <CButton class="btn btn-outline-info btn-short" id="b1" @click="() => {
+                      visibleA = !visibleA
+                      visibleB = !visibleB
+                      switchname()
+                    }
+                    ">Short
             </CButton>
 
             <CRow>
@@ -68,11 +52,11 @@
                       <b class="detail-title"> Title : </b>
                       <CCradText> {{ title }}</CCradText>
                     </CCol>
-                    <CCol class="text-start" >
+                    <CCol class="text-start">
                       <b class="detail-title"> Type : </b>
                       <CCradText> {{ type }} </CCradText>
                     </CCol>
-                    <CCol class="text-start" >
+                    <CCol class="text-start">
                       <b class="detail-title"> Description : </b>
                       <CCradText>
                         {{ description }}
@@ -83,11 +67,13 @@
                   
                   <Crow class="text-start">
                     <CCol class="output-number">
-                      
+
                       <a v-if="picture">
                         <br>
-                        <CImage :src="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" /><br><br>
-                        <a :href="`data:${picture.filetype};base64,${picture.image}`"  alt="Comment Image" style="max-width: auto; height: 300px;" Download><u>Download</u></a>
+                        <CImage :src="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
+                          style="max-width: auto; height: 300px;" /><br><br>
+                        <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
+                          style="max-width: auto; height: 300px;" Download><u>Download</u></a>
                       </a>
 
                       <br />
@@ -101,16 +87,15 @@
         </CCardbody>
       </CCard>
     </CCol>
-    <CCol class="col-md-2.5" style="padding: 10px">
-        <!-- Adjust width for smaller size -->
-
-        <CCard>
-          <CCardBody>
-            <h2 class="text-center">Details</h2>
-            <h6><b>Ticket ID:</b></h6>
-            <p>{{number}}</p>
-            <h6><b>Date & Time:</b></h6>
-            <p> {{ formatDate(date) }} &nbsp; </p>
+    <CCol class="col-md-2.5 ccol2" style="padding: 10px;"  >
+      <!-- Adjust width for smaller size -->
+      <CCard>
+        <CCardBody>
+          <h2 class="text-center">Details</h2>
+          <h6><b>Ticket ID:</b></h6>
+          <p>{{ number }}</p>
+          <h6><b>Date & Time:</b></h6>
+          <p> {{ formatDate(date) }} &nbsp; </p>
 
             <CCollapse :visible="visibleB">
               <h6 class="detail-font-red"><b>Title</b></h6>
@@ -211,11 +196,11 @@
                     </CModalFooter>
                   </CModal>
                 </CCol> -->
-              </CRow>
-            </CCollapse>
-          </CCardBody>
-        </CCard>
-      </CCol>
+            </CRow>
+          </CCollapse>
+        </CCardBody>
+      </CCard>
+    </CCol>
   </CRow>
 
   <div>
@@ -227,17 +212,10 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-1">
-                  <div class="avatar">
-                    <CAvatar
-                      v-if="item.cmt_act.act_picture"
-                      class="Icon_user_man"
-                      :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`"
-                    />
-                    <CAvatar
-                      v-else
-                      class="Icon_user_man"
-                      :src="Icon_user_man"
-                    />
+                  <div class="avatar" >
+                    <CAvatar v-if="item.cmt_act.act_picture" class="Icon_user_man" 
+                      :src="`data:${item.cmt_act.act_picture.filetype};base64,${item.cmt_act.act_picture.image}`" />
+                    <CAvatar v-else class="Icon_user_man" :src="Icon_user_man" />
                   </div>
                 </div>
                 <div class="col-10">
@@ -268,19 +246,10 @@
                       />
                     </a>
                     <a v-if="item.cmt_file">
-                      <a
-                        :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`"
-                        alt="Comment Image"
-                        class="comment-image"
-                        download
-                        >{{ `${item.cmt_file.filename}` }}</a
-                      >
+                      <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
+                        class="comment-image" download>{{ `${item.cmt_file.filename}` }}</a>
                     </a>
-                    <a
-                      v-if="item.cmt_link"
-                      @click="openLink(item.cmt_link)"
-                      class="a-cmt-link"
-                    >
+                    <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" class="a-cmt-link">
                       {{ item.cmt_link }}
                     </a>
                   </div>
@@ -294,7 +263,8 @@
                 </div>
               </div>
             </div>
-          </div>          
+            
+          </div>
         </div>
 
         <br />
@@ -303,21 +273,12 @@
           <div class="row align-items-center">
             <div class="col-1">
               <div class="avatar">
-                <CAvatar
-                  v-if="acountIdFile"
-                  class="Icon_user_man avatar-round avatar-icon-p4"
-                  :src="`data:${acountIdFile};base64,${acountIdImage}`"
-                  
-                />
-                <CAvatar
-                  v-else
-                  class="Icon_user_man avatar-icon-p4"
-                  :src="Icon_user_man"
-                  
-                />
+                <CAvatar v-if="acountIdFile" class="Icon_user_man avatar-round avatar-icon-p4"
+                  :src="`data:${acountIdFile};base64,${acountIdImage}`" />
+                <CAvatar v-else class="Icon_user_man avatar-icon-p4" :src="Icon_user_man" />
               </div>
             </div>
-            <div class="col-10">
+            <div class="inputbar col-10 justify-content-between">
               <CFormInput
                 v-model="comment"
                 class="comments_box"
@@ -334,28 +295,13 @@
               </CFormInput>
               <br />
               <!-- <CFormInput type="file" @change="onFileUpload" /> -->
-              <input
-                type="file"
-                ref="pictureInput"
-                @change="onPictureUpload"
-                style="display: none"
-                id="imageInput"
-                accept=".png, .jpg, .jpeg"
-              />
-              <CButton @click="attachImage" id="attach_image"
-                ><img
-                  class="attach-image btn-attach"
-                  :src="Attach_Image"
-                  id="attachImage"
-                  alt="Attach Image"
-                />
+              <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput"
+                accept=".png, .jpg, .jpeg" />
+              <CButton @click="attachImage" id="attach_image"><img class="attach-image btn-attach" :src="Attach_Image"
+                  id="attachImage" alt="Attach Image" />
               </CButton>
-              <CButton @click="attachLink" id="attach_link"
-                ><img
-                  class="insert-link btn-attach" 
-                  :src="insert_link"
-                  alt="Insert Link"
-                />
+              <CButton @click="attachLink" id="attach_link"><img class="insert-link btn-attach" :src="insert_link"
+                  alt="Insert Link" />
               </CButton>
               <input
                 type="file"
@@ -372,41 +318,29 @@
                   alt="Attach File"
                 />
               </CButton> 
-              <span class="text-end span-char-count"  id="charCount"
+              <span class="char-count "  id="charCount"
                 >Character count: {{ characterCount }} / 200</span
               >
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''">
-                | <a>link : {{ link }}</a></span
-              >
+                | <a>link : {{ link }}</a></span>
             </div>
-            <div class="col" v-if="status =='Closed'||status =='Closed Bug'" >
+            <div class="col" v-if="status == 'Closed' || status == 'Closed Bug'">
               <div class="avatar">
-                <CButton
-                  @keyup.enter="onSave"
-                  @click="onSave"
-                  id="submitComment"
-                  :disabled="true"
-                >
-                  <img class="commit" :src="commit" alt="Commit Icon"
-                /></CButton>
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment" :disabled="true">
+                  <img class="commit" :src="commit" alt="Commit Icon" />
+                </CButton>
               </div>
             </div>
             <div class="col" v-else>
               <div class="avatar">
-                <CButton
-                  @keyup.enter="onSave"
-                  @click="onSave"
-                  id="submitComment"
-                  :disabled="
-                    comment === '' &&
+                <CButton @keyup.enter="onSave" @click="onSave" id="submitComment" :disabled="comment === '' &&
                     !form.cmt_picture &&
                     !form.cmt_file &&
                     link === ''
-                  "
-                >
-                  <img class="commit" :src="commit" alt="Commit Icon"
-                /></CButton>
+                    ">
+                  <img class="commit" :src="commit" alt="Commit Icon" />
+                </CButton>
               </div>
             </div>
           </div>
@@ -513,26 +447,27 @@ export default {
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
       number: '',
       status: '',
-      edit:'',
-      actId:'',
+      edit: '',
+      actId: '',
       Button_back: Button_back,
-      accId:'',
-      allUpdate:{
-        mod_act:'',
-        mod_date:'',
-        mod_status:'',
-        mod_tkt:'',
+      accId: '',
+      allUpdate: {
+        mod_act: '',
+        mod_date: '',
+        mod_status: '',
+        mod_tkt: '',
       },
-      notifications:{
-        not_datetime:'',
-        not_status:'',
-        not_type:'',
-        not_act:'',
-        not_tkt:'',
-        not_cmt:'',
-        not_acc:'',
-      }
-      
+      notifications: {
+        not_datetime: '',
+        not_status: '',
+        not_type: '',
+        not_act: '',
+        not_tkt: '',
+        not_cmt: '',
+        not_acc: '',
+      },
+      colHeight:null,
+
     }
   },
   computed: {
@@ -721,9 +656,9 @@ export default {
         this.number = response.data.tkt_number
         this.status = response.data.tkt_status
         this.actId = response.data.tkt_act._id
-        console.log('asdasdasd',this.status)
-        console.log('asdasdasd',response.data.tkt_status)
-           // this.email = response.data.tkt_act.act_email_address;
+        console.log('asdasdasd', this.status)
+        console.log('asdasdasd', response.data.tkt_status)
+        // this.email = response.data.tkt_act.act_email_address;
         // this.firstname = response.data.tkt_act.act_first_name_eng;
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
@@ -806,7 +741,7 @@ export default {
       this.form.cmt_tkt = ticketId
       this.form.cmt_link = this.link
       this.form.cmt_act = userId
-      this.notifications.not_act=userId
+      this.notifications.not_act = userId
       this.notifications.not_type = 'Comment'
       // this.form.cmt_picture = this.imageName
       // this.form.cmt_file = this.file
@@ -907,37 +842,37 @@ export default {
       const date = dayjs()
       const ticket_date = `${date.format('YYYY-MM-DD')}`
       try {
-        
+
         const ticketId = this.ticketId;
         // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${ticketId}`, {
           data: {
             tkt_status: this.edit,
-            tkt_last_update:ticket_date,
+            tkt_last_update: ticket_date,
           }
         })
-        .then((result) => {
-          this.allUpdate.mod_status = result.data.tkt_status;
-          this.allUpdate.mod_tkt = result.data._id;
-          this.updateStatus();
-          
-        })
-        .catch((err) => { 
-          console.log(error)
-        });
-        this.status = this.edit 
+          .then((result) => {
+            this.allUpdate.mod_status = result.data.tkt_status;
+            this.allUpdate.mod_tkt = result.data._id;
+            this.updateStatus();
+
+          })
+          .catch((err) => {
+            console.log(error)
+          });
+        this.status = this.edit
         this.visibleVerticallyCenteredDemo = false
- 
+
         // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
         console.log('อัปเดต status และส่งข้อมูลไปยัง MongoDB สำเร็จ');
         // รีเฟรชหน้า
-        
+
 
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
     },
-    async updateStatus(){
+    async updateStatus() {
       const userData = JSON.parse(localStorage.getItem('USER_DATA'))
       dayjs.locale('en')
       dayjs.extend(require('dayjs/plugin/timezone'))
@@ -950,16 +885,16 @@ export default {
       const userId = userData.id
       this.allUpdate.mod_date = accept_date;
       this.allUpdate.mod_act = userId;
-      this.notifications.not_act=userId;
+      this.notifications.not_act = userId;
       this.notifications.not_type = 'Status'
 
 
       console.log(this.allUpdate)
       try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
-            data: this.allUpdate,
-            
-          })
+        await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
+          data: this.allUpdate,
+
+        })
           .then((result) => {
             this.acceptButton();
             this.$router.push({ name: 'ST - it/it_comment' });
@@ -971,11 +906,11 @@ export default {
         console.log(error)
       }
     },
-    formatDate: function(dateString) {
+    formatDate: function (dateString) {
       const options = { day: '2-digit', month: 'short', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
     },
-    async call(){
+    async call() {
       await console.log('บัคไรน้อง')
     }
     ,
@@ -1039,15 +974,19 @@ export default {
         console.log(error)
       }
     },
-    setScollHeight() {
-      const scollElement = document.querySelector('.scoll');
-      if (this.comments.length <= 4) {
-        scollElement.style.height = 'auto';
-      } else {
-        scollElement.style.height = '500px';
-      }
+    async setScollHeight() {
       
-    
+      const scollElement = document.querySelector('.scoll');
+      try {
+          if (this.comments.length <= 4) {
+          scollElement.style.height = 'auto';
+        } else {
+          scollElement.style.height = '500px';
+        }
+      } catch (error) {
+          console.error('Error:', error.message);
+      }
+      console.log("comment length" + this.comments.length);
     },
     backtohomepage() {
       this.$router.push({ name: 'ST - it_my_task' })
@@ -1139,8 +1078,8 @@ export default {
     this.getAcount()
     this.commentInterval = setInterval(() => {
       this.getComment();
+      this.setScollHeight();
     }, 1000);
-    
   },
 }
 </script>
@@ -1160,12 +1099,13 @@ export default {
   text-align: left;
 }
 
-.scoll{
+.scoll {
   width: 100%;
   height: auto;
   overflow-y: auto !important;
-  
+
 }
+
 .Icon_user_man {
   /* margin-left: 0.5pc; */
   width: 56px;
@@ -1176,7 +1116,7 @@ export default {
   width: 60px;
 }
 
-.avatar-icon-p4{
+.avatar-icon-p4 {
   padding: -4px;
 }
 
@@ -1189,7 +1129,7 @@ export default {
 }
 
 .ticket-file {
-  max-width: auto; 
+  max-width: auto;
   height: 300px
 }
 
@@ -1223,24 +1163,31 @@ export default {
   width: 12px;
 }
 
-.span-char-count {
-  margin-left: 70%;
-}
 
 .btn-short {
-  font-weight: bold; font-size: x-small; width: 65px
+  font-weight: bold;
+  font-size: x-small;
+  width: 65px
 }
 
 .div-comment-box {
-  width: fit-content; padding: 10px
+  width: 50ch; 
+  height: auto; 
+  overflow: auto; 
+  border: 1px solid #ccc; 
+  padding: 10px; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .comment-image {
-  max-width: auto; height: 300px
+  max-width: auto;
+  height: 300px
 }
 
 .a-cmt-link {
-  text-decoration: none; color: #007bff
+  text-decoration: none;
+  color: #007bff
 }
 
 .div-arrow-left {
@@ -1281,6 +1228,7 @@ div .comments_box {
   /* เพื่อให้ข้อความคอมเมนต์ขึ้นบรรทัดใหม่เมื่อมีการพิมพ์และเกิน 1 บรรทัด */
   word-wrap: break-word;
   /* เพื่อให้ข้อความคอมเมนต์แตกคำเมื่อเกินขอบเขตของตัวอักษร */
+  
 }
 
 /* div .comments_box:focus {
@@ -1337,4 +1285,16 @@ a:hover {
   text-align: left;
   color: #000;
 }
+
+
+.col-10 {
+  position: relative;
+}
+
+.char-count {
+  position: absolute; 
+  bottom: 1; 
+  right: 5%; 
+}
+
 </style>
