@@ -110,9 +110,11 @@
                   <div class="div-comment-box">
                     <a v-if="item.cmt_message">
                       {{ item.cmt_message }}
+                      <br>
                     </a>
                     <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                       {{ item.cmt_link }}
+                      <br>
                     </a>
                     <a v-if="item.cmt_picture">
                       <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
@@ -123,6 +125,7 @@
                         class="comment-image" download>{{ `${item.cmt_file.filename}` }}</a>
                     </a>
                     <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" class="a-cmt-link">
+                      <br>
                       {{ item.cmt_link }}
                     </a>
                   </div>
