@@ -331,6 +331,7 @@
                 </p>
                 <br />
                 <hr />
+                <div class="d-flex justify-content-end">
                 <CButton
                   color="light"
                   @click="
@@ -349,6 +350,7 @@
                 >
                   Confirm
                 </CButton>
+                </div>
               </CModalBody>
             </CModal>
 
@@ -377,6 +379,7 @@
                 </p>
                 <br />
                 <hr />
+                <div class="d-flex justify-content-end">
                 <CButton
                   color="light"
                   @click="
@@ -403,6 +406,7 @@
                   />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                 </CButton>
+                </div>
               </CModalBody>
             </CModal>
           </div>
@@ -968,12 +972,12 @@ export default {
 
 #popup-detail {
   font-size: larger;
-  font-weight: 600;
   text-align: left;
   color: #000;
 }
 
 #detail-for-cancel {
+  font-weight: 600;
   color: #d0293b;
 }
 
@@ -982,6 +986,7 @@ export default {
 }
 
 #detail-for-submit {
+  font-weight: 600;
   color: #29b227;
 }
 

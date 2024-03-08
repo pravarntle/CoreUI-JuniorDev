@@ -52,7 +52,7 @@
                   <CFormLabel for="priorityLevel">
                     <h4>Level of Priority<span id="Icon_force">*</span></h4>
                   </CFormLabel>
-                  <CFormInput type="number" value="1" min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level" ></CFormInput>
+                  <CFormInput type="number"  min="1" max="5" step="1" v-model="form.pri_level" :invalid="validate.pri_level" ></CFormInput>
                 </CCol>
                 <CCol class="ms-5 mt-3" md="3">
                   <CFormLabel for="priorityLevel">
@@ -60,7 +60,7 @@
                   </CFormLabel>
                   <div class="border rounded align-items-center" id="Form_border">
                     <div class="color-picker ">
-                      <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2" />
+                      <input type="color" v-model="form.pri_color" id="colorPicker" class="mt-2"   />
                       <label for="colorPicker">
                         <CIcon icon="cilColorFill" id="iconPicker" />
                       </label>
@@ -122,7 +122,7 @@
                 <hr/>
                 <div class="d-flex justify-content-end">
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
-                    Close
+                    Cancel
                   </CButton>
                   <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave" :disabled="isLoading">
                     <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
@@ -256,11 +256,9 @@ export default {
         this.validate.pri_name_th = false;
       }
 
-      if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+       if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
         this.validate.pri_level = true;
         error = true;
-      } else {
-        this.validate.pri_level = false;
       }
 
       if (this.form.pri_color.trim() === '' ) {
@@ -278,7 +276,34 @@ export default {
       }
 
       if (!error) {
-        // this.onSave()
+        this.checkDuplicateValue();
+      } else {
+        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+        this.visibleLivesubmit = false
+      }
+
+    },
+  async checkDuplicateValue() {
+    const value = this.form.pri_level;
+
+    console.log("sss",value);
+    try {
+      // Send a request to your API to check for duplicate values
+      const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`,
+          {
+            where: {
+              pri_status: { $ne: 'Delete' },
+            },
+          },
+        )
+      console.log(response.data)
+      // Assuming response.data is an array of objects with pri_level property
+      const duplicate = response.data.some(item => item.pri_level === value);
+      console.log(duplicate)
+      // Set the validation flag based on whether duplicate value is found
+      this.validate.pri_level = duplicate ? true : false;
+      if(this.validate.pri_level== false){
         this.isLoading = true
         this.toastProp.push({
           content: 'Create Success  ',
@@ -294,13 +319,22 @@ export default {
           
           this.onSave()
         }, 500)
-      } else {
-        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
+      }else{
         this.visibleLivesubmit = false
       }
-    },
+      
+    } catch (error) {
+      console.error("Error checking duplicate value:", error);
+      this.validate.pri_level = false;
+      // Handle error appropriately, such as showing an error message to the user
+    }
+},
+
+
+
   },
   mounted() {
+    console.log(this.form.pri_level)
   }
 }
 </script> 

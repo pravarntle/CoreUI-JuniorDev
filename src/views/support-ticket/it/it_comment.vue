@@ -1294,7 +1294,7 @@ a:hover {
 .char-count {
   position: absolute; 
   bottom: 1; 
-  right: 5%; 
+  right: 3%; 
 }
 
 </style>
