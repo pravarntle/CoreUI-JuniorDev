@@ -112,27 +112,22 @@
                       item.cmt_date
                     }}
                   </p>
-                  <div class="comments_box" style="width: fit-content; padding: 10px">
-                    {{ item.cmt_message }}
-                    <br v-if="item.cmt_message" />
+                  <div class="div-comment-box">
+                    <a v-if="item.cmt_message">
+                      {{ item.cmt_message }}
+                    </a>
                     <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                       {{ item.cmt_link }}
                     </a>
-                    <br v-if="item.link" />
                     <a v-if="item.cmt_picture">
-                      <CRow>
-                        <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
-                          alt="Comment Image" style="max-width: auto; height: 300px" />
-                      </CRow>
+                      <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
+                        alt="Comment Image" class="comment-image" />
                     </a>
-                    <br v-if="item.cmt_picture" />
                     <a v-if="item.cmt_file">
                       <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
-                        style="max-width: auto; height: 300px" download>{{ `${item.cmt_file.filename}` }}</a>
+                        class="comment-image" download>{{ `${item.cmt_file.filename}` }}</a>
                     </a>
-                    <br v-if="item.cmt_file" />
-                    <a v-if="item.cmt_link" @click="openLink(item.cmt_link)"
-                      style="text-decoration: none; color: #007bff">
+                    <a v-if="item.cmt_link" @click="openLink(item.cmt_link)" class="a-cmt-link">
                       {{ item.cmt_link }}
                     </a>
                   </div>
@@ -648,7 +643,7 @@ export default {
 
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
-      this.setScollHeight()
+      
     },
     async getAcountComment() {
       try {
@@ -662,14 +657,19 @@ export default {
         console.error('Error fetching data:', error)
       }
     },
-    setScollHeight() {
-      const scollElement = document.querySelector('.scoll')
-      if (this.comments.length <= 4) {
-        scollElement.style.height = 'auto'
-      } else {
-        scollElement.style.height = '500px'
+    async setScollHeight() {
+      
+      const scollElement = document.querySelector('.scoll');
+      try {
+          if (this.comments.length <= 4) {
+          scollElement.style.height = 'auto';
+        } else {
+          scollElement.style.height = '500px';
+        }
+      } catch (error) {
+          console.error('Error:', error.message);
       }
-      console.log('comment length' + this.comments.length)
+      console.log("comment length" + this.comments.length);
     },
     async getFileType(filetype) {
       switch (filetype) {
@@ -761,7 +761,8 @@ export default {
     this.getComment()
     this.getAcount()
     this.commentInterval = setInterval(() => {
-      this.getComment()
+      this.getComment();
+      this.setScollHeight();
     }, 1000)
   },
   beforeUnmount() {
@@ -804,6 +805,16 @@ export default {
   margin-right: 50%;
 }
 
+.div-comment-box {
+  width: 50ch; 
+  height: auto; 
+  overflow: auto; 
+  border: 1px solid #ccc; 
+  padding: 10px; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .AL {
   display: flex;
   justify-content: space-between;
@@ -813,6 +824,11 @@ export default {
 .File_test {
   width: 20px;
   height: 20px;
+}
+
+.comment-image{
+  max-width: auto;
+  height: 300px;
 }
 
 .Dis_Between {

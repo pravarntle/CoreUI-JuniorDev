@@ -243,6 +243,7 @@
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
 
@@ -938,14 +939,14 @@ export default {
       
       const scollElement = document.querySelector('.scoll');
       try {
-  if (this.comments.length <= 4) {
-    scollElement.style.height = 'auto';
-  } else {
-    scollElement.style.height = '500px';
-  }
-} catch (error) {
-  console.error('Error:', error.message);
-}
+          if (this.comments.length <= 4) {
+          scollElement.style.height = 'auto';
+        } else {
+          scollElement.style.height = '500px';
+        }
+      } catch (error) {
+          console.error('Error:', error.message);
+      }
       console.log("comment length" + this.comments.length);
     },
     backtohomepage() {
