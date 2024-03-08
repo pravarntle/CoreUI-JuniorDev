@@ -27,7 +27,7 @@
               </div>
               <div>
                 <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
-                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{timeDiff(item.not_datetime)}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
                 <span class="fa fa-exclamation text-danger"></span> Change Status Ticket
@@ -44,7 +44,7 @@
               </div>
               <div>
                 <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
-                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{timeDiff(item.not_datetime)}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
                 <span class="fa fa-exclamation text-danger"></span> New message
@@ -76,7 +76,7 @@
               </div>
               <div>
                 <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
-                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{timeDiff(item.not_datetime)}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
                 <span class="fa fa-exclamation text-danger"></span> Change Status Ticket
@@ -93,7 +93,7 @@
               </div>
               <div>
                 <small class="text-medium-emphasis">{{item.not_acc.acc_act.act_first_name_eng}}</small>
-                <small class="text-medium-emphasis float-end mt-1">{{item.not_datetime}}</small>
+                <small class="text-medium-emphasis float-end mt-1">{{timeDiff(item.not_datetime)}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
                 <span class="fa fa-exclamation text-danger"></span> New message
@@ -247,7 +247,77 @@ export default {
     },
     toViewAll(){
       this.$router.push({ path: `/support-ticket/ticket/notifications` });
+    },
+    timeDiff(dateTime) {
+    // Split the date-time string
+        const parts = dateTime.split(',');
+
+        // Extract date and time components
+        const datePart = parts[0].trim();
+        const timePart = parts[1].trim();
+
+        // Extract date components
+        const dateParts = datePart.split(' ');
+        const day = parseInt(dateParts[0]);
+        const month = dateParts[1];
+        const year = parseInt(dateParts[2]);
+
+        // Convert month to numeric index
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthIndex = monthNames.indexOf(month);
+
+        // Extract time components
+        const timeParts = timePart.split(':');
+        let hour = parseInt(timeParts[0]);
+        const minutePart = timeParts[1].split(' ');
+        let minute = parseInt(minutePart[0]);
+        const amPm = minutePart[1];
+
+        // Adjust hour for PM
+        if (amPm === 'PM' && hour < 12) {
+            hour += 12;
+        } else if (amPm === 'AM' && hour === 12) {
+            hour = 0;
+        }
+
+        // Create the Date object
+        const startDate = new Date(year, monthIndex, day, hour, minute);
+        const endDate = new Date();
+
+        // Calculate the difference in milliseconds
+        const timeDifference = endDate.getTime() - startDate.getTime();
+
+        // Convert milliseconds to seconds
+        const secondsDifference = Math.abs(timeDifference / 1000);
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(secondsDifference / (3600 * 24));
+        const hours = Math.floor((secondsDifference % (3600 * 24)) / 3600);
+        const minutes = Math.floor((secondsDifference % 3600) / 60);
+        const seconds = Math.floor(secondsDifference % 60); 
+        if (days > 0) {
+          if(days ==1){
+            return days + ' day ago';
+          }
+          return days + ' days ago';
+        } else if (hours > 0) {
+          if(hours ==1){
+            return hours + ' hour ago';
+          }
+            return hours + ' hours ago';
+        } else if (minutes > 0) {
+          if(hours ==1){
+            return minutes + ' minute ago';
+          }
+            return minutes + ' minutes ago';
+        } else {
+            return seconds + ' seconds ago';
+        }
+
+        // Return the difference as an object
+        
     }
+    
   },
   mounted(){
     const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
@@ -273,6 +343,7 @@ export default {
   width: 500px;
   height: auto;
   overflow-y: auto !important;
+  
   
 }
 </style>

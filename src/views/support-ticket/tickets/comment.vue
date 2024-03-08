@@ -62,11 +62,7 @@
                 </CCol>
               </CCardBody>
               <hr />
-              <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <CCradText class="ms-5"> <b>Attachment</b> </CCradText>
-                </CCol>
-              </Crow>
+              
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <a v-if="picture">
@@ -109,7 +105,7 @@
                 <div class="col-10">
                   <p>
                     <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
-                      item.cmt_date
+                      timeDiff(item.cmt_date)
                     }}
                   </p>
                   <div class="comments_box" style="width: fit-content; padding: 10px">
@@ -752,6 +748,63 @@ export default {
     backtohomepage() {
       this.$router.push({ name: 'ST - Dashboard User' })
     },
+    timeDiff(dateTime) {
+    // Split the date-time string
+        const dateTimeParts = dateTime.split('-');
+
+        // Extract date and time components
+        const datePart = dateTimeParts[0].trim();
+        const timePart = dateTimeParts[1].trim();
+
+        // Extract date components
+        const dateParts = datePart.split('/');
+        const day = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Months are zero-indexed
+        const year = parseInt(dateParts[2]);
+
+        // Extract time components
+        const timeParts = timePart.split(':');
+        const hour = parseInt(timeParts[0]);
+        const minute = parseInt(timeParts[1]);
+        const second = parseInt(timeParts[2]);
+        const millisecond = parseInt(timeParts[3]);
+
+        // Create the Date object
+        const startDate = new Date(year, month, day, hour, minute, second, millisecond);
+        const endDate = new Date();
+
+        // Calculate the difference in milliseconds
+        const timeDifference = endDate.getTime() - startDate.getTime();
+
+        // Convert milliseconds to seconds
+        const secondsDifference = Math.abs(timeDifference / 1000);
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(secondsDifference / (3600 * 24));
+        const hours = Math.floor((secondsDifference % (3600 * 24)) / 3600);
+        const minutes = Math.floor((secondsDifference % 3600) / 60);
+        const seconds = Math.floor(secondsDifference % 60);
+        if (days > 0) {
+          if(days ==1){
+            return days + ' day ago';
+          }
+          return days + ' days ago';
+        } else if (hours > 0) {
+          if(hours ==1){
+            return hours + ' hour ago';
+          }
+            return hours + ' hours ago';
+        } else if (minutes > 0) {
+          if(hours ==1){
+            return minutes + ' minute ago';
+          }
+            return minutes + ' minutes ago';
+        } else {
+            return seconds + ' seconds ago';
+        }
+        // Return the difference as an object
+        
+    }
   },
 
   mounted() {
