@@ -64,14 +64,7 @@
                     </CCol>
                   </CCardBody>
                   <hr />
-                  <Crow>
-                    <CCol class="text-start">
-                      <output class="output-number"> 1 </output>
-                      <CCradText style="margin-left: 2%">
-                        Attachment
-                      </CCradText>
-                    </CCol>
-                  </Crow>
+                  
                   <Crow class="text-start">
                     <CCol class="output-number">
 
@@ -258,10 +251,20 @@
                 <CAvatar v-else class="Icon_user_man avatar-icon-p4" :src="Icon_user_man" />
               </div>
             </div>
-            <div class="col-10">
-              <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
-                aria-label="comments_box" id="comments_box" ref="comments_box" @input="countCharacters"
-                @keyup.enter="onSave" maxlength="200" row="3">
+            <div class="inputbar col-10 justify-content-between">
+              <CFormInput
+                v-model="comment"
+                class="comments_box"
+                type="text"
+                placeholder="add comments "
+                aria-label="comments_box"
+                id="comments_box"
+                ref="comments_box"
+                @input="countCharacters"
+                @keyup.enter="onSave"
+                maxlength="200"
+                row="3"
+              >
               </CFormInput>
               <br />
               <!-- <CFormInput type="file" @change="onFileUpload" /> -->
@@ -273,12 +276,24 @@
               <CButton @click="attachLink" id="attach_link"><img class="insert-link btn-attach" :src="insert_link"
                   alt="Insert Link" />
               </CButton>
-              <input type="file" ref="fileInput" @change="onFileUpload" style="display: none" id="fileInput"
-                accept=".txt, .pdf, .docx ,.xlsx" />
-              <CButton @click="attachFile" id="attach_file"><img class="attach-file btn-attach2" :src="Attach_File"
-                  alt="Attach File" />
-              </CButton>
-              <span class="text-end span-char-count" id="charCount">Character count: {{ characterCount }} / 200</span>
+              <input
+                type="file"
+                ref="fileInput"
+                @change="onFileUpload"
+                style="display: none"
+                id="fileInput"
+                accept=".txt, .pdf, .docx ,.xlsx"
+              />
+              <CButton @click="attachFile" id="attach_file"
+                ><img
+                  class="attach-file btn-attach2"
+                  :src="Attach_File"
+                  alt="Attach File"
+                />
+              </CButton> 
+              <span class="char-count "  id="charCount"
+                >Character count: {{ characterCount }} / 200</span
+              >
               <p id="selectedImage">{{ imageName }}</p>
               <span v-if="link !== ''">
                 | <a>link : {{ link }}</a></span>
@@ -733,12 +748,7 @@ export default {
       this.link = ''
       this.form.cmt_file = null
       this.form.cmt_picture = null
-
-
-      // comment: this.form,
-      // });
-
-      //  
+     
     },
     async getComment() {
       const ticketId = this.ticketId
@@ -758,7 +768,6 @@ export default {
           ],
         },
       )
-
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
     },
@@ -1052,9 +1061,6 @@ export default {
   width: 12px;
 }
 
-.span-char-count {
-  margin-left: 70%;
-}
 
 .btn-short {
   font-weight: bold;
@@ -1120,6 +1126,7 @@ div .comments_box {
   /* เพื่อให้ข้อความคอมเมนต์ขึ้นบรรทัดใหม่เมื่อมีการพิมพ์และเกิน 1 บรรทัด */
   word-wrap: break-word;
   /* เพื่อให้ข้อความคอมเมนต์แตกคำเมื่อเกินขอบเขตของตัวอักษร */
+  
 }
 
 /* div .comments_box:focus {
@@ -1172,4 +1179,16 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
+.col-10 {
+  position: relative;
+}
+
+.char-count {
+  position: absolute; 
+  bottom: 1; 
+  right: 5%; 
+}
+
 </style>
