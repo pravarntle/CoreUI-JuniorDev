@@ -127,7 +127,7 @@
                         visibleVerticallyCenteredDemo = true
                       }
                       "
-                    >Resolve</CButton
+                    >Edit Status</CButton
                   >
                   <CModal
                     :keyboard="false"
@@ -140,7 +140,7 @@
                   >
                    
                     <CModalBody>
-                      <CModalTitle id="button-head">Resolve Status</CModalTitle>
+                      <CModalTitle id="button-head">Edit Status</CModalTitle>
                       <hr>
                       <div style="margin-bottom: 20px">
                         <b>{{status}}</b>
@@ -148,12 +148,11 @@
                       <CFormSelect
                           aria-label="Default select example"
                           color="secondary"
-                          v-model="edit"
+                          v-model="status"
                           :options="[
-                            
-                            { label: 'Closed', value: 'Closed' },
-                            { label: 'Closed Bug', value: 'Closed Bug' },
-                            { label: 'Open', value: 'Open'}
+                              { label: 'Closed', value: 'Closed', disabled: this.status === 'Closed' },
+                              { label: 'Closed Bug', value: 'Closed Bug', disabled: this.status === 'Closed Bug' },
+                              { label: 'Open', value: 'Open', disabled: this.status === 'Open'}
                           ]">
                       </CFormSelect>
                     </CModalBody>
@@ -605,6 +604,7 @@ export default {
 
           if (allowedExtensions.includes(fileExtension)) {
             this.imageName = file.name
+            console.log(this.imageName)
 
             // อ่านไฟล์เป็น Blob
             const reader = new FileReader()
@@ -828,7 +828,6 @@ export default {
           }.bind(this),
           200,
         )
-        this.addComment();
         this.acceptButton();
         // Handle success here
       } catch (error) {

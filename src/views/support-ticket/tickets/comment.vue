@@ -407,6 +407,7 @@ export default {
           const fileExtension = file.name.split('.').pop().toLowerCase()
 
           if (allowedExtensions.includes(fileExtension)) {
+    
             this.imageName = file.name
 
             // อ่านไฟล์เป็น Blob
@@ -416,12 +417,18 @@ export default {
               this.form.cmt_picture = imageBlob // บันทึกข้อมูลรูปภาพเป็น Blob
             }
             reader.readAsArrayBuffer(file)
+
+            console.log('รูปถูกแนบเรียบร้อย')
           } else {
+            
             this.imageName = ''
+            console.error('ประเภทของไฟล์ไม่รองรับ')
           }
         } else {
           this.imageName = ''
+          console.error('เกิดข้อผิดพลาดในการแนบรูป')
         }
+        console.log("ณุป",this.form.cmt_picture)
       })
     },
     async attachLink() {
@@ -519,6 +526,7 @@ export default {
         this.firstname = response.data.tkt_act.act_first_name_eng
         this.actId = response.data.tkt_acc.acc_act._id
         this.status = response.data.tkt_status
+        console.log("ssssss",response.data)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -543,6 +551,19 @@ export default {
       const uploadFile = event.target.files[0]
       const formData = new FormData()
       formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      this.form.cmt_picture = dataResponse.data._id
+      this.form.cmt_file = null
+      document.getElementById('imageInput').value = ''
     },
     async onFileUpload(event) {
       const uploadFile = event.target.files[0]
@@ -582,6 +603,8 @@ export default {
       this.form.cmt_tkt = ticketId
       this.form.cmt_link = this.link
       this.form.cmt_act = userId
+      this.notifications.not_act=userId
+      this.notifications.not_type = 'Comment'
       // this.form.cmt_picture = this.imageName
       // this.form.cmt_file = this.file
 
@@ -614,7 +637,7 @@ export default {
       this.link = ''
       this.form.cmt_file = null
       this.form.cmt_picture = null
-      this.acceptButton()
+      this.acceptButton();
 
       // this.$socket.sendObj({
       // type: 'new-comment',
@@ -644,7 +667,7 @@ export default {
 
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
-      this.setScollHeight()
+      this.setScollHeight();
     },
     async getAcountComment() {
       try {

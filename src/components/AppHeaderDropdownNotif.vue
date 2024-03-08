@@ -47,7 +47,7 @@
                 <small class="text-medium-emphasis float-end mt-1">{{timeDiff(item.not_datetime)}}</small>
               </div>
               <div class="text-truncate font-weight-bold">
-                <span class="fa fa-exclamation text-danger"></span> New message
+                <span class="fa fa-exclamation text-danger"></span> New Message
               </div>
               <div class="small text-medium-emphasis text-truncate">
                <b class="ticket-number">#{{ item.not_tkt.tkt_number }}</b> There was a reply to the message.
