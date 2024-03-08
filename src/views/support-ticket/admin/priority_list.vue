@@ -21,7 +21,7 @@
           <!-- Smart Table -->
           <div>
             <CSmartTable :active-page="3" column-sorter :columns="columns" tableFilter table-filter-placeholder="Search"
-              class="text-center table-hover table-bordered table-alternate-background table-responsive" clickable-rows
+              class="text-center table-hover table-bordered table-alternate-background table-responsive" clickable-rows :sorterValue="{ column: 'level_of_priority', state: 'desc' }"
               header :items="items" pagination :table-props="{
                 striped: true,
                 hover: true,

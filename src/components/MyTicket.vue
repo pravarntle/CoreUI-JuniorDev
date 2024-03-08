@@ -4,7 +4,7 @@
       <div class="d-inline ms-2">
         <div id="underline_header">
           <CImage class="me-2 align-middle" id="custom_icon_header" :src="Ticketlogo" />
-          <h2 class="d-inline align-middle"><b>My Ticket</b></h2>
+          <h2 class="d-inline align-middle"><b>My Tickets</b></h2>
         </div>
       </div>
     </CCardHeader>
@@ -97,7 +97,7 @@
 
               </CModalFooter>
             </CModal>
-            <CModal alignment="center" :backdrop="true" :keyboard="false" :visible="visibleCancel"
+            <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleCancel"
               @close="() => { visibleCancel = false }">
               <CModalHeader>
                 <CModalTitle>Are you sure you want to <font class="Highlight-font-alert">Cancel This Ticket?</font>
@@ -114,6 +114,7 @@
                   :key="confirmCancelIndex" @mouseup.stop="">Confirm</CButton>
               </CModalFooter>
             </CModal>
+            
           </template>
 
 
@@ -197,7 +198,7 @@
   padding: 3px;
 }
 </style>
-<script>
+<script >
 import { ref } from 'vue'
 import Ticketlogo from '@/assets/images/blackTick.png'
 import ModalClosedBug from '@/assets/images/modal_closedBug.png'

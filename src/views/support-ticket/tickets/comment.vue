@@ -7,9 +7,7 @@
           <!-- Icon สำหรับย้อนกลับ -->
           <CCol>
             <div class="text-start" id="head_description">
-              
-                <CImage class="style-icon-button-back" :src="Button_back"  @click="backtohomepage()" />
-              
+              <CImage class="style-icon-button-back" :src="Button_back" @click="backtohomepage()" />
             </div>
           </CCol>
         </div>
@@ -37,10 +35,10 @@
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
       <div class="clearfix text-end" style="margin-right: 4%">
         <CButton class="btn btn-outline-info" style="font-weight: bold; font-size: x-small; width: 65px" id="b1" @click="() => {
-          visibleA = !visibleA
-          visibleB = !visibleB
-          javascript3()
-        }
+            visibleA = !visibleA
+            visibleB = !visibleB
+            javascript3()
+          }
           ">Short
         </CButton>
 
@@ -64,19 +62,15 @@
                 </CCol>
               </CCardBody>
               <hr />
-              <Crow>
-                <CCol class="text-start" style="padding: -1px">
-                  <CCradText class="ms-5"> <b>Attachment</b> </CCradText>
-                </CCol>
-              </Crow>
+              
               <Crow class="text-start">
                 <CCol style="margin-left: 5%">
                   <a v-if="picture">
-                    <br>
+                    <br />
                     <CImage :src="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
-                      style="max-width: auto; height: 300px;" /><br><br>
+                      style="max-width: auto; height: 300px" /><br /><br />
                     <a :href="`data:${picture.filetype};base64,${picture.image}`" alt="Comment Image"
-                      style="max-width: auto; height: 300px;" Download><u>Download</u></a>
+                      style="max-width: auto; height: 300px" Download><u>Download</u></a>
                   </a>
 
                   <br />
@@ -95,9 +89,8 @@
   <div>
     <CCard>
       <CCardBody>
-       
         <br />
-        <div class="scoll" >
+        <div class="scoll">
           <div v-for="(item, index) in comments" :key="index">
             <div class="card-body">
               <div class="row align-items-center">
@@ -110,38 +103,36 @@
                   </div>
                 </div>
                 <div class="col-10">
-                  <p><b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{ item.cmt_date }}</p>
-                  <div class="comments_box" style="width: fit-content; padding: 10px;">
-
+                  <p>
+                    <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
+                      timeDiff(item.cmt_date)
+                    }}
+                  </p>
+                  <div class="comments_box" style="width: fit-content; padding: 10px">
                     {{ item.cmt_message }}
-                    <br v-if="item.cmt_message">
+                    <br v-if="item.cmt_message" />
                     <a v-if="item.link" href="#" @click.prevent="openLink(item.cmt_link)">
                       {{ item.cmt_link }}
                     </a>
-                    <br v-if="item.link">
+                    <br v-if="item.link" />
                     <a v-if="item.cmt_picture">
                       <CRow>
                         <CImage :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
-                          alt="Comment Image" style="max-width: auto; height: 300px;" />
+                          alt="Comment Image" style="max-width: auto; height: 300px" />
                       </CRow>
                     </a>
-                    <br v-if="item.cmt_picture">
+                    <br v-if="item.cmt_picture" />
                     <a v-if="item.cmt_file">
                       <a :href="`data:${item.cmt_file.filetype};base64,${item.cmt_file.image}`" alt="Comment Image"
-                        style="max-width: auto; height: 300px;" download>{{ `${item.cmt_file.filename}` }}</a>
+                        style="max-width: auto; height: 300px" download>{{ `${item.cmt_file.filename}` }}</a>
                     </a>
-                    <br v-if="item.cmt_file">
+                    <br v-if="item.cmt_file" />
                     <a v-if="item.cmt_link" @click="openLink(item.cmt_link)"
-                      style="text-decoration: none; color: #007bff; ">
+                      style="text-decoration: none; color: #007bff">
                       {{ item.cmt_link }}
                     </a>
-
                   </div>
-
-        </div>
-
-
-
+                </div>
 
                 <!-- <span v-if="item.file">
                   <img v-if="isImageFile(item.file.name)" :src="getImageIcon(item.file.name)" alt="File"
@@ -153,7 +144,7 @@
             </div>
           </div>
         </div>
-        <br>
+        <br />
         <CCardTitle>Comments</CCardTitle>
         <div class="container text-start" id="My_Comments">
           <div class="row align-items-center">
@@ -165,13 +156,11 @@
               </div>
             </div>
             <div class="col-10">
-
-
               <CFormInput v-model="comment" class="comments_box" type="text" placeholder="add comments "
                 aria-label="comments_box" id="comments_box" ref="comments_box" @input="checkCharacterLimit"
                 @keyup.enter="onSave" maxlength="200" row="3">
               </CFormInput>
-              <br>
+              <br />
               <!-- <CFormInput type="file" @change="onFileUpload" /> -->
               <input type="file" ref="pictureInput" @change="onPictureUpload" style="display: none" id="imageInput"
                 accept=".png, .jpg, .jpeg" />
@@ -186,33 +175,35 @@
               <CButton @click="attachFile" id="attach_file"><img class="attach-file" :src="Attach_File" alt="Attach File"
                   style="width: 12px" />
               </CButton>
-              <span class="text-end" id="charCount" style="margin-left: 710px;">Character count: {{ characterCount }} /200</span>
+              <span class="text-end" id="charCount" style="margin-left: 70%">Character count: {{ characterCount }}
+                /200</span>
               <p id="selectedImage">{{ imageName }}</p>
-              <span v-if="link !== ''"> | <a>link : {{ link }}</a></span>
+              <span v-if="link !== ''">
+                | <a>link : {{ link }}</a></span>
             </div>
-            <div class="col" v-if="status =='Closed'||status =='Closed Bug'">
+            <div class="col" v-if="status == 'Closed' || status == 'Closed Bug'">
               <div class="avatar">
                 <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment"
-                :disabled="true"> <img class="commit"
-                    :src="commit" alt="Commit Icon" /></CButton>
+                  :disabled="true">
+                  <img class="commit" :src="commit" alt="Commit Icon" />
+                </CButton>
               </div>
             </div>
             <div class="col" v-else>
               <div class="avatar">
-                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment"
-                  :disabled="comment === '' && !form.cmt_picture && !form.cmt_file && link === ''"> <img class="commit"
-                    :src="commit" alt="Commit Icon" /></CButton>
+                <CButton @keyup.enter="vaildateBeforeSave" @click="vaildateBeforeSave" id="submitComment" :disabled="comment === '' &&
+                  !form.cmt_picture &&
+                  !form.cmt_file &&
+                  link === ''
+                  ">
+                  <img class="commit" :src="commit" alt="Commit Icon" />
+                </CButton>
               </div>
             </div>
-            
           </div>
         </div>
-        
       </CCardBody>
     </CCard>
-
-
-
   </div>
 </template>
 
@@ -226,7 +217,7 @@ import Attach_Image from '@/assets/images/Attach_Image.png'
 import { CBadge, CButton, CFormInput } from '@coreui/vue-pro'
 import insert_link from '@/assets/images/insert_link.png'
 import Attach_File from '@/assets/images/Attach_File.png'
-import axios from 'axios';
+import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
@@ -262,13 +253,14 @@ export default {
     CCardText,
     CFormInput,
     CButton,
-    CBadge
+    CBadge,
   },
   data() {
     return {
       uploadImage: '',
       uploadFile: '',
-      form: {  // Initialize the form object
+      form: {
+        // Initialize the form object
         cmt_message: '',
         cmt_link: '',
         cmt_picture: '',
@@ -303,50 +295,46 @@ export default {
       firstname: '',
       email: '',
       date: '',
-      status:'',
+      status: '',
       comment: '',
       commentAccount: '',
       characterCount: 0, // เพิ่ม characterCount เริ่มต้นที่ 0
-      actId:'',
-      notifications:{
-        not_datetime:'',
-        not_status:'',
-        not_type:'',
-        not_act:'',
-        not_tkt:'',
-        not_cmt:'',
-        not_acc:'',
+      actId: '',
+      notifications: {
+        not_datetime: '',
+        not_status: '',
+        not_type: '',
+        not_act: '',
+        not_tkt: '',
+        not_cmt: '',
+        not_acc: '',
       },
-      Button_back : Button_back,
-
-    };
+      Button_back: Button_back,
+    }
   },
   computed: {
     characterCount() {
-      return this.comment.length;
+      return this.comment.length
     },
   },
   setup() {
     const getBadge = (priorities) => {
-
       switch (priorities) {
         case 'Low':
-          return 'success';
+          return 'success'
         case 'Medium':
-          return 'warning';
+          return 'warning'
         case 'High':
-          return 'danger';
+          return 'danger'
 
         default:
-          return 'primary'; // Return a default color if none of the cases match.
+          return 'primary' // Return a default color if none of the cases match.
       }
-    };
-
-    return {
-      getBadge
     }
 
-
+    return {
+      getBadge,
+    }
   },
 
   methods: {
@@ -360,9 +348,8 @@ export default {
     },
 
     vaildateBeforeSave() {
-
       // Regular expression to check for special characters
-      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/
 
       // Check for empty values and display validation messages
       if (this.comment.trim() === '' || specialCharRegex.test(this.comment)) {
@@ -373,40 +360,37 @@ export default {
         } else if (this.link) {
           this.onSave()
         } else {
-
-          console.error('Invalid comment');
+          console.error('Invalid comment')
         }
-
       } else {
         this.onSave()
       }
-
     },
 
     async countCharacters(event) {
       // Get the input element
-      var inputElement = event.target;
+      var inputElement = event.target
 
       // Get the span element to display the character count
-      var charCountElement = document.getElementById("charCount");
+      var charCountElement = document.getElementById('charCount')
 
       // Get the value of the input and calculate the character count
-      var charCount = inputElement.value.length;
+      var charCount = inputElement.value.length
 
       // Update the span element with the character count
-      charCountElement.innerText = charCount;
+      charCountElement.innerText = charCount
 
       // Optionally, update the data property to use in the template
-      this.characterCount = charCount;
+      this.characterCount = charCount
 
       // Your async logic here (if needed)
       // await someAsyncFunction();
     },
 
     checkCharacterLimit() {
-      const maxCharacters = 200;
+      const maxCharacters = 200
       if (this.comment.length > maxCharacters) {
-        this.comment = this.comment.substring(0, maxCharacters);
+        this.comment = this.comment.substring(0, maxCharacters)
       }
     },
 
@@ -414,35 +398,38 @@ export default {
       const imageInput = this.$refs.pictureInput
       this.$refs.pictureInput.click()
 
-
       imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]
 
         if (file) {
           // ตรวจสอบประเภทของไฟล์ที่แนบ
-          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif']
+          const fileExtension = file.name.split('.').pop().toLowerCase()
 
           if (allowedExtensions.includes(fileExtension)) {
-            this.imageName = file.name;
+    
+            this.imageName = file.name
 
             // อ่านไฟล์เป็น Blob
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onload = (e) => {
-              const imageBlob = new Blob([e.target.result], { type: file.type });
-              this.form.cmt_picture = imageBlob; // บันทึกข้อมูลรูปภาพเป็น Blob
-            };
-            reader.readAsArrayBuffer(file);
+              const imageBlob = new Blob([e.target.result], { type: file.type })
+              this.form.cmt_picture = imageBlob // บันทึกข้อมูลรูปภาพเป็น Blob
+            }
+            reader.readAsArrayBuffer(file)
 
-
+            console.log('รูปถูกแนบเรียบร้อย')
           } else {
-            this.imageName = '';
-
+            
+            this.imageName = ''
+            console.error('ประเภทของไฟล์ไม่รองรับ')
           }
         } else {
-          this.imageName = '';
+          this.imageName = ''
+          console.error('เกิดข้อผิดพลาดในการแนบรูป')
         }
-      });
+        console.log("ณุป",this.form.cmt_picture)
+      })
     },
     async attachLink() {
       const link = prompt('Please enter a link:') // ใช้ prompt เพื่อรับลิงค์จากผู้ใช้
@@ -452,112 +439,112 @@ export default {
       }
     },
     async attachFile() {
-      const fileInput = this.$refs.fileInput;
-      this.$refs.fileInput.click();
+      const fileInput = this.$refs.fileInput
+      this.$refs.fileInput.click()
 
       fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]
 
         if (file) {
           // ตรวจสอบประเภทของไฟล์ที่แนบ
-          const allowedExtensions = ['pdf'];
-          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const allowedExtensions = ['pdf']
+          const fileExtension = file.name.split('.').pop().toLowerCase()
 
           if (allowedExtensions.includes(fileExtension)) {
-            this.imageName = file.name;
+            this.imageName = file.name
 
             // อ่านไฟล์เป็น Blob
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onload = (e) => {
-              const fileBlob = new Blob([e.target.result], { type: file.type });
-              this.form.cmt_file = fileBlob; // บันทึกข้อมูลไฟล์เป็น Blob
-            };
-            reader.readAsArrayBuffer(file);
-
+              const fileBlob = new Blob([e.target.result], { type: file.type })
+              this.form.cmt_file = fileBlob // บันทึกข้อมูลไฟล์เป็น Blob
+            }
+            reader.readAsArrayBuffer(file)
           } else {
-            this.imageName = '';
+            this.imageName = ''
           }
         } else {
-          this.imageName = '';
+          this.imageName = ''
         }
-      });
+      })
     },
     async isImageFile(filename) {
-      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // รายการส่วนขยายของไฟล์รูปภาพ
-      const fileExtension = filename.split('.').pop().toLowerCase();
-      return imageExtensions.includes(fileExtension);
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'] // รายการส่วนขยายของไฟล์รูปภาพ
+      const fileExtension = filename.split('.').pop().toLowerCase()
+      return imageExtensions.includes(fileExtension)
     },
 
-
     getImageIcon(filename) {
-      const fileExtension = filename.split('.').pop().toLowerCase();
+      const fileExtension = filename.split('.').pop().toLowerCase()
       switch (fileExtension) {
         case 'docx':
-          return require('@/assets/images/doc_icon.png');
+          return require('@/assets/images/doc_icon.png')
         // case 'jpeg':
         //   return require('@/assets/images/jpeg_icon.png');
         case 'png':
-          return require('@/assets/images/png_icon.png');
+          return require('@/assets/images/png_icon.png')
         case 'pdf':
-          return require('@/assets/images/pdf_icon.png');
+          return require('@/assets/images/pdf_icon.png')
         // เพิ่มประเภทของไฟล์อื่นๆ ตามต้องการ
         default:
-          return require('@/assets/images/file_icon.png'); // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
+          return require('@/assets/images/file_icon.png') // รูปไอคอนเริ่มต้นหากไม่รู้จักประเภทของไฟล์
       }
     },
     async openLink(link) {
-      window.open(link, '_blank');
+      window.open(link, '_blank')
     },
     async getTicket() {
       try {
+        const ticketId = this.ticketId
 
-        const ticketId = this.ticketId;
-
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/getOne/stts_tickets/${ticketId}`,
           {
             populate: [
               {
-                "path": "tkt_act",
-                "populate": "act_picture"
-              }
-              ,"tkt_picture"
-              ,
+                path: 'tkt_act',
+                populate: 'act_picture',
+              },
+              'tkt_picture',
               {
-                  "path":"tkt_acc",
-                  "populate":"acc_act"
-              }
-              ,"tkt_picture"
-          ] 
-        });
-        this.type = response.data.tkt_types;
-        this.description = response.data.tkt_description;
-        this.title = response.data.tkt_title;
-        this.priorities = response.data.tkt_priorities;
-        this.picture = response.data.tkt_picture;
-        this.date = response.data.tkt_time;
+                path: 'tkt_acc',
+                populate: 'acc_act',
+              },
+              'tkt_picture',
+            ],
+          },
+        )
+        this.type = response.data.tkt_types
+        this.description = response.data.tkt_description
+        this.title = response.data.tkt_title
+        this.priorities = response.data.tkt_priorities
+        this.picture = response.data.tkt_picture
+        this.date = response.data.tkt_time
         this.acountFile = response.data.tkt_act.act_picture.filetype
         this.acountImage = response.data.tkt_act.act_picture.image
-        this.email = response.data.tkt_act.act_email_address;
-        this.firstname = response.data.tkt_act.act_first_name_eng;
+        this.email = response.data.tkt_act.act_email_address
+        this.firstname = response.data.tkt_act.act_first_name_eng
         this.actId = response.data.tkt_acc.acc_act._id
         this.status = response.data.tkt_status
+        console.log("ssssss",response.data)
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     },
     async getAcount() {
       try {
-
         const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
         const userId = userData.id // ดึงค่า id จาก userData
 
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`, { populate: ["act_picture"] });
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${userId}`,
+          { populate: ['act_picture'] },
+        )
         this.acountIdFile = response.data.act_picture.filetype
         this.acountIdImage = response.data.act_picture.image
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
     },
     async onPictureUpload(event) {
@@ -565,133 +552,164 @@ export default {
       const formData = new FormData()
       formData.append('file', uploadFile)
 
+      const dataResponse = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      this.form.cmt_picture = dataResponse.data._id
+      this.form.cmt_file = null
+      document.getElementById('imageInput').value = ''
     },
     async onFileUpload(event) {
-        const uploadFile = event.target.files[0]
-        const formData = new FormData()
-        formData.append('file', uploadFile)
-      
-        const dataResponse = await axios.post(`${process.env.VUE_APP_URL}/mongoose/upload/stts_files`, formData, {
+      const uploadFile = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+
+      const dataResponse = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/upload/stts_files`,
+        formData,
+        {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        this.form.cmt_file = dataResponse.data._id
-        this.form.cmt_picture = null
-        document.getElementById('fileInput').value = ''
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      this.form.cmt_file = dataResponse.data._id
+      this.form.cmt_picture = null
+      document.getElementById('fileInput').value = ''
     },
 
     async onSave() {
-        dayjs.locale('th')
-        dayjs.extend(require('dayjs/plugin/timezone'))
-        dayjs.tz.setDefault('Asia/Bangkok')
-        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
-        const userId = userData.id.toString(); // ดึงค่า id จาก userData
-        
-        const date = dayjs()
+      dayjs.locale('th')
+      dayjs.extend(require('dayjs/plugin/timezone'))
+      dayjs.tz.setDefault('Asia/Bangkok')
+      const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
+      const userId = userData.id.toString() // ดึงค่า id จาก userData
 
+      const date = dayjs()
 
-        this.form.cmt_file = this.form.cmt_file || null;
-        this.form.cmt_picture = this.form.cmt_picture || null;
+      this.form.cmt_file = this.form.cmt_file || null
+      this.form.cmt_picture = this.form.cmt_picture || null
 
-        const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-        const ticketId=this.ticketId
-        this.form.cmt_message = this.comment
-        this.form.cmt_date = comment_date
-        this.form.cmt_tkt = ticketId
-        this.form.cmt_link = this.link
-        this.form.cmt_act = userId
-        // this.form.cmt_picture = this.imageName
-        // this.form.cmt_file = this.file
-    
-        //     // .then((result) => {
-        //     //   this.$router.push('/support-ticket/user/dashboard')
-        //     // })
+      const comment_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
+      const ticketId = this.ticketId
+      this.form.cmt_message = this.comment
+      this.form.cmt_date = comment_date
+      this.form.cmt_tkt = ticketId
+      this.form.cmt_link = this.link
+      this.form.cmt_act = userId
+      this.notifications.not_act=userId
+      this.notifications.not_type = 'Comment'
+      // this.form.cmt_picture = this.imageName
+      // this.form.cmt_file = this.file
 
-        try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`, {
+      //     // .then((result) => {
+      //     //   this.$router.push('/support-ticket/user/dashboard')
+      //     // })
+
+      try {
+        await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/insert/stts_comments`,
+          {
             data: this.form,
-          });
-          setTimeout(function() {
+          },
+        )
+        setTimeout(
+          function () {
             this.getComment()
-          }.bind(this), 200)
-          // Handle success here
-        } catch (error) {
-          console.log(error);
-          // Handle the error appropriately (e.g., display an error message)
-        }
-        
-        this.comment = ''
-        this.imageDataURL = ''
-        this.imageName = ''
-        this.link = ''
-        this.form.cmt_file = null;
-        this.form.cmt_picture = null;
-        this.acceptButton();
+          }.bind(this),
+          200,
+        )
+        // Handle success here
+      } catch (error) {
+        console.log(error)
+        // Handle the error appropriately (e.g., display an error message)
+      }
 
+      this.comment = ''
+      this.imageDataURL = ''
+      this.imageName = ''
+      this.link = ''
+      this.form.cmt_file = null
+      this.form.cmt_picture = null
+      this.acceptButton();
 
-        // this.$socket.sendObj({
-        // type: 'new-comment',
-        // comment: this.form,
-        // });
-        
-        
-        // window.location.reload();
+      // this.$socket.sendObj({
+      // type: 'new-comment',
+      // comment: this.form,
+      // });
+
+      // window.location.reload();
     },
-    async getComment(){
-        const ticketId=this.ticketId
-        const comment = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_comments`, {
-              where: {
-                cmt_tkt: ticketId,
-              },
-              populate:[
-              {
-                  "path":"cmt_act",
-                  "populate":"act_picture"
-              },
-              "cmt_picture","cmt_file"
-              ]
-                
-              
-            });
-            
+    async getComment() {
+      const ticketId = this.ticketId
+      const comment = await axios.post(
+        `${process.env.VUE_APP_URL}/mongoose/get/stts_comments`,
+        {
+          where: {
+            cmt_tkt: ticketId,
+          },
+          populate: [
+            {
+              path: 'cmt_act',
+              populate: 'act_picture',
+            },
+            'cmt_picture',
+            'cmt_file',
+          ],
+        },
+      )
 
-            this.comments = comment.data;
-            this.commentAccount= comment.data.cmt_act;
-
-            
+      this.comments = comment.data
+      this.commentAccount = comment.data.cmt_act
+      this.setScollHeight();
     },
     async getAcountComment() {
-        try {
-
-          const commentAcount = this.commentAccount;
-          const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`, { populate: ["act_picture"] });
-          // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
+      try {
+        const commentAcount = this.commentAccount
+        const response = await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/getOne/stts_accounts/${commentAcount}`,
+          { populate: ['act_picture'] },
+        )
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    },
+    setScollHeight() {
+      const scollElement = document.querySelector('.scoll')
+      if (this.comments.length <= 4) {
+        scollElement.style.height = 'auto'
+      } else {
+        scollElement.style.height = '500px'
+      }
+      console.log('comment length' + this.comments.length)
     },
     async getFileType(filetype) {
-        switch (filetype) {
-          case 'image/jpeg':
-          case 'image/jpg':
-          case 'image/png':
-            return 'รูปภาพ';
-          case 'application/pdf':
-            return 'ไฟล์ PDF';
-          case 'application/msword':
-          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-            return 'ไฟล์เอกสาร Microsoft Word';
-          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            return 'ไฟล์เอกสาร Microsoft Excel';
-          default:
-            return 'ไฟล์อื่น ๆ';
-        }
+      switch (filetype) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+          return 'รูปภาพ'
+        case 'application/pdf':
+          return 'ไฟล์ PDF'
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          return 'ไฟล์เอกสาร Microsoft Word'
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+          return 'ไฟล์เอกสาร Microsoft Excel'
+        default:
+          return 'ไฟล์อื่น ๆ'
+      }
     },
-    formatDate: function(dateString) {
-        const options = { day: '2-digit', month: 'short', year: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-GB', options);
+    formatDate: function (dateString) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric' }
+      return new Date(dateString).toLocaleDateString('en-GB', options)
     },
     async notificationChange() {
       dayjs.locale('en')
@@ -711,13 +729,12 @@ export default {
       this.notifications.not_cmt = null
 
       try {
-        await axios
-          .post(
-            `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
-            {
-              data: this.notifications,
-            },
-          )
+        await axios.post(
+          `${process.env.VUE_APP_URL}/mongoose/insert/stts_notifications`,
+          {
+            data: this.notifications,
+          },
+        )
       } catch (error) {
         console.log(error)
       }
@@ -730,7 +747,6 @@ export default {
       const userId = userData.id // ดึงค่า id จาก userData
       const date = dayjs()
       const ticket_date = `${date.format('DD/MM/YYYY-HH:mm:ss:SSS')}`
-
 
       try {
         const dataResponse = await axios
@@ -752,28 +768,81 @@ export default {
         console.log(error)
       }
     },
-    backtohomepage(){
-      this.$router.push({ name: 'ST - Dashboard User'});
+    backtohomepage() {
+      this.$router.push({ name: 'ST - Dashboard User' })
     },
-      
-      
+    timeDiff(dateTime) {
+    // Split the date-time string
+        const dateTimeParts = dateTime.split('-');
 
+        // Extract date and time components
+        const datePart = dateTimeParts[0].trim();
+        const timePart = dateTimeParts[1].trim();
+
+        // Extract date components
+        const dateParts = datePart.split('/');
+        const day = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Months are zero-indexed
+        const year = parseInt(dateParts[2]);
+
+        // Extract time components
+        const timeParts = timePart.split(':');
+        const hour = parseInt(timeParts[0]);
+        const minute = parseInt(timeParts[1]);
+        const second = parseInt(timeParts[2]);
+        const millisecond = parseInt(timeParts[3]);
+
+        // Create the Date object
+        const startDate = new Date(year, month, day, hour, minute, second, millisecond);
+        const endDate = new Date();
+
+        // Calculate the difference in milliseconds
+        const timeDifference = endDate.getTime() - startDate.getTime();
+
+        // Convert milliseconds to seconds
+        const secondsDifference = Math.abs(timeDifference / 1000);
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(secondsDifference / (3600 * 24));
+        const hours = Math.floor((secondsDifference % (3600 * 24)) / 3600);
+        const minutes = Math.floor((secondsDifference % 3600) / 60);
+        const seconds = Math.floor(secondsDifference % 60);
+        if (days > 0) {
+          if(days ==1){
+            return days + ' day ago';
+          }
+          return days + ' days ago';
+        } else if (hours > 0) {
+          if(hours ==1){
+            return hours + ' hour ago';
+          }
+            return hours + ' hours ago';
+        } else if (minutes > 0) {
+          if(hours ==1){
+            return minutes + ' minute ago';
+          }
+            return minutes + ' minutes ago';
+        } else {
+            return seconds + ' seconds ago';
+        }
+        // Return the difference as an object
+        
+    }
   },
-      
-  mounted(){
-    const itemId = this.$route.params.itemId;
-    this.ticketId = itemId;
-    this.getTicket();
-    this.getComment(); 
-    this.getAcount(); 
+
+  mounted() {
+    const itemId = this.$route.params.itemId
+    this.ticketId = itemId
+    this.getTicket()
+    this.getComment()
+    this.getAcount()
     this.commentInterval = setInterval(() => {
-      this.getComment();
-    }, 1000);
+      this.getComment()
+    }, 1000)
   },
   beforeUnmount() {
-    clearInterval(this.commentInterval);
+    clearInterval(this.commentInterval)
   },
-  
 }
 </script>
 
@@ -786,11 +855,11 @@ export default {
   border-radius: 50%;
   /* ทำให้รูปเป็นวงกลม */
 }
-.scoll{
+
+.scoll {
   width: 100%;
   height: 500px;
   overflow-y: auto !important;
-  
 }
 
 .Arrow_Left {
@@ -896,7 +965,7 @@ a:hover {
 
 .style-icon-button-back {
   width: 30px;
-  cursor: pointer; 
+  cursor: pointer;
   margin-left: 10px;
 }
 </style>

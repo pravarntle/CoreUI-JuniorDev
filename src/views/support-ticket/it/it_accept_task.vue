@@ -1,6 +1,6 @@
 <template>
   <CCard class="p-2">
-    <CCardbody class="vh-55">
+    <CCardbody class="vh-auto">
       <CRow>
         <div>
           <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
@@ -48,7 +48,7 @@
       <hr />
 
       <!-- <CImage align="end" class="Short" :src="Short" /> -->
-      <div class="clearfix text-end me-5">
+      <div class="clearfix text-end me-2">
         <b>{{ number }}</b>
 
         <CRow>
@@ -75,21 +75,15 @@
       </div>
     </CCardbody>
     <CCardFooter class="bg-white">
-      <Crow>
-        <CCol class="d-flex text-start">
-          <output class="ms-1"><h5>1</h5> </output>
-          <CCradText class="ms-3"><h5>Attachment</h5> </CCradText>
-        </CCol>
-      </Crow>
 
       <Crow class="text-start">
         <CCol class="ps-3 ms-5">
-          <CCardImage class="File_test" :src="File_test"/>
+          
 
           <a v-if="picture">
             <a
               :href="`data:${picture.filetype};base64,${picture.image}`"
-              alt="Comment Image"
+              alt=""
               class="mw-auto"
               download
               >{{ `${picture.filename}` }}</a
@@ -105,9 +99,24 @@
         <CButton
           class="btn-sec fw-bolder fs-4 text-white rounded-5 custom-btn"
           color="success"
-          @click="acceptButton"
+          @click="modalShow"
           >Accept</CButton
         >
+        <CModal alignment="center"  :keyboard="false" :visible="visibleShow"
+              @close="() => { visibleShow = false }">
+              
+              <CModalBody>
+                <CModalTitle id="headModal">Are you sure you want to <font class="Highlight-font-alert">Accept This Ticket?</font>
+                </CModalTitle>
+                <hr>
+                When you click on confirm button, the ticket will be Accept.
+              </CModalBody>
+              <CModalFooter>
+                
+                <CButton color="primary" @click="acceptButton"
+                  :key="confirmCancelIndex" @mouseup.stop="">Confirm</CButton>
+              </CModalFooter>
+            </CModal>
       </div>
     </CCardFooter>
   </CCard>
@@ -215,7 +224,8 @@ export default {
         not_tkt:'',
         not_cmt:'',
         not_acc:'',
-      }
+      },
+      visibleShow:false,
       //notย่อมาจาก notifications
     }
   },
@@ -284,7 +294,7 @@ export default {
             console.log(error)
           })
         this.accId = dataResponse.data._id
-        this.updateTicket()
+        this.updateTicket();
       } catch (error) {
         console.log(error)
       }
@@ -401,7 +411,11 @@ export default {
         console.log(error)
       }
     },
-    
+    modalShow(){
+      this.visibleShow=true;
+
+    },
+   
   },
   mounted() {
     const ticketId = this.$route.params.itemId
@@ -410,7 +424,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .avatar-round {
   width: 100px;
   /* ปรับขนาดตามที่ต้องการ */
@@ -461,6 +475,9 @@ export default {
 .custom-btn {
   width: 150px;
   /* และคุณสามารถเพิ่มสไตล์อื่น ๆ ตามต้องการ */
+}
+#headModal {
+  text-align: left;
 }
 
 </style>

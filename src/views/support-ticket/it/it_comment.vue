@@ -1,21 +1,17 @@
 <template>
   <CRow class="mr-md-3 p-2" >
     <CCol xs class="col-md-9 mr-md-3" id="col-ticket" >
-      <CCard class="p-2">
+      <CCard class="p-3">
         <CCardbody>
           <CRow>
             <div>
               <!-- ตรงนี้ต้องกดได้ เพื่อย้อนกลับ -->
               <!-- Icon สำหรับย้อนกลับ -->
               <CCol>
-                <div class="text-start div-arrow-left" >
-                  <CAvatar
-                    class="Arrow_Left"
-                    :src="Arrow_Left"
-                  />
-                  <!-- <label style="margin-left: 920px;"> ใส่ ICON สำหรับไปรายละเอียด Ticket ต่อไป </label> -->
-                </div>
-              </CCol>
+            <div class="text-start" id="head_description">
+              <CImage class="style-icon-button-back" :src="Button_back" @click="backtohomepage()" />
+            </div>
+          </CCol>
             </div>
           </CRow>
           <hr />
@@ -84,14 +80,7 @@
                     </CCol>
                   </CCardBody>
                   <hr />
-                  <Crow>
-                    <CCol class="text-start" >
-                      <output class="output-number"> 1 </output>
-                      <CCradText style="margin-left: 2%">
-                        Attachment
-                      </CCradText>
-                    </CCol>
-                  </Crow>
+                  
                   <Crow class="text-start">
                     <CCol class="output-number">
                       
@@ -138,9 +127,10 @@
                         visibleVerticallyCenteredDemo = true
                       }
                       "
-                    >Resolve</CButton
+                    >Edit Status</CButton
                   >
                   <CModal
+                    :keyboard="false"
                     alignment="center"
                     :visible="visibleVerticallyCenteredDemo"
                     @close="() => {
@@ -148,22 +138,21 @@
                       }
                       "
                   >
-                    <CModalHeader>
-                      <CModalTitle>Resolve Status</CModalTitle>
-                    </CModalHeader>
+                   
                     <CModalBody>
+                      <CModalTitle id="button-head">Edit Status</CModalTitle>
+                      <hr>
                       <div style="margin-bottom: 20px">
                         <b>{{status}}</b>
                       </div>
                       <CFormSelect
                           aria-label="Default select example"
                           color="secondary"
-                          v-model="edit"
+                          v-model="status"
                           :options="[
-                            'Status to edit',
-                            { label: 'Closed', value: 'Closed' },
-                            { label: 'Closed Bug', value: 'Closed Bug' },
-                            { label: 'Open', value: 'Open'}
+                              { label: 'Closed', value: 'Closed', disabled: this.status === 'Closed' },
+                              { label: 'Closed Bug', value: 'Closed Bug', disabled: this.status === 'Closed Bug' },
+                              { label: 'Open', value: 'Open', disabled: this.status === 'Open'}
                           ]">
                       </CFormSelect>
                     </CModalBody>
@@ -232,7 +221,7 @@
   <div>
     <CCard>
       <CCardBody>
-        <div class="scoll">
+        <div class="scoll" >
           <br />
           <div v-for="(item, index) in comments" :key="index">
             <div class="card-body">
@@ -254,21 +243,24 @@
                 <div class="col-10">
                   <p>
                     <b>{{ item.cmt_act.act_first_name_eng }}</b> &emsp;{{
-                      item.cmt_date
+                      timeDiff(item.cmt_date)
                     }}
                   </p>
                   <div
                     class="comments_box div-comment-box"
                   >
                     {{ item.cmt_message }}
+                    
                     <a
                       v-if="item.link"
                       href="#"
                       @click.prevent="openLink(item.cmt_link)"
                     >
+                    <br />
                       {{ item.cmt_link }}
                     </a>
                     <a v-if="item.cmt_picture">
+                      <br />
                       <CImage
                         :src="`data:${item.cmt_picture.filetype};base64,${item.cmt_picture.image}`"
                         alt="Comment Image"
@@ -379,8 +371,8 @@
                   :src="Attach_File"
                   alt="Attach File"
                 />
-              </CButton>
-              <span class="text-end span-char-count" 
+              </CButton> 
+              <span class="text-end span-char-count"  id="charCount"
                 >Character count: {{ characterCount }} / 200</span
               >
               <p id="selectedImage">{{ imageName }}</p>
@@ -437,6 +429,7 @@ import Attach_File from '@/assets/images/Attach_File.png'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
+import Button_back from '@/assets/images/Arrow_Left.png'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
 import {
   CAvatar,
@@ -453,6 +446,7 @@ export default {
   setup() {
     return {
       Arrow_Left,
+      Button_back,
       Icon_user_man,
       Short,
       File_test,
@@ -521,6 +515,7 @@ export default {
       status: '',
       edit:'',
       actId:'',
+      Button_back: Button_back,
       accId:'',
       allUpdate:{
         mod_act:'',
@@ -539,6 +534,11 @@ export default {
       }
       
     }
+  },
+  computed: {
+    characterCount() {
+      return this.comment.length;
+    },
   },
   setup() {
     const getBadge = (priorities) => {
@@ -570,8 +570,24 @@ export default {
       }
     },
 
-    async countCharacters() {
-      this.characterCount = this.comment.length
+    async countCharacters(event) {
+      // Get the input element
+      var inputElement = event.target;
+
+      // Get the span element to display the character count
+      var charCountElement = document.getElementById("charCount");
+
+      // Get the value of the input and calculate the character count
+      var charCount = inputElement.value.length;
+
+      // Update the span element with the character count
+      charCountElement.innerText = charCount;
+
+      // Optionally, update the data property to use in the template
+      this.characterCount = charCount;
+
+      // Your async logic here (if needed)
+      // await someAsyncFunction();
     },
 
     async attachImage() {
@@ -588,6 +604,7 @@ export default {
 
           if (allowedExtensions.includes(fileExtension)) {
             this.imageName = file.name
+            console.log(this.imageName)
 
             // อ่านไฟล์เป็น Blob
             const reader = new FileReader()
@@ -825,11 +842,6 @@ export default {
       this.form.cmt_file = null
       this.form.cmt_picture = null
      
-      
-      // comment: this.form,
-      // });
-
-      //  
     },
     async getComment() {
       const ticketId = this.ticketId
@@ -849,10 +861,10 @@ export default {
           ],
         },
       )
-      
       this.comments = comment.data
       this.commentAccount = comment.data.cmt_act
-      
+      console.log(this.comments)
+      this.setScollHeight();
     },
     async getAcountComment() {
       try {
@@ -1027,6 +1039,92 @@ export default {
         console.log(error)
       }
     },
+    setScollHeight() {
+      const scollElement = document.querySelector('.scoll');
+      if (this.comments.length <= 4) {
+        scollElement.style.height = 'auto';
+      } else {
+        scollElement.style.height = '500px';
+      }
+      
+    
+    },
+    backtohomepage() {
+      this.$router.push({ name: 'ST - it_my_task' })
+    },
+    timeDiff(dateTime) {
+    // Split the date-time string
+        const dateTimeParts = dateTime.split('-');
+
+        // Extract date and time components
+        const datePart = dateTimeParts[0].trim();
+        const timePart = dateTimeParts[1].trim();
+
+        // Extract date components
+        const dateParts = datePart.split('/');
+        const day = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Months are zero-indexed
+        const year = parseInt(dateParts[2]);
+
+        // Extract time components
+        const timeParts = timePart.split(':');
+        const hour = parseInt(timeParts[0]);
+        const minute = parseInt(timeParts[1]);
+        const second = parseInt(timeParts[2]);
+        const millisecond = parseInt(timeParts[3]);
+
+        // Create the Date object
+        const startDate = new Date(year, month, day, hour, minute, second, millisecond);
+        const endDate = new Date();
+
+        // Calculate the difference in milliseconds
+        const timeDifference = endDate.getTime() - startDate.getTime();
+
+        // Convert milliseconds to seconds
+        const secondsDifference = Math.abs(timeDifference / 1000);
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(secondsDifference / (3600 * 24));
+        const hours = Math.floor((secondsDifference % (3600 * 24)) / 3600);
+        const minutes = Math.floor((secondsDifference % 3600) / 60);
+        const seconds = Math.floor(secondsDifference % 60);
+
+        // Return the difference as an object
+        if (days > 0) {
+          if(days ==1){
+            return days + ' day ago';
+          }
+          return days + ' days ago';
+        } else if (hours > 0) {
+          if(hours ==1){
+            return hours + ' hour ago';
+          }
+            return hours + ' hours ago';
+        } else if (minutes > 0) {
+          if(hours ==1){
+            return minutes + ' minute ago';
+          }
+            return minutes + ' minutes ago';
+        } else {
+            return seconds + ' seconds ago';
+        }
+        
+    },
+    // addComment() {
+    //   if (this.newComment.trim() !== '') {
+    //     this.comments.push(this.comment);
+    //     this.newComment = '';
+    //     this.$nextTick(() => {
+    //       this.scrollToBottom();
+    //     });
+    //   }
+    // },
+    // scrollToBottom() {
+    //   this.$refs.commentContainer.scrollTop = this.$refs.commentContainer.scrollHeight;
+    // }
+  
+  
+   
     
   },
   beforeUnmount() {
@@ -1042,6 +1140,7 @@ export default {
     this.commentInterval = setInterval(() => {
       this.getComment();
     }, 1000);
+    
   },
 }
 </script>
@@ -1063,7 +1162,7 @@ export default {
 
 .scoll{
   width: 100%;
-  height: 500px;
+  height: auto;
   overflow-y: auto !important;
   
 }
@@ -1125,7 +1224,7 @@ export default {
 }
 
 .span-char-count {
-  margin-left: 710px;
+  margin-left: 70%;
 }
 
 .btn-short {
@@ -1215,6 +1314,12 @@ img.commit {
   border-color: white;
 }
 
+.style-icon-button-back {
+  width: 30px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 #submitComment {
   box-shadow: none;
 }
@@ -1227,5 +1332,9 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+#button-head {
+  text-align: left;
+  color: #000;
 }
 </style>
