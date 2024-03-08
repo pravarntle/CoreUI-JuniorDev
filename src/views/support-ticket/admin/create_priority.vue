@@ -291,16 +291,51 @@ export default {
           // จบการโหลด
           this.isLoading = false
           // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          
+          this.checkDuplicateValue();
           this.onSave()
         }, 500)
       } else {
         console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.visibleLivesubmit = false
       }
+
     },
+    async  checkDuplicateValue(value) {
+      try {
+          // ส่งค่า value ไปที่ API หรือฟังก์ชั่นที่เรียกข้อมูลจากฐานข้อมูล
+          const response = await axios.get(`${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`);
+          // ตรวจสอบว่ามีค่าซ้ำในฐานข้อมูลหรือไม่
+          console.log("sssaad",value)
+          console.log("sssaad",response.data.pri_level)
+          if (response.data.pri_level==value) {
+              // ถ้ามีค่าซ้ำให้คืนค่า true
+              return true;
+          } else {
+              // ถ้าไม่มีค่าซ้ำให้คืนค่า false
+              return false;
+          }
+      } catch (error) {
+          console.error("Error checking duplicate value:", error);
+          // ในกรณีที่เกิดข้อผิดพลาดในการเรียก API หรือฟังก์ชั่น
+          // คุณสามารถจัดการข้อผิดพลาดได้ตามความเหมาะสม
+          console.log("s")
+          return false; // หรือสามารถ throw error ออกไปต่อได้
+          
+      }
+    },
+
+// ฟังก์ชั่นเช็คค่า pri_level
+    async  checkPriLevel() {
+          console.log("g-hk")
+          const value = this.form.pri_level; // ค่าที่ต้องการตรวจสอบ
+          const isDuplicate = await checkDuplicateValue(value);
+          // ตั้งค่า pri_level ตามผลลัพธ์ที่ได้จากการตรวจสอบค่าซ้ำในฐานข้อมูล
+          this.validate.pri_level = isDuplicate;
+    },
+
   },
   mounted() {
+    console.log(this.form.pri_level)
   }
 }
 </script> 
