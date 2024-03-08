@@ -122,7 +122,7 @@
                 <hr/>
                 <div class="d-flex justify-content-end">
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
-                    Close
+                    Cancel
                   </CButton>
                   <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave" :disabled="isLoading">
                     <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />

@@ -11,7 +11,7 @@
         </div>
       </CCardHeader>
       <CCardBody>
-        <CForm novalidate :validated="form.validatedCustom01">
+        <CForm>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
 
@@ -146,9 +146,9 @@
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required"> * </span>
               </CFormLabel>
-              <CFormInput type="Text" id="phone" name="phone" feedbackInvalid="Please input your phone number."
+              <CFormInput type="Text" id="act_number_phone" name="act_number_phone" feedbackInvalid="Please input your phone number."
                 placeholder="e.g. 0611234567" v-model="form.act_number_phone" :invalid="validate.act_number_phone"
-                required />
+                maxlength="10" required />
             </CCol>
           </CRow>
           <CCol class="col-6 mx-auto">
@@ -161,7 +161,7 @@
                 <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span class="text-danger">Create New Account ?</span>
+                  <span id="detail-for-cancel">Create New Account ?</span>
                 </p>
                 <br />
                 <hr />
@@ -193,7 +193,7 @@
                 <hr/>
                 <div class="d-flex justify-content-end">
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
-                    Close
+                    Cancel
                   </CButton>
                   <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="validateBeforeSave">Save changes</CButton>
                 </div>
@@ -282,95 +282,133 @@ export default {
 
     validateBeforeSave() {
       let error = false
+
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      const passwordRegex = /^(?=.*[a-z].*[a-z])(?=.*\d.*\d.*\d.*\d)[a-z\d]*$/;
+      const phoneNumberRegex = /^\d{10,}$/;
+
+      // ตรวจสอบว่ามีรูปภาพที่อัปโหลดหรือไม่
       if (!this.form.act_picture) {
         error = true
-        this.validate.act_picture = false
+        this.validate.act_picture = true // กำหนดให้เป็น true เพื่อแสดงข้อความเตือน
+      } else {
+        this.validate.act_picture = false // กำหนดให้เป็น false เมื่อไม่มีข้อผิดพลาด
       }
-      if (this.form.act_first_name_th === '') {
+
+      // ตรวจสอบชื่อจริง (ภาษาไทย)
+      if (this.form.act_first_name_th.trim() === '' || 
+          specialCharRegex.test(this.form.act_first_name_th)) {
         error = true
+        this.validate.act_first_name_th = true
+      } else {
         this.validate.act_first_name_th = false
       }
-      if (this.form.act_last_name_th === '') {
+
+      // ตรวจสอบนามสกุล (ภาษาไทย)
+      if (this.form.act_last_name_th.trim() === '' || 
+          specialCharRegex.test(this.form.act_last_name_th)) {
         error = true
+        this.validate.act_last_name_th = true
+      } else {
         this.validate.act_last_name_th = false
       }
-      if (this.form.act_first_name_eng === '') {
+
+      // ตรวจสอบชื่อจริง (ภาษาอังกฤษ)
+      if (this.form.act_first_name_eng.trim() === '' || 
+          specialCharRegex.test(this.form.act_first_name_eng)) {
         error = true
+        this.validate.act_first_name_eng = true
+      } else {
         this.validate.act_first_name_eng = false
       }
-      if (this.form.act_last_name_eng === '') {
+
+      // ตรวจสอบนามสกุล (ภาษาอังกฤษ)
+      if (this.form.act_last_name_eng.trim() === '' || 
+          specialCharRegex.test(this.form.act_last_name_eng)) {
         error = true
+        this.validate.act_last_name_eng = true
+      } else {
         this.validate.act_last_name_eng = false
       }
-      if (this.form.act_role === '') {
+
+      // ตรวจสอบตำแหน่ง
+      if (this.form.act_role.trim() === '') {
         error = true
+        this.validate.act_role = true
+      } else {
         this.validate.act_role = false
       }
-      if (this.form.act_email_address === '') {
+
+      // ตรวจสอบอีเมล
+      if (this.form.act_email_address.trim() === '') {
         error = true
+        this.validate.act_email_address = true
+      } else {
         this.validate.act_email_address = false
       }
-      if (this.form.confirmEmail === '') {
-        error = true
-        this.validate.confirmEmail = false
-      }
-      if (
-        this.form.act_email_address !== this.form.confirmEmail &&
-        this.form.confirmEmail !== ''
-      ) {
+
+      // ตรวจสอบการยืนยันอีเมล
+      if (this.form.confirmEmail.trim() === '') {
         error = true
         this.validate.confirmEmail = true
-        this.form.confirmEmail = ''
+      } else {
+        // ตรวจสอบว่าอีเมลที่กรอกตรงกันกับอีเมลหรือไม่
+        if (this.form.act_email_address.trim() !== this.form.confirmEmail.trim()) {
+          error = true
+          this.validate.confirmEmail = true
+        } else {
+          this.validate.confirmEmail = false
+        }
       }
-      if (this.form.act_email_address === this.form.confirmEmail) {
+
+      // ตรวจสอบเบอร์โทรศัพท์
+      if (!phoneNumberRegex.test(this.form.act_number_phone.trim())) {
         error = true
-        this.validate.confirmEmail = false
-      }
-      if (this.form.act_email_address !== this.form.confirmEmail && this.form.confirmEmail !== '') {
-        error = true
-        this.validate.confirmEmail = true
-        this.form.confirmEmail = ''
-      }
-      if (this.form.act_email_address === this.form.confirmEmail) {
-        error = true
-        this.validate.confirmEmail = false
-      }
-      if (this.form.act_number_phone === '') {
-        error = true
+        this.validate.act_number_phone = true
+      } else {
         this.validate.act_number_phone = false
       }
-      if (this.form.act_username === '') {
+
+      // ตรวจสอบชื่อผู้ใช้
+      if (this.form.act_username.trim() === '') {
         error = true
+        this.validate.act_username = true
+      } else {
         this.validate.act_username = false
       }
-      if (this.form.act_password === '') {
+
+      // ตรวจสอบรหัสผ่าน
+      if (!passwordRegex.test(this.form.act_password.trim())) {
         error = true
+        this.validate.act_password = true
+      } else {
         this.validate.act_password = false
       }
-      if (this.form.Confirmpassword === '') {
-        error = true
-        this.validate.Confirmpassword = false
-      }
-      if (
-        this.form.act_password !== this.form.Confirmpassword &&
-        this.form.Confirmpassword !== ''
-      ) {
+
+      // ตรวจสอบการยืนยันรหัสผ่าน
+      if (this.form.Confirmpassword.trim() === '') {
         error = true
         this.validate.Confirmpassword = true
-        this.form.Confirmpassword = ''
-      }
-      if (this.form.act_password === this.form.Confirmpassword) {
-        error = true
-        this.validate.Confirmpassword = false
+      } else {
+        // ตรวจสอบว่ารหัสผ่านที่ยืนยันตรงกันหรือไม่
+        if (this.form.act_password !== this.form.Confirmpassword) {
+          error = true
+          this.validate.Confirmpassword = true
+        } else {
+          this.validate.Confirmpassword = false
+        }
       }
 
       if (!error) {
+        // ถ้าไม่มีข้อผิดพลาดให้ทำงานต่อไป
+        this.encryptPasswordBeforeSave();
       } else {
+        // ถ้ามีข้อผิดพลาดให้ทำการแสดงข้อความเตือน
         this.form.validatedCustom01 = true
         this.visibleLivesubmit = false
-        this.encryptPasswordBeforeSave();
       }
     },
+
     showPassword() {
       var p1 = document.getElementById('password1')
       var p2 = document.getElementById('password2')
@@ -621,5 +659,25 @@ export default {
 #custom_icon_header {
   width: auto;
   height: 30px;
+}
+
+#popup-detail {
+  font-size: larger;
+  text-align: left;
+  color: #000;
+}
+
+#detail-for-cancel {
+  font-weight: 600;
+  color: #d0293b;
+}
+
+#detail-for-submit {
+  font-weight: 600;
+  color: #29b227;
+}
+
+#confirm-btn-in-detail {
+  color: #ffffff;
 }
 </style>
