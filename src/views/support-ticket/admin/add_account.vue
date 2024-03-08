@@ -11,7 +11,7 @@
         </div>
       </CCardHeader>
       <CCardBody>
-        <CForm novalidate :validated="form.validatedCustom01">
+        <CForm>
           <CRow class="mb-3">
             <CCol class="image-container" xs="12" md="6" lg="4">
 
@@ -146,7 +146,7 @@
             <CCol xs="12" md="6" lg="8">
               <CFormLabel for="phone" class="col-sm-12 col-form-label"><b>Phone Number</b> <span id="required"> * </span>
               </CFormLabel>
-              <CFormInput type="Text" id="phone" name="phone" feedbackInvalid="Please input your phone number."
+              <CFormInput type="Text" id="act_number_phone" name="act_number_phone" feedbackInvalid="Please input your phone number."
                 placeholder="e.g. 0611234567" v-model="form.act_number_phone" :invalid="validate.act_number_phone"
                 maxlength="10" required />
             </CCol>
@@ -161,7 +161,7 @@
                 <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span class="text-danger">Create New Account ?</span>
+                  <span id="detail-for-cancel">Create New Account ?</span>
                 </p>
                 <br />
                 <hr />
@@ -193,7 +193,7 @@
                 <hr/>
                 <div class="d-flex justify-content-end">
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
-                    Close
+                    Cancel
                   </CButton>
                   <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="validateBeforeSave">Save changes</CButton>
                 </div>
@@ -283,7 +283,9 @@ export default {
     validateBeforeSave() {
       let error = false
 
-      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      const passwordRegex = /^(?=.*[a-z].*[a-z])(?=.*\d.*\d.*\d.*\d)[a-z\d]*$/;
+      const phoneNumberRegex = /^\d{10,}$/;
 
       // ตรวจสอบว่ามีรูปภาพที่อัปโหลดหรือไม่
       if (!this.form.act_picture) {
@@ -329,7 +331,7 @@ export default {
         this.validate.act_last_name_eng = false
       }
 
-      // ตรวจสอบบทบาท
+      // ตรวจสอบตำแหน่ง
       if (this.form.act_role.trim() === '') {
         error = true
         this.validate.act_role = true
@@ -360,8 +362,7 @@ export default {
       }
 
       // ตรวจสอบเบอร์โทรศัพท์
-      if (this.form.act_number_phone.trim() === '' ||
-        specialCharRegex.test(this.form.act_number_phone)) {
+      if (!phoneNumberRegex.test(this.form.act_number_phone.trim())) {
         error = true
         this.validate.act_number_phone = true
       } else {
@@ -377,7 +378,7 @@ export default {
       }
 
       // ตรวจสอบรหัสผ่าน
-      if (this.form.act_password.trim() === '') {
+      if (!passwordRegex.test(this.form.act_password.trim())) {
         error = true
         this.validate.act_password = true
       } else {
@@ -658,5 +659,25 @@ export default {
 #custom_icon_header {
   width: auto;
   height: 30px;
+}
+
+#popup-detail {
+  font-size: larger;
+  text-align: left;
+  color: #000;
+}
+
+#detail-for-cancel {
+  font-weight: 600;
+  color: #d0293b;
+}
+
+#detail-for-submit {
+  font-weight: 600;
+  color: #29b227;
+}
+
+#confirm-btn-in-detail {
+  color: #ffffff;
 }
 </style>
