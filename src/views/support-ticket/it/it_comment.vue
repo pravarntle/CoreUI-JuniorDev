@@ -133,7 +133,7 @@
                       <CFormSelect
                           aria-label="Default select example"
                           color="secondary"
-                          v-model="status"
+                          v-model="edit"
                           :options="[
                               { label: 'Closed', value: 'Closed', disabled: this.status === 'Closed' },
                               { label: 'Closed Bug', value: 'Closed Bug', disabled: this.status === 'Closed Bug' },
@@ -153,7 +153,7 @@
                       >
                         Close
                       </CButton>
-                      <CButton color="primary"  @click="onSaveSatatus">Save changes</CButton>
+                      <CButton color="success"  @click="onSaveSatatus">Save changes</CButton>
                     </CModalFooter>
                   </CModal>
                 </CCol>
@@ -348,6 +348,17 @@
       </CCardBody>
     </CCard>
   </div>
+  <CToaster placement="top-end">
+    <CToast visible color="warning" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
+  <CElementCover v-if="loading" :opacity="0.5" />
 </template>
 
 <script>
@@ -467,6 +478,8 @@ export default {
         not_acc: '',
       },
       colHeight:null,
+      toastProp: [],
+
 
     }
   },
@@ -855,11 +868,18 @@ export default {
             this.allUpdate.mod_status = result.data.tkt_status;
             this.allUpdate.mod_tkt = result.data._id;
             this.updateStatus();
+            
 
           })
           .catch((err) => {
             console.log(error)
           });
+          
+        this.toastProp.push({
+          content: 'Edit Status Success'
+          
+        })
+        console.log("ass");
         this.status = this.edit
         this.visibleVerticallyCenteredDemo = false
 
@@ -1045,7 +1065,7 @@ export default {
           }
             return minutes + ' minutes ago';
         } else {
-            return seconds + ' seconds ago';
+            return  ' a few seconds ago';
         }
         
     },

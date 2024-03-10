@@ -269,6 +269,8 @@
       </CCol>
     </CRow>
   </div>
+  <CElementCover v-if="loading" :opacity="0.5" />
+
 </template>
 
 <script>
@@ -321,7 +323,9 @@ export default {
       Iconinbox: Iconinbox,
       selectedMonth: moment().format('YYYY-MM'),
       countOther: 0,
-      percenOther:''
+      percenOther:'',
+      loading : false,
+    
     }
   },
   methods: {
@@ -488,6 +492,11 @@ export default {
     this.getTicketPending()
     this.getAllTicket()
     this.getTicketOnMonth()
+
+    this.loading = true
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
   },
 }
 </script>

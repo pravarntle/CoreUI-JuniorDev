@@ -69,10 +69,9 @@
                 </CCol>
       </CRow>
       <CCol class="ms-5 mt-3" md="7">
-      <h4>Description<span id="Icon_force">*</span></h4>
+      <h4>Description</h4>
         <CFormTextarea
           feedbackValid="Looks good!"
-          :invalid="validate.pri_description"
           id="validationCustom01"
           required
           v-model="form.pri_description"
@@ -98,7 +97,7 @@
                 <CButton color="light" @click="() => { visibleLiveDemo = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                <CButton class="ms-2" color="danger" id="confirm-btn-in-detail" @click="confirm">
                   Confirm
                 </CButton>
                 </div>
@@ -107,7 +106,7 @@
 
 
 
-            <CButton color="success" id="btn_submit" @click="visibleLivesubmit = true" >Submit</CButton>
+            <CButton color="success" id="btn_submit" @click="vaildateBeforeSave" >Submit</CButton>
             <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
               
               <CModalBody>
@@ -124,7 +123,7 @@
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
                     Cancel
                   </CButton>
-                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="vaildateBeforeSave" :disabled="isLoading">
+                  <CButton class="ms-2" id="confirm-btn-in-detail" color="success" @click="onSave" :disabled="isLoading">
                     <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                   </CButton>
@@ -141,7 +140,7 @@
 
   <br />
   <CToaster placement="top-end">
-    <CToast visible color="info" v-for="(toast) in toastProp">
+    <CToast visible color="success" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -191,8 +190,6 @@ export default {
       this.validatedCustom01 = true
     },
     async onSave() {
-      console.log("1")
-      console.log(this.form)
       try {
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_priorities`, {
@@ -200,7 +197,19 @@ export default {
           })
           .then((result) => {
             console.log(result)
-            this.$router.push('/support-ticket/admin/priority_list')
+            this.isLoading = true
+            this.toastProp.push({
+              content: 'Create Success  ',
+            })
+            setTimeout(() => {
+              
+              // จบการโหลด
+              this.isLoading = false
+              // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+              
+              this.$router.push('/support-ticket/admin/priority_list')
+            }, 500)
+            
           })
           .catch((err) => {
             console.log(error)
@@ -242,6 +251,11 @@ export default {
       // Regular expression to check for special characters
       const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
       // Check for empty values and display validation messages
+      if (!error) {
+        this.checkDuplicateValue();
+      } else {
+        this.form.validatedCustom01 = true// เปลี่ยนเป็น true เมื่อคลิก "Submit"
+      }
       if (this.form.pri_name_eng.trim() === '' || specialCharRegex.test(this.form.pri_name_eng)) {
         this.validate.pri_name_eng = true; // Show validation message
         error = true;
@@ -256,10 +270,17 @@ export default {
         this.validate.pri_name_th = false;
       }
 
-       if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+      if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+
         this.validate.pri_level = true;
         error = true;
       }
+      if (this.form.pri_level>5) {
+
+          this.validate.pri_level = true;
+          error = true;
+      }
+
 
       if (this.form.pri_color.trim() === '' ) {
         this.validate.pri_color = true;
@@ -268,18 +289,10 @@ export default {
         this.validate.pri_color = false;
       }
 
-      if (this.form.pri_description.trim() === '' ) {
-        this.validate.pri_description = true;
-        error = true;
-      } else {
-        this.validate.pri_description = false;
-      }
-
       if (!error) {
         this.checkDuplicateValue();
       } else {
-        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.visibleLivesubmit = false
+        this.form.validatedCustom01 = true// เปลี่ยนเป็น true เมื่อคลิก "Submit"
       }
 
     },
@@ -304,23 +317,14 @@ export default {
       // Set the validation flag based on whether duplicate value is found
       this.validate.pri_level = duplicate ? true : false;
       if(this.validate.pri_level== false){
-        this.isLoading = true
-        this.toastProp.push({
-          content: 'Create Success  ',
-        })
-        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
-        setTimeout(() => {
-          
-          // จบการโหลด
-          this.isLoading = false
-          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          
-          this.onSave()
-        }, 500)
+        if(this.form.pri_level>5||this.form.pri_level<0){
+          this.validate.pri_level = true;
+        }else{
+          this.visibleLivesubmit = true
+        }
+        
       }else{
-        this.visibleLivesubmit = false
+        this.validate.pri_level = true
       }
       
     } catch (error) {

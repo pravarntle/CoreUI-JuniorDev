@@ -117,7 +117,7 @@
                   <CButton color="light" @click="() => { visibleVerticallyCenteredDemo = false }">
                     Cancel
                   </CButton>
-                  <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                  <CButton class="ms-2" color="danger" id="confirm-btn-in-detail" @click="confirm">
                     Confirm
                   </CButton>
                 </div>
@@ -125,7 +125,7 @@
             </CModal>
             
             
-            <CButton class="btn-sec" color="success" id="submit-button" @click="visibleSubmit = true">
+            <CButton class="btn-sec" color="success" id="submit-button" @click="vaildateBeforeSave">
               Submit
             </CButton>
             <CModal alignment="center" :visible="visibleSubmit" @close="() => {
@@ -143,7 +143,7 @@
                 <CButton color="light" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="vaildateBeforeSave"
+                <CButton class="ms-2" color="success" id="confirm-btn-in-detail" @click="onSave"
                   :disabled="isLoading">
                   <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
@@ -524,20 +524,7 @@ export default {
       }
 
       if (!error) {
-        this.isLoading = true
-        this.toastProp.push({
-          content: 'Create Success  ',
-        })
-        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        setTimeout(() => {
-          // จบการโหลด
-          this.isLoading = false
-
-          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-
-          this.onSave()
-        }, 2000)
+        this.visibleSubmit = true
       } else {
         console.log('1'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
         this.visibleSubmit = false
@@ -575,13 +562,29 @@ export default {
       const roleName = roleData.role
 
       try {
+        this.isLoading=true
+        
         await axios
           .post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_tickets`, {
             data: this.form,
           })
           .then((result) => {
-            this.allUpdate.mod_tkt = result.data._id
-            this.updateStatus()
+            this.allUpdate.mod_tkt = result.data._id  
+            this.toastProp.push({
+              content: 'Create Success  ',
+            })
+            
+            setTimeout(() => {
+              this.isLoading = false
+              this.updateStatus()
+            }, 1500);
+            
+            
+        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+            
+            
+            
           })
           .catch((err) => {
             this.toastProp.push({

@@ -101,7 +101,7 @@
                     <CButton color="light" @click="() => { visibleLiveDemo = false }">
                       Cancel
                     </CButton>
-                    <CButton class="ms-2" color="info text-white" id="confirm-btn-in-detail" @click="confirm">
+                    <CButton class="ms-2" color="danger text-white" id="confirm-btn-in-detail" @click="confirm">
                       Confirm
                     </CButton>
                     </div>
@@ -110,7 +110,7 @@
                 
                 
                 
-                <CButton color="success" id="btn_submit" @click="visibleLivesubmit = true">Submit</CButton>
+                <CButton color="success" id="btn_submit" @click="vaildateBeforeSave">Submit</CButton>
                 <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
               
                   <CModalBody>
@@ -127,7 +127,7 @@
                       <CButton color="light"  @click="() => { visibleLivesubmit = false }">
                         Cancel
                       </CButton>
-                      <CButton class="ms-2" id="confirm-btn-in-detail" color="info text-white" @click="vaildateBeforeSave" :disabled="isLoading">
+                      <CButton class="ms-2" id="confirm-btn-in-detail" color="success text-white" @click="onSave" :disabled="isLoading">
                         <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                       {{ isLoading ? 'Confirm...' : 'Confirm' }}
                       </CButton>
@@ -144,7 +144,7 @@
   
   <br />
   <CToaster placement="top-end">
-    <CToast visible color="warning" v-for="(toast) in toastEdit">
+    <CToast visible color="success" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -275,7 +275,7 @@ export default {
       Icon_Priority,
       visibleLivesubmit: false,
       visibleLiveDemo: false,
-      toastEdit: [],
+      toastProp: [],
       isLoading: false,
     }
   },
@@ -335,7 +335,20 @@ export default {
             data: this.form,
           })       
           .then((result) => {
-            this.$router.push('/support-ticket/admin/priority_list')
+            console.log(result)
+            this.isLoading = true
+            this.toastProp.push({
+              content: 'Edit Priority Success  ',
+            })
+            setTimeout(() => {
+              
+              // จบการโหลด
+              this.isLoading = false
+              // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
+              
+              this.$router.push('/support-ticket/admin/priority_list')
+            }, 500)
+            
           })
           .catch((err) => {
             console.log(error)
@@ -348,9 +361,15 @@ export default {
 
     vaildateBeforeSave() {
       let error = false;
+
       // Regular expression to check for special characters
       const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
       // Check for empty values and display validation messages
+      if (!error) {
+        this.checkDuplicateValue();
+      } else {
+        this.form.validatedCustom01 = true// เปลี่ยนเป็น true เมื่อคลิก "Submit"
+      }
       if (this.form.pri_name_eng.trim() === '' || specialCharRegex.test(this.form.pri_name_eng)) {
         this.validate.pri_name_eng = true; // Show validation message
         error = true;
@@ -366,11 +385,16 @@ export default {
       }
 
       if (this.form.pri_level.trim() === '' || specialCharRegex.test(this.form.pri_level)) {
+
         this.validate.pri_level = true;
         error = true;
-      } else {
-        this.validate.pri_level = false;
       }
+      if (this.form.pri_level>5) {
+
+          this.validate.pri_level = true;
+          error = true;
+      }
+
 
       if (this.form.pri_color.trim() === '' ) {
         this.validate.pri_color = true;
@@ -379,35 +403,51 @@ export default {
         this.validate.pri_color = false;
       }
 
-      if (this.form.pri_description.trim() === '' ) {
-        this.validate.pri_description = true;
-        error = true;
+      if (!error) {
+        this.checkDuplicateValue();
       } else {
-        this.validate.pri_description = false;
+        this.form.validatedCustom01 = true// เปลี่ยนเป็น true เมื่อคลิก "Submit"
       }
 
-      if (!error) {
-        // this.onSave()
-        this.isLoading = true
-        this.toastEdit.push({
-          content: 'Edit Success  ',
-        })
-        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        //**** ไม่เข้าตัว settimeout  ถามแบงค์ด่วน*/
-        setTimeout(() => {
+    },
+    async checkDuplicateValue() {
+      const value = this.form.pri_level;
+
+      console.log("sss",value);
+      try {
+        // Send a request to your API to check for duplicate values
+        const response = await axios.post(
+            `${process.env.VUE_APP_URL}/mongoose/get/stts_priorities`,
+            {
+              where: {
+                pri_status: { $ne: 'Delete' },
+              },
+            },
+          )
+        console.log(response.data)
+        // Assuming response.data is an array of objects with pri_level property
+        const duplicate = response.data.some(item => item.pri_level === value);
+        console.log(duplicate)
+        // Set the validation flag based on whether duplicate value is found
+        this.validate.pri_level = duplicate ? true : false;
+        if(this.validate.pri_level== false){
+          if(this.form.pri_level>5||this.form.pri_level<0){
+            this.validate.pri_level = true;
+          }else{
+            this.visibleLivesubmit = true
+          }
           
-          // จบการโหลด
-          this.isLoading = false
-          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          
-          this.onSave()
-        }, 500)
-      } else {
-        console.log('2'), (this.form.validatedCustom01 = true) // เปลี่ยนเป็น true เมื่อคลิก "Submit"
-        this.visibleLivesubmit = false
+        }else{
+          this.validate.pri_level = true
+        }
+        
+      } catch (error) {
+        console.error("Error checking duplicate value:", error);
+        this.validate.pri_level = false;
+        // Handle error appropriately, such as showing an error message to the user
       }
     },
+    
   },
   mounted() {
     const priorityId = this.$route.params.itemId;

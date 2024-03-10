@@ -15,7 +15,7 @@
             striped: true,
             hover: true,
           }" :activePage="1" header :items="items" :columns="columns" tableFilter table-filter-placeholder="Search"
-            class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect
+            class="table-hover table-bordered table-alternate-background table-responsive" itemsPerPageSelect columnFilter
             :itemsPerPage="5" columnSorter :sorterValue="{ column: 'status', state: 'desc' }" pagination="true">
 
             <template #ticket_id="{ item }">

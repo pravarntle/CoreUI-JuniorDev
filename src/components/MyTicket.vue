@@ -11,7 +11,7 @@
     <CCardBody>
       <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter clickable-rows  table-filter-placeholder="Search"
-          class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5"
+          class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" columnFilter
           items-per-page-select pagination columnSorter :sorterValue="{ column: 'STATUS', state: 'desc' }" :table-props="{
             striped: true,
             hover: true,
@@ -110,7 +110,7 @@
                 <CButton color="secondary" @click="() => { visibleCancel = false }">
                   Close
                 </CButton>
-                <CButton color="primary" @click="buttonCancel(confirmCancel, confirmCancelIndex) in confirmCancel"
+                <CButton color="danger" @click="buttonCancel(confirmCancel, confirmCancelIndex) in confirmCancel"
                   :key="confirmCancelIndex" @mouseup.stop="">Confirm</CButton>
               </CModalFooter>
             </CModal>
@@ -123,7 +123,7 @@
     </CCardBody>
   </CCard>
   <CToaster placement="top-end">
-    <CToast visible color="info" v-for="(toast) in toastProp">
+    <CToast visible color="danger" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -132,6 +132,7 @@
       </CToastBody>
     </CToast>
   </CToaster>
+  <CElementCover v-if="loading" :opacity="0.5" />
 </template>
 <style scoped>
 .table-responsive {
@@ -211,9 +212,13 @@ import IconcancelTicket from '@/assets/images/Icon_deleteaccount.png'
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
-import { CBadge } from '@coreui/vue-pro'
+import { CBadge } from '@coreui/vue-pro';
+
+
 
 export default {
+
+  props: ['showBookmark'],
   name: 'my_ticket',
   data() {
     return {
@@ -244,13 +249,35 @@ export default {
       selectedTicket: {},
       selectedCancel: {},
       IconcancelTicket: IconcancelTicket,
+      loading : false,
+
 
 
     };
 
   },
-  setup() {
-    const columns = [
+  setup(props) {
+    const bookmark = props.showBookmark ? [
+      {
+        key: 'BOOKMARK',
+        label: 'BOOKMARK',
+        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
+        filter: false,
+        sorter: false,
+      },
+      {
+        key: 'MORE',
+        label: 'ACTION',
+        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px' },
+        filter: false,
+        sorter: false,
+      },
+
+
+    ] : [];
+    
+    
+    const table = [
 
       {
         key: '#', label: '#',
@@ -280,23 +307,12 @@ export default {
         label: 'START DATE',
         _style: { width: '11%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '3.5%' },
       },
-      {
-        key: 'BOOKMARK',
-        label: 'BOOKMARK',
-        _style: { width: '6%', fontWeight: 'bold', color: 'gray', fontSize: '13px' },
-        filter: false,
-        sorter: false,
-      },
-      {
-        key: 'MORE',
-        label: 'ACTION',
-        _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '30px' },
-        filter: false,
-        sorter: false,
-      },
+
+      
 
 
     ];
+    const columns=[...table,...bookmark]
     const getBadge = (tkt_status) => {
       switch (tkt_status) {
         case 'Pending':
@@ -322,6 +338,7 @@ export default {
           headers: { 'Authorization': 'Bearer ' + user.token }
         })
         console.log(response)
+        
       } catch (error) {
         console.log(error)
       }
@@ -340,6 +357,7 @@ export default {
       ModalClosed,
       ModalOpen,
       ModalPending,
+
     };
   },
 
@@ -386,7 +404,7 @@ export default {
           }
         });
         this.toastProp.push({
-          content: 'Cancel Success'
+          content: 'Delete Success'
         });
         // ซ่อน Modal หลังจากยกเลิกสำเร็จ
         this.visibleCancel = false;
@@ -478,6 +496,13 @@ export default {
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
     this.getTicket();
+    
+    
+    this.loading = true
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
+    
 
 
   },

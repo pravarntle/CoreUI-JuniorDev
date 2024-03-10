@@ -172,6 +172,9 @@
       </div>
     </CCard> -->
   </div>
+  <CElementCover v-if="loading" :opacity="0.5" />
+
+  
 </template>
 <style>
 .vl {
@@ -218,6 +221,8 @@ export default {
       countAdmin: '0',
       countManager: '0',
       countInactive: '0',
+      loading : false,
+    
 
     }
   },
@@ -268,6 +273,11 @@ export default {
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
     this.getAllAccounts();
+    
+    this.loading = true
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
   },
 }
 </script>

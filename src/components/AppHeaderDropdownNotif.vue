@@ -175,9 +175,10 @@ export default {
           },
 
         );
-        response.data.forEach((element) => {
-          this.itemsCount++
-        })
+        // response.data.forEach((element) => {
+        //   this.itemsCount++
+        // })
+        this.itemsCount= Object.keys(response.data).length;
         this.notificationAll=response.data;
         console.log(this.notificationAll)
     },
@@ -311,7 +312,7 @@ export default {
           }
             return minutes + ' minutes ago';
         } else {
-            return seconds + ' seconds ago';
+            return ' a few seconds ago';
         }
 
         // Return the difference as an object
@@ -323,8 +324,10 @@ export default {
     const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
     this.userID=userData.id
     this.roleID=userData.role
-    this.getNotifications()
     console.log("ยูสเซอร์:"+ this.userID)
+    this.commentInterval = setInterval(() => {
+      this.getNotifications();
+    }, 1000);
   }
 }
 </script>

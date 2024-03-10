@@ -1,7 +1,7 @@
 <template>
     <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter
-            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows table-filter-placeholder="Search"
+            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows table-filter-placeholder="Search" columnFilter
             :items-per-page="5" items-per-page-select pagination columnSorter
             :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
                 striped: true,
@@ -54,7 +54,7 @@
                         <hr />
                         <div class="d-flex justify-content-end">
                             <CButton color="light"> Cancel </CButton>
-                            <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="DeleteButton()"
+                            <CButton class="ms-2" color="danger" id="confirm-btn-in-detail" @click="DeleteButton()"
                                 @mouseup.stop="" :disabled="isLoading">
                                 <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                                 {{ isLoading ? 'Confirm...' : 'Confirm' }}
@@ -66,7 +66,7 @@
 
         </CSmartTable>
         <CToaster placement="top-end">
-            <CToast visible color="info" v-for="(toast) in toastProp">
+            <CToast visible color="danger" v-for="(toast) in toastProp">
                 <CToastHeader closeButton v-if="toast.title">
                     <span class="me-auto fw-bold">{{ toast.title }}</span>
                 </CToastHeader>

@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <my_tickets/>
+        <my_tickets :showBookmark="true"/>
       
     </div>
   </template>

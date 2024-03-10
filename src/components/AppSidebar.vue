@@ -17,6 +17,12 @@
         <font id="font-sidebar">Dashboard</font>
       </CNavItem>
       <hr id="custom-underline" />
+
+      <CNavItem href="/#/support-ticket/my_ticket" style="position: relative" id="custom-nav-item">
+        <CImage customClassName="nav-icon" :src="IconmyTicket" id="custom-icon-sidebar" style="margin-right: 10px;" />
+        <font id="font-sidebar">My Tickets</font>
+      </CNavItem>
+      <hr id="custom-underline" />
       <CNavItem href="/#/support-ticket/ticket/book" class="custom-nav-item">
         <CImage customClassName="nav-icon" id="custom-icon-sidebar" :src="Iconbookmark" />
         <font id="font-sidebar">Bookmark</font>
@@ -47,6 +53,8 @@ import { logoNegative } from '@/assets/brand/logo-negative'
 import { sygnet } from '@/assets/brand/sygnet'
 import { CImage } from '@coreui/vue-pro'
 import MenuNewticket from './MenuNewticket.vue'
+import IconmyTicket from '@/assets/images/Icon_myticket.png'
+
 export default {
   name: 'AppSidebar',
   components: {
@@ -61,6 +69,8 @@ export default {
       Iconbookmark: Iconbookmark,
       Icondashboard: Icondashboard,
       Iconlogout: Iconlogout,
+      IconmyTicket: IconmyTicket,
+
     }
   },
   setup() {

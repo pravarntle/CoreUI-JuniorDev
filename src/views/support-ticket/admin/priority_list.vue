@@ -20,7 +20,7 @@
       <CCardBody>
           <!-- Smart Table -->
           <div>
-            <CSmartTable :active-page="3" column-sorter :columns="columns" tableFilter table-filter-placeholder="Search"
+            <CSmartTable :active-page="3" column-sorter :columns="columns" tableFilter table-filter-placeholder="Search" columnFilter
               class="text-center table-hover table-bordered table-alternate-background table-responsive" clickable-rows :sorterValue="{ column: 'level_of_priority', state: 'desc' }"
               header :items="items" pagination :table-props="{
                 striped: true,
@@ -61,7 +61,7 @@
                         <hr/>
                         <div class="d-flex justify-content-end">
                             <CButton color="light"> Cancel </CButton>
-                            <CButton class="ms-2" color="info text-white" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="" :disabled="isLoading">
+                            <CButton class="ms-2" color="danger text-white" id="confirm-btn-in-detail" @click="DeleteButton()" @mouseup.stop="" :disabled="isLoading">
                               <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                                {{ isLoading ? 'Confirm...' : 'Confirm' }}
                             </CButton>

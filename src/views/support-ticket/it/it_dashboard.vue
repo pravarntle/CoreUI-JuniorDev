@@ -309,7 +309,6 @@ import Iconinbox from '@/assets/images/Icon_Inbox.png'
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
-    const loading = false
     const columns = [
     {
         key: 'number',
@@ -432,6 +431,8 @@ export default {
       visibleB: true,
       Iconinbox: Iconinbox,
       selectedMonth: moment().format('YYYY-MM'),
+      loading : false,
+      
     }
   },
   methods: {
@@ -594,10 +595,11 @@ export default {
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
-    this.loading = true
+    
     this.getTicketPending()
     this.getAllTicket()
     this.getTicketOnMonth()
+    this.loading = true
     setTimeout(() => {
       this.loading = false
     }, 2000)

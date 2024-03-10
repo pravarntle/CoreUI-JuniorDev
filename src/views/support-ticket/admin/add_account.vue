@@ -161,7 +161,7 @@
                 <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span id="detail-for-cancel">Create New Account ?</span>
+                  <span id="detail-for-cancel">Cancel New Account ?</span>
                 </p>
                 <br />
                 <hr />
@@ -169,14 +169,14 @@
                 <CButton color="light" @click="() => { visibleLiveDemo = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" color="info" id="confirm-btn-in-detail" @click="confirm">
+                <CButton class="ms-2" color="danger" id="confirm-btn-in-detail" @click="confirm">
                   Confirm
                 </CButton>
                 </div>
               </CModalBody>
             </CModal>
 
-            <CButton class="btn-sec" color="success" @click="visibleLivesubmit = true">
+            <CButton class="btn-sec" color="success" @click="validateBeforeSave">
               Submit
             </CButton>
             <CModal alignment="center" :visible="visibleLivesubmit" @close="() => { visibleLivesubmit = false }">
@@ -195,7 +195,11 @@
                   <CButton color="light"  @click="() => { visibleLivesubmit = false }">
                     Cancel
                   </CButton>
-                  <CButton class="ms-2" id="confirm-btn-in-detail" color="info" @click="validateBeforeSave">Save changes</CButton>
+                  <CButton class="ms-2" color="success" id="confirm-btn-in-detail" @click="encryptPasswordBeforeSave"
+                                @mouseup.stop="" :disabled="isLoading">
+                                <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                                {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                            </CButton>
                 </div>
               </CModalBody>
             </CModal>
@@ -205,6 +209,16 @@
       </CCardBody>
     </CCard>
   </div>
+  <CToaster placement="top-end">
+    <CToast visible color="success" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <script>
 import { CCardText, CFormFeedback, CFormLabel, CImage } from '@coreui/vue-pro';
@@ -256,6 +270,8 @@ export default {
       manage_accounts,
       visibleLiveDemo: false,
       visibleLivesubmit: false,
+      toastProp: [],
+      isLoading: false,
     }
   },
   created() {
@@ -286,7 +302,7 @@ export default {
       const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
       const passwordRegex = /^(?=.*[a-z].*[a-z])(?=.*\d.*\d.*\d.*\d)[a-z\d]*$/;
       const phoneNumberRegex = /^\d{10,}$/;
-
+      const emailCharRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
       // ตรวจสอบว่ามีรูปภาพที่อัปโหลดหรือไม่
       if (!this.form.act_picture) {
         error = true
@@ -340,7 +356,9 @@ export default {
       }
 
       // ตรวจสอบอีเมล
-      if (this.form.act_email_address.trim() === '') {
+      if (this.form.act_email_address.trim() === '' || 
+          !this.form.act_email_address.includes('@') || 
+          !emailCharRegex.test(this.form.act_email_address)) {
         error = true
         this.validate.act_email_address = true
       } else {
@@ -348,7 +366,9 @@ export default {
       }
 
       // ตรวจสอบการยืนยันอีเมล
-      if (this.form.confirmEmail.trim() === '') {
+      if (this.form.confirmEmail.trim() === '' || 
+          !this.form.confirmEmail.includes('@') || 
+          !emailCharRegex.test(this.form.confirmEmail)) {
         error = true
         this.validate.confirmEmail = true
       } else {
@@ -356,6 +376,7 @@ export default {
         if (this.form.act_email_address.trim() !== this.form.confirmEmail.trim()) {
           error = true
           this.validate.confirmEmail = true
+          
         } else {
           this.validate.confirmEmail = false
         }
@@ -394,14 +415,16 @@ export default {
         if (this.form.act_password !== this.form.Confirmpassword) {
           error = true
           this.validate.Confirmpassword = true
+
         } else {
           this.validate.Confirmpassword = false
+
         }
       }
 
       if (!error) {
         // ถ้าไม่มีข้อผิดพลาดให้ทำงานต่อไป
-        this.encryptPasswordBeforeSave();
+        this.visibleLivesubmit = true
       } else {
         // ถ้ามีข้อผิดพลาดให้ทำการแสดงข้อความเตือน
         this.form.validatedCustom01 = true
@@ -446,7 +469,14 @@ export default {
             data: this.form,
           })
           .then((result) => {
-            this.$router.push('/support-ticket/admin/user_list')
+            this.isLoading = true
+            this.toastProp.push({
+                content: 'Create Success  ',
+              })
+            setTimeout(() => {
+              this.isLoading = false
+              this.$router.push('/support-ticket/admin/user_list')
+            }, 500);
           })
           .catch((err) => {
             console.log(error)
@@ -520,6 +550,7 @@ export default {
 
   },
   mounted() {
+
   }
 }
 </script>

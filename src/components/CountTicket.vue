@@ -50,6 +50,8 @@
       </CCol>
     </CRow>
   </CCard>
+  <CElementCover v-if="loading" :opacity="0.5" />
+
 </template>
 <style scoped>
 
@@ -192,6 +194,7 @@ export default {
       count_all: '',
       count_open: '',
       count_closed: '',
+      loading : false,
 
     };
 
@@ -259,6 +262,11 @@ export default {
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
     this.getCountall();
+    
+    this.loading = true
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
 
 
   }

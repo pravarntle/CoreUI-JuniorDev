@@ -12,7 +12,7 @@
       <CCardBody>
         <div>
           <CSmartTable :active-page="1" header :items="items" :columns="columns"  column-sorter clickable-rows tableFilter
-            class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5"
+            class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" columnFilter
             items-per-page-select pagination columnSorter table-filter-placeholder="Search"
             :sorterValue="{ column: 'status', state: 'desc' }" :table-props="{
               striped: true,
@@ -49,9 +49,26 @@
                     Show
                   </CButton>
 
-                  <CButton size="sm" @click="buttonCancel(item, index)">
-                    <img :src="IconcancelTicket" class="style-button" alt="Edit Icon" />
-                  </CButton>
+                  <CButton size="sm" @click="toggleCancel(item, index)">
+                  <img :src="IconcancelTicket" class="style-button" alt="Edit Icon" />
+                </CButton>
+                  <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleCancel"
+                    @close="() => { visibleCancel = false }">
+                    <CModalHeader>
+                      <CModalTitle>Are you sure you want to <font class="Highlight-font-alert">Cancel This Ticket?</font>
+                      </CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                      When you click on confirm button, the ticket will be cancelled.
+                    </CModalBody>
+                    <CModalFooter>
+                      <CButton color="secondary" @click="() => { visibleCancel = false }">
+                        Close
+                      </CButton>
+                      <CButton color="danger" @click="buttonCancel(confirmCancel, confirmCancelIndex) in confirmCancel"
+                        :key="confirmCancelIndex" @mouseup.stop="">Confirm</CButton>
+                    </CModalFooter>
+                  </CModal>
                 </div>
               </td>
 
@@ -91,6 +108,7 @@
                         historyItem.mod_date }}
                     </p>
                   </div>
+                  
                 </CModalBody>
                 <CModalFooter>
                   <CButton color="info" @click="contactIt(contactItItem, contactItIndex) in contactItItem"
@@ -103,6 +121,16 @@
       </CCardBody>
     </CCard>
   </div>
+  <CToaster placement="top-end">
+    <CToast visible color="danger" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster> 
 </template>
 <style scoped>
 #all {
@@ -197,6 +225,10 @@ export default {
       contactItItem: [],
       selectedTicket: {},
       IconcancelTicket : IconcancelTicket ,
+      confirmCancel: [],
+      visibleCancel: false,
+      toastProp: [],
+
 
     };
 
@@ -314,30 +346,37 @@ export default {
       this.$router.push({ name: 'ST - comment Ticket', params: { itemId } });
       console.log('Item ID:', itemId);
     },
-    async buttonCancel(item) {
-
+    async buttonCancel() {
       try {
+        const item = this.confirmCancel; // ดึงข้อมูล item ที่ถูกเลือก
         const itemId = item._id.toString();
-        // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data: {
             tkt_status: "Cancel"
-
           }
-
         });
-        this.getTicket();
-        // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
-        console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');
+        this.toastProp.push({
+          content: 'Delete Success'
+        });
+        // ซ่อน Modal หลังจากยกเลิกสำเร็จ
+        this.visibleCancel = false;
         // รีเฟรชหน้า
-
+        this.getTicket();
       } catch (error) {
+        this.toastProp.push({
+          content: 'Cancellation failed.'
+        });
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
       }
     },
     async toggleButton(item) {
       item.MORE = !item.MORE;
 
+    },
+    async toggleCancel(item, index) {
+      this.visibleCancel = true;
+      this.confirmCancel = item;
+      this.confirmCancelIndex = index;
     },
     async getTicket() {
       try {

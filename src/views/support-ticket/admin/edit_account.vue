@@ -39,6 +39,7 @@
                 @change="onFileUpload"
                 id="upload_file"
                 hidden
+                
               />
               <CButton
                 class="btn-Picture"
@@ -162,81 +163,7 @@
             </div>
           </CRow>
 
-          <CRow class="mb-2">
-            <div class="col-lg-1"></div>
-            <CFormLabel class="col-md-12 col-form-label"
-              >Login Info
-            </CFormLabel>
-          </CRow>
-          <CRow class="mb-3">
-            <div class="row">
-              <div class="col-md-7">
-                <div class="form-group">
-                  <CFormLabel
-                    for="inputEmployee"
-                    class="col-sm-12 col-form-label"
-                    ><b>Employee ID</b> <span id="required">*</span></CFormLabel
-                  >
-                  <CFormInput
-                    type="text"
-                    id="employeeID"
-                    name="employeeID"
-                    feedbackInvalid="Please input employee ID."
-                    v-model="form.act_username"
-                    :invalid="validate.act_username"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <CFormLabel for="Password"
-                    ><b>New Password</b>
-                    <span id="required">*</span></CFormLabel
-                  >
-                  <div>
-                    <CFormInput
-                      text="(a-z) contains 2 letters and (0-9) Contains 4 numbers."
-                      type="password"
-                      id="password"
-                      v-model="form.act_password"
-                      feedbackInvalid="Please input password."
-                      :invalid="validate.act_password"
-                      placeholder="•••••••"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                  <CFormLabel for="Password">
-                    <b>Confirm New Password</b>
-                    <span id="required">*</span></CFormLabel
-                  >
-                  <div>
-                    <CFormInput
-                      type="password"
-                      id="Confirmpassword"
-                      feedbackInvalid="Please confirm password."
-                      :invalid="validate.Confirmpassword"
-                      autocomplete="current-password"
-                      placeholder="•••••••"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <input type="checkbox" id="showPassword" @click="showPassword" />
-              &nbsp; Show Password
-            </div>
-          </CRow>
+          
           <CRow class="mb-2">
             <div class="col-lg-1"></div>
             <CFormLabel class="col-md-12 col-form-label"
@@ -275,8 +202,7 @@
                     id="confirmEmail"
                     name="confirmEmail"
                     feedbackInvalid="Please input confirm email."
-                    v-model="form.act_email_address"
-                    :invalid="validate.act_email_address"
+                    v-model="form.confirmEmail" :invalid="validate.confirmEmail"
                     required
                   />
                 </div>
@@ -344,7 +270,7 @@
                 </CButton>
                 <CButton
                   class="ms-2"
-                  color="info"
+                  color="danger"
                   id="confirm-btn-in-detail"
                   @click="confirm"
                 >
@@ -358,7 +284,7 @@
               class="btn-sec"
               color="success"
               id="submit-button"
-              @click="visibleSubmit = true"
+              @click="validateBeforeSave"
             >
               Submit
             </CButton>
@@ -392,9 +318,9 @@
                 </CButton>
                 <CButton
                   class="ms-2"
-                  color="info"
+                  color="success"
                   id="confirm-btn-in-detail"
-                  @click="validateBeforeSave"
+                  @click="onSave"
                   :disabled="isLoading"
                 >
                   <CSpinner
@@ -414,6 +340,16 @@
       </CCardBody>
     </CCard>
   </div>
+  <CToaster placement="top-end">
+    <CToast visible color="success" v-for="(toast) in toastProp">
+      <CToastHeader closeButton v-if="toast.title">
+        <span class="me-auto fw-bold">{{ toast.title }}</span>
+      </CToastHeader>
+      <CToastBody v-if="toast.content">
+        <span class="text-white">{{ toast.content }}</span>
+      </CToastBody>
+    </CToast>
+  </CToaster>
 </template>
 <script>
 import { CFormLabel } from '@coreui/vue-pro'
@@ -427,8 +363,6 @@ export default {
   data: () => {
     return {
       form: {
-        act_username: '',
-        act_password: '',
         act_number_phone: '',
         act_email_address: '',
         act_first_name_th: '',
@@ -438,7 +372,6 @@ export default {
         act_picture: '',
         act_role: '',
         confirmEmail: '',
-        Confirmpassword: '',
         validatedCustom01: false,
         act_role_name: '',
       },
@@ -454,14 +387,13 @@ export default {
         act_role: false,
         act_email_address: false,
         act_number_phone: false,
-        act_username: false,
-        act_password: false,
       },
       pageLoading: false,
       manage_accounts,
       visibleVerticallyCenteredDemo: false,
       visibleSubmit: false,
       isLoading: false,
+      toastProp: [],
     }
   },
 
@@ -481,121 +413,99 @@ export default {
     },
     validateBeforeSave() {
       let error = false
-      if (!this.form.act_picture) {
+      const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
+      const phoneNumberRegex = /^\d{10,}$/;
+      const emailCharRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+      // ตรวจสอบว่ามีรูปภาพที่อัปโหลดหรือไม่
+      // ตรวจสอบชื่อจริง (ภาษาไทย)
+      if (this.form.act_first_name_th.trim() === '' || 
+          specialCharRegex.test(this.form.act_first_name_th)) {
         error = true
-        this.validate.act_picture = false
-      }
-      if (this.form.act_first_name_th === '') {
-        error = true
+        this.validate.act_first_name_th = true
+      } else {
         this.validate.act_first_name_th = false
       }
-      if (this.form.act_last_name_th === '') {
+
+      // ตรวจสอบนามสกุล (ภาษาไทย)
+      if (this.form.act_last_name_th.trim() === '' || 
+          specialCharRegex.test(this.form.act_last_name_th)) {
         error = true
+        this.validate.act_last_name_th = true
+      } else {
         this.validate.act_last_name_th = false
       }
-      if (this.form.act_first_name_eng === '') {
+
+      // ตรวจสอบชื่อจริง (ภาษาอังกฤษ)
+      if (this.form.act_first_name_eng.trim() === '' || 
+          specialCharRegex.test(this.form.act_first_name_eng)) {
         error = true
+        this.validate.act_first_name_eng = true
+      } else {
         this.validate.act_first_name_eng = false
       }
-      if (this.form.act_last_name_eng === '') {
+
+      // ตรวจสอบนามสกุล (ภาษาอังกฤษ)
+      if (this.form.act_last_name_eng.trim() === '' || 
+          specialCharRegex.test(this.form.act_last_name_eng)) {
         error = true
+        this.validate.act_last_name_eng = true
+      } else {
         this.validate.act_last_name_eng = false
       }
-      if (this.form.act_role === '') {
+
+      // ตรวจสอบตำแหน่ง
+      if (this.form.act_role.trim() === '') {
         error = true
+        this.validate.act_role = true
+      } else {
         this.validate.act_role = false
       }
-      if (this.form.act_email_address === '') {
+
+      // ตรวจสอบอีเมล
+      if (this.form.act_email_address.trim() === '' || 
+          !this.form.act_email_address.includes('@') || 
+          !emailCharRegex.test(this.form.act_email_address)) {
         error = true
+        this.validate.act_email_address = true
+      } else {
         this.validate.act_email_address = false
       }
-      if (this.form.confirmEmail === '') {
-        error = true
-        this.validate.confirmEmail = false
-      }
-      if (
-        this.form.act_email_address !== this.form.confirmEmail &&
-        this.form.confirmEmail !== ''
-      ) {
+
+      // ตรวจสอบการยืนยันอีเมล
+      if (this.form.confirmEmail.trim() === '' || 
+          !this.form.confirmEmail.includes('@') || 
+          !emailCharRegex.test(this.form.confirmEmail)) {
         error = true
         this.validate.confirmEmail = true
-        this.form.confirmEmail = ''
+      } else {
+        // ตรวจสอบว่าอีเมลที่กรอกตรงกันกับอีเมลหรือไม่
+        if (this.form.act_email_address.trim() !== this.form.confirmEmail.trim()) {
+          error = true
+          this.validate.confirmEmail = true
+          
+        } else {
+          this.validate.confirmEmail = false
+        }
       }
-      if (this.form.act_email_address === this.form.confirmEmail) {
+
+      // ตรวจสอบเบอร์โทรศัพท์
+      if (!phoneNumberRegex.test(this.form.act_number_phone.trim())) {
         error = true
-        this.validate.confirmEmail = false
-      }
-      if (
-        this.form.act_email_address !== this.form.confirmEmail &&
-        this.form.confirmEmail !== ''
-      ) {
-        error = true
-        this.validate.confirmEmail = true
-        this.form.confirmEmail = ''
-      }
-      if (this.form.act_email_address === this.form.confirmEmail) {
-        error = true
-        this.validate.confirmEmail = false
-      }
-      if (this.form.act_number_phone === '') {
-        error = true
+        this.validate.act_number_phone = true
+      } else {
         this.validate.act_number_phone = false
       }
-      if (this.form.act_username === '') {
-        error = true
-        this.validate.act_username = false
-      }
-      if (this.form.act_password === '') {
-        error = true
-        this.validate.act_password = false
-      }
-      if (this.form.Confirmpassword === '') {
-        error = true
-        this.validate.Confirmpassword = false
-      }
-      if (
-        this.form.act_password !== this.form.Confirmpassword &&
-        this.form.Confirmpassword !== ''
-      ) {
-        error = true
-        this.validate.Confirmpassword = true
-        this.form.Confirmpassword = ''
-      }
-      if (this.form.act_password === this.form.Confirmpassword) {
-        error = true
-        this.validate.Confirmpassword = false
-      }
+
+    
 
       if (!error) {
-        this.isLoading = true
-        console.log('1')
-        console.log(this.form.Confirmpassword)
-        this.toastProp.push({
-          content: 'Create Success  ',
-        })
-        // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
-        // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
-        setTimeout(() => {
-          // จบการโหลด
-          this.isLoading = false
-
-          // ทำการนำไปยังหน้าอื่นหรือทำการจัดการต่อไปตามที่ต้องการ
-          console.log('2')
-          
-          this.onSave()
-        }, 2000)
-      } else {
-        this.form.validatedCustom01 = true
-        if (this.form.act_password == ""){
-          console.log("var_if")
-          this.onSave()
-        }else{
-          console.log("var_else")
-          this.encryptPasswordBeforeSave()
-        }
-        this.visibleSubmit = false
+        this.visibleSubmit = true
+        console.log("sss")
         
-        console.log('8')
+      } else {
+        console.log("saaaa")
+        this.form.validatedCustom01 = true
+        
       }
     },
     async onFileUpload(event) {
@@ -616,17 +526,6 @@ export default {
       this.form.act_picture = dataResponse.data._id
       this.getPicture()
     },
-    showPassword() {
-      var p1 = document.getElementById('password')
-      var p2 = document.getElementById('Confirmpassword')
-      if (p1.type === 'password') {
-        p1.type = 'text'
-        p2.type = 'text'
-      } else {
-        p1.type = 'password'
-        p2.type = 'password'
-      }
-    },
     async getAcount() {
       try {
         const userId = this.accountId
@@ -644,14 +543,13 @@ export default {
         this.form.act_number_phone = response.data.act_number_phone
         this.form.act_role = response.data.act_role._id
         this.form.act_role_name = response.data.act_role.rol_name
-        this.form.act_username = response.data.act_username
         this.fileType = response.data.act_picture.filetype
         this.fileImage = response.data.act_picture.image
         this.form.act_picture = response.data.act_picture._id
+        this.form.confirmEmail = response.data.act_email_address
 
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         console.log(response.data)
-        console.log(this.form.act_password)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -677,12 +575,8 @@ export default {
     },
     async onSave() {
       const userId = this.accountId
-      if (this.form.act_password == '') {
-        console.log("if")
-        console.log("password if", this.form.act_password)
         try {
           const requestData = { ...this.form }
-          delete requestData.act_password
           await axios
             .put(
               `${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`,
@@ -691,52 +585,30 @@ export default {
               },
             )
             .then((result) => {
-              this.$router.push('/support-ticket/admin/user_list')
-            })
-            .catch((err) => {
-              console.log(error)
-            })
-          console.log('1')
-        } catch (error) {
-          console.log(error)
-        }
-      } else {
-        console.log("else")
-        console.log("password", this.form.act_password)
-        try {
-          await axios
-            .put(
-              `${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${userId}`,
-              {
-                data: this.form,
-              },
-            )
-            .then((result) => {
-              this.$router.push('/support-ticket/admin/user_list')
-            })
-            .catch((err) => {
-              console.log(error)
-            })
-          console.log('2')
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    },
-    encryptPasswordBeforeSave() {
-      const password = this.form.act_password
-      const saltRounds = 10
+              this.isLoading = true
+              this.toastProp.push({
+                content: 'Create Success  ',
+              })
+              // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
+              // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
+              setTimeout(() => {
+                // จบการโหลด
+                this.isLoading = false
 
-      bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) {
-          console.error(err)
-          // จัดการข้อผิดพลาดที่เกิดขึ้น
-        } else {
-          this.form.act_password = hash // กำหนดรหัสผ่านเข้าไปใน form ใหม่
-          this.onSave() // เรียกฟังก์ชัน onSave เพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์
+                
+                this.$router.push('/support-ticket/admin/user_list')
+              }, 1000)
+              
+            })
+            .catch((err) => {
+              console.log(error)
+            })
+        } catch (error) {
+          console.log(error)
         }
-      })
+      
     },
+    
     cancel() {
       // Check if there is any data in the form
         this.visibleVerticallyCenteredDemo = true
@@ -749,35 +621,7 @@ export default {
       this.$router.push('/support-ticket/admin/user_list')
       
     },
-    togglePopup() {
-      this.isPopupVisible = !this.isPopupVisible;
-    },
-    async updateStatus(){
-      dayjs.locale('en')
-      dayjs.extend(require('dayjs/plugin/timezone'))
-      dayjs.tz.setDefault('Asia/Bangkok')
-      const date = dayjs()
-      const update_date = `${date.format('D MMM YYYY, h:mm A')}`
-      this.allUpdate.mod_status = this.form.tkt_status;
-      this.allUpdate.mod_date = update_date;
-      this.allUpdate.mod_act = this.form.tkt_act;
-      
-      console.log(this.allUpdate)
-      try {
-          await axios.post(`${process.env.VUE_APP_URL}/mongoose/insert/stts_modifications`, {
-            data: this.allUpdate,
-            
-          })
-          .then((result) => {
-            this.confirm();
-          })
-          .catch((err) => {
-            console.log(error)
-          })
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    
   },
   created() {
     const accountId = this.$route.params.itemId
@@ -792,7 +636,6 @@ export default {
     ]
 
     // ทำสิ่งที่คุณต้องการกับ accountId ที่ได้รับ
-    this.form.Confirmpassword = this.form.password
   },
 }
 </script>

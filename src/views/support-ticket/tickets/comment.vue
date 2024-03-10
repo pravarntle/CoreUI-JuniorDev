@@ -203,9 +203,10 @@
       </CCardBody>
     </CCard>
   </div>
+  <CElementCover v-if="loading" :opacity="0.5" />
 </template>
 
-<script>
+<script >
 import Button_back from '@/assets/images/Arrow_Left.png'
 import File_test from '@/assets/images/file_test.jpg'
 import Short from '@/assets/images/Short.jpg'
@@ -229,8 +230,10 @@ import {
   CImage,
   CRow,
 } from '@coreui/vue-pro'
+import { ref } from 'vue'
+
+
 export default {
-  name: 'comment',
   setup() {
     return {
       Button_back,
@@ -308,6 +311,7 @@ export default {
         not_acc: '',
       },
       Button_back: Button_back,
+      loading : ref(false),
     }
   },
   computed: {
@@ -692,7 +696,6 @@ export default {
       } catch (error) {
           console.error('Error:', error.message);
       }
-      console.log("comment length" + this.comments.length);
     },
     async getFileType(filetype) {
       switch (filetype) {
@@ -827,7 +830,7 @@ export default {
           }
             return minutes + ' minutes ago';
         } else {
-            return seconds + ' seconds ago';
+            return ' a few seconds ago';
         }
         // Return the difference as an object
         
@@ -835,15 +838,22 @@ export default {
   },
 
   mounted() {
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 4000);
+    
     const itemId = this.$route.params.itemId
     this.ticketId = itemId
     this.getTicket()
     this.getComment()
     this.getAcount()
+    
     this.commentInterval = setInterval(() => {
       this.getComment();
       this.setScollHeight();
     }, 1000)
+    
   },
   beforeUnmount() {
     clearInterval(this.commentInterval)
