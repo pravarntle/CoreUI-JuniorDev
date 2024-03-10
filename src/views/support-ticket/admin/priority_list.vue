@@ -29,7 +29,10 @@
               <!---->
               <template #status_eng="{ item }">
                 <td>
-                  <CBadge :color="getBadge(item.status_eng)">{{
+                  <!-- <CBadge :color="getBadge(item.status_eng)">{{
+                    item.status_eng
+                  }}</CBadge> -->
+                  <CBadge class="px-3" :style="item.pri_color">{{
                     item.status_eng
                   }}</CBadge>
                 </td>
@@ -236,6 +239,7 @@ export default {
           status_th: element.pri_name_th,
           level_of_priority: element.pri_level,
           description: element.pri_description,
+          pri_color: `background-color: ${element.pri_color};`,
           MORE: false,
         }))
       } catch (error) {

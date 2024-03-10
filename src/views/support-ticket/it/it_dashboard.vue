@@ -287,6 +287,7 @@
       </div>
     </CCard>
   </div>
+  <CElementCover v-if="loading" :opacity="0.5" />
 </template>
 
 <script>
@@ -308,6 +309,7 @@ import Iconinbox from '@/assets/images/Icon_Inbox.png'
 export default {
   components: { CRow, CCol, CChart, count_ticket, CIcon, CCardText },
   setup() {
+    const loading = false
     const columns = [
     {
         key: 'number',
@@ -592,9 +594,13 @@ export default {
   },
   mounted() {
     //เรียกใช้ฟังชั่นเมื่อโหลดหน้า
+    this.loading = true
     this.getTicketPending()
     this.getAllTicket()
     this.getTicketOnMonth()
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
   },
 }
 </script>
