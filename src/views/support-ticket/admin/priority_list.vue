@@ -52,10 +52,10 @@
                     @close="() => { visibleDelete = false }">
 
                     <CModalBody>
-                        <h2 class="text-start"> Delete Priorities </h2>
+                        <h2 class="text-start"> Delete Priority </h2>
                         <p class="text-black" id="popup-detail">
                         Are you sure you want to
-                        <span class="text-danger">Delete Priorities ?</span>
+                        <span class="text-danger">Delete Priority ?</span>
                         </p>
                         <br/>
                         <hr/>
@@ -158,7 +158,7 @@ export default {
       },
       {
         key: 'description',
-        label: 'Description',
+        label: 'PRIORITY INFO',
         _style: {
           width: '40%',
           fontWeight: 'bold',
@@ -268,7 +268,7 @@ export default {
           },
         )
         this.toastDelete.push({
-          content: 'Delete Success  ',
+          content: 'Delete Succesfull  ',
         })
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน

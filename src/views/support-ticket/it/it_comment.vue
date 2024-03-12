@@ -349,7 +349,7 @@
     </CCard>
   </div>
   <CToaster placement="top-end">
-    <CToast visible color="warning" v-for="(toast) in toastProp">
+    <CToast visible color="success" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>

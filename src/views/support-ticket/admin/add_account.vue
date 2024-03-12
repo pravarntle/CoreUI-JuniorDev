@@ -85,7 +85,7 @@
 
           <CRow class="mb-3">
             <CCol xs="12" md="6" lg="8">
-              <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label"><b>Employee ID</b> <span id="required">
+              <CFormLabel for="inputEmployee" class="col-sm-12 col-form-label"><b>Username</b> <span id="required">
                   *</span> </CFormLabel>
               <CFormInput type="text" id="employeeID" name="employeeID" feedbackInvalid="Please input employee ID."
                 v-model="form.act_username" :invalid="validate.act_username" required />
@@ -187,7 +187,7 @@
                 </h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span id="detail-for-submit" class="text-success">Create New Priority ?</span>
+                  <span id="detail-for-submit" class="text-success">Create New Account ?</span>
                 </p>
                 <br/>
                 <hr/>
@@ -210,7 +210,7 @@
     </CCard>
   </div>
   <CToaster placement="top-end">
-    <CToast visible color="success" v-for="(toast) in toastProp">
+    <CToast visible color="info" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -471,7 +471,7 @@ export default {
           .then((result) => {
             this.isLoading = true
             this.toastProp.push({
-                content: 'Create Success  ',
+                content: 'Create Succesfully  ',
               })
             setTimeout(() => {
               this.isLoading = false

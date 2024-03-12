@@ -100,11 +100,11 @@
             <CModal alignment="center" :backdrop="false" :keyboard="false" :visible="visibleCancel"
               @close="() => { visibleCancel = false }">
               <CModalHeader>
-                <CModalTitle>Are you sure you want to <font class="Highlight-font-alert">Cancel This Ticket?</font>
+                <CModalTitle>Are you sure you want to <font class="Highlight-font-alert">Delete This Ticket?</font>
                 </CModalTitle>
               </CModalHeader>
               <CModalBody>
-                When you click on confirm button, the ticket will be cancelled.
+                When you click on confirm button, the ticket will be Deleted.
               </CModalBody>
               <CModalFooter>
                 <CButton color="secondary" @click="() => { visibleCancel = false }">
@@ -404,7 +404,7 @@ export default {
           }
         });
         this.toastProp.push({
-          content: 'Delete Success'
+          content: 'Delete Succesfully'
         });
         // ซ่อน Modal หลังจากยกเลิกสำเร็จ
         this.visibleCancel = false;

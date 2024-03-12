@@ -365,11 +365,9 @@ export default {
       // Regular expression to check for special characters
       const specialCharRegex = /[=+--!@#$%^&*(),.?":{}|<>;\\/]/;
       // Check for empty values and display validation messages
-      if (!error) {
-        this.checkDuplicateValue();
-      } else {
-        this.form.validatedCustom01 = true// เปลี่ยนเป็น true เมื่อคลิก "Submit"
-      }
+      
+      this.checkDuplicateValue();
+      
       if (this.form.pri_name_eng.trim() === '' || specialCharRegex.test(this.form.pri_name_eng)) {
         this.validate.pri_name_eng = true; // Show validation message
         error = true;
@@ -426,7 +424,10 @@ export default {
           )
         console.log(response.data)
         // Assuming response.data is an array of objects with pri_level property
-        const duplicate = response.data.some(item => item.pri_level === value);
+        const duplicate = response.data.some(item => {
+  // Check if pri_level matches the value and _id does not match priorityId
+          return item.pri_level === value && item._id !== this.priorityId;
+        });
         console.log(duplicate)
         // Set the validation flag based on whether duplicate value is found
         this.validate.pri_level = duplicate ? true : false;

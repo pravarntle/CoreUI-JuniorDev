@@ -10,7 +10,6 @@
       <CCardBody>
         <CForm>
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
@@ -21,7 +20,6 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
@@ -32,7 +30,6 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12">
               <div class="d-flex align-items-center">
@@ -63,7 +60,6 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"> </CFormLabel>
             <div class="col-lg-7 col-md-12">
               <h5>
@@ -74,7 +70,6 @@
             </div>
           </CRow>
           <CRow class="mb-2">
-            <div class="col-lg-1"></div>
             <CFormLabel class="col-lg-2 col-md-12 col-form-label"></CFormLabel>
             <div class="col-lg-7 col-md-12 mb-4">
               <h5>
@@ -101,7 +96,7 @@
 
             <CElementCover :opacity="0.5" v-if="pageLoading" />
           </CRow>
-          <div class="clearfix text-end">
+          <div class="col-3 mx-auto">
             <CButton color="secondary" @click="cancel" id="cancel-button">Cancel</CButton>
             <CModal alignment="center" :visible="visibleVerticallyCenteredDemo" @close="() => {
               visibleVerticallyCenteredDemo = false }">
@@ -294,7 +289,7 @@
 #cancel-button {
   font-weight: bold;
   font-size: x-large;
-  width: 150px;
+  width: 120px;
   color: white;
   border-radius: 20px;
 }
@@ -343,7 +338,7 @@
 #submit-button {
   font-weight: bold;
   font-size: x-large;
-  width: 150px;
+  width: 120px;
   color: white;
   border-radius: 20px;
 }

@@ -293,7 +293,7 @@ export default {
                 });
                 this.isLoading = true;
                 this.toastProp.push({
-                    content: 'Account deleted successfully'
+                    content: 'Delete Succesfully'
                 });
                 // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
                 console.log('อัปเดต BOOKMARK และส่งข้อมูลไปยัง MongoDB สำเร็จ');

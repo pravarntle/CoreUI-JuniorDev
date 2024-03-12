@@ -9,13 +9,6 @@
         </div>
       </div>
     </CCardHeader>
-    <CRow class="g-1 ms-5 ps-5" >
-      <CCol class="ms-5 mt-3">
-          <div class="purple">
-            <h1>Priority Info</h1>
-          </div>
-      </CCol>
-      </CRow>
       
     <CForm 
     class="row g-1 needs-validation ms-5 ps-5" 
@@ -69,12 +62,13 @@
                 </CCol>
       </CRow>
       <CCol class="ms-5 mt-3" md="7">
-      <h4>Description</h4>
+      <h4>Priority Info<span id="Icon_force">*</span></h4>
         <CFormTextarea
           feedbackValid="Looks good!"
           id="validationCustom01"
           required
           v-model="form.pri_description"
+          placeholder="ดําเนินการภายใน xx ชั่วโมง"
         >     
         </CFormTextarea>
     </CCol>  
@@ -89,7 +83,7 @@
                 <h2 class="ms-2 cancel-heading"  id="button-head">Cancel</h2>
                 <p class="ms-2" id="popup-detail">
                   Are you sure you want to
-                  <span class="text-danger"> Create New Priority ?</span>
+                  <span class="text-danger"> Cancel New Priority ?</span>
                 </p>
                 <br />
                 <hr />
@@ -140,7 +134,7 @@
 
   <br />
   <CToaster placement="top-end">
-    <CToast visible color="success" v-for="(toast) in toastProp">
+    <CToast visible color="info" v-for="(toast) in toastProp">
       <CToastHeader closeButton v-if="toast.title">
         <span class="me-auto fw-bold">{{ toast.title }}</span>
       </CToastHeader>
@@ -199,7 +193,7 @@ export default {
             console.log(result)
             this.isLoading = true
             this.toastProp.push({
-              content: 'Create Success  ',
+              content: 'Create Succesfully  ',
             })
             setTimeout(() => {
               
@@ -287,6 +281,13 @@ export default {
         error = true;
       } else {
         this.validate.pri_color = false;
+      }
+      
+      if (this.form.pri_description.trim() === '') {
+        this.validate.pri_description = true
+        error = true
+      } else {
+        this.validate.pri_description = false
       }
 
       if (!error) {

@@ -587,7 +587,7 @@ export default {
             .then((result) => {
               this.isLoading = true
               this.toastProp.push({
-                content: 'Create Success  ',
+                content: 'Edit Succesfully  ',
               })
               // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
               // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน
