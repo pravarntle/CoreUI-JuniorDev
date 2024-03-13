@@ -268,7 +268,7 @@ export default {
           },
         )
         this.toastDelete.push({
-          content: 'Delete Succesfull  ',
+          content: 'Delete Successfully  ',
         })
         // ทำการ validate หรือประมวลผลต่าง ๆ ที่ต้องการทำ
         // ในที่นี้เพียงแค่รอเวลา 2 วินาทีเพื่อจำลองกระบวนการยาวนาน

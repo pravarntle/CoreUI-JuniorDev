@@ -1104,7 +1104,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .avatar-round {
   width: 100px;
   /* ปรับขนาดตามที่ต้องการ */

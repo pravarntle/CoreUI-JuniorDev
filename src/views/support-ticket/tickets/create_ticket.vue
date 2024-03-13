@@ -134,16 +134,18 @@
                   <span id="detail-for-submit">Submit The Ticket ?</span>
                 </p>
                 <br/>
-                <hr/>
-                <CButton color="light" @click="() => { visibleSubmit = false }">
+        
+              </CModalBody>
+              <CModalFooter>
+                  <CButton color="light" @click="() => { visibleSubmit = false }">
                   Cancel
                 </CButton>
-                <CButton class="ms-2" color="success" id="confirm-btn-in-detail" @click="onSave"
+                <CButton class="ms-2 " color="success" id="confirm-btn-in-detail" @click="onSave"
                   :disabled="isLoading">
                   <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
                   {{ isLoading ? 'Confirm...' : 'Confirm' }}
                 </CButton>
-              </CModalBody>
+                </CModalFooter>
             </CModal>
           </div>
         </CForm>
@@ -164,7 +166,7 @@
   </CToaster>
 </template>
 
-<style>
+<style scoped>
 #ticket-header {
   display: inline-block;
   border-bottom: 5px solid transparent;
@@ -386,7 +388,7 @@ import popup_priority from '@/assets/images/popup_priority.jpg'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import 'dayjs/plugin/timezone' // นำเข้าโมดูล timezone
-import { CForm, CFormLabel, CImage } from '@coreui/vue-pro'
+import { CForm, CFormLabel, CImage, CModalFooter } from '@coreui/vue-pro'
 import axios from 'axios'
 
 export default {
@@ -566,7 +568,7 @@ export default {
           .then((result) => {
             this.allUpdate.mod_tkt = result.data._id  
             this.toastProp.push({
-              content: 'Create Success  ',
+              content: 'Create Successfully  ',
             })
             
             setTimeout(() => {

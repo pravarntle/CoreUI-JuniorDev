@@ -501,7 +501,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 input[type='range'] {
   height: 8px;
   pointer-events: none;

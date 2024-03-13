@@ -17,7 +17,7 @@
     @submit="handleSubmitCustom01"
   >
 
-    <CCol class="ms-5 mt-3" md="7">
+    <CCol class="ms-5 mt-5" md="7">
       <h4>Priority name (Thai)<span id="Icon_force">*</span></h4>
         <CFormInput
           :invalid="validate.pri_name_th" 

@@ -331,7 +331,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .ticket-number{
     color: #3399ff;
 }

@@ -12,7 +12,7 @@
       <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter clickable-rows  table-filter-placeholder="Search"
           class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" columnFilter
-          items-per-page-select pagination columnSorter :sorterValue="{ column: 'STATUS', state: 'desc' }" :table-props="{
+          items-per-page-select pagination columnSorter :sorterValue="{ column: 'start_date', state: 'desc' }" :table-props="{
             striped: true,
             hover: true,
           }">
@@ -104,7 +104,7 @@
                 </CModalTitle>
               </CModalHeader>
               <CModalBody>
-                When you click on confirm button, the ticket will be Deleted.
+                When you click on confirm button, the ticket will be deleted.
               </CModalBody>
               <CModalFooter>
                 <CButton color="secondary" @click="() => { visibleCancel = false }">
@@ -437,7 +437,7 @@ export default {
       try {
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
         const userId = userData.id.toString(); // ดึงค่า id จาก userData
-
+        
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
           where: {
             tkt_act: userId,

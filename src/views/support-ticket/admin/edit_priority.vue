@@ -12,12 +12,7 @@
     </CCardHeader>
     <CCardBody class="px-5">
       <div>
-        <CRow class="mb-2">
-          <div class="col-lg-1"></div>
-          <div class="col-lg-7 col-md-12 purple">
-            <h1>Priority Info</h1>
-          </div>
-        </CRow>
+       
         <CRow class="mb-2">
           <div class="col-lg-1"></div>
           <div class="col-lg-7 col-md-12">
@@ -78,7 +73,7 @@
           <div class="col-lg-7 col-md-12">
             <CForm>
               <CFormLabel for="desc">
-                <h4>Description<span id="Icon_force">*</span></h4>
+                <h4>PRIORITY INFO<span id="Icon_force">*</span></h4>
               </CFormLabel>
               <CFormTextarea class="mb-3" id="Description_Text" v-model="form.pri_description" :invalid="validate.pri_description"
                 placeholder="รอดำเนินการภายใน 8 ชั่วโมง"></CFormTextarea>
@@ -338,7 +333,7 @@ export default {
             console.log(result)
             this.isLoading = true
             this.toastProp.push({
-              content: 'Edit Priority Success  ',
+              content: 'Edit Successfully  ',
             })
             setTimeout(() => {
               

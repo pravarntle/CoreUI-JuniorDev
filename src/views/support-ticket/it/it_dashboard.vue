@@ -249,7 +249,7 @@
           striped: true,
           hover: true,
         }" :activePage="2" header :items="items" :columns="columns" tableFilter itemsPerPageSelect table-filter-placeholder="Search"
-          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'priorities', state: 'asc' }"
+          items-per-page-select :itemsPerPage="5" columnSorter :sorterValue="{ column: 'start_date', state: 'desc' }"
           pagination>
           <template #ticket_id="{ item }">
               <td id="style-ticket-id" @click="acceptTicket(item, index)">{{ item.ticket_id }}</td>
@@ -607,7 +607,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped> 
 input[type='range'] {
   height: 8px;
   pointer-events: none;

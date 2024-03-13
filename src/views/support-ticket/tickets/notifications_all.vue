@@ -195,7 +195,7 @@ import axios from 'axios'
 }
   </script>
 
-<style>
+<style scoped> 
 .message-body {
     text-align: left;
     width: 100%; /* กำหนดให้ความกว้างของ div เต็มพื้นที่ */

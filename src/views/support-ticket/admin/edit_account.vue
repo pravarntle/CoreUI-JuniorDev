@@ -213,7 +213,7 @@
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group">
-                  <CFormLabel for="phone" class="col-sm-12 col-form-label"
+                  <CFormLabel for="phone" class="col-sm-12 col-form-label" 
                     ><b>Phone Number</b>
                     <span id="required">*</span></CFormLabel
                   >
@@ -224,6 +224,7 @@
                     feedbackInvalid="Please input your phone number."
                     v-model="form.act_number_phone"
                     :invalid="validate.act_number_phone"
+                    placeholder="e.g. 0611234567"  maxlength="10"
                     required
                   />
                 </div>
@@ -639,7 +640,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .pic {
   background-color: #7f9ccb;
   padding: 5px 10px;

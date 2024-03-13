@@ -176,7 +176,7 @@
 
   
 </template>
-<style>
+<style scoped>
 .vl {
   margin-left: 5%;
   border-left: 3px solid rgba(194, 197, 204, 0.5);
