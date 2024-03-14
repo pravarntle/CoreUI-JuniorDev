@@ -49,7 +49,7 @@
                 <CCollapse :visible="visibleA">
                   <CCardBody style="margin-left: 2%">
                     <CCol class="text-start">
-                      <b class="detail-title"> Title : </b>
+                      <b class="detail-title" > Title : </b>
                       <CCradText> {{ title }}</CCradText>
                     </CCol>
                     <CCol class="text-start">
@@ -98,16 +98,17 @@
           <p> {{ formatDate(date) }} &nbsp; </p>
 
             <CCollapse :visible="visibleB">
-              <h6 class="detail-font-red"><b>Title</b></h6>
+              <h6 class="text-primary"><b>Title</b></h6>
               <p>{{title}}</p>
-              <h6 class="detail-font-red"><b>Status</b></h6>
+              <h6 class="text-primary"><b>Status</b></h6>
               <p>{{status}}</p>
-              <h6 class="detail-font-red"><b>Priority</b></h6>
+              <h6 class="text-primary"><b>Priority</b></h6>
               <p>{{priorities}}</p>
               <CRow>
                 <CCol class="mb-2 text-center">
                   <CButton
                     class="btn-sec btn-resolve"
+                    color="primary"
                     @click="() => {
                         visibleVerticallyCenteredDemo = true
                       }
@@ -1163,7 +1164,7 @@ export default {
   width: 150px;
   color: white;
   border-radius: 20px;
-  background-color: #d0293b;
+ 
 }
 
 .btn-assign {
