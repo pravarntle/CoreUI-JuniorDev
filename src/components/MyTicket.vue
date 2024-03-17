@@ -15,8 +15,9 @@
                 <CCol>
                   <CFormSelect
                     aria-label="Default select example"
+                    v-model="filter.status"
                     :options="[
-                      'Open this select menu',
+                      { label: 'Open this select menu', value: '' },
                       { label: 'Pending', value: 'Pending' },
                       { label: 'Open', value: 'Open' },
                       { label: 'Closed', value: 'Closed',},
@@ -27,31 +28,23 @@
                 <CCol>
                   <CFormSelect
                     aria-label="Default select example"
-                    
+                    v-model="filter.type"
                     :options="[
-                      'Open this select menu',
+                      { label: 'Open this select menu', value: '' },
                       { label: 'Hardware', value: 'Hardware' },
                       { label: 'Service', value: 'Service' },
                       { label: 'Service', value: '	Service',}
                     ]">
                   </CFormSelect>
                 </CCol>
-                <CCol>
-                  <CFormSelect
-                    aria-label="Default select example"
-                    :options="[
-                      'Open this select menu',
-                      { label: 'One', value: '1' },
-                      { label: 'Two', value: '2' },
-                      { label: 'Three', value: '3', disabled: true }
-                    ]">
-                  </CFormSelect>
-                </CCol>
+                
               </CRow>
               
             </CCardBody>
             <CCardFooter>
-
+              <CButton size="sm" @click="getFilterTicket">
+                  <img :src="IconcancelTicket" class="style-button" alt="Edit Icon" />
+                </CButton>
             </CCardFooter>
         </CCard>
   </div>
@@ -68,7 +61,7 @@
       <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter clickable-rows  table-filter-placeholder="Search"
           class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" columnFilter
-          items-per-page-select pagination columnSorter :sorterValue="{ column: 'start_date', state: 'desc' }" :table-props="{
+          items-per-page-select pagination columnSorter  :table-props="{
             striped: true,
             hover: true,
           }">
@@ -268,7 +261,7 @@ import IconcancelTicket from '@/assets/images/Icon_deleteaccount.png'
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
-import { CBadge, CCardFooter } from '@coreui/vue-pro';
+import { CBadge, CButton, CCardFooter } from '@coreui/vue-pro';
 
 
 
@@ -306,6 +299,10 @@ export default {
       selectedCancel: {},
       IconcancelTicket: IconcancelTicket,
       loading : false,
+      filter:{
+        status:'',
+        type:'',
+      }
 
 
 
@@ -456,7 +453,7 @@ export default {
         const itemId = item._id.toString();
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data: {
-            tkt_status: "Cancel"
+            tkt_delete: "Cancel"
           }
         });
         this.toastProp.push({
@@ -487,6 +484,46 @@ export default {
       this.confirmCancel = item;
       this.confirmCancelIndex = index;
     },
+    async getFilterTicket() {
+      try {
+        const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
+        const userId = userData.id.toString(); // ดึงค่า id จาก userData
+        const { status, type } = this.filter;
+        console.log("asdasdqe",status)
+        console.log("swweqqweasd",type)
+        console.log("rrrrr",userId)
+        this.items=[];
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+          where: {
+            tkt_act: userId,
+            tkt_status: status,
+            tkt_types: type,
+            tkt_delete:{ $ne: true },
+
+          },
+        });
+        // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        console.log("ggggg",response.data)
+        
+        this.items = response.data.map((element, index) => {
+
+          return {
+            '#': index + 1,
+            _id: element._id,
+            TicketID: element.tkt_number,
+            TITLE: element.tkt_title,
+            start_date: element.tkt_time,
+            STATUS: element.tkt_status,
+            TYPE: element.tkt_types,
+            BOOKMARK: element.tkt_book,
+            MORE: false,
+          };
+          
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
 
 
     async getTicket() {
@@ -497,7 +534,7 @@ export default {
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
           where: {
             tkt_act: userId,
-            tkt_status: { $ne: 'Cancel' }
+            tkt_delete: { $ne: 'Cancel' }
 
           },
         });

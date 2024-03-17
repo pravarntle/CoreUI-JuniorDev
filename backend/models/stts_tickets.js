@@ -52,6 +52,10 @@ const SchemaData = new schema({
         type: Boolean,
         required: false,
     },
+    tkt_delete: {
+        type: Boolean,
+        required: false,
+    },
     tkt_act: {
         type: schema.Types.ObjectId,
         ref: "stts_accounts",

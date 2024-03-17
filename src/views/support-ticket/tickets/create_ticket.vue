@@ -406,7 +406,7 @@ export default {
         tkt_types: '',
         tkt_book: '',
         tkt_act: '',
-        validatedCustom01: false,
+        tkt_delete:false,
         isDragOver: false,
       },
       popup_priority,
@@ -448,7 +448,7 @@ export default {
         { label: 'Software', value: 'Software' },
         { label: 'Hardware', value: 'Hardware' },
         { label: 'Service Request', value: 'Service' },
-        { label: 'ไม่ระบุ', value: 'none', disabled: true },
+        
       ])
     this.getUser()
   },
@@ -471,7 +471,7 @@ export default {
         this.userOptions.push({value:element.pri_name_eng,label:element.pri_name_eng})
 
       });
-      this.userOptions.push({ label: 'ไม่ระบุ', value: 'none', disabled: true });
+      
     },
 
     //ฟังก์ชั่นตรวจข้อมูลว่าไม่ส่งค่าเปล่า

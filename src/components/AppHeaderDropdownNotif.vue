@@ -180,7 +180,6 @@ export default {
         // })
         this.itemsCount= Object.keys(response.data).length;
         this.notificationAll=response.data;
-        console.log(this.notificationAll)
     },
     async changeStatus(item,index){
       const notificationId =item._id;
@@ -236,7 +235,6 @@ export default {
           
         }
       }else{
-        console.log('เอล')
          this.$router.push({ path: `/support-ticket/ticket/comment/${ticketId}` });
          
       }
@@ -324,7 +322,6 @@ export default {
     const userData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
     this.userID=userData.id
     this.roleID=userData.role
-    console.log("ยูสเซอร์:"+ this.userID)
     this.commentInterval = setInterval(() => {
       this.getNotifications();
     }, 1000);
