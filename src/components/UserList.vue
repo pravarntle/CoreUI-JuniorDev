@@ -1,7 +1,7 @@
 <template>
     <div>
         <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter
-            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows table-filter-placeholder="Search" columnFilter
+            class="table-hover table-bordered table-alternate-background table-responsive " clickable-rows table-filter-placeholder="Search" 
             :items-per-page="5" items-per-page-select pagination columnSorter
             :sorterValue="{ column: 'status', state: 'asc' }" :table-props="{
                 striped: true,
@@ -33,6 +33,9 @@
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton> -->
 
+                    <CButton v-if="showChange" size="sm" @click="showChanges(item)">
+                        <img :src="Iconkey" class="style-button" alt="Delete Icon" />
+                    </CButton>
                     <CButton size="sm" @click="showDelete(item)">
                         <img :src="Icondeleteaccount" class="style-button" alt="Delete Icon" />
                     </CButton>
@@ -62,11 +65,55 @@
                         </div>
                     </CModalBody>
                 </CModal>
+                <CModal  alignment="center" :backdrop="false" :keyboard="false" :visible="visibleChanges"
+                    @close="() => { visibleChanges = false }"   >
+
+                    <CModalBody>
+                        <h2 class="text-start"> Change Password </h2>
+                        <br />
+                        <hr />
+                        
+                        <CRow>
+                            <CCol xs="12" md="6" lg="4">
+                                <CFormLabel for="inputPassword1" class="pamt1"><b>Password </b> </CFormLabel>
+                                <CFormInput feedbackInvalid="Please input password."
+                                    text="(a-z) contains 2 letters and (0-9) Contains 4 numbers." id="password1"
+                                    v-model="newPassword" :invalid="validate.newPassword" autocomplete="current-password"
+                                    placeholder="•••••••" maxlength="6"  @mouseup.stop="" required />
+                                </CCol>
+                                <CCol xs="12" md="6" lg="4">
+                                <CFormLabel for="Password" class="pamt1"><b>Confirm Password</b> </CFormLabel>
+                                <CFormInput  id="password2" v-model="confirmNewPassword"
+                                    feedbackInvalid="Please confirm password." :invalid="validate.confirmNewPassword"
+                                    autocomplete="current-password" placeholder="•••••••" maxlength="6"  @mouseup.stop="" required />
+                                <div v-if="validate.confirmNewPassword" class="text-danger">
+                                    Passwords do not match.
+                                </div>
+                            </CCol>
+                        </CRow>
+                        <div class="d-flex justify-content-end">
+                            <CButton color="light"> Cancel </CButton>
+                            <CButton class="ms-2" color="success" id="confirm-btn-in-detail" @click="validateBeforeSave"
+                                @mouseup.stop="" :disabled="isLoading">
+                                <CSpinner v-if="isLoading" component="span" size="sm" variant="grow" aria-hidden="true" />
+                                {{ isLoading ? 'Confirm...' : 'Confirm' }}
+                            </CButton>
+                        </div>
+                    </CModalBody>
+                </CModal>
             </template>
 
         </CSmartTable>
         <CToaster placement="top-end">
             <CToast visible color="danger" v-for="(toast) in toastProp">
+                <CToastHeader closeButton v-if="toast.title">
+                    <span class="me-auto fw-bold">{{ toast.title }}</span>
+                </CToastHeader>
+                <CToastBody v-if="toast.content">
+                    <span class="text-white">{{ toast.content }}</span>
+                </CToastBody>
+            </CToast>
+            <CToast visible color="success" v-for="(toast) in toast">
                 <CToastHeader closeButton v-if="toast.title">
                     <span class="me-auto fw-bold">{{ toast.title }}</span>
                 </CToastHeader>
@@ -142,13 +189,16 @@
 import More_Priority from '@/assets/images/More_Priority.png'
 import Icondeleteaccount from '@/assets/images/Icon_deleteaccount.png'
 import Iconeditaccount from '@/assets/images/Icon_editaccount.png'
+import Iconkey from '@/assets/images/Icon_Key.png'
 import { ref } from 'vue'
 import LGlogo from '@/assets/images/blackTick.png'
 import axios from 'axios'
+import bcrypt from 'bcryptjs';
 
 
 export default {
     name: 'userlist',
+    props: ['showChange'],
     data() {
         return {
             data_array: [],
@@ -166,14 +216,25 @@ export default {
             More_Priority,
             Icondeleteaccount,
             Iconeditaccount,
+            Iconkey,
             visibleDelete: false,
             indexDelete: '',
             toastProp: [],
+            toast: [],
             isLoading: false,
+            show:false,
+            visibleChanges:false,
+            indexChanges:'',
+            newPassword:'',
+            confirmNewPassword:'',
+            validate:{
+                newPassword:false,
+                confirmNewPassword:false,
+            },
         };
 
     },
-    setup() {
+    setup(props) {
         const columns = [
 
             {
@@ -220,14 +281,14 @@ export default {
             {
                 key: 'user_role',
                 label: 'ROLE',
-                _style: { width: '13%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '5%' },
+                _style: { width: '10%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '5%' },
 
 
             },
             {
                 key: 'MORE',
                 label: 'ACTION',
-                _style: { width: '15%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '35px' },
+                _style: { width: '20%', fontWeight: 'bold', color: 'gray', fontSize: '13px', paddingLeft: '35px' },
                 filter: false,
                 sorter: false,
 
@@ -243,6 +304,7 @@ export default {
         };
 
         const items = ref([]);
+        var show = props.showChange ;
 
 
         async function getData() {
@@ -315,6 +377,12 @@ export default {
             this.indexDelete = item;
 
         },
+        showChanges(item) {
+            
+            this.visibleChanges = true;
+            this.indexChanges = item;
+
+        },
 
         async toggleButton(item) {
             item.MORE = !item.MORE;
@@ -362,6 +430,93 @@ export default {
                 return role;
             }
         },
+        async ChangeButton() {
+
+            try {
+                const itemId = this.indexChanges._id.toString();
+                // ทำการอัปเดตข้อมูลใน MongoDB โดยใช้ Axios
+                console.log(itemId);
+                await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_accounts/${itemId}`, {
+                    data: {
+                        act_password: this.newPassword,
+                    }
+                });
+                this.isLoading = true;
+                this.toast.push({
+                    content: 'Change Succesfully'
+                });
+                // หลังจากอัปเดตสำเร็จ คุณสามารถทำสิ่งอื่นที่คุณต้องการได้ที่นี่
+                this.indexChanges = '',
+                    // รีเฟรชหน้า
+                    this.getAccount();
+                this.visibleChanges = false;
+                this.isLoading = false;
+            } catch (error) {
+                console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+            }
+        },
+        validateBeforeSave() {
+            let error = false
+
+            const passwordRegex = /^(?=.*[a-z].*[a-z])(?=.*\d.*\d.*\d.*\d)[a-z\d]*$/;
+
+
+            // ตรวจสอบรหัสผ่าน
+            if (!passwordRegex.test(this.newPassword.trim())) {
+                error = true
+                this.validate.newPassword = true
+            } else {
+                this.validate.newPassword = false
+            }
+
+            // ตรวจสอบการยืนยันรหัสผ่าน
+            if (this.confirmNewPassword.trim() === '') {
+                error = true
+                this.validate.confirmNewPassword = true
+            } else {
+                // ตรวจสอบว่ารหัสผ่านที่ยืนยันตรงกันหรือไม่
+                if (this.newPassword !== this.confirmNewPassword) {
+                error = true
+                this.validate.confirmNewPassword = true
+
+                } else {
+                this.validate.confirmNewPassword = false
+
+                }
+            }
+
+            if (!error) {
+                // ถ้าไม่มีข้อผิดพลาดให้ทำงานต่อไป
+                this.encryptPasswordBeforeSave();
+            } 
+        },     
+        showPassword() {
+            var p1 = document.getElementById('password1')
+            var p2 = document.getElementById('password2')
+            if (p1.type === 'password') {
+                p1.type = 'text'
+                p2.type = 'text'
+            } else {
+                p1.type = 'password'
+                p2.type = 'password'
+            }
+        },     
+        encryptPasswordBeforeSave() {
+
+            const password = this.newPassword;
+            const saltRounds = 10;
+
+            bcrypt.hash(password, saltRounds, (err, hash) => {
+            if (err) {
+                console.error(err);
+                // จัดการข้อผิดพลาดที่เกิดขึ้น
+            } else {
+                this.newPassword = hash; // กำหนดรหัสผ่านเข้าไปใน form ใหม่
+                this.ChangeButton(); // เรียกฟังก์ชัน onSave เพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์
+            }
+            });
+        },              
+
 
     },
     mounted() {

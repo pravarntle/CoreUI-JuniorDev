@@ -1,4 +1,5 @@
 <template>
+    
     <div>
         <CCard class="p-2 rounded-4">
             <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
@@ -16,7 +17,7 @@
                 </div>
             </CCardHeader>
             <CCardBody>
-                <UserList />
+                <UserList :showChange="true"/>
             </CCardBody>
         </CCard>
     </div>

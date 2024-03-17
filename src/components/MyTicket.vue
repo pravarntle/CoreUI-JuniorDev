@@ -1,4 +1,60 @@
 <template>
+  <div class="mb-3">
+        <CCard class="p-2 rounded-4">
+            <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
+                <div class="d-inline ms-2">
+                    <div id="underline_header">
+                        <CImage class="me-2 align-middle" id="custom_icon_header" :src="Iconaccountlist" />
+                        <h2 class="d-inline align-middle"><b>Filter</b></h2>
+                    </div>
+                </div>
+                
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol>
+                  <CFormSelect
+                    aria-label="Default select example"
+                    :options="[
+                      'Open this select menu',
+                      { label: 'Pending', value: 'Pending' },
+                      { label: 'Open', value: 'Open' },
+                      { label: 'Closed', value: 'Closed',},
+                      { label: 'Closed Bug', value: 'Closed Bug',}
+                    ]">
+                  </CFormSelect>
+                </CCol>
+                <CCol>
+                  <CFormSelect
+                    aria-label="Default select example"
+                    
+                    :options="[
+                      'Open this select menu',
+                      { label: 'Hardware', value: 'Hardware' },
+                      { label: 'Service', value: 'Service' },
+                      { label: 'Service', value: '	Service',}
+                    ]">
+                  </CFormSelect>
+                </CCol>
+                <CCol>
+                  <CFormSelect
+                    aria-label="Default select example"
+                    :options="[
+                      'Open this select menu',
+                      { label: 'One', value: '1' },
+                      { label: 'Two', value: '2' },
+                      { label: 'Three', value: '3', disabled: true }
+                    ]">
+                  </CFormSelect>
+                </CCol>
+              </CRow>
+              
+            </CCardBody>
+            <CCardFooter>
+
+            </CCardFooter>
+        </CCard>
+  </div>
   <CCard class="p-2 rounded-4">
     <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
       <div class="d-inline ms-2">
@@ -212,7 +268,7 @@ import IconcancelTicket from '@/assets/images/Icon_deleteaccount.png'
 import axios from 'axios'
 import { CIcon } from '@coreui/icons-vue';
 import * as icon from '@coreui/icons';
-import { CBadge } from '@coreui/vue-pro';
+import { CBadge, CCardFooter } from '@coreui/vue-pro';
 
 
 
