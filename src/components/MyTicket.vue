@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3">
+  <div class="mb-3" v-if="showBookmark">
         <CCard class="p-2 rounded-4">
             <CCardHeader class="bg-white border-white mb-3 d-flex justify-content-between align-items-center">
                 <div class="d-inline ms-2">
@@ -17,7 +17,7 @@
                     aria-label="Default select example"
                     v-model="filter.status"
                     :options="[
-                      { label: 'Open this select menu', value: '' },
+                      { label: 'Select Status', value: '' },
                       { label: 'Pending', value: 'Pending' },
                       { label: 'Open', value: 'Open' },
                       { label: 'Closed', value: 'Closed',},
@@ -30,22 +30,36 @@
                     aria-label="Default select example"
                     v-model="filter.type"
                     :options="[
-                      { label: 'Open this select menu', value: '' },
+                      { label: 'Select Type', value: '' },
                       { label: 'Hardware', value: 'Hardware' },
                       { label: 'Service', value: 'Service' },
-                      { label: 'Service', value: '	Service',}
+                      { label: 'Software', value: 'Software',}
                     ]">
                   </CFormSelect>
+                </CCol>
+                <CCol>
+                  <CFormInput
+                    type="date"
+                    id="selected-month" 
+                    v-model="filter.selectedMonth" 
+                    @change="onMonthChange"
+                    :value="selectedMonth ? selectedMonth : ''"
+                  >
+                    
+                  </CFormInput>
+                </CCol>
+                <CCol>
+                  
+                  <CButton size="sm" color="info" variant="outline" square class="mx-1 style-action"
+                  @click="getFilterTicket">
+                  Search
+                </CButton>
                 </CCol>
                 
               </CRow>
               
             </CCardBody>
-            <CCardFooter>
-              <CButton size="sm" @click="getFilterTicket">
-                  <img :src="IconcancelTicket" class="style-button" alt="Edit Icon" />
-                </CButton>
-            </CCardFooter>
+
         </CCard>
   </div>
   <CCard class="p-2 rounded-4">
@@ -59,8 +73,8 @@
     </CCardHeader>
     <CCardBody>
       <div>
-        <CSmartTable :active-page="1" header :items="items" :columns="columns" tableFilter column-sorter clickable-rows  table-filter-placeholder="Search"
-          class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" columnFilter
+        <CSmartTable :active-page="1" header :items="items" :columns="columns"  column-sorter clickable-rows  
+          class="table-hover table-bordered table-alternate-background table-responsive" :items-per-page="5" 
           items-per-page-select pagination columnSorter  :table-props="{
             striped: true,
             hover: true,
@@ -302,6 +316,7 @@ export default {
       filter:{
         status:'',
         type:'',
+        selectedMonth:'',
       }
 
 
@@ -453,7 +468,7 @@ export default {
         const itemId = item._id.toString();
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data: {
-            tkt_delete: "Cancel"
+            tkt_delete: true
           }
         });
         this.toastProp.push({
@@ -488,20 +503,23 @@ export default {
       try {
         const userData = JSON.parse(localStorage.getItem('USER_DATA')); // ดึงข้อมูล USER_DATA จาก local storage
         const userId = userData.id.toString(); // ดึงค่า id จาก userData
-        const { status, type } = this.filter;
-        console.log("asdasdqe",status)
-        console.log("swweqqweasd",type)
-        console.log("rrrrr",userId)
-        this.items=[];
-        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
+
+        const postData = {
           where: {
             tkt_act: userId,
-            tkt_status: status,
-            tkt_types: type,
-            tkt_delete:{ $ne: true },
-
+            tkt_delete: { $ne: true },
           },
-        });
+        };
+
+        // เพิ่มเงื่อนไขในการตรวจสอบค่าว่างของ status และ type
+        const { status, type ,selectedMonth} = this.filter;
+        if (status) postData.where.tkt_status = status;
+        if (type) postData.where.tkt_types = type;
+        if (selectedMonth) postData.where.tkt_time = selectedMonth;
+        console.log(selectedMonth)
+
+        const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, postData);
+
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
         console.log("ggggg",response.data)
         
@@ -534,13 +552,16 @@ export default {
         const response = await axios.post(`${process.env.VUE_APP_URL}/mongoose/get/stts_tickets`, {
           where: {
             tkt_act: userId,
-            tkt_delete: { $ne: 'Cancel' }
+            tkt_delete: { $ne: true }
 
           },
         });
         // นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
-        this.items = response.data.map((element, index) => {
+        
+        const reversedData = response.data.reverse();
 
+// นำข้อมูลที่ได้รับมาใส่ในตัวแปร items
+        this.items = reversedData.map((element, index) => {
           return {
             '#': index + 1,
             _id: element._id,
@@ -553,6 +574,7 @@ export default {
             MORE: false,
           };
         });
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }

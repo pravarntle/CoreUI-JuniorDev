@@ -152,7 +152,7 @@
                 @change="onMonthChange"
                 :value="selectedMonth ? new Date(selectedMonth).toLocaleString('en-US', { month: 'long', year: 'numeric' }) : ''"
               >
-                <template #label>Mont Pick</template>
+                <template #label>Month Pick</template>
               </CFormInput>
             <CCollapse :visible="visibleA">
               <CCardText id="support_tracker" class="mt-0">

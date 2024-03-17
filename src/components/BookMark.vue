@@ -352,7 +352,7 @@ export default {
         const itemId = item._id.toString();
         await axios.put(`${process.env.VUE_APP_URL}/mongoose/update/stts_tickets/${itemId}`, {
           data: {
-            tkt_status: "Cancel"
+            tkt_delete: true
           }
         });
         this.toastProp.push({

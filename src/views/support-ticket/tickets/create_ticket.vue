@@ -406,7 +406,7 @@ export default {
         tkt_types: '',
         tkt_book: '',
         tkt_act: '',
-        tkt_delete:false,
+        tkt_delete:'',
         isDragOver: false,
       },
       popup_priority,
@@ -555,6 +555,7 @@ export default {
       this.form.tkt_act = userId
       this.form.tkt_status = ticket_status
       this.form.tkt_book = false
+      this.form.tkt_delete = false
       const roleData = JSON.parse(localStorage.getItem('USER_DATA')) // ดึงข้อมูล USER_DATA จาก local storage
       const roleName = roleData.role
 
